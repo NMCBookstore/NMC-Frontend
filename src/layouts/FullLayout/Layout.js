@@ -102,7 +102,7 @@ export default function Layout() {
 
   return (
     <>
-      <Box sx={{ display: "flex", zIndex: 1 }}>
+      <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar position="fixed" open={open} sx={{ background: "#2B3445" }}>
           <Grid2 container>
@@ -125,7 +125,7 @@ export default function Layout() {
             </Grid2>
           </Grid2>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={open} sx={{ zIndex: "1" }}>
           <DrawerHeader>
             <IconButton onClick={handleDrawerClose}>
               {theme.direction === "rtl" ? (
@@ -191,15 +191,9 @@ export default function Layout() {
           <Outlet />
         </Box>
       </Box>
-      <AppBar sx={{ background: "#", zIndex: 100 }}>
-          <Grid2 container>
-            <Grid2 xs={2} md={1}>
-            </Grid2>
-            <Grid2 xs={10} md={11}>
-              <Header />
-            </Grid2>
-          </Grid2>
-        </AppBar>
+      <Box sx={{position:"relative", bottom:"0", width:"100%"}}>
+        <Footer />
+      </Box>
     </>
   );
 }
