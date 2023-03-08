@@ -1,15 +1,14 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap");
+
+* {
+  box-sizing: border-box;
 }
-:root{
-    --color-2193b0: #2193b0
+
+body {
+  margin: 0;
+  padding: 0;
 }
-body{
-    font-family: 'Segoe UI', sans-serif;
-}
-a{
-    text-decoration: none;
-    display: inline-block;
+
+.app {
+  margin: auto;
 }

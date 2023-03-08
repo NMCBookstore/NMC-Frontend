@@ -1,6 +1,8 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
-import Home from "./pages/Home";
+import About from "./pages/About";
+import Home from "./components/Home/Home";
+import Header from "./layouts/Header/Header";
 
 
 /****Layouts*****/
@@ -17,6 +19,10 @@ const RouterCfg = [
             }
         ]
     },
+    {
+        path: "/about",
+        element:<About />
+    }
 
     
 ];
