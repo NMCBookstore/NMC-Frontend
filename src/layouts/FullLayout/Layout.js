@@ -104,9 +104,9 @@ export default function Layout() {
     <>
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-        <AppBar position="fixed" open={open} sx={{ background: "#2B3445" }}>
+        <AppBar position="fixed" open={open} sx={{ background: "#0F1730" }}>
           <Grid2 container>
-            <Grid2 xs={2} md={1}>
+            <Grid2 xs={1} md={1}>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -117,10 +117,10 @@ export default function Layout() {
                   ...(open && { display: "none" }),
                 }}
               >
-                <MenuIcon />
+                <MenuIcon sx={{ minHeight: 48, ml:2.8}}/>
               </IconButton>
             </Grid2>
-            <Grid2 xs={10} md={11}>
+            <Grid2 xs={11} md={11}>
               <Header />
             </Grid2>
           </Grid2>
@@ -191,6 +191,7 @@ export default function Layout() {
           <Outlet />
         </Box>
       </Box>
+      {/* ********** Footer here *********** */}
       <Box sx={{position:"relative", bottom:"0", width:"100%"}}>
         <Footer />
       </Box>

@@ -8,6 +8,7 @@ import Contact from "./pages/Contact";
 import Home  from "./components/Home/Home";
 
 
+
 const App = () => {
     const routing = useRoutes(RouterCfg);
     return <> {routing}</>;

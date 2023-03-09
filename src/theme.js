@@ -6,7 +6,7 @@ import { createTheme } from "@mui/material/styles";
 
 export const shades = {
   primary: {
-    100: "#cccccc",
+    100: "#c92127",
     200: "#999999",
     300: "#666666",
     400: "#333333",
@@ -43,7 +43,7 @@ export const shades = {
 export const theme = createTheme({
   palette: {
     primary: {
-      main: shades.primary[500],
+      main: shades.primary[100],
     },
     secondary: {
       main: shades.secondary[900],

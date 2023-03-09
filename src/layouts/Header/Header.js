@@ -104,7 +104,7 @@ const Header = () => {
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          size="large"
+          // size="large"
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
@@ -119,15 +119,15 @@ const Header = () => {
 
   return (
     <> 
-  <Stack direction="row" alignItems="center" p={2} 
+  <Stack direction="row" alignItems="center" p={1.05} 
   sx={{ 
     zIndex:2,
     position:  "sticky", 
-    background: '#2B3445',
+    // background: '#2B3445',
     top: 0, 
     justifyContent: "space-between" }}>
     <Link to="/" style={{ display: "flex", alignItems: "center" }}>
-      <img src={logo} alt="logo" height={45} />
+      <img src={logo} alt="logo" height={40} />
     </Link>
     <SearchBar />
     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

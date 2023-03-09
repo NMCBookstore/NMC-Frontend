@@ -8,9 +8,9 @@ const SearchBar = () => {
 <div style={{ display: 'flex', justifyContent: 'center' }}>
   <Paper
       sx={{
-        borderRadius: 20,
+        borderRadius: 10,
         border: '1px solid #e3e3e3',
-        pl: 2,
+        pl: 1,
         boxShadow: 'none',
         mr: { sm: 10 },
       }}
@@ -23,7 +23,7 @@ const SearchBar = () => {
         inputProps={{ 'aria-label': 'search google maps' }}
         onChange={() => {}}
       />
-    <IconButton type='submit' sx={{ p: '10px', color: 'black' }}>
+    <IconButton type='submit' sx={{ p: '5px', color: 'black' }}>
       <Search />
     </IconButton>
   </Paper>
