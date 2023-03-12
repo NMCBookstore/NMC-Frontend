@@ -193,7 +193,7 @@ export default function Layout() {
       </Box>
       {/* ********** Footer here *********** */}
       <Box sx={{position:"relative", bottom:"0", width:"100%"}}>
-        <Footer />
+        {/* <Footer /> */}
       </Box>
     </>
   );

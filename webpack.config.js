@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { SourceMapDevToolPlugin } = require("webpack");
 
 
 module.exports = {
@@ -37,6 +38,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
         template: "./public/index.html"
-      })
+      }),
+    new SourceMapDevToolPlugin({
+        filename: "[file].map"
+      }),
   ]
 };

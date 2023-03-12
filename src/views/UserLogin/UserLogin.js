@@ -16,6 +16,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useForm } from "react-hook-form";
+
 
 
 
@@ -61,6 +63,8 @@ const UserLogin = () => {
       password: data.get("password"),
     });
   };
+  
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -81,11 +85,11 @@ const UserLogin = () => {
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
             <TextField
               margin="normal"
-              required
+              
               fullWidth
               name="userName"
-              label="User name"
-              placeholder="Enter your username"
+              label="User name or email"
+              placeholder="Enter your username or your email"
               autoComplete="text"
               autoFocus
             />
