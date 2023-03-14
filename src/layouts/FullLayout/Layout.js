@@ -121,6 +121,7 @@ export default function Layout() {
               </IconButton>
             </Grid2>
             <Grid2 xs={11} md={11}>
+              {/*********  Header here  *********/}
               <Header />
             </Grid2>
           </Grid2>

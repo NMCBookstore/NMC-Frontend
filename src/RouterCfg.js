@@ -11,6 +11,7 @@ const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
 const About = lazy(() => import("./pages/About"));
 const UserLogin = lazy(() => import("./views/UserLogin"));
 const UserRegister = lazy(() => import("./views/UserRegister"));
+const ProductDetails = lazy(() => import("./views/ProductDetails"));
 
 /****Routes*****/
 
@@ -23,6 +24,9 @@ const RouterCfg = [
     element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
+      { path: "about", element: <About /> },
+      { path: "product/:id", element: <ProductDetails /> },
+
     ],
   },
 

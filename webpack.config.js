@@ -33,6 +33,7 @@ module.exports = {
   },
   devServer: {
     historyApiFallback: true,
+    port: 3006,
   },
   // Chứa các plugins sẽ cài đặt trong tương lai
   plugins: [
