@@ -51,9 +51,10 @@ function Slider() {
   return (
     <Carousel>
       {images.map((step, index) => (
-        <div>
+        <div key={step}>
           {Math.abs(activeStep - index) <= 4 ? (
             <Box
+            
               component="img"
               sx={{
                 borderRadius:2,

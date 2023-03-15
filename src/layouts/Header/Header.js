@@ -123,10 +123,10 @@ const Header = () => {
   sx={{ 
     zIndex:2,
     position:  "sticky", 
-    // background: '#2B3445',
+    background: '#0F1730',
     top: 0, 
     justifyContent: "space-between" }}>
-    <Link to="/" style={{ display: "flex", alignItems: "center" }}>
+    <Link to="/" style={{ display: "flex", alignItems: "center", paddingLeft:"10%" }}>
       <img src={logo} alt="logo" height={40} />
     </Link>
     <SearchBar />
@@ -141,14 +141,15 @@ const Header = () => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <IconButton
+            <IconButton 
               size="large"
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="primary"
+              color="primary" 
+              sx={{marginRight:"1%"}}
             >
               <AccountCircle />
             </IconButton>

@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, Card, Container, TextField, Typography } from "@mui/material";
 import { Stack, width } from "@mui/system";
 import Rating from "@mui/material/Rating";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
+import ProductCard from "../../components/ProductCard/ProductCard";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -34,8 +39,12 @@ const ProductDetails = () => {
     }
   }
 
+  const ref = useRef(null);
+
+
+
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
       <Grid container spacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Grid item container spacing={2} xs={12}>
           <Grid item container xs={5} columns={12}>
@@ -151,6 +160,7 @@ const ProductDetails = () => {
           </Grid>
         </Grid>
 
+        {/* Details product */}
         <Grid item container spacing={2} xs={12} columns={12}>
           <Stack direction="column">
             <Typography variant="h5" mt={8} mb={2} fontWeight={800}>
@@ -161,7 +171,7 @@ const ProductDetails = () => {
               <Typography variant="body1">Publisher:</Typography>
               <Typography variant="body1">Descriptions: {""}</Typography>
               <Typography>
-                <t/>Lorem Ipsum is simply dummy text of the printing and typesetting
+                Lorem Ipsum is simply dummy text of the printing and typesetting
                 industry. Lorem Ipsum has been the industry's standard dummy
                 text ever since the 1500s, when an unknown printer took a galley
                 of type and scrambled it to make a type specimen book. It has
@@ -175,9 +185,58 @@ const ProductDetails = () => {
             </div>
           </Stack>
         </Grid>
-        <Grid item container spacing={2} xs={12}>
-          <Typography>this is the big image</Typography>
+
+        {/* Recommend for you  **have fixed grid*/}
+        <Grid
+          item
+          spacing={2}
+          xs={12}
+        >
+          <Stack direction="column" sx={{ width: "100%" }}>
+            <Typography variant="h5" mt={8} mb={2} fontWeight={800}>
+              Recommend for you
+            </Typography>
+            <Box sx={{width:"100%"}}
+            >
+              <Carousel 
+                style={{ width: "100%", backgroundColor: "black" }}
+                responsive={{
+                  desktop: {
+                    breakpoint: { max: 3000, min: 1024 },
+                    items: 5,
+                  },
+                  tablet: {
+                    breakpoint: { max: 1024, min: 464 },
+                    items: 3,
+                  },
+                  mobile: {
+                    breakpoint: { max: 464, min: 0 },
+                    items: 2,
+                  },
+                }}
+                swipeable={false}
+                infinite={true}
+                autoPlay={true}
+                autoPlaySpeed={5000}
+                slidesToSlide={true}
+                arrows={true}
+                rtl={true}
+                customLeftArrow={<KeyboardArrowLeftIcon/>}
+                customRightArrow={<KeyboardArrowRightIcon/>}
+              >
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+                <ProductCard />
+              </Carousel>
+            </Box>
+          </Stack>
         </Grid>
+
         <Grid item container spacing={2} xs={12}>
           <Typography>this is the big image</Typography>
         </Grid>

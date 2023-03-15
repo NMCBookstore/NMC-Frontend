@@ -6,6 +6,7 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ProductCard from "../ProductCard/ProductCard";
 import { Grid } from "@mui/material";
+import Carousel from "react-material-ui-carousel";
 
 const FirstTab = () => {
   const [value, setValue] = React.useState("1");
@@ -25,7 +26,7 @@ const FirstTab = () => {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <Grid container sx={{ display: "flex", justifyContent: "center" }} spacing={1}>
+          <Grid container sx={{ display: "flex", justifyContent: "center"}} spacing={2}>
             <Grid item   >
               <ProductCard />
             </Grid>
@@ -41,26 +42,11 @@ const FirstTab = () => {
             <Grid item >
               <ProductCard />
             </Grid>
+
           </Grid>
         </TabPanel>
         <TabPanel value="2">
-        <Grid container sx={{ display: "flex", justifyContent: "center" }} spacing={1}>
-            <Grid item   >
-              <ProductCard />
-            </Grid>
-            <Grid item  >
-              <ProductCard />
-            </Grid>
-            <Grid item  >
-              <ProductCard />
-            </Grid>
-            <Grid item  >
-              <ProductCard />
-            </Grid>
-            <Grid item >
-              <ProductCard />
-            </Grid>
-          </Grid>
+          <ProductCard />
         </TabPanel>
         <TabPanel value="3">
           <ProductCard />
