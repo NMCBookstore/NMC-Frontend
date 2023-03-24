@@ -6,7 +6,12 @@ import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import ProductCard from "../ProductCard/ProductCard";
 import { Grid } from "@mui/material";
-import Carousel from "react-material-ui-carousel";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
+import MiniCarousel from "../MiniCarousel/MiniCarousel";
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import { Stack, width } from "@mui/system";
 
 const FirstTab = () => {
   const [value, setValue] = React.useState("1");
@@ -26,30 +31,13 @@ const FirstTab = () => {
           </TabList>
         </Box>
         <TabPanel value="1">
-          <Grid container sx={{ display: "flex", justifyContent: "center"}} spacing={2}>
-            <Grid item   >
-              <ProductCard />
-            </Grid>
-            <Grid item  >
-              <ProductCard />
-            </Grid>
-            <Grid item  >
-              <ProductCard />
-            </Grid>
-            <Grid item  >
-              <ProductCard />
-            </Grid>
-            <Grid item >
-              <ProductCard />
-            </Grid>
-
-          </Grid>
+            <MiniCarousel />
         </TabPanel>
         <TabPanel value="2">
-          <ProductCard />
+          <MiniCarousel />
         </TabPanel>
         <TabPanel value="3">
-          <ProductCard />
+          <MiniCarousel />
         </TabPanel>
       </TabContext>
     </Box>

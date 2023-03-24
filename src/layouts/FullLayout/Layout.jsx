@@ -1,20 +1,20 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React from "react";
+import { Outlet } from "react-router-dom";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { Container } from '@mui/system';
+import { Container } from "@mui/system";
 
 const Layout = () => {
   return (
     <>
       <Header />
-      <Container >
-      <Outlet />
+      <Container>
+        <Outlet />
       </Container>
-      
+
       <Footer />
     </>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;

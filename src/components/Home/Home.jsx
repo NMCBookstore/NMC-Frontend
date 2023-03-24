@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Stack } from "@mui/material";
-import Carousel from "../Carousel/Carousel";
+import HompageCarousel from "../HomepageCarousel/HomepageCarousel";
 import FiveHeadCategory from "../FiveHeadCategory/FiveHeadCategory";
 import FirstTab from "../FirstTab/FirstTab";
 import Typography from "@mui/joy/Typography";
@@ -8,7 +8,7 @@ import Typography from "@mui/joy/Typography";
 const Home = () => {
   return (
     <>
-      <Carousel />
+      <HompageCarousel />
       <Box
         sx={{
           color: "#c92127",

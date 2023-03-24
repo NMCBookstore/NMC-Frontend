@@ -13,6 +13,8 @@ const About = lazy(() => import("./pages/About"));
 const UserLogin = lazy(() => import("./views/UserLogin"));
 const UserRegister = lazy(() => import("./views/UserRegister"));
 const ProductDetails = lazy(() => import("./views/ProductDetails"));
+const SearchFilter = lazy(() => import("./views/SearchFilter"));
+const UserProfile = lazy(() => import("./views/UserProfile"));
 
 /****Routes*****/
 
@@ -27,6 +29,9 @@ const RouterCfg = [
       { path: "/", element: <Home /> },
       { path: "about", element: <About /> },
       { path: "product/:id", element: <ProductDetails /> },
+      { path: "search-filter", element: <SearchFilter /> },
+      { path: "user-profile/:id", element: <UserProfile /> },
+
 
     ],
   },

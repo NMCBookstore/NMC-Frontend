@@ -13,8 +13,10 @@ import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import ImageGrid from "./ImageGrid";
+import MainImage from "./MainImage";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -24,76 +26,64 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const images = [
+  "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
+  "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81MI6+TpYkL._AC_UF1000,1000_QL80_.jpg",
+  "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/71uUx073fcL.jpg",
+  "https://salt.tikicdn.com/media/catalog/product/b/i/bia-1_sat-nhan-mang.u2487.d20170206.t083645.532084.jpg",
+];
+
+const product = {
+  id: 1,
+  name: "Hai So Phan",
+  price: 1000,
+  rating: 4,
+  description:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+}
+
 const ProductDetails = () => {
+  const [selectedImage, setSelectedImage] = useState(0);
   const [value, setValue] = React.useState(2);
-  let [count, setCount] = useState(0);
+  let [count, setCount] = useState(1);
 
   function incrementCount() {
     count = count + 1;
     setCount(count);
   }
   function decrementCount() {
-    if (count > 0) {
+    if (count > 1) {
       count = count - 1;
       setCount(count);
     }
   }
 
-  const ref = useRef(null);
-
-
-
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
-      <Grid container spacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        <Grid item container spacing={2} xs={12}>
-          <Grid item container xs={5} columns={12}>
-            <Grid item xs={3}>
-              <Stack spacing={1}>
-                <div>
-                  <img
-                    src="https://cdn0.fahasa.com/media/catalog/product/n/x/nxbtre_full_02082023_020850_1.jpg"
-                    alt="the Influence"
-                    style={{ width: "75%" }}
-                  />
-                </div>
-
-                <div>
-                  <img
-                    src="https://cdn0.fahasa.com/media/catalog/product/n/x/nxbtre_full_02082023_020850_1.jpg"
-                    alt="the Influence"
-                    style={{ width: "75%" }}
-                  />
-                </div>
-                <div>
-                  <img
-                    src="https://cdn0.fahasa.com/media/catalog/product/n/x/nxbtre_full_02082023_020850_1.jpg"
-                    alt="the Influence"
-                    style={{ width: "75%" }}
-                  />
-                </div>
-
-                <div>
-                  <img
-                    src="https://cdn0.fahasa.com/media/catalog/product/n/x/nxbtre_full_02082023_020850_1.jpg"
-                    alt="the Influence"
-                    style={{ width: "75%" }}
-                  />
-                </div>
-              </Stack>
+      <Grid container my={2} spacing={2}>
+        {/* Image and price  */}
+        <Grid item container spacing={2} xs={12} sm={12}>
+          {/* Image and price  */}
+          <Grid item container xs={12} sm={5} columns={12} mt={2}>
+            {/* Side image  */}
+            <Grid item container sm={3} xs={0}>
+              <ImageGrid
+                images={images}
+                onSelect={setSelectedImage}
+                selectedImage={selectedImage}
+              />
             </Grid>
-            <Grid item xs={9}>
+            {/* Main image  */}
+            <Grid item sm={9}>
               <div style={{}}>
-                <img
-                  src="https://cdn0.fahasa.com/media/catalog/product/n/x/nxbtre_full_02082023_020850_1.jpg"
-                  alt="the Influence"
-                  style={{ width: "100%" }}
-                />
+                <MainImage src={images[selectedImage]} />
               </div>
             </Grid>
           </Grid>
-          <Grid item xs={7}>
+
+          <Grid item xs={12} sm={7} mt={2} padding={5}>
             <Grid>
+              {/* Basic info  */}
               <Stack>
                 <Typography variant="h5">Bhe book nearly one</Typography>
                 <Typography variant="subtitle2" mt={2}>
@@ -109,9 +99,6 @@ const ProductDetails = () => {
                   size="small"
                   precision={0.1}
                 />
-              </Stack>
-
-              <Stack>
                 <Typography
                   variant="h5"
                   mt={5}
@@ -120,48 +107,55 @@ const ProductDetails = () => {
                   685.000 đ
                 </Typography>
               </Stack>
-            </Grid>
-            <Stack direction="row" alignItems="center" mt={5} spacing={2}>
-              <Typography variant="h6">Amount: </Typography>
-              <div
-                style={{ display: "flex", flexWrap: "wrap", marginTop: "6px" }}
-              >
-                <Button onClick={decrementCount}>
-                  <RemoveIcon />
-                </Button>
-                <TextField
-                  value={count}
-                  disabled={true}
-                  inputProps={{ min: 0, style: { textAlign: "center" } }}
-                  sx={{ width: "60px" }}
-                />
-                <Button onClick={incrementCount}>
-                  <AddIcon />
-                </Button>
-              </div>
-            </Stack>
 
-            <Stack direction="row" alignItems="center" mt={5} spacing={2}>
-              <Button variant="contained">
-                <Typography variant="body1">Add to cart</Typography>
-                <ShoppingCartOutlinedIcon />
-              </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  background: "#C92127",
-                  "&:hover": { background: "#C92127" },
-                }}
-              >
-                <Typography variant="body1">Buy now</Typography>
-                <LocalMallOutlinedIcon />
-              </Button>
-            </Stack>
+              {/* Amount  */}
+              <Stack direction="row" alignItems="center" mt={5} spacing={2}>
+                <Typography variant="h6">Amount: </Typography>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    marginTop: "6px",
+                  }}
+                >
+                  <Button onClick={decrementCount}>
+                    <RemoveIcon />
+                  </Button>
+                  <TextField
+                    value={count}
+                    disabled={true}
+                    inputProps={{ min: 0, style: { textAlign: "center" } }}
+                    sx={{ width: "60px" }}
+                  />
+                  <Button onClick={incrementCount}>
+                    <AddIcon />
+                  </Button>
+                </div>
+              </Stack>
+
+              {/* Add to cart  */}
+              <Stack direction="row" alignItems="center" mt={5} spacing={2}>
+                <Button variant="contained">
+                  <Typography variant="body1">Add to cart</Typography>
+                  <ShoppingCartOutlinedIcon />
+                </Button>
+                <Button
+                  variant="contained"
+                  sx={{
+                    background: "#C92127",
+                    "&:hover": { background: "#C92127" },
+                  }}
+                >
+                  <Typography variant="body1">Buy now</Typography>
+                  <LocalMallOutlinedIcon />
+                </Button>
+              </Stack>
+            </Grid>
           </Grid>
         </Grid>
 
         {/* Details product */}
-        <Grid item container spacing={2} xs={12} columns={12}>
+        <Grid item container spacing={2} xs={12} sm={12}>
           <Stack direction="column">
             <Typography variant="h5" mt={8} mb={2} fontWeight={800}>
               Details information
@@ -187,18 +181,13 @@ const ProductDetails = () => {
         </Grid>
 
         {/* Recommend for you  **have fixed grid*/}
-        <Grid
-          item
-          spacing={2}
-          xs={12}
-        >
+        <Grid item container spacing={2} xs={12} sm={12}>
           <Stack direction="column" sx={{ width: "100%" }}>
             <Typography variant="h5" mt={8} mb={2} fontWeight={800}>
               Recommend for you
             </Typography>
-            <Box sx={{width:"100%"}}
-            >
-              <Carousel 
+            <Box sx={{ width: "100%" }}>
+              <Carousel
                 style={{ width: "100%", backgroundColor: "black" }}
                 responsive={{
                   desktop: {
@@ -214,15 +203,11 @@ const ProductDetails = () => {
                     items: 2,
                   },
                 }}
-                swipeable={false}
                 infinite={true}
                 autoPlay={true}
                 autoPlaySpeed={5000}
                 slidesToSlide={true}
                 arrows={true}
-                rtl={true}
-                customLeftArrow={<KeyboardArrowLeftIcon/>}
-                customRightArrow={<KeyboardArrowRightIcon/>}
               >
                 <ProductCard />
                 <ProductCard />
@@ -237,7 +222,8 @@ const ProductDetails = () => {
           </Stack>
         </Grid>
 
-        <Grid item container spacing={2} xs={12}>
+        {/* Comment  */}
+        <Grid item container spacing={2} xs={12} sm={12}>
           <Typography>this is the big image</Typography>
         </Grid>
       </Grid>

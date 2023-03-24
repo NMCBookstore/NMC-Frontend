@@ -13,7 +13,7 @@ import MailIcon from "@mui/icons-material/Mail";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
-export default function TemporaryDrawer() {
+export default function SideBar() {
   const [state, setState] = React.useState(false);
 
   const toggleDrawer = (open) => (event) => {

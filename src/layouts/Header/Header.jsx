@@ -8,7 +8,8 @@ import useStyles from '../../theme';
 import "../../theme.js"
 import { Stack } from '@mui/system';
 import  SearchBar  from '../SearchBar';
-
+import Tooltip from '@mui/material/Tooltip';
+import Fade from '@mui/material/Fade';
 import InputBase from '@mui/material/InputBase';
 import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
@@ -20,11 +21,21 @@ import MoreIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -49,19 +60,14 @@ const Header = () => {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
+    id="fade-menu"
+    MenuListProps={{
+      'aria-labelledby': 'fade-button',
+    }}
+    anchorEl={anchorEl}
+    open={open}
+    onClose={handleClose}
+    TransitionComponent={Fade}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
@@ -131,14 +137,9 @@ const Header = () => {
     </Link>
     <SearchBar />
     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton color="inherit">
+            <IconButton sx={{color:"white"}}>
               <Badge>
-                <MailIcon />
-              </Badge>
-            </IconButton>
-            <IconButton color="inherit">
-              <Badge>
-                <NotificationsIcon />
+                <ShoppingCartIcon />
               </Badge>
             </IconButton>
             <IconButton 
@@ -148,8 +149,8 @@ const Header = () => {
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              color="primary" 
-              sx={{marginRight:"1%"}}
+              
+              sx={{marginRight:"1%", color:"white"}}
             >
               <AccountCircle />
             </IconButton>
