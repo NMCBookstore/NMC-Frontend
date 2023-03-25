@@ -1,4 +1,4 @@
-import { AppBar, Grid, Toolbar, Typography,Box, Container, CssBaseline, ThemeProvider } from '@mui/material';
+import { AppBar, Grid, Toolbar, Typography, Box, Container, CssBaseline, ThemeProvider } from '@mui/material';
 import React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import { NavLink, Link } from 'react-router-dom';
@@ -7,7 +7,7 @@ import theme from '../../theme';
 import useStyles from '../../theme';
 import "../../theme.js"
 import { Stack } from '@mui/system';
-import  SearchBar  from '../SearchBar';
+import SearchBar from '../SearchBar';
 import Tooltip from '@mui/material/Tooltip';
 import Fade from '@mui/material/Fade';
 import InputBase from '@mui/material/InputBase';
@@ -60,14 +60,14 @@ const Header = () => {
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
-    id="fade-menu"
-    MenuListProps={{
-      'aria-labelledby': 'fade-button',
-    }}
-    anchorEl={anchorEl}
-    open={open}
-    onClose={handleClose}
-    TransitionComponent={Fade}
+      id="fade-menu"
+      MenuListProps={{
+        'aria-labelledby': 'fade-button',
+      }}
+      anchorEl={anchorEl}
+      open={open}
+      onClose={handleClose}
+      TransitionComponent={Fade}
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
@@ -124,38 +124,43 @@ const Header = () => {
   );
 
   return (
-    <> 
-  <Stack direction="row" alignItems="center" p={1.05} 
-  sx={{ 
-    zIndex:2,
-    position:  "sticky", 
-    background: '#0F1730',
-    top: 0, 
-    justifyContent: "space-between" }}>
-    <Link to="/" style={{ display: "flex", alignItems: "center", paddingLeft:"10%" }}>
-      <img src={logo} alt="logo" height={40} />
-    </Link>
-    <SearchBar />
-    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton sx={{color:"white"}}>
+    <>
+      <Stack paddingTop={2}
+        sx={{
+          zIndex: 2,
+          position: "sticky",
+          background: '#0F1730',
+          top: 0,
+        }}>
+        <Stack direction="row" alignItems="center" p={1.05} paddingBottom={2}
+          sx={{
+            justifyContent: "space-between"
+          }}>
+          <Link to="/" style={{ display: "flex", alignItems: "center", paddingLeft: "10%" }}>
+            <img src={logo} alt="logo" height={40} />
+          </Link>
+          <SearchBar />
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <IconButton sx={{ color: "white" }}>
               <Badge>
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
-            <IconButton 
+            <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-              
-              sx={{marginRight:"1%", color:"white"}}
+
+              sx={{ marginRight: "1%", color: "white" }}
             >
               <AccountCircle />
             </IconButton>
           </Box>
-  </Stack>
+        </Stack>
+      </Stack>
 
       {renderMobileMenu}
       {renderMenu}

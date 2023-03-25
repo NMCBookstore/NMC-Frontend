@@ -66,7 +66,7 @@ export default function SideBar() {
     <div>
       <React.Fragment>
         <MenuIcon
-        sx={{position:"fixed", top:"0", zIndex: "5", marginLeft:"5%", marginTop: "1%",fontSize:"2em", color: "white"}}
+        sx={{position:"fixed", top:"0", zIndex: "5", marginLeft:"5%", marginTop: "2%",fontSize:"2em", color: "white"}}
         onClick={toggleDrawer(true)} />
 
         <Drawer anchor={"left"} open={state} onClose={toggleDrawer(false)}>
