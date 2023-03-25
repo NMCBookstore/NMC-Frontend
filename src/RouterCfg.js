@@ -5,7 +5,6 @@ import Header from "./layouts/Header/Header";
 
 /****Layouts*****/
 const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
-const SideBar = lazy(() => import("./layouts/SideBar/SideBar"));
 
 /****Routes*****/
 
@@ -24,7 +23,7 @@ const RouterCfg = [
 
   {
     path: "/",
-    element: [<Layout />, <SideBar /> ],
+    element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
       { path: "about", element: <About /> },

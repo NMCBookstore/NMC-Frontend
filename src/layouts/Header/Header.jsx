@@ -1,27 +1,26 @@
-import { AppBar, Grid, Toolbar, Typography, Box, Container, CssBaseline, ThemeProvider } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import { NavLink, Link } from 'react-router-dom';
-import logo from './logo.png';
-import theme from '../../theme';
-import useStyles from '../../theme';
+import { Link } from 'react-router-dom';
+import logo from './images/logo.png';
 import "../../theme.js"
 import { Stack } from '@mui/system';
 import SearchBar from '../SearchBar';
-import Tooltip from '@mui/material/Tooltip';
 import Fade from '@mui/material/Fade';
-import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@mui/icons-material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import Menu from '@mui/material/Menu';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PersonIcon from '@mui/icons-material/Person';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+import CancelIcon from '@mui/icons-material/Cancel';
+import ReviewsIcon from '@mui/icons-material/Reviews';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import SideBar from '../SideBar/SideBar';
 
 
 const Header = () => {
@@ -69,9 +68,41 @@ const Header = () => {
       onClose={handleClose}
       TransitionComponent={Fade}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Log out</MenuItem>
+      <Link style={{ textDecoration: "none", color: "black" }}>
+        <MenuItem onClick={handleMenuClose}>
+          <PersonIcon />
+          &nbsp;
+          Profile
+        </MenuItem>
+      </Link>
+      <Link style={{ textDecoration: "none", color: "black" }}>
+        <MenuItem onClick={handleMenuClose}>
+          <LocalMallIcon />
+          &nbsp;
+          My Order
+        </MenuItem>
+      </Link>
+      <Link style={{ textDecoration: "none", color: "black" }}>
+        <MenuItem onClick={handleMenuClose}>
+          <CancelIcon />
+          &nbsp;
+          My Cancellations
+        </MenuItem>
+      </Link>
+      <Link style={{ textDecoration: "none", color: "black" }}>
+        <MenuItem onClick={handleMenuClose}>
+          <ReviewsIcon />
+          &nbsp;
+          My Reviews
+        </MenuItem>
+      </Link>
+      <Link style={{ textDecoration: "none", color: "black" }}>
+        <MenuItem onClick={handleMenuClose}>
+          <LogoutOutlinedIcon />
+          &nbsp;
+          Logout
+        </MenuItem>
+      </Link>
     </Menu>
   );
 
@@ -110,7 +141,6 @@ const Header = () => {
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
-          // size="large"
           aria-label="account of current user"
           aria-controls="primary-search-account-menu"
           aria-haspopup="true"
@@ -136,27 +166,39 @@ const Header = () => {
           sx={{
             justifyContent: "space-between"
           }}>
-          <Link to="/" style={{ display: "flex", alignItems: "center", paddingLeft: "10%" }}>
+          <SideBar /> 
+          <Link to="/" style={{ display: "flex", alignItems: "center", marginLeft: "-22%" }}>
             <img src={logo} alt="logo" height={40} />
           </Link>
           <SearchBar />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton sx={{ color: "white" }}>
+          <Box marginRight={3} sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: "center" }}>
+            <IconButton
+              size='large'
+              sx={{ color: "white" }}>
               <Badge>
-                <ShoppingCartIcon />
+                <FavoriteIcon fontSize="100%" />
               </Badge>
             </IconButton>
             <IconButton
-              size="large"
+              size='large'
+              sx={{ color: "white" }}>
+              <Badge>
+                <ShoppingCartIcon fontSize="100%" />
+              </Badge>
+            </IconButton>
+            <IconButton
+              size='large'
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
 
-              sx={{ marginRight: "1%", color: "white" }}
+              sx={{
+                color: "white",
+              }}
             >
-              <AccountCircle />
+              <AccountCircle fontSize="100%" />
             </IconButton>
           </Box>
         </Stack>
