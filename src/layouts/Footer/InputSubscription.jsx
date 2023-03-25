@@ -45,10 +45,16 @@ export default function InputSubscription() {
           endDecorator={
             <Button
               variant="solid"
-              color="primary"
               loading={data.status === 'loading'}
               type="submit"
-              sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+              sx={{ 
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0, 
+                backgroundColor:"#db4444",
+                '&:hover': {
+                    background: "#ffa071",
+                 },
+            }}
             >
               <SendSharpIcon/>
             </Button>

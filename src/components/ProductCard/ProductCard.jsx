@@ -13,11 +13,11 @@ import Paper from '@mui/material/Paper';
 
 const ProductCard = () => {
   return (
-    <Box width="200px">
+    <Box width="260px">
       <Card variant="outlined" sx={{ borderRadius: 5 }}>
           <CardMedia
             component="img"
-            height="180"
+            height="250"
             image= "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730"
             alt="the book art"
           />
@@ -31,16 +31,6 @@ const ProductCard = () => {
                 $2,900
               </Typography>
             </div>
-            {/* <IconButton
-              sx={{
-                position: "absolute",
-                bot: "0.5rem",
-                right: "0.9rem",
-                background: "none",
-              }}
-            >
-              <ShoppingCartOutlinedIcon />
-            </IconButton> */}
           </CardContent>
       </Card>
     </Box>
