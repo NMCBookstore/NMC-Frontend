@@ -21,7 +21,6 @@ const SearchFilter = () => {
         {/* Product  */}
         <Grid container item xs={12} sm={9} sx={{ flexDirection: { xs: "column", sm: "row" } }}>
             <BookList />
-
             <PaginationBottom />
         </Grid>
         
