@@ -24,7 +24,7 @@ const RouterCfg = [
 
   {
     path: "/",
-    element: [<Layout />, <SideBar />],
+    element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
       { path: "about", element: <About /> },

@@ -15,6 +15,7 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import ImageGrid from "./ImageGrid";
 import MainImage from "./MainImage";
 
@@ -40,7 +41,7 @@ const product = {
   rating: 4,
   description:
     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-}
+};
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -135,19 +136,25 @@ const ProductDetails = () => {
 
               {/* Add to cart  */}
               <Stack direction="row" alignItems="center" mt={5} spacing={2}>
-                <Button variant="contained">
-                  <Typography variant="body1">Add to cart</Typography>
-                  <ShoppingCartOutlinedIcon />
+                <Button
+                  variant="contained"
+                  sx={{
+                    background: "#1f1f1f",
+                    "&:hover": { background: "#1f1f1f" },
+                  }}
+                >
+                  <Typography variant="body1">Add to wishlist</Typography>
+                  <FavoriteIcon />
                 </Button>
                 <Button
                   variant="contained"
                   sx={{
-                    background: "#C92127",
-                    "&:hover": { background: "#C92127" },
+                    background: "#DB4444",
+                    "&:hover": { background: "#ffa071" },
                   }}
                 >
-                  <Typography variant="body1">Buy now</Typography>
-                  <LocalMallOutlinedIcon />
+                  <Typography variant="body1">Add to cart</Typography>
+                  <ShoppingCartOutlinedIcon />
                 </Button>
               </Stack>
             </Grid>
@@ -192,7 +199,7 @@ const ProductDetails = () => {
                 responsive={{
                   desktop: {
                     breakpoint: { max: 3000, min: 1024 },
-                    items: 5,
+                    items: 4,
                   },
                   tablet: {
                     breakpoint: { max: 1024, min: 464 },
