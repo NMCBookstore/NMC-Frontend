@@ -16,7 +16,7 @@ import CopyrightIcon from '@mui/icons-material/Copyright';
 const Footer = () => {
   return (
     <Stack
-      marginTop={10}
+      marginTop={20}
       direction="column"
       alignItems="center" p={2}
       sx={{

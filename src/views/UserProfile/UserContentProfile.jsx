@@ -14,11 +14,6 @@ const profileContent = {
   avatarUrl: "",
 };
 
-// const [info, setInfo] = useState({
-    
-// })
-
-
 export default function UserContentProfile() {
   const [info, setInfo] = React.useState(profileContent);
   return (
