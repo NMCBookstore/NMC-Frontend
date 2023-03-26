@@ -1,82 +1,300 @@
-import * as React from 'react';
-import { Stack, Typography } from "@mui/joy";
-import List from "@mui/material/List";
-import Box from "@mui/material/Box";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
+import { useState } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { alpha } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import { DataGrid } from "@mui/x-data-grid";
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Stack, TextField } from '@mui/material';
+import RemoveIcon from "@mui/icons-material/Remove";
+import AddIcon from "@mui/icons-material/Add";
 
-
-const cart = [
+const carts = [
   {
+    id: 0,
     url: "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
     title: "Book 1",
-    price: "100.000 VND",
+    quantity: 2,
+    price: 100000,
   },
   {
+    id: 1,
     url: "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
     title: "Book 2",
-    price: "200.000 VND",
+    quantity: 1,
+    price: 200000,
   },
   {
+    id: 2,
     url: "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
     title: "Book 3",
-    price: "300.000 VND",
+    quantity: 1,
+    price: 300.000,
   },
   {
+    id: 3,
     url: "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
     title: "Book 4",
-    price: "400.000 VND",
+    quantity: 2,
+    price: 400.000,
   },
 ];
 
-export default function ListProductCart() {
-  // const [checked, setChecked] = React.useState([0]);
+const headCells = [
+  {
+    id: 'Product',
+    label: 'Product',
+  },
+  {
+    id: 'Price',
+    numeric: true,
+    label: 'Price',
+  },
+  {
+    id: 'Quantity',
+    numeric: true,
+    label: 'Quantity',
+  },
+  {
+    id: 'Subtotal',
+    numeric: true,
+    label: 'Subtotal',
+  },
+  {
+    id: 'null',
+  },
+];
 
-  // const handleToggle = (value) => () => {
-  //   const currentIndex = checked.indexOf(value);
-  //   const newChecked = [...checked];
-
-  //   if (currentIndex === -1) {
-  //     newChecked.push(value);
-  //   } else {
-  //     newChecked.splice(currentIndex, 1);
-  //   }
-
-  //   setChecked(newChecked);
-  // };
+function EnhancedTableHead(props) {
+  const { onSelectAllClick, numSelected, rowCount } = props;
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <Stack direction="row" spacing={2}>
-        <Box>
-          <Stack width="100%" direction="row" spacing={20}>
-            <Typography>Product</Typography>
-            <Typography>Price</Typography>
-            <Typography>Quantity</Typography>
-            <Typography>Subtotal</Typography>
-          </Stack>
-          <Stack width="100%" direction="row" spacing="20">
-            <List sx={{ width: "100%" }} spacing="20">
-              {cart.map((item) => (
-                <ListItem key={item.title}>
-                  <Box >
-                    <img src={item.url} style={{width:"100px" ,height:"120px"}} />
-                  </Box>
-                  <ListItemText primary={item.title} />
-                  <ListItemText primary={item.price} />
+    <TableHead>
+      <TableRow>
+        <TableCell padding="checkbox">
+          <Checkbox
+            color="primary"
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{
+              'aria-label': 'select all desserts',
+            }}
+          />
+        </TableCell>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+          >
+            {headCell.label}
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+}
 
-                </ListItem>
-              ))}
-            </List>
-          </Stack>
+EnhancedTableHead.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
+  rowCount: PropTypes.number.isRequired,
+};
 
-        </Box>
-      </Stack>
+function EnhancedTableToolbar(props) {
+  const { numSelected } = props;
+
+  return (
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(numSelected > 0 && {
+          bgcolor: (theme) =>
+            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+        }),
+      }}
+    >
+      {numSelected > 0 ? (
+        <Typography
+          sx={{ flex: '1 1 100%' }}
+          color="inherit"
+          variant="subtitle1"
+          component="div"
+        >
+          {numSelected} selected
+        </Typography>
+      ) : (
+        <Typography
+          sx={{ flex: '1 1 100%' }}
+          variant="h6"
+          id="tableTitle"
+          component="div"
+        >
+          Cart
+        </Typography>
+      )}
+
+      {numSelected > 0 ? (
+        <Tooltip title="Delete">
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      ) : null}
+    </Toolbar>
+  );
+}
+
+EnhancedTableToolbar.propTypes = {
+  numSelected: PropTypes.number.isRequired,
+};
+
+export default function ListProductCart() {
+  const [selected, setSelected] = useState([]);
+  const [rows, setRows] = useState(carts)
+
+
+  function incrementCount(event, id) {
+    let rs = [...rows]
+    rs[id].quantity++
+    setRows(rs);
+  }
+  function decrementCount(event, id) {
+    let rs = [...rows]
+    if (rs[id].quantity > 1) {
+      rs[id].quantity--
+      setRows(rs);
+    }
+  }
+
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelected = rows.map((n) => n.id);
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]);
+  };
+
+  const handleClick = (event, id) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+
+    setSelected(newSelected);
+  };
+
+  const isSelected = (id) => selected.indexOf(id) !== -1;
+
+  return (
+    <Box sx={{ width: '100%' }}>
+      <Paper sx={{ width: '100%', mb: 2 }}>
+        <EnhancedTableToolbar numSelected={selected.length} />
+        <TableContainer>
+          <Table
+            sx={{ minWidth: 750 }}
+            aria-labelledby="tableTitle"
+          >
+            <EnhancedTableHead
+              numSelected={selected.length}
+              onSelectAllClick={handleSelectAllClick}
+              rowCount={rows.length}
+            />
+            <TableBody>
+              {rows.map((row, index) => {
+                const isItemSelected = isSelected(row.id);
+                const labelId = `enhanced-table-checkbox-${index}`;
+
+                return (
+                  <TableRow hover key={row.id}>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        selected={isItemSelected}
+                        onClick={(event) => handleClick(event, row.id)}
+                        color="primary"
+                        checked={isItemSelected}
+                        sx={{ cursor: 'pointer' }}
+                        inputProps={{
+                          'aria-labelledby': labelId,
+                        }}
+                      />
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
+                    >
+                      <Stack direction="row" alignItems="center" margin={1}>
+                        <img
+                          src={row.url}
+                          alt={row.title}
+                          style={{
+                            width: "25%",
+                            height: "100px"
+                          }}
+                        />
+                        <Typography marginLeft={2}>{row.title}</Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">{row.price}</TableCell>
+                    <TableCell align="right">
+                      <Stack direction="row" justifyContent="flex-end" marginRight="-57px">
+                        <Button onClick={(event) => decrementCount(event, row.id)}>
+                          <RemoveIcon />
+                        </Button>
+                        <TextField
+                          value={row.quantity}
+                          disabled={true}
+                          inputProps={{ textAlign: "center" }}
+                          sx={{width:"50px"}}
+                        />
+                        <Button onClick={(event) => incrementCount(event, row.id)}>
+                          <AddIcon />
+                        </Button>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="right">{row.price * row.quantity}</TableCell>
+                    <TableCell align="right">
+                      <Tooltip title="Delete">
+                        <IconButton>
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Paper>
     </Box>
   );
 }
