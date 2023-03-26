@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
+
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -7,21 +8,19 @@ import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { IconButton, InputAdornment } from "@mui/material";
+import GoogleIcon from "@mui/icons-material/Google";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-
-
-
+import { IconButton, InputAdornment } from "@mui/material";
+import Google from "@mui/icons-material/Google";
 
 function Copyright(props) {
-
   return (
     <Typography
       variant="body2"
@@ -29,8 +28,8 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      <Link color="inherit">
-        NMC Book Store
+      <Link color="inherit" href="/">
+        NMC Bookstore
       </Link>{" "}
       {new Date().getFullYear()}
     </Typography>
@@ -39,118 +38,144 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-const UserLogin = () => {
+export default function UserLogin() {
+  const [values, setValues] = useState({
+    email: "",
+    password: "",
+    showPass: false,
+  });
 
-    const [values, setValues] = useState({
-        userName: "",
-        pass: "",
-        showPass: false,
+  const handlePassVisibilty = () => {
+    setValues({
+      ...values,
+      showPass: !values.showPass,
     });
-    
-    const handlePassVisibilty = () => {
-        setValues({
-            ...values,
-            showPass: !values.showPass,
-        });
-    };
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
-      userName: data.get("userName"),
+      email: data.get("email"),
       password: data.get("password"),
     });
   };
-  
 
   return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
+      <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
-        <Box
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
           sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundRepeat: "no-repeat",
+            backgroundColor: (t) =>
+              t.palette.mode === "light"
+                ? t.palette.grey[50]
+                : t.palette.grey[900],
+            backgroundSize: "cover",
+            backgroundPosition: "center",
           }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-            <TextField
-              margin="normal"
-              
-              fullWidth
-              name="userName"
-              label="User name or email"
-              placeholder="Enter your username or your email"
-              autoComplete="text"
-              autoFocus
-            />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              placeholder="Enter your password"
-              type={values.showPass ? "text" : "password"}
-              id="password"
-            //   autoComplete="current-password"
-              
-              InputProps={{
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <IconButton
-                            onClick={handlePassVisibilty}
-                            aria-label="toggle password"
-                            edge="end"
-                        >
-                            {values.showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
-                        </IconButton>
-                    </InputAdornment>),
-                    }}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember"
-              sx={{'&.Mui-checked': {
-                  color: "#c92127",
-                },
-              }} />}
-              label="Remember me"
-            />
-            <Button 
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="error"
-              sx={{ mt: 3, mb: 2,   }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+              <LockOutlinedIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              Sign in
+            </Typography>
+            <Box
+              component="form"
+              noValidate
+              onSubmit={handleSubmit}
+              sx={{ mt: 1 }}
             >
-              Sign In
-            </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password ?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="../register" variant="body2">
-                  Don't have an account ? Sign Up
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
-      </Container>
-     </ThemeProvider>
-  )
-};
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email or Phone Number"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                placeholder="Enter your password"
+                type={values.showPass ? "text" : "password"}
+                id="password"
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handlePassVisibilty}
+                        aria-label="toggle password"
+                        edge="end"
+                      >
+                        {values.showPass ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
-export default UserLogin;
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ mt: 2, width: "50%", marginLeft: "25%"}}
+              >
+                Sign In
+              </Button>
+
+              <Button
+                type="submit"
+                variant="outlined"
+                color="error"
+                sx={{ my: 2, width: "50%", marginLeft: "25%" }}
+              >
+                <Google />
+                {/* Sign In with Google */}
+              </Button>
+
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="/register" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+              <Copyright sx={{ mt: 5 }} />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
+  );
+}

@@ -18,7 +18,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 function Copyright(props) {
-
   return (
     <Typography
       variant="body2"
@@ -26,10 +25,7 @@ function Copyright(props) {
       align="center"
       {...props}
     >
-      <Link color="inherit">
-        NMC Book Store
-      </Link>{" "}
-      {new Date().getFullYear()}
+      <Link color="inherit">NMC Book Store</Link> {new Date().getFullYear()}
     </Typography>
   );
 }
@@ -37,20 +33,19 @@ function Copyright(props) {
 const theme = createTheme();
 
 const UserRegister = () => {
+  const [values, setValues] = useState({
+    userName: "",
+    email: "",
+    pass: "",
+    showPass: false,
+  });
 
-    const [values, setValues] = useState({
-        userName: "",
-        email: "",
-        pass: "",
-        showPass: false,
+  const handlePassVisibilty = () => {
+    setValues({
+      ...values,
+      showPass: !values.showPass,
     });
-    
-    const handlePassVisibilty = () => {
-        setValues({
-            ...values,
-            showPass: !values.showPass,
-        });
-    };
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -68,18 +63,17 @@ const UserRegister = () => {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-          </Avatar>
+          <Avatar sx={{ m: 1, bgcolor: "primary.main" }}></Avatar>
           <Typography component="h1" variant="h5">
             Register
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
-          <TextField
+            <TextField
               margin="normal"
               required
               fullWidth
@@ -109,40 +103,45 @@ const UserRegister = () => {
               placeholder="Enter your password"
               type={values.showPass ? "text" : "password"}
               id="password"
-            //   autoComplete="current-password"
-              
+              //   autoComplete="current-password"
+
               InputProps={{
                 endAdornment: (
-                    <InputAdornment position="end">
-                        <IconButton
-                            onClick={handlePassVisibilty}
-                            aria-label="toggle password"
-                            edge="end"
-                        >
-                            {values.showPass ? <VisibilityIcon /> : <VisibilityIcon />}
-                        </IconButton>
-                    </InputAdornment>),
-                    }}
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={handlePassVisibilty}
+                      aria-label="toggle password"
+                      edge="end"
+                    >
+                      {values.showPass ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
-            <Button 
+            <Button
               type="submit"
               fullWidth
               variant="contained"
               color="error"
-              sx={{ mt: 3, mb: 2,   }}
+              sx={{ mt: 3, mb: 2 }}
             >
               Register
             </Button>
-              {/* <Grid item> */}
-                <Link href="../login" variant="body1">
-                  Already have an account ? Sign in
-                </Link>
-              {/* </Grid> */}
+            {/* <Grid item> */}
+            <Link href="../login" variant="body1">
+              Already have an account ? Sign in
+            </Link>
+            {/* </Grid> */}
           </Box>
         </Box>
       </Container>
-     </ThemeProvider>
-  )
+    </ThemeProvider>
+  );
 };
 
 export default UserRegister;
