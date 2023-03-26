@@ -13,7 +13,6 @@ import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import InfoIcon from '@mui/icons-material/Info';
 import logoColorRevert from '../Header/images/logo-color-revert.png';
 import { Link } from "react-router-dom";
-import { width } from "@mui/system";
 
 export default function SideBar() {
   const [state, setState] = React.useState(false);

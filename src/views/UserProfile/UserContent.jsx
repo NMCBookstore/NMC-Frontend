@@ -22,9 +22,6 @@ export default function UserContent() {
     >
        {/* <UserContentProfile /> */}
       <UserContentChangePassword /> 
-
-      {/* Content  */}
-      {/* <Grid item container spacing={2} xs={12}></Grid> */}
     </Box>
   );
 }

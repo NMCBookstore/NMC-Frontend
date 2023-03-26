@@ -15,6 +15,7 @@ const ProductDetails = lazy(() => import("./views/ProductDetails"));
 const SearchFilter = lazy(() => import("./views/SearchFilter"));
 const UserProfile = lazy(() => import("./views/UserProfile"));
 const UserCart = lazy(() => import("./views/UserCart"));
+const UserCheckout = lazy(() => import("./views/UserCheckout"));
 
 /****Routes*****/
 
@@ -31,7 +32,8 @@ const RouterCfg = [
       { path: "product/:id", element: <ProductDetails /> },
       { path: "search-filter", element: <SearchFilter /> },
       { path: "user-profile", element: <UserProfile /> },
-      {path:"cart", element: <UserCart />}
+      { path: "cart", element: <UserCart /> },
+      { path: "user-checkout", element: <UserCheckout /> },
     ],
   },
 
