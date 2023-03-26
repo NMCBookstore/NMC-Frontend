@@ -12,20 +12,20 @@ const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 const images = [
   {
-    label: "San Francisco – Oakland Bay Bridge, United States",
+    // label: "San Francisco – Oakland Bay Bridge, United States",
     imgPath: slider,
   },
   {
-    label: "pic2",
+    // label: "pic2",
     imgPath: slider2,
   },
   {
-    label: "pic3",
+    // label: "pic3",
     imgPath: slider,
 
   },
   {
-    label: "pic4",
+    // label: "pic4",
     imgPath: slider3,
 
   },
@@ -36,13 +36,6 @@ function Slider() {
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = images.length;
 
-  const handleNext = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  };
-
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
 
   const handleStepChange = (step) => {
     setActiveStep(step);

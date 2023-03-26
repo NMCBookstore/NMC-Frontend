@@ -7,40 +7,63 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
+import ListItemButton from "@mui/material/ListItemButton";
 import { Button } from "@mui/joy";
+import { useNavigate } from "react-router-dom";
+import UserContentProfile from "./UserContentProfile";
+import UserContentChangePassword from "./UserContentChangePassword";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+
 
 const profileSidebar = [
   {
     title: "Profile",
-    route: "/profile",
+    route: "/user-profile",
   },
   {
     title: "Change Password",
-    route: "/change_password",
+    route: "/user-profile/change_password",
   },
   {
     title: "My order",
-    route: "/order",
+    route: "/user-profile/order",
   },
 ];
 
 export default function UserProfileSideBar() {
+  const navigate = useNavigate();
+
   return (
-    <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
-      <Stack sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%" }}>
+      <Stack>
         <Typography variant="h5" fontWeight="500">
           Profile
         </Typography>
-        {profileSidebar.map((profile) => (
-          <List component="nav">
-            <ListItem>
-              <Button variant="outlined" fontWeight="500">
-                {profile.title}
-              </Button>
-            </ListItem>
+        {profileSidebar.map((profile, index) => (
+          <List disablePadding key={index}>
+            <ListItemButton to ={profile.route}>
+              <ListItemText primary={profile.title} />
+            </ListItemButton>
           </List>
         ))}
+
+        {/* <List disablePadding>
+          <ListItemButton to="/user-profile">
+            
+            <ListItemText primary="Profile" />
+          </ListItemButton>
+
+          <ListItemButton to="/user-profile/change_password">
+            <ListItemText primary="Change password" />
+          </ListItemButton>
+
+          <ListItemButton to="/user-profile/order">
+            <ListItemText primary="My order" />
+          </ListItemButton>
+        </List> */}
       </Stack>
+
+
     </Box>
   );
 }
