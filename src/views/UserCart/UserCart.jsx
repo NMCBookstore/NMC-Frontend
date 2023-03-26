@@ -1,7 +1,11 @@
 import React from "react";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import Box from "@mui/material/Box";
+
+import ProductCheckoutCard from "./ProductCheckoutCard";
 import ListProductCart from "./ListProductCart";
+import { Stack } from "@mui/system";
+
 
 export default function UserCart() {
   return (
@@ -13,9 +17,16 @@ export default function UserCart() {
         </Grid>
 
         {/* User Content  */}
-        <Grid item container spacing={2} xs={12} sm={12}>
-          {/* <Box width="100%" border="1px solid"
-      >xs=8</Box> */}
+        <Grid
+          item
+          container
+          spacing={2}
+          xs={12}
+          sm={12}
+          marginTop={3}
+          justifyContent="end"
+        >
+          <ProductCheckoutCard />
         </Grid>
       </Grid>
     </Box>
