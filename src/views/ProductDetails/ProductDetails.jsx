@@ -18,6 +18,9 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ImageGrid from "./ImageGrid";
 import MainImage from "./MainImage";
+import DetailProductInfo from "./DetailProductInfo";
+import Recommend from "./Recommend";
+import Comment from "./CommentSection";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -85,6 +88,7 @@ const ProductDetails = () => {
           <Grid item xs={12} sm={7} mt={2} padding={5}>
             <Grid>
               {/* Basic info  */}
+
               <Stack>
                 <Typography variant="h5">Bhe book nearly one</Typography>
                 <Typography variant="subtitle2" mt={2}>
@@ -163,75 +167,17 @@ const ProductDetails = () => {
 
         {/* Details product */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <Stack direction="column">
-            <Typography variant="h5" mt={8} mb={2} fontWeight={800}>
-              Details information
-            </Typography>
-            <div style={{ marginLeft: "8px" }}>
-              <Typography variant="body1">Author:</Typography>
-              <Typography variant="body1">Publisher:</Typography>
-              <Typography variant="body1">Descriptions: {""}</Typography>
-              <Typography>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry's standard dummy
-                text ever since the 1500s, when an unknown printer took a galley
-                of type and scrambled it to make a type specimen book. It has
-                survived not only five centuries, but also the leap into
-                electronic typesetting, remaining essentially unchanged. It was
-                popularised in the 1960s with the release of Letraset sheets
-                containing Lorem Ipsum passages, and more recently with desktop
-                publishing software like Aldus PageMaker including versions of
-                Lorem Ipsum.
-              </Typography>
-            </div>
-          </Stack>
+          <DetailProductInfo />
         </Grid>
 
-        {/* Recommend for you  **have fixed grid*/}
+        {/* Recommend for you  */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <Stack direction="column" sx={{ width: "100%" }}>
-            <Typography variant="h5" mt={8} mb={2} fontWeight={800}>
-              Recommend for you
-            </Typography>
-            <Box sx={{ width: "100%" }}>
-              <Carousel
-                style={{ width: "100%", backgroundColor: "black" }}
-                responsive={{
-                  desktop: {
-                    breakpoint: { max: 3000, min: 1024 },
-                    items: 4,
-                  },
-                  tablet: {
-                    breakpoint: { max: 1024, min: 464 },
-                    items: 3,
-                  },
-                  mobile: {
-                    breakpoint: { max: 464, min: 0 },
-                    items: 2,
-                  },
-                }}
-                infinite={true}
-                autoPlay={true}
-                autoPlaySpeed={5000}
-                slidesToSlide={true}
-                arrows={true}
-              >
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-                <ProductCard />
-              </Carousel>
-            </Box>
-          </Stack>
+          <Recommend />
         </Grid>
 
         {/* Comment  */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <Typography>this is the big image</Typography>
+          <Comment />
         </Grid>
       </Grid>
     </Box>
