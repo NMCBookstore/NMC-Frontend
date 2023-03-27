@@ -1,11 +1,8 @@
 import { lazy } from "react";
-import { Navigate } from "react-router-dom";
 import Home from "./components/Home/Home";
-import Header from "./layouts/Header/Header";
 
 /****Layouts*****/
 const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
-const SideBar = lazy(() => import("./layouts/SideBar/SideBar"));
 /****Routes*****/
 
 const About = lazy(() => import("./pages/About"));
@@ -16,6 +13,7 @@ const SearchFilter = lazy(() => import("./views/SearchFilter"));
 const UserProfile = lazy(() => import("./views/UserProfile"));
 const UserCart = lazy(() => import("./views/UserCart"));
 const UserCheckout = lazy(() => import("./views/UserCheckout"));
+const UserWishlist = lazy(() => import("./views/UserWishlist"));
 
 /****Routes*****/
 
@@ -31,8 +29,6 @@ const RouterCfg = [
       { path: "about", element: <About /> },
       { path: "product/:id", element: <ProductDetails /> },
       { path: "search-filter", element: <SearchFilter /> },
-      { path: "user-profile", element: <UserProfile /> },
-      { path: "cart", element: <UserCart /> },
       { path: "user-checkout", element: <UserCheckout /> },
     ],
   },
@@ -42,8 +38,9 @@ const RouterCfg = [
     element: <Layout />,
     children: [
       { path: "home", element: <Home /> },
-      { path: "about", element: <About /> },
-      { path: "about", element: <About /> },
+      { path: "profile", element: <UserProfile /> },
+      { path: "cart", element: <UserCart /> },
+      { path: "wishlist", element: <UserWishlist /> },
     ],
   },
 ];

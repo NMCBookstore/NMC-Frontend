@@ -4,7 +4,6 @@ import Box from "@mui/material/Box";
 
 import ProductCheckoutCard from "./ProductCheckoutCard";
 import ListProductCart from "./ListProductCart";
-import { Stack } from "@mui/system";
 
 
 export default function UserCart() {
@@ -13,7 +12,7 @@ export default function UserCart() {
       <Grid container my={2} spacing={2}>
         {/* User Side bar  */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <ListProductCart />
+          <ListProductCart title="Cart" />
         </Grid>
 
         {/* User Content  */}

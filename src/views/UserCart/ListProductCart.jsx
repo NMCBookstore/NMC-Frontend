@@ -19,6 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Stack, TextField } from '@mui/material';
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 
 const carts = [
   {
@@ -78,6 +79,7 @@ const headCells = [
 
 function EnhancedTableHead(props) {
   const { onSelectAllClick, numSelected, rowCount } = props;
+  const { title } = props;
 
   return (
     <TableHead>
@@ -94,12 +96,15 @@ function EnhancedTableHead(props) {
           />
         </TableCell>
         {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-          >
-            {headCell.label}
-          </TableCell>
+          title === "Wishlist" &&
+            (headCell.label === "Quantity" || headCell.label === "Subtotal")
+            ? null
+            : <TableCell
+              key={headCell.id}
+              align={headCell.numeric ? 'right' : 'left'}
+            >
+              {headCell.label}
+            </TableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -114,6 +119,7 @@ EnhancedTableHead.propTypes = {
 
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;
+  const { title } = props;
 
   return (
     <Toolbar
@@ -138,11 +144,12 @@ function EnhancedTableToolbar(props) {
       ) : (
         <Typography
           sx={{ flex: '1 1 100%' }}
-          variant="h6"
+          variant="h5"
           id="tableTitle"
           component="div"
+          fontWeight="bold"
         >
-          Cart
+          {title}
         </Typography>
       )}
 
@@ -161,7 +168,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function ListProductCart() {
+export default function ListProductCart(props) {
   const [selected, setSelected] = useState([]);
   const [rows, setRows] = useState(carts)
 
@@ -213,7 +220,7 @@ export default function ListProductCart() {
   return (
     <Box sx={{ width: '100%' }}>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -223,6 +230,7 @@ export default function ListProductCart() {
               numSelected={selected.length}
               onSelectAllClick={handleSelectAllClick}
               rowCount={rows.length}
+              title={props.title}
             />
             <TableBody>
               {rows.map((row, index) => {
@@ -252,41 +260,67 @@ export default function ListProductCart() {
                       padding="none"
                     >
                       <Stack direction="row" alignItems="center" margin={1}>
-                        <img
-                          src={row.url}
-                          alt={row.title}
-                          style={{
-                            width: "25%",
-                            height: "100px"
-                          }}
-                        />
+                        {props.title === "Wishlist" ?
+                          <img
+                            src={row.url}
+                            alt={row.title}
+                            style={{
+                              width: "16%",
+                              height: "100px"
+                            }} /> :
+                          <img
+                            src={row.url}
+                            alt={row.title}
+                            style={{
+                              width: "25%",
+                              height: "100px"
+                            }} />}
                         <Typography marginLeft={2}>{row.title}</Typography>
                       </Stack>
                     </TableCell>
                     <TableCell align="right">{row.price}</TableCell>
+                    {props.title !== "Wishlist" ? (
+                      <TableCell align="right">
+                        <Stack direction="row" justifyContent="flex-end" marginRight="-57px">
+                          <Button onClick={(event) => decrementCount(event, row.id)}>
+                            <RemoveIcon />
+                          </Button>
+                          <TextField
+                            value={row.quantity}
+                            disabled={true}
+                            inputProps={{ textAlign: "center" }}
+                            sx={{ width: "50px" }}
+                          />
+                          <Button onClick={(event) => incrementCount(event, row.id)}>
+                            <AddIcon />
+                          </Button>
+                        </Stack>
+                      </TableCell>
+                    ) : null}
+                    {props.title !== "Wishlist" ?
+                      <TableCell align="right">
+                        {row.price * row.quantity}
+                      </TableCell>
+                      : null}
                     <TableCell align="right">
-                      <Stack direction="row" justifyContent="flex-end" marginRight="-57px">
-                        <Button onClick={(event) => decrementCount(event, row.id)}>
-                          <RemoveIcon />
-                        </Button>
-                        <TextField
-                          value={row.quantity}
-                          disabled={true}
-                          inputProps={{ textAlign: "center" }}
-                          sx={{width:"50px"}}
-                        />
-                        <Button onClick={(event) => incrementCount(event, row.id)}>
-                          <AddIcon />
-                        </Button>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="right">{row.price * row.quantity}</TableCell>
-                    <TableCell align="right">
-                      <Tooltip title="Delete">
-                        <IconButton>
-                          <DeleteIcon />
-                        </IconButton>
-                      </Tooltip>
+                      {props.title === "Wishlist" ?
+                        <>
+                          <Tooltip title="AddToCart">
+                            <IconButton>
+                              <AddShoppingCartIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Delete">
+                            <IconButton>
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </>
+                        : <Tooltip title="Delete">
+                          <IconButton>
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>}
                     </TableCell>
                   </TableRow>
                 );
