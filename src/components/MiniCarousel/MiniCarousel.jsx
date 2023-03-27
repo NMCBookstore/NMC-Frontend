@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Box from "@mui/material/Box";
-import Carousel from "react-multi-carousel";
-import { Typography, Button, IconButton } from '@mui/material';
+// import Carousel from "react-multi-carousel";
+import Carousel from "react-grid-carousel";
+import { Typography, Button, IconButton } from "@mui/material";
 import "react-multi-carousel/lib/styles.css";
 import ProductCard from "../ProductCard/ProductCard";
 import "slick-carousel/slick/slick.css";
@@ -12,16 +13,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 export default class MiniCarousel extends Component {
   render() {
-    const settings = {
-      arrows: false,
-      dots: true,
-      infinite: true,
-      speed: 500,
-      slidesToShow: 4,
-      slidesToScroll: 3,
-      rtl: true,
-    };
-
     return (
       <Box sx={{ width: "100%" }}>
         {/* <Carousel
@@ -29,7 +20,7 @@ export default class MiniCarousel extends Component {
         responsive={{
           desktop: {
             breakpoint: { max: 3000, min: 1024 },
-            items: 5,
+            items: 4,
           },
           tablet: {
             breakpoint: { max: 1024, min: 464 },
@@ -40,6 +31,7 @@ export default class MiniCarousel extends Component {
             items: 2,
           },
         }}
+        dots={true}
         swipeable={false}
         infinite={true}
         autoPlay={true}
@@ -53,17 +45,52 @@ export default class MiniCarousel extends Component {
         <ProductCard />
         <ProductCard />
       </Carousel> */}
-        <Slider {...settings}>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-        </Slider>
+
+        <Carousel
+          cols={4}
+          rows={1}
+          gap={10}
+          loop
+          autoplay={5000}
+          showDots
+          responsiveLayout={[
+            {
+              breakpoint: 3000,
+              cols: 4,
+            },
+            {
+              breakpoint: 1024,
+              cols: 3,
+            },
+            {
+              breakpoint: 464,
+              cols: 2,
+            },
+          ]}
+          mobileBreakpoint={464}
+        >
+          <Carousel.Item>
+            <ProductCard />
+          </Carousel.Item>
+          <Carousel.Item>
+            <ProductCard />
+          </Carousel.Item>
+          <Carousel.Item>
+            <ProductCard />
+          </Carousel.Item>
+          <Carousel.Item>
+            <ProductCard />
+          </Carousel.Item>
+          <Carousel.Item>
+            <ProductCard />
+          </Carousel.Item>
+          <Carousel.Item>
+            <ProductCard />
+          </Carousel.Item>
+          <Carousel.Item>
+            <ProductCard />
+          </Carousel.Item>
+        </Carousel>
       </Box>
     );
   }

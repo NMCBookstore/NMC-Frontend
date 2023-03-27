@@ -59,7 +59,7 @@ export default function ProductCheckoutCard() {
                         },
                     }}
                 >
-                    Procees to checkout
+                    Proceed to checkout
                 </Button>
             </CardActions>
         </Card>

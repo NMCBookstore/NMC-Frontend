@@ -6,6 +6,7 @@ export default function ImageGrid({ images, onSelect, selectedImage }) {
     <Grid container>
       {images.map((image, index) => (
         <img
+          key={index}
           src={image}
           onClick={() => onSelect(index)}
           style={{
