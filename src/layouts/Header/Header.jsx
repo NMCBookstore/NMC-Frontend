@@ -182,7 +182,7 @@ const Header = () => {
             <IconButton
               size='large'
               sx={{ color: "white" }}>
-              <Badge>
+              <Badge badgeContent="5" color='error'>
                 <ShoppingCartIcon fontSize="100%" />
               </Badge>
             </IconButton>

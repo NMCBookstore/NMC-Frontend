@@ -8,7 +8,7 @@ import { Divider, Stack } from '@mui/material';
 
 export default function ProductCheckoutCard() {
     return (
-        <Card sx={{ minWidth: 275, border:"1px black solid" }}>
+        <Card sx={{ minWidth: 400, border:"1px black solid" }}>
             <CardContent>
                 <Typography variant="h6" component="div" fontWeight="bold">
                     Cart Total
