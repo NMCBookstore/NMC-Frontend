@@ -6,10 +6,11 @@ import { Stack } from "@mui/system";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { Typography } from "@mui/joy";
 
+
 export default function Recommend() {
   return (
-    <Stack direction="column" sx={{ width: "100%" }}>
-      <Box sx={{ display: "flex", justifyContent: "start" }}>
+    <Stack  direction="column" sx={{ width: "100%" }}>
+      <Box  mt="10px" sx={{ display: "flex", justifyContent: "start" }}>
         <Typography
           lineHeight="lg"
           variant="solid"

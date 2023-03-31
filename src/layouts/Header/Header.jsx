@@ -1,29 +1,35 @@
-import { Box } from '@mui/material';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import logo from './images/logo.png';
-import "../../theme.js"
-import { Stack } from '@mui/system';
-import SearchBar from '../SearchBar';
-import Fade from '@mui/material/Fade';
-import IconButton from '@mui/material/IconButton';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import Menu from '@mui/material/Menu';
-import Badge from '@mui/material/Badge';
-import MenuItem from '@mui/material/MenuItem';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PersonIcon from '@mui/icons-material/Person';
-import LocalMallIcon from '@mui/icons-material/LocalMall';
-import CancelIcon from '@mui/icons-material/Cancel';
-import ReviewsIcon from '@mui/icons-material/Reviews';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import SideBar from '../SideBar/SideBar';
-
+import { Box } from "@mui/material";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "./images/logo.png";
+import "../../theme.js";
+import { Stack } from "@mui/system";
+import SearchBar from "../SearchBar";
+import Fade from "@mui/material/Fade";
+import IconButton from "@mui/material/IconButton";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import MailIcon from "@mui/icons-material/Mail";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Menu from "@mui/material/Menu";
+import Badge from "@mui/material/Badge";
+import MenuItem from "@mui/material/MenuItem";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import PersonIcon from "@mui/icons-material/Person";
+import LocalMallIcon from "@mui/icons-material/LocalMall";
+import CancelIcon from "@mui/icons-material/Cancel";
+import ReviewsIcon from "@mui/icons-material/Reviews";
+import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import SideBar from "../SideBar/SideBar";
+import useStyles from "./styles";
 
 const Header = () => {
+  const classes = useStyles();
+  const navigate = useNavigate();
+
+  const naviWishlist = () => navigate("/user/wishlist");
+  const naviCart = () => navigate("/user/cart");
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -34,7 +40,6 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -56,12 +61,12 @@ const Header = () => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       id="fade-menu"
       MenuListProps={{
-        'aria-labelledby': 'fade-button',
+        "aria-labelledby": "fade-button",
       }}
       anchorEl={anchorEl}
       open={open}
@@ -71,54 +76,49 @@ const Header = () => {
       <Link style={{ textDecoration: "none", color: "black" }}>
         <MenuItem onClick={handleMenuClose}>
           <PersonIcon />
-          &nbsp;
-          Profile
+          &nbsp; Profile
         </MenuItem>
       </Link>
       <Link style={{ textDecoration: "none", color: "black" }}>
         <MenuItem onClick={handleMenuClose}>
           <LocalMallIcon />
-          &nbsp;
-          My Order
+          &nbsp; My Order
         </MenuItem>
       </Link>
       <Link style={{ textDecoration: "none", color: "black" }}>
         <MenuItem onClick={handleMenuClose}>
           <CancelIcon />
-          &nbsp;
-          My Cancellations
+          &nbsp; My Cancellations
         </MenuItem>
       </Link>
       <Link style={{ textDecoration: "none", color: "black" }}>
         <MenuItem onClick={handleMenuClose}>
           <ReviewsIcon />
-          &nbsp;
-          My Reviews
+          &nbsp; My Reviews
         </MenuItem>
       </Link>
       <Link style={{ textDecoration: "none", color: "black" }}>
         <MenuItem onClick={handleMenuClose}>
           <LogoutOutlinedIcon />
-          &nbsp;
-          Logout
+          &nbsp; Logout
         </MenuItem>
       </Link>
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       id={mobileMenuId}
       keepMounted
       transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
+        vertical: "top",
+        horizontal: "right",
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
@@ -155,45 +155,45 @@ const Header = () => {
 
   return (
     <>
-      <Stack paddingTop={2}
-        sx={{
-          zIndex: 2,
-          position: "sticky",
-          background: '#0F1730',
-          top: 0,
-        }}>
-        <Stack direction="row" alignItems="center" p={1.05} paddingBottom={2}
+      <Stack paddingTop={2} className={classes.mainStack}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          p={1.05}
+          paddingBottom={2}
           sx={{
-            justifyContent: "space-between"
-          }}>
-          <SideBar /> 
-          <Link to="/" style={{ display: "flex", alignItems: "center", marginLeft: "-22%" }}>
+            justifyContent: "space-between",
+          }}
+        >
+          <SideBar />
+          <Link to="/" className={classes.mainLogo}>
             <img src={logo} alt="logo" height={40} />
           </Link>
           <SearchBar />
-          <Box marginRight={3} sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: "center" }}>
-            <IconButton
-              size='large'
-              sx={{ color: "white" }}>
+          <Box
+            marginRight={3}
+            sx={{
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+            }}
+          >
+            <IconButton size="large" sx={{ color: "white" }}>
               <Badge>
-                <FavoriteIcon fontSize="100%" />
+                <FavoriteIcon fontSize="100%" onClick={naviWishlist} />
+              </Badge>
+            </IconButton>
+            <IconButton size="large" sx={{ color: "white" }}>
+              <Badge badgeContent="5" color="error">
+                <ShoppingCartIcon fontSize="100%" onClick={naviCart} />
               </Badge>
             </IconButton>
             <IconButton
-              size='large'
-              sx={{ color: "white" }}>
-              <Badge badgeContent="5" color='error'>
-                <ShoppingCartIcon fontSize="100%" />
-              </Badge>
-            </IconButton>
-            <IconButton
-              size='large'
+              size="large"
               edge="end"
               aria-label="account of current user"
               aria-controls={menuId}
               aria-haspopup="true"
               onClick={handleProfileMenuOpen}
-
               sx={{
                 color: "white",
               }}
@@ -206,9 +206,8 @@ const Header = () => {
 
       {renderMobileMenu}
       {renderMenu}
-
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

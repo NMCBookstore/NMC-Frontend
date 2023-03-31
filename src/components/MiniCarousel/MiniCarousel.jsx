@@ -15,37 +15,6 @@ export default class MiniCarousel extends Component {
   render() {
     return (
       <Box sx={{ width: "100%" }}>
-        {/* <Carousel
-        style={{ width: "100%", backgroundColor: "black" }}
-        responsive={{
-          desktop: {
-            breakpoint: { max: 3000, min: 1024 },
-            items: 4,
-          },
-          tablet: {
-            breakpoint: { max: 1024, min: 464 },
-            items: 3,
-          },
-          mobile: {
-            breakpoint: { max: 464, min: 0 },
-            items: 2,
-          },
-        }}
-        dots={true}
-        swipeable={false}
-        infinite={true}
-        autoPlay={true}
-        autoPlaySpeed={5000}
-        slidesToSlide={true}
-        arrows={false}
-      >
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-        <ProductCard />
-      </Carousel> */}
-
         <Carousel
           cols={4}
           rows={1}

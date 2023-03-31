@@ -14,7 +14,7 @@ export default function DetailProductInfo() {
   return (
     <Box>
       <Stack direction="column">
-        <Box sx={{ display: "flex", justifyContent: "start" }}>
+        <Box mt="10px" sx={{ display: "flex", justifyContent: "start" }}>
           <Typography
             lineHeight="lg"
             variant="solid"

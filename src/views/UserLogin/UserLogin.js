@@ -19,6 +19,9 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
+import { useDispatch } from "react-redux";
+import {login} from '../../features/auth/authSlice';
+
 
 function Copyright(props) {
   return (
@@ -59,6 +62,12 @@ export default function UserLogin() {
       email: data.get("email"),
       password: data.get("password"),
     });
+  };
+
+  const dispatch = useDispatch();
+
+  const handleLogin = () => {
+    dispatch(login({email, password}))
   };
 
   return (
@@ -143,6 +152,7 @@ export default function UserLogin() {
 
               <Button
                 type="submit"
+                onClick={handleLogin}
                 variant="contained"
                 sx={{ mt: 2, width: "50%", marginLeft: "25%"}}
               >
