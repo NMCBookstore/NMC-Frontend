@@ -20,8 +20,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
 import { useDispatch } from "react-redux";
-import {login} from '../../features/auth/authSlice';
-
+import { login } from "../../features/auth/authSlice";
 
 function Copyright(props) {
   return (
@@ -43,31 +42,35 @@ const theme = createTheme();
 
 export default function UserLogin() {
   const [values, setValues] = useState({
-    email: "",
+    username: "",
     password: "",
-    showPass: false,
+    // showPass: false,
   });
 
-  const handlePassVisibilty = () => {
-    setValues({
-      ...values,
-      showPass: !values.showPass,
-    });
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-  };
+  // const handlePassVisibilty = () => {
+  //   setValues({
+  //     ...values,
+  //     showPass: !values.showPass,
+  //   });
+  // };
 
   const dispatch = useDispatch();
 
-  const handleLogin = () => {
-    dispatch(login({email, password}))
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    dispatch(login(values));
+
+    // console.log(values);
+  };
+
+  const handleChange = () => {
+    const data = new FormData(event.currentTarget);
+    setValues({
+      username: data.get("username"),
+      password: data.get("password"),
+    });
+
+    console.log(values);
   };
 
   return (
@@ -116,10 +119,12 @@ export default function UserLogin() {
                 margin="normal"
                 required
                 fullWidth
-                id="email"
-                label="Email or Phone Number"
-                name="email"
-                autoComplete="email"
+                id="username"
+                label="Username"
+                name="username"
+                onChange={(e) => setValues({...values, username: e.target.value })}
+                defaultValue={values.username}
+                // autoComplete="username"
                 autoFocus
               />
               <TextField
@@ -131,30 +136,32 @@ export default function UserLogin() {
                 placeholder="Enter your password"
                 type={values.showPass ? "text" : "password"}
                 id="password"
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={handlePassVisibilty}
-                        aria-label="toggle password"
-                        edge="end"
-                      >
-                        {values.showPass ? (
-                          <VisibilityIcon />
-                        ) : (
-                          <VisibilityOffIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
+                onChange={(e) => setValues({...values, password: e.target.value })}
+                defaultValue={values.password}
+                // InputProps={{
+                //   endAdornment: (
+                //     <InputAdornment position="end">
+                //       <IconButton
+                //         onClick={handlePassVisibilty}
+                //         aria-label="toggle password"
+                //         edge="end"
+                //       >
+                //         {values.showPass ? (
+                //           <VisibilityIcon />
+                //         ) : (
+                //           <VisibilityOffIcon />
+                //         )}
+                //       </IconButton>
+                //     </InputAdornment>
+                //   ),
+                // }}
               />
 
               <Button
                 type="submit"
-                onClick={handleLogin}
+                // onClick={handleLogin}
                 variant="contained"
-                sx={{ mt: 2, width: "50%", marginLeft: "25%"}}
+                sx={{ mt: 2, width: "50%", marginLeft: "25%" }}
               >
                 Sign In
               </Button>

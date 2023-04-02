@@ -2,15 +2,27 @@ import React from "react";
 import { Box, Stack } from "@mui/system";
 import { Button, Card, Container, Divider, TextField } from "@mui/material";
 import { Typography } from "@mui/joy";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
-const bookInfor = {
-  author: "The Author",
-  publisher: "NXB Tre",
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-};
+import { product } from "../../features/prodDetailSlice";
 
 export default function DetailProductInfo() {
+  const dispatch = useDispatch();
+  // const products = useSelector((state) => state.products.prod);
+  // const status = useSelector((state) => state.products.status);
+  // const error = useSelector((state) => state.products.error);
+
+  const [infos, setInfo] = useState({});
+
+  useEffect(() => {
+    fetch("http://localhost:8080/books/1500")
+      .then((res) => res.json())
+      .then((infos) => {
+        setInfo(infos);
+      });
+  }, []);
+
   return (
     <Box>
       <Stack direction="column">
@@ -29,21 +41,11 @@ export default function DetailProductInfo() {
           </Typography>
         </Box>
         <div style={{ marginLeft: "8px" }}>
-          <Typography variant="body1">Author:</Typography>
-          <Typography variant="body1">Publisher:</Typography>
-          <Typography variant="body1">Descriptions: {""}</Typography>
-          <Typography>
-            {" "}
-            Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry's standard dummy text
-            ever since the 1500s, when an unknown printer took a galley of type
-            and scrambled it to make a type specimen book. It has survived not
-            only five centuries, but also the leap into electronic typesetting,
-            remaining essentially unchanged. It was popularised in the 1960s
-            with the release of Letraset sheets containing Lorem Ipsum passages,
-            and more recently with desktop publishing software like Aldus
-            PageMaker including versions of Lorem Ipsum.
-          </Typography>
+          <Typography variant="body1">Author: {infos.author}</Typography>
+
+          <Typography variant="body1">Publisher: {infos.publisher}</Typography>
+          <Typography variant="body1">Descriptions: </Typography>
+          <Typography>{infos.description}</Typography>
         </div>
       </Stack>
     </Box>

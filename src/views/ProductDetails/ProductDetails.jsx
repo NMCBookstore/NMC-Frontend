@@ -47,7 +47,7 @@ const product = {
 };
 
 const ProductDetails = () => {
-  const [selectedImage, setSelectedImage] = useState(0);
+  const [selectedImage, setSelectedImage] = useState("");
   const [value, setValue] = React.useState(2);
   let [count, setCount] = useState(1);
 
@@ -62,6 +62,18 @@ const ProductDetails = () => {
     }
   }
 
+  
+  const [infos, setInfo] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/books/1500")
+      .then((res) => res.json())
+      .then((infos) => {
+        setInfo(infos);
+        setSelectedImage(infos.image[0]);
+      });
+  }, []);
+
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
       <Grid container my={2} spacing={2}>
@@ -72,7 +84,7 @@ const ProductDetails = () => {
             {/* Side image  */}
             <Grid item container sm={3} xs={0}>
               <ImageGrid
-                images={images}
+                images={infos.image}
                 onSelect={setSelectedImage}
                 selectedImage={selectedImage}
               />
@@ -80,7 +92,7 @@ const ProductDetails = () => {
             {/* Main image  */}
             <Grid item sm={9}>
               <div style={{}}>
-                <MainImage src={images[selectedImage]} />
+                <MainImage src={selectedImage} />
               </div>
             </Grid>
           </Grid>
