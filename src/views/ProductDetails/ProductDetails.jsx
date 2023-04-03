@@ -65,7 +65,7 @@ const ProductDetails = () => {
   const [infos, setInfo] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/books/1522")
+    fetch("http://localhost:8080/books/200")
       .then((res) => res.json())
       .then((infos) => {
         setInfo(infos);

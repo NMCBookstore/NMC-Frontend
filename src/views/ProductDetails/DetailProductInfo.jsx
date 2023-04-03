@@ -16,7 +16,7 @@ export default function DetailProductInfo() {
   const [infos, setInfo] = useState({});
 
   useEffect(() => {
-    fetch("http://localhost:8080/books/1500")
+    fetch("http://localhost:8080/books/200")
       .then((res) => res.json())
       .then((infos) => {
         setInfo(infos);
