@@ -1,28 +1,8 @@
 import React from "react";
 import { Box, Stack } from "@mui/system";
-import { Button, Card, Container, Divider, TextField } from "@mui/material";
 import { Typography } from "@mui/joy";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
 
-import { product } from "../../features/prodDetailSlice";
-
-export default function DetailProductInfo() {
-  const dispatch = useDispatch();
-  // const products = useSelector((state) => state.products.prod);
-  // const status = useSelector((state) => state.products.status);
-  // const error = useSelector((state) => state.products.error);
-
-  const [infos, setInfo] = useState({});
-
-  useEffect(() => {
-    fetch("http://localhost:8080/books/200")
-      .then((res) => res.json())
-      .then((infos) => {
-        setInfo(infos);
-      });
-  }, []);
-
+export default function DetailProductInfo({ data }) {
   return (
     <Box>
       <Stack direction="column">
@@ -41,10 +21,10 @@ export default function DetailProductInfo() {
           </Typography>
         </Box>
         <div style={{ marginLeft: "8px" }}>
-          <Typography variant="body1">Author: {infos.author}</Typography>
-          <Typography variant="body1">Publisher: {infos.publisher}</Typography>
+          <Typography variant="body1">Author: {data?.author}</Typography>
+          <Typography variant="body1">Publisher: {data?.publisher}</Typography>
           <Typography variant="body1">Descriptions: </Typography>
-          <Typography>{infos.description}</Typography>
+          <Typography>{data?.description}</Typography>
         </div>
       </Stack>
     </Box>

@@ -8,7 +8,7 @@ const initialState = {
   error: null,
 };
 
-export const login = createAsyncThunk("user/login", async (body) => {
+export const sigin = createAsyncThunk("user/login", async (body) => {
   let res = await fetch("http://localhost:8080/login", {
     method: "POST",
     headers: {
@@ -30,10 +30,10 @@ const authSlice = createSlice({
     },
   },
   extraReducers: {
-    [login.pending]: (state, action) => {
+    [sigin.pending]: (state, action) => {
       state.loading = true;
     },
-    [login.fulfilled]: (
+    [sigin.fulfilled]: (
       state,
       { payload: { session_id, user, access_token, refresh_token } }
     ) => {
@@ -48,7 +48,7 @@ const authSlice = createSlice({
       sessionStorage.setItem("session_id", JSON.stringify(session_id));
       sessionStorage.setItem("user", JSON.stringify(user));
     },
-    [login.rejected]: (state, action) => {
+    [sigin.rejected]: (state, action) => {
       state.loading = true;
     },
   },

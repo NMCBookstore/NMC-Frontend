@@ -1,33 +1,34 @@
-import React from 'react';
-import { Stack } from '@mui/system';
-import { Link } from 'react-router-dom';
-import logo from './images/logo.png';
-import QRCode from './images/Qrcode.png';
-import appStore from './images/appstore.png';
-import playStore from './images/google-play-store.png';
-import { Box, Typography } from '@mui/material';
-import InputSubscription from './InputSubscription';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import CopyrightIcon from '@mui/icons-material/Copyright';
+import React from "react";
+import { Stack } from "@mui/system";
+import { Link } from "react-router-dom";
+import logo from "./images/logo.png";
+import QRCode from "./images/Qrcode.png";
+import appStore from "./images/appstore.png";
+import playStore from "./images/google-play-store.png";
+import { Box, Typography } from "@mui/material";
+import InputSubscription from "./InputSubscription";
+import FacebookIcon from "@mui/icons-material/Facebook";
+import TwitterIcon from "@mui/icons-material/Twitter";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import CopyrightIcon from "@mui/icons-material/Copyright";
 
 const Footer = () => {
   return (
     <Stack
       marginTop={20}
       direction="column"
-      alignItems="center" p={2}
+      alignItems="center"
+      p={2}
       sx={{
         position: "sticky",
-        background: '#0F1730',
+        background: "#0F1730",
         bot: 0,
         justifyContent: "space-around",
         zIndex: 100,
         color: "white",
-        alignItems: "flex-start"
-      }}>
+      }}
+    >
       <Stack direction="row" width="100%" marginLeft={2}>
         <Stack direction="column" alignItems="left" p={2} sx={{ width: "25%" }}>
           <Link to="/" style={{ display: "flex", alignItems: "center" }}>
@@ -35,9 +36,7 @@ const Footer = () => {
           </Link>
           <Box marginTop={2}>
             <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography variant='h6'>
-                Subscribe
-              </Typography>
+              <Typography variant="h6">Subscribe</Typography>
             </Link>
           </Box>
           <Box marginTop={2}>
@@ -47,17 +46,19 @@ const Footer = () => {
           </Box>
         </Stack>
         <Stack direction="column" alignItems="left" p={2} sx={{ width: "25%" }}>
-          <Typography variant='h5' sx={{ fontWeight: "medium" }}>
-            Suport
+          <Typography variant="h5" sx={{ fontWeight: "medium" }}>
+            Support
           </Typography>
           <Box marginTop={2}>
-            <Typography marginBottom={1}>01 Đ. Võ Văn Ngân, Linh Chiểu, Thủ Đức, Thành phố Hồ Chí Minh</Typography>
+            <Typography marginBottom={1}>
+              01 Đ. Võ Văn Ngân, Linh Chiểu, Thủ Đức, Thành phố Hồ Chí Minh
+            </Typography>
             <Typography marginBottom={1}>nmcbookstore@gmail.com</Typography>
             <Typography marginBottom={1}>+8428-3722-1223</Typography>
           </Box>
         </Stack>
         <Stack direction="column" alignItems="left" p={2} sx={{ width: "15%" }}>
-          <Typography variant='h5' sx={{ fontWeight: "medium" }}>
+          <Typography variant="h5" sx={{ fontWeight: "medium" }}>
             Account
           </Typography>
           <Box marginTop={2}>
@@ -79,7 +80,7 @@ const Footer = () => {
           </Box>
         </Stack>
         <Stack direction="column" alignItems="left" p={2} sx={{ width: "15%" }}>
-          <Typography variant='h5' sx={{ fontWeight: "medium" }}>
+          <Typography variant="h5" sx={{ fontWeight: "medium" }}>
             Quick Link
           </Typography>
           <Box marginTop={2}>
@@ -98,7 +99,7 @@ const Footer = () => {
           </Box>
         </Stack>
         <Stack direction="column" p={2} sx={{ width: "20%" }}>
-          <Typography variant='h5' sx={{ fontWeight: "medium" }}>
+          <Typography variant="h5" sx={{ fontWeight: "medium" }}>
             Download App
           </Typography>
           <Box marginTop={2}>
@@ -134,14 +135,20 @@ const Footer = () => {
           </Box>
         </Stack>
       </Stack>
-      <Stack direction="row" sx={{ justifyContent: "center", alignItems: "center", width: "100%", color: "#3d3d3d" }}>
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          color: "#3d3d3d",
+        }}
+      >
         <CopyrightIcon />
-        <Typography>
-          Copyright Rimel 2022. All right reserved
-        </Typography>
+        <Typography>Copyright Rimel 2022. All right reserved</Typography>
       </Stack>
     </Stack>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

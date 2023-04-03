@@ -1,12 +1,9 @@
 import * as React from "react";
 import { useState } from "react";
-
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
@@ -20,7 +17,9 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
 import { useDispatch } from "react-redux";
-import { login } from "../../features/auth/authSlice";
+import { sigin } from "../../features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../../services/authAPIs";
 
 function Copyright(props) {
   return (
@@ -41,6 +40,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function UserLogin() {
+  const [login] = useLoginMutation();
+
   const [values, setValues] = useState({
     username: "",
     password: "",
@@ -55,22 +56,12 @@ export default function UserLogin() {
   // };
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    dispatch(login(values));
-
-    // console.log(values);
-  };
-
-  const handleChange = () => {
-    const data = new FormData(event.currentTarget);
-    setValues({
-      username: data.get("username"),
-      password: data.get("password"),
-    });
-
-    console.log(values);
+  const handleLogin = () => {
+    login(values);
+    navigate('/');
+    dispatch(sigin(values));
   };
 
   return (
@@ -112,7 +103,6 @@ export default function UserLogin() {
             <Box
               component="form"
               noValidate
-              onSubmit={handleSubmit}
               sx={{ mt: 1 }}
             >
               <TextField
@@ -122,9 +112,10 @@ export default function UserLogin() {
                 id="username"
                 label="Username"
                 name="username"
-                onChange={(e) => setValues({...values, username: e.target.value })}
+                onChange={(e) =>
+                  setValues({ ...values, username: e.target.value })
+                }
                 defaultValue={values.username}
-                // autoComplete="username"
                 autoFocus
               />
               <TextField
@@ -136,7 +127,9 @@ export default function UserLogin() {
                 placeholder="Enter your password"
                 type={values.showPass ? "text" : "password"}
                 id="password"
-                onChange={(e) => setValues({...values, password: e.target.value })}
+                onChange={(e) =>
+                  setValues({ ...values, password: e.target.value })
+                }
                 defaultValue={values.password}
                 // InputProps={{
                 //   endAdornment: (
@@ -158,8 +151,7 @@ export default function UserLogin() {
               />
 
               <Button
-                type="submit"
-                // onClick={handleLogin}
+                onClick={handleLogin}
                 variant="contained"
                 sx={{ mt: 2, width: "50%", marginLeft: "25%" }}
               >

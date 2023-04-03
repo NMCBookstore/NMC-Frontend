@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { styled } from "@mui/material/styles";
+import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import { Button, TextField, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
@@ -26,6 +25,7 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [value, setValue] = React.useState(2);
@@ -42,16 +42,10 @@ const ProductDetails = () => {
     }
   }
 
-  const [infos, setInfo] = useState([]);
+  const {id} = useParams()
+  const { data } = useGetProductQuery(id);
 
-  useEffect(() => {
-    fetch("http://localhost:8080/books/200")
-      .then((res) => res.json())
-      .then((infos) => {
-        setInfo(infos);
-        setSelectedImage(infos.image[0]);
-      });
-  }, []);
+
 
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
@@ -81,12 +75,12 @@ const ProductDetails = () => {
               {/* Basic info  */}
 
               <Stack>
-                <Typography variant="h5"> {infos.name} </Typography>
+                <Typography variant="h5"> {data?.name} </Typography>
                 <Typography variant="subtitle2" mt={2}>
-                  Publisher: {infos.publisher}
+                  Publisher: {data?.publisher}
                 </Typography>
                 <Typography variant="subtitle2" mb={2}>
-                  Author: {infos.author}
+                  Author: {data?.author}
                 </Typography>
                 <Rating
                   name="size-small"
@@ -100,7 +94,7 @@ const ProductDetails = () => {
                   mt={5}
                   sx={{ fontWeight: "800", color: "#C92127" }}
                 >
-                  {parseFloat(infos.price).toLocaleString("vi-VN", {
+                  {parseFloat(data?.price).toLocaleString("vi-VN", {
                     style: "currency",
                     currency: "VND",
                   })}
@@ -109,7 +103,7 @@ const ProductDetails = () => {
 
               {/* Amount  */}
               <Stack direction="row" alignItems="center" mt={5} spacing={2}>
-                <Typography variant="h6">Amount: {infos.quantity}</Typography>
+                <Typography variant="h6">Amount: {data?.quantity}</Typography>
                 <div
                   style={{
                     display: "flex",
@@ -161,7 +155,7 @@ const ProductDetails = () => {
 
         {/* Details product */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <DetailProductInfo />
+          <DetailProductInfo data={data} />
         </Grid>
 
         {/* Recommend for you  */}
