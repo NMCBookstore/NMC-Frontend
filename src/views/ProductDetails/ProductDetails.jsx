@@ -8,21 +8,23 @@ import Rating from "@mui/material/Rating";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import "react-multi-carousel/lib/styles.css";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ImageGrid from "./ImageGrid";
-import MainImage from "./MainImage";
-import DetailProductInfo from "./DetailProductInfo";
-import Recommend from "./Recommend";
-import Comment from "./CommentSection";
-import LightGallery from "lightgallery/react/Lightgallery.es5";
-import "lightgallery/css/lightgallery.css";
-import "lightgallery/css/lg-zoom.css";
-import "lightgallery/css/lg-thumbnail.css";
-import "lightgallery/css/lg-autoplay.css";
-import "lightgallery/css/lg-share.css";
-import "lightgallery/css/lg-rotate.css";
-import { useGetProductQuery } from "../../services/productAPIs";
+import ImageGrid from "./ImageGrid"
+import MainImage from "./MainImage"
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import DetailProductInfo from "./DetailProductInfo"
+import Recommend from "./Recommend"
+import Comment from "./CommentSection"
+import Gallery from "./Gallery";
+
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
+
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -54,13 +56,11 @@ const ProductDetails = () => {
           <Grid item container xs={12} sm={5} columns={12} mt={2}>
             {/* Side image  */}
             <Grid item container sm={3} xs={0}>
-              <LightGallery speed={500} plugins={[]}>
-                <ImageGrid
-                  images={data?.image}
-                  onSelect={setSelectedImage}
-                  selectedImage={selectedImage}
-                />
-              </LightGallery>
+              <ImageGrid
+                images={infos.image}
+                onSelect={setSelectedImage}
+                selectedImage={selectedImage}
+              />
             </Grid>
             {/* Main image  */}
             <Grid item sm={9}>
@@ -168,6 +168,7 @@ const ProductDetails = () => {
           <Comment />
         </Grid>
       </Grid>
+      <Gallery/>
     </Box>
   );
 };
