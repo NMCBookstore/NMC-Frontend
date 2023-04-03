@@ -21,6 +21,14 @@ import MainImage from "./MainImage";
 import DetailProductInfo from "./DetailProductInfo";
 import Recommend from "./Recommend";
 import Comment from "./CommentSection";
+import LightGallery from "lightgallery/react/Lightgallery.es5";
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-zoom.css";
+import "lightgallery/css/lg-thumbnail.css";
+import "lightgallery/css/lg-autoplay.css";
+import "lightgallery/css/lg-share.css";
+import "lightgallery/css/lg-rotate.css";
+
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -29,22 +37,6 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
-
-const images = [
-  "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
-  "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/81MI6+TpYkL._AC_UF1000,1000_QL80_.jpg",
-  "https://m.media-amazon.com/images/W/IMAGERENDERING_521856-T1/images/I/71uUx073fcL.jpg",
-  "https://salt.tikicdn.com/media/catalog/product/b/i/bia-1_sat-nhan-mang.u2487.d20170206.t083645.532084.jpg",
-];
-
-const product = {
-  id: 1,
-  name: "Hai So Phan",
-  price: 1000,
-  rating: 4,
-  description:
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-};
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -82,11 +74,15 @@ const ProductDetails = () => {
           <Grid item container xs={12} sm={5} columns={12} mt={2}>
             {/* Side image  */}
             <Grid item container sm={3} xs={0}>
+              <LightGallery
+              speed = {500}
+              plugins={[]}>
               <ImageGrid
                 images={infos.image}
                 onSelect={setSelectedImage}
                 selectedImage={selectedImage}
               />
+              </LightGallery>
             </Grid>
             {/* Main image  */}
             <Grid item sm={9}>
