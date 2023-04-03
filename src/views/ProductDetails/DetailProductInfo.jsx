@@ -42,7 +42,6 @@ export default function DetailProductInfo() {
         </Box>
         <div style={{ marginLeft: "8px" }}>
           <Typography variant="body1">Author: {infos.author}</Typography>
-
           <Typography variant="body1">Publisher: {infos.publisher}</Typography>
           <Typography variant="body1">Descriptions: </Typography>
           <Typography>{infos.description}</Typography>

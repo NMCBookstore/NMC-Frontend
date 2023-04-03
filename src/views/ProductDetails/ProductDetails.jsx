@@ -1,33 +1,21 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Button, Card, Container, TextField, Typography } from "@mui/material";
-import { Stack, width } from "@mui/system";
+import { Button, TextField, Typography } from "@mui/material";
+import { Stack } from "@mui/system";
 import Rating from "@mui/material/Rating";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import LocalMallOutlinedIcon from "@mui/icons-material/LocalMallOutlined";
-import ProductCard from "../../components/ProductCard/ProductCard";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import ImageGrid from "./ImageGrid";
-import MainImage from "./MainImage";
-import DetailProductInfo from "./DetailProductInfo";
-import Recommend from "./Recommend";
-import Comment from "./CommentSection";
-import LightGallery from "lightgallery/react/Lightgallery.es5";
-import "lightgallery/css/lightgallery.css";
-import "lightgallery/css/lg-zoom.css";
-import "lightgallery/css/lg-thumbnail.css";
-import "lightgallery/css/lg-autoplay.css";
-import "lightgallery/css/lg-share.css";
-import "lightgallery/css/lg-rotate.css";
+import ImageGrid from "./ImageGrid"
+import MainImage from "./MainImage"
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import DetailProductInfo from "./DetailProductInfo"
+import Recommend from "./Recommend"
+import Comment from "./CommentSection"
+import Gallery from "./Gallery";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -74,15 +62,11 @@ const ProductDetails = () => {
           <Grid item container xs={12} sm={5} columns={12} mt={2}>
             {/* Side image  */}
             <Grid item container sm={3} xs={0}>
-              <LightGallery
-              speed = {500}
-              plugins={[]}>
               <ImageGrid
                 images={infos.image}
                 onSelect={setSelectedImage}
                 selectedImage={selectedImage}
               />
-              </LightGallery>
             </Grid>
             {/* Main image  */}
             <Grid item sm={9}>
@@ -190,6 +174,7 @@ const ProductDetails = () => {
           <Comment />
         </Grid>
       </Grid>
+      <Gallery/>
     </Box>
   );
 };
