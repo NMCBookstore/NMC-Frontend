@@ -62,11 +62,10 @@ const ProductDetails = () => {
     }
   }
 
-  
   const [infos, setInfo] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:8080/books/1500")
+    fetch("http://localhost:8080/books/1522")
       .then((res) => res.json())
       .then((infos) => {
         setInfo(infos);
@@ -102,12 +101,12 @@ const ProductDetails = () => {
               {/* Basic info  */}
 
               <Stack>
-                <Typography variant="h5">Bhe book nearly one</Typography>
+                <Typography variant="h5"> {infos.name} </Typography>
                 <Typography variant="subtitle2" mt={2}>
-                  Publisher:
+                  Publisher: {infos.publisher}
                 </Typography>
                 <Typography variant="subtitle2" mb={2}>
-                  Author:
+                  Author: {infos.author}
                 </Typography>
                 <Rating
                   name="size-small"
@@ -121,13 +120,16 @@ const ProductDetails = () => {
                   mt={5}
                   sx={{ fontWeight: "800", color: "#C92127" }}
                 >
-                  685.000 đ
+                  {parseFloat(infos.price).toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
                 </Typography>
               </Stack>
 
               {/* Amount  */}
               <Stack direction="row" alignItems="center" mt={5} spacing={2}>
-                <Typography variant="h6">Amount: </Typography>
+                <Typography variant="h6">Amount: {infos.quantity}</Typography>
                 <div
                   style={{
                     display: "flex",
