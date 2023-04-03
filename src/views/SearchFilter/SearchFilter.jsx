@@ -1,15 +1,16 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import { Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
-import { useState } from "react";
 import Filter from "./Filter";
 import PaginationBottom from "./PaginationBottom";
 import BookList from "./BookList";
+import { useGetAllProductQuery } from "../../services/productAPIs";
 
 const SearchFilter = () => {
+
+  const {data} = useGetAllProductQuery({page_id:1, page_size:36});
+  console.log(data);
+
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
       <Grid container my={2} spacing={2}>
@@ -20,7 +21,7 @@ const SearchFilter = () => {
 
         {/* Product  */}
         <Grid container item xs={12} sm={9} sx={{ flexDirection: { xs: "column", sm: "row" } }}>
-            <BookList />
+            <BookList data={data} />
             <PaginationBottom />
         </Grid>
         

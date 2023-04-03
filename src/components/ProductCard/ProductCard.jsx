@@ -1,37 +1,49 @@
 import * as React from "react";
-import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
-import IconButton from "@mui/joy/IconButton";
 import Typography from "@mui/joy/Typography";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import CardOverflow from "@mui/joy/CardOverflow";
-import book1 from "./book1.jpg";
 import { CardContent, CardMedia } from "@mui/material";
-import Paper from '@mui/material/Paper';
+import { useNavigate } from "react-router-dom";
 
-const ProductCard = () => {
+const ProductCard = ({ productItem }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/product/${productItem?.id}`);
+  };
+
   return (
-    <Box width="260px">
+    <Box width="260px" onClick={handleClick}>
       <Card variant="outlined" sx={{ borderRadius: 5 }}>
-          <CardMedia
-            component="img"
-            height="250"
-            image= "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730"
-            alt="the book art"
-          />
-          <CardContent>
-            <Typography level="h2" fontSize="md" sx={{ mb: 0.1 }}>
-              Influence the book
+        <CardMedia
+          component="img"
+          height="250"
+          image={productItem?.image[0]}
+          alt={productItem?.name}
+        />
+        <CardContent>
+          <Typography
+            level="h2"
+            fontSize="md"
+            sx={{
+              mb: 0.1,
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {productItem?.name}
+          </Typography>
+          <div>
+            <Typography level="body2">Price:</Typography>
+            <Typography fontSize="lg" fontWeight="lg">
+              {parseFloat(productItem?.price).toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}
             </Typography>
-            <div >
-              <Typography level="body2">Total price:</Typography>
-              <Typography fontSize="lg" fontWeight="lg">
-                $2,900
-              </Typography>
-            </div>
-          </CardContent>
+          </div>
+        </CardContent>
       </Card>
     </Box>
   );

@@ -7,7 +7,7 @@ export default function ImageGrid({ images, onSelect, selectedImage }) {
   return (
     <Grid container>
       {images?.map((info, index) => (
-        <div>
+        <div key={info}>
           {info.includes("youtube") ? (
             <iframe
               width="80%"
@@ -19,7 +19,7 @@ export default function ImageGrid({ images, onSelect, selectedImage }) {
             ></iframe>
           ) : (
             <img
-              key={index}
+              
               src={info}
               onClick={() => onSelect(info)}
               style={{
