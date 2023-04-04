@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, Paper, TextField, Typography, styled } from "@mui/material";
 import { Stack } from "@mui/system";
 import Rating from "@mui/material/Rating";
 import AddIcon from "@mui/icons-material/Add";
@@ -14,7 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import DetailProductInfo from "./DetailProductInfo"
 import Recommend from "./Recommend"
 import Comment from "./CommentSection"
-import Gallery from "./Gallery";
+import { useGetProductQuery } from "../../services/productAPIs";
 
 
 const Item = styled(Paper)(({ theme }) => ({
@@ -28,6 +28,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
+  const [ytSrc, setYtSrc] = useState("");
   const [value, setValue] = React.useState(2);
   let [count, setCount] = useState(1);
 
@@ -42,10 +43,13 @@ const ProductDetails = () => {
     }
   }
 
-  const {id} = useParams()
+  const onSelect = (image, ytSrc)=>{
+    setSelectedImage(image)
+    setYtSrc(ytSrc)
+  }
+
+  const { id } = useParams()
   const { data } = useGetProductQuery(id);
-
-
 
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
@@ -57,16 +61,20 @@ const ProductDetails = () => {
             {/* Side image  */}
             <Grid item container sm={3} xs={0}>
               <ImageGrid
-                images={infos.image}
-                onSelect={setSelectedImage}
+                images={data?.image}
+                onSelectImage={setSelectedImage}
+                onYtSrc={setYtSrc}
                 selectedImage={selectedImage}
+                ytSrc={ytSrc}
               />
             </Grid>
             {/* Main image  */}
             <Grid item sm={9}>
-              <div style={{}}>
-                <MainImage src={selectedImage} />
-              </div>
+                <MainImage
+                  src={selectedImage != "" ? selectedImage : data?.image[0]}
+                  ytSrc={ytSrc}
+                  images={data?.image}
+                />
             </Grid>
           </Grid>
 
@@ -168,7 +176,6 @@ const ProductDetails = () => {
           <Comment />
         </Grid>
       </Grid>
-      <Gallery/>
     </Box>
   );
 };
