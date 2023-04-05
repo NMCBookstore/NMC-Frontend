@@ -26,63 +26,80 @@ export default function ImageGrid({ images, onSelectImage, onYtSrc, selectedImag
     }))
   }, [images])
 
-
-  const openGallery = () => {
-    dynamicGalleryOpt.openGallery(3);
+  const openGallery = (id) => {
+    dynamicGalleryOpt.openGallery(id);
   };
 
   return (
     <>
       {images?.slice(0, 4).map((image, index) => (
-        <div
-          ref={index === 3 ? dynamicGallery : null}
-          key={image}
-          style={
-            index === 3 ?
+        (index === 3 && images.length > 4) ? (
+          <div
+            ref={dynamicGallery}
+            key={image}
+            style={
               {
                 filter: "brightness(0.5)",
                 position: "relative",
                 cursor: "pointer",
-              } :
+              }
+            }
+            onClick={() => openGallery(3)}
+          >
+            <img
+              src={image.includes('youtube') ? images[0] : image}
+              width="100%"
+            />
+            <Typography
+              variant="h4"
+              sx={{
+                position: "absolute",
+                top: "40%",
+                left: "35%",
+              }}>
+              +{images.length - 3}
+            </Typography>
+          </div>
+        ) : (
+          <div
+            key={image}
+            style={
               {
                 border:
-                  (image.includes('youtube') ?
-                    ((image === ytSrc) ? "solid 1px gray" : "solid 1px #eee") :
-                    ((image === selectedImage) ? "solid 1px gray" : "solid 1px #eee")),
+                  (image === selectedImage && ytSrc === "") ||
+                    (image === ytSrc) ?
+                    "solid 1px gray" :
+                    "solid 1px #eee",
                 position: "relative",
                 cursor: "pointer",
               }
-          }
-          onClick={index === 3 ?
-            () => openGallery() :
-            (() => {
-              onSelectImage(image.includes('youtube') ? images[0] : image)
-              onYtSrc(image.includes('youtube') ? image : "")
-            })}
-        >
-          <img
-            src={image.includes('youtube') ? images[0] : image}
-            width="100%"
-          />
-
-          <Typography
-            variant="h4"
-            sx={{
-              position: "absolute",
-              top: "40%",
-              left: "35%",
-            }}>
-            {index === 3 ?
-              (`+${images.length - 3}`) :
-              (image.includes('youtube') &&
+            }
+            onClick={
+              () => {
+                onSelectImage(image.includes('youtube') ? images[0] : image)
+                onYtSrc(image.includes('youtube') ? image : "")
+              }}
+          >
+            <img
+              src={image.includes('youtube') ? images[0] : image}
+              width="100%"
+            />
+            <Typography
+              variant="h4"
+              sx={{
+                position: "absolute",
+                top: "40%",
+                left: "35%",
+              }}>
+              {image.includes('youtube') &&
                 <PlayCircleFilledWhiteOutlinedIcon fontSize="large"
                   sx={{
                     color: "white"
                   }} />
-              )}
-          </Typography>
-        </div>
-      ))}
+              }
+            </Typography>
+          </div>
+        )))}
     </>
   );
 }
