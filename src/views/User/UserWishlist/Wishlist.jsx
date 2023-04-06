@@ -1,8 +1,8 @@
 import { Box, Divider } from '@mui/material'
 import Typography from "@mui/joy/Typography";
 import React from 'react'
-import MiniCarousel from '../../components/MiniCarousel/MiniCarousel'
-import ListProductCart from '../UserCart/ListProductCart'
+import MiniCarousel from '../../../components/MiniCarousel/MiniCarousel'
+import ListProductCart from '../../User/UserCart/ListProductCart'
 
 export default function Wishlist() {
   return (

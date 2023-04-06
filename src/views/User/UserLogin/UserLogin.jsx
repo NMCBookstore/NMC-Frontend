@@ -17,9 +17,10 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
 import { useDispatch } from "react-redux";
-import { sigin } from "../../features/auth/authSlice";
+import { sigin } from "../../../features/auth/authSlice";
+import { addSession } from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../services/authAPIs";
+import { useLoginMutation } from "../../../services/authAPIs";
 
 function Copyright(props) {
   return (
@@ -58,10 +59,16 @@ export default function UserLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    login(values);
-    navigate('/');
-    dispatch(sigin(values));
+  const handleLogin = async () => {
+    const { data } = await login(values);
+    navigate("/");
+    dispatch(addSession(data));
+    
+
+    // login(values).then(({ data }) => {
+    //   navigate("/");
+    //   dispatch(addSession(data));
+    // });
   };
 
   return (
@@ -100,11 +107,7 @@ export default function UserLogin() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box
-              component="form"
-              noValidate
-              sx={{ mt: 1 }}
-            >
+            <Box component="form" noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required

@@ -4,9 +4,13 @@ import Box from "@mui/material/Box";
 
 import ProductCheckoutCard from "./ProductCheckoutCard";
 import ListProductCart from "./ListProductCart";
+import { useGetCartQuery } from "../../../services/cartAPI";
 
 
 export default function UserCart() {
+
+  const {listCart} = useGetCartQuery();
+  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container my={2} spacing={2}>

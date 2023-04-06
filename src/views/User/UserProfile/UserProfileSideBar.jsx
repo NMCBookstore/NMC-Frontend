@@ -30,6 +30,8 @@ const profileSidebar = [
   },
 ];
 
+const [tab, setTab] = useState("")
+
 export default function UserProfileSideBar() {
   const navigate = useNavigate();
 

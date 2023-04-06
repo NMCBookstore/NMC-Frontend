@@ -30,6 +30,8 @@ const Header = () => {
   const naviWishlist = () => navigate("/user/wishlist");
   const naviCart = () => navigate("/user/cart");
 
+  const naviProfile = () => navigate("/user/profile");
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -73,31 +75,31 @@ const Header = () => {
       onClose={handleClose}
       TransitionComponent={Fade}
     >
-      <Link style={{ textDecoration: "none", color: "black" }}>
+      <Link to="/user/profile" className={classes.link}>
         <MenuItem onClick={handleMenuClose}>
           <PersonIcon />
           &nbsp; Profile
         </MenuItem>
       </Link>
-      <Link style={{ textDecoration: "none", color: "black" }}>
+      <Link className={classes.link}>
         <MenuItem onClick={handleMenuClose}>
           <LocalMallIcon />
           &nbsp; My Order
         </MenuItem>
       </Link>
-      <Link style={{ textDecoration: "none", color: "black" }}>
+      <Link className={classes.link}>
         <MenuItem onClick={handleMenuClose}>
           <CancelIcon />
           &nbsp; My Cancellations
         </MenuItem>
       </Link>
-      <Link style={{ textDecoration: "none", color: "black" }}>
+      <Link className={classes.link}>
         <MenuItem onClick={handleMenuClose}>
           <ReviewsIcon />
           &nbsp; My Reviews
         </MenuItem>
       </Link>
-      <Link style={{ textDecoration: "none", color: "black" }}>
+      <Link className={classes.link}>
         <MenuItem onClick={handleMenuClose}>
           <LogoutOutlinedIcon />
           &nbsp; Logout

@@ -1,58 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { useLoginMutation, auth } from "../../services/authAPIs";
 
 const initialState = {
-  status: "idle",
-  user: "",
-  loading: false,
-  error: null,
+  session_id: null,
+  user: null,
+  access_token: null,
+  refresh_token: null,
 };
-
-export const sigin = createAsyncThunk("user/login", async (body) => {
-  let res = await fetch("http://localhost:8080/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      // Authorization: localStorage.setItem("token"),
-    },
-    body: JSON.stringify(body),
-  });
-
-  return await res.json();
-});
 
 const authSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    addUser: (state, action) => {
-      state.user = sessionStorage.getItem("user")
-    },
-  },
-  extraReducers: {
-    [sigin.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [sigin.fulfilled]: (
-      state,
-      { payload: { session_id, user, access_token, refresh_token } }
-    ) => {
-      state.loading = false;
-      state.access_token = access_token;
-      state.refresh_token = refresh_token;
-      state.session_id = session_id;
-      state.user = user;
-
-      sessionStorage.setItem("access_token", JSON.stringify(access_token));
-      sessionStorage.setItem("refresh_token", JSON.stringify(refresh_token));
-      sessionStorage.setItem("session_id", JSON.stringify(session_id));
-      sessionStorage.setItem("user", JSON.stringify(user));
-    },
-    [sigin.rejected]: (state, action) => {
-      state.loading = true;
+    addSession: (state, action) => {
+      localStorage.setItem("access_token", action.payload.access_token);
+      localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem("session_id", action.payload.session_id);
+      localStorage.setItem("refresh_token", action.payload.refresh_token);
     },
   },
 });
 
-export const { addUser } = authSlice.actions;
+export const { addSession } = authSlice.actions;
 export default authSlice.reducer;

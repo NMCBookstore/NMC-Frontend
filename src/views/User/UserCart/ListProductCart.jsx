@@ -168,7 +168,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function ListProductCart(props) {
+export default function ListProductCart(props, {listCart}) {
   const [selected, setSelected] = useState([]);
   const [rows, setRows] = useState(carts)
 

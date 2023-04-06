@@ -60,7 +60,7 @@ export default function QuiltedImageList() {
       rowHeight="auto"
     >
       {itemData.map((item) => (
-        <ImageListItem key={item.img} cols={item.cols || 1} rows={item.rows || 1}>
+        <ImageListItem key={item.title} cols={item.cols || 1} rows={item.rows || 1}>
           <Link>
             <img
               {...srcset(item.img, 284, item.rows, item.cols)}

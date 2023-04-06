@@ -8,14 +8,14 @@ import Rating from "@mui/material/Rating";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import ImageGrid from "./ImageGrid"
-import MainImage from "./MainImage"
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import DetailProductInfo from "./DetailProductInfo"
-import Recommend from "./Recommend"
-import Comment from "./CommentSection"
+import ImageGrid from "./ImageGrid";
+import MainImage from "./MainImage";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import DetailProductInfo from "./DetailProductInfo";
+import Recommend from "./Recommend";
+import Comment from "./CommentSection";
 import { useGetProductQuery } from "../../services/productAPIs";
-
+import { useAddCartMutation } from "../../services/cartAPI";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -24,7 +24,6 @@ const Item = styled(Paper)(({ theme }) => ({
   textAlign: "center",
   color: theme.palette.text.secondary,
 }));
-
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -43,13 +42,19 @@ const ProductDetails = () => {
     }
   }
 
-  const onSelect = (image, ytSrc)=>{
-    setSelectedImage(image)
-    setYtSrc(ytSrc)
-  }
+  const onSelect = (image, ytSrc) => {
+    setSelectedImage(image);
+    setYtSrc(ytSrc);
+  };
 
-  const { id } = useParams()
+  const { id } = useParams();
   const { data } = useGetProductQuery(id);
+
+  const [add] = useAddCartMutation(id);
+
+  const handleAddToCart = () => {
+    add(id);
+  };
 
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
@@ -70,11 +75,11 @@ const ProductDetails = () => {
             </Grid>
             {/* Main image  */}
             <Grid item sm={9}>
-                <MainImage
-                  src={selectedImage != "" ? selectedImage : data?.image[0]}
-                  ytSrc={ytSrc}
-                  images={data?.image}
-                />
+              <MainImage
+                src={selectedImage != "" ? selectedImage : data?.image[0]}
+                ytSrc={ytSrc}
+                images={data?.image}
+              />
             </Grid>
           </Grid>
 
@@ -147,6 +152,7 @@ const ProductDetails = () => {
                   <FavoriteIcon />
                 </Button>
                 <Button
+                  onClick={handleAddToCart}
                   variant="contained"
                   sx={{
                     background: "#DB4444",

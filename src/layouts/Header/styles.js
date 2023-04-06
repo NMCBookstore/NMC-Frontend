@@ -1,8 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
 export default makeStyles((theme) => ({
-
-
   mainStack: {
     zIndex: 2,
     position: "sticky",
@@ -14,5 +12,10 @@ export default makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     marginLeft: "-22%",
+  },
+
+  link: {
+    textDecoration: "none",
+    color: "black",
   },
 }));
