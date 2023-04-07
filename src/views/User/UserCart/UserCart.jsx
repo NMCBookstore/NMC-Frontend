@@ -6,17 +6,15 @@ import ProductCheckoutCard from "./ProductCheckoutCard";
 import ListProductCart from "./ListProductCart";
 import { useGetCartQuery } from "../../../services/cartAPI";
 
-
 export default function UserCart() {
+  const { data, isFetching} = useGetCartQuery();
 
-  const {listCart} = useGetCartQuery();
-  
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Grid container my={2} spacing={2}>
         {/* User Side bar  */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <ListProductCart title="Cart" />
+          <ListProductCart title="Cart" data={data} isFetching ={isFetching}/>
         </Grid>
 
         {/* User Content  */}

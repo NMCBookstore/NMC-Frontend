@@ -13,7 +13,6 @@ import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import useStyles from "./styles";
 
 const Home = () => {
-
   const classes = useStyles();
 
   return (
@@ -36,12 +35,7 @@ const Home = () => {
       <Box marginTop={10}>
         <FirstTab />
       </Box>
-      <Box
-        marginTop={20}
-        height="auto"
-        maxWidth="100%"
-        className={classes.box}
-      >
+      <Box marginTop={20} height="auto" maxWidth="100%" className={classes.box}>
         <Link>
           <img
             src="https://trustexplatform.com/wp-content/uploads/2022/06/Banner-Design-1024-New-Arrival-2.jpg"
@@ -63,17 +57,14 @@ const Home = () => {
             Explore Our Products
           </Typography>
         </Box>
-        <Box
-          marginTop={2}
-          className={classes.secbox}
-        >
+        <Box marginTop={2} className={classes.secbox}>
           <BookList />
         </Box>
         <Box
           marginTop={2}
           sx={{ display: "flex", justifyContent: "center", width: "100%" }}
         >
-          <Link style={{ textDecoration: "none" }}>
+          <Link to="/search-filter" style={{ textDecoration: "none" }}>
             <Button
               variant="contained"
               sx={{
@@ -90,10 +81,7 @@ const Home = () => {
       </Box>
       <Box marginTop={20}>
         <Divider sx={{ backgroundColor: "black", marginBottom: "-20px" }} />
-        <Box
-          marginBottom={2}
-          className={classes.box}
-        >
+        <Box marginBottom={2} className={classes.box}>
           <Typography
             lineHeight="lg"
             variant="solid"

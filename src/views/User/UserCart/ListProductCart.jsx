@@ -1,79 +1,48 @@
-import { useState } from 'react';
-import React from 'react';
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import Checkbox from '@mui/material/Checkbox';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, Stack, TextField } from '@mui/material';
+import { useEffect, useState } from "react";
+import React from "react";
+import PropTypes from "prop-types";
+import { alpha } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Paper from "@mui/material/Paper";
+import Checkbox from "@mui/material/Checkbox";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { Button, Stack, TextField } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-
-const carts = [
-  {
-    id: 0,
-    url: "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
-    title: "Book 1",
-    quantity: 2,
-    price: 100000,
-  },
-  {
-    id: 1,
-    url: "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
-    title: "Book 2",
-    quantity: 1,
-    price: 200000,
-  },
-  {
-    id: 2,
-    url: "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
-    title: "Book 3",
-    quantity: 1,
-    price: 300.000,
-  },
-  {
-    id: 3,
-    url: "https://bizweb.dktcdn.net/100/370/339/products/hai-so-phan.jpg?v=1611676664730",
-    title: "Book 4",
-    quantity: 2,
-    price: 400.000,
-  },
-];
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const headCells = [
   {
-    id: 'Product',
-    label: 'Product',
+    id: "Product",
+    label: "Product",
   },
   {
-    id: 'Price',
+    id: "Price",
     numeric: true,
-    label: 'Price',
+    label: "Price",
   },
   {
-    id: 'Quantity',
+    id: "Quantity",
     numeric: true,
-    label: 'Quantity',
+    label: "Quantity",
   },
   {
-    id: 'Subtotal',
+    id: "Subtotal",
     numeric: true,
-    label: 'Subtotal',
+    label: "Subtotal",
   },
   {
-    id: 'null',
+    id: "null",
   },
 ];
 
@@ -91,21 +60,22 @@ function EnhancedTableHead(props) {
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              'aria-label': 'select all desserts',
+              "aria-label": "select all desserts",
             }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
+        {headCells.map((headCell) =>
           title === "Wishlist" &&
-            (headCell.label === "Quantity" || headCell.label === "Subtotal")
-            ? null
-            : <TableCell
+          (headCell.label === "Quantity" ||
+            headCell.label === "Subtotal") ? null : (
+            <TableCell
               key={headCell.id}
-              align={headCell.numeric ? 'right' : 'left'}
+              align={headCell.numeric ? "right" : "left"}
             >
               {headCell.label}
             </TableCell>
-        ))}
+          )
+        )}
       </TableRow>
     </TableHead>
   );
@@ -128,13 +98,16 @@ function EnhancedTableToolbar(props) {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.activatedOpacity
+            ),
         }),
       }}
     >
       {numSelected > 0 ? (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ flex: "1 1 100%" }}
           color="inherit"
           variant="subtitle1"
           component="div"
@@ -143,7 +116,7 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
-          sx={{ flex: '1 1 100%' }}
+          sx={{ flex: "1 1 100%" }}
           variant="h5"
           id="tableTitle"
           component="div"
@@ -168,39 +141,40 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function ListProductCart(props, {listCart}) {
+export default function ListProductCart({title, data, isFetching}) {
   const [selected, setSelected] = useState([]);
-  const [rows, setRows] = useState(carts)
+  const [rows, setRows] = useState([]);
 
+  useEffect(()=>{
+    setRows(data)
+  },[isFetching])
 
-  function incrementCount(event, id) {
-    let rs = [...rows]
-    rs[id].quantity++
+  function incrementCount(event, cart_id) {
+    let rs = [...rows];
+    rs[cart_id].detail.quantity++;
     setRows(rs);
   }
-  function decrementCount(event, id) {
-    let rs = [...rows]
-    if (rs[id].quantity > 1) {
-      rs[id].quantity--
+  function decrementCount(event, cart_id) {
+    let rs = [...rows];
+    if (rs[cart_id].detail.quantity > 1) {
+      rs[cart_id].detail.quantity--;
       setRows(rs);
     }
   }
-
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
+      const newSelected = rows.map((n) => n.cart_id);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
+  const handleClick = (event, cart_id) => {
+    const selectedIndex = selected.indexOf(cart_id);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, cart_id);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -208,48 +182,49 @@ export default function ListProductCart(props, {listCart}) {
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
+        selected.slice(selectedIndex + 1)
       );
     }
 
     setSelected(newSelected);
   };
-
-  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const isSelected = (cart_id) => selected.indexOf(cart_id) !== -1;
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} title={props.title} />
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ width: "100%", mb: 2 }}>
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          title={title}
+        />
         <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-          >
+          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               onSelectAllClick={handleSelectAllClick}
-              rowCount={rows.length}
-              title={props.title}
+              rowCount={rows?.length}
+              title={title}
             />
             <TableBody>
-              {rows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
+              {rows?.map((row, index) => {
+                const isItemSelected = isSelected(row.cart_id);
                 const labelId = `enhanced-table-checkbox-${index}`;
 
                 return (
-                  <TableRow hover key={row.id}>
+                  <TableRow hover key={row.cart_id}>
                     <TableCell padding="checkbox">
                       <Checkbox
                         aria-checked={isItemSelected}
                         tabIndex={-1}
                         selected={isItemSelected}
-                        onClick={(event) => handleClick(event, row.id)}
+
+                        // id cart
+                        onClick={(event) => handleClick(event, row.cart_id)}
                         color="primary"
                         checked={isItemSelected}
-                        sx={{ cursor: 'pointer' }}
+                        sx={{ cursor: "pointer" }}
                         inputProps={{
-                          'aria-labelledby': labelId,
+                          "aria-labelledby": labelId,
                         }}
                       />
                     </TableCell>
@@ -260,50 +235,64 @@ export default function ListProductCart(props, {listCart}) {
                       padding="none"
                     >
                       <Stack direction="row" alignItems="center" margin={1}>
-                        {props.title === "Wishlist" ?
+                        {title === "Wishlist" ? (
                           <img
-                            src={row.url}
-                            alt={row.title}
+                            src={row.book.image[0]}
+                            alt={row.book.name}
                             style={{
                               width: "16%",
-                              height: "100px"
-                            }} /> :
+                              height: "100px",
+                            }}
+                          />
+                        ) : (
                           <img
-                            src={row.url}
-                            alt={row.title}
+                          src={row.book.image[0]}
+                          alt={row.book.name}
                             style={{
                               width: "25%",
-                              height: "100px"
-                            }} />}
-                        <Typography marginLeft={2}>{row.title}</Typography>
+                              height: "40%",
+                            }}
+                          />
+                        )}
+                        <Typography marginLeft={2}>
+                          {row.book.name}
+                        </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell align="right">{row.price}</TableCell>
-                    {props.title !== "Wishlist" ? (
+                    <TableCell align="right">{row.book.price}</TableCell>
+                    {title !== "Wishlist" ? (
                       <TableCell align="right">
-                        <Stack direction="row" justifyContent="flex-end" marginRight="-57px">
-                          <Button onClick={(event) => decrementCount(event, row.id)}>
+                        <Stack
+                          direction="row"
+                          justifyContent="flex-end"
+                          marginRight="-57px"
+                        >
+                          <Button
+                            onClick={(event) => decrementCount(event, row.cart_id)}
+                          >
                             <RemoveIcon />
                           </Button>
                           <TextField
-                            value={row.quantity}
+                            value='0'
                             disabled={true}
                             inputProps={{ textAlign: "center" }}
                             sx={{ width: "50px" }}
                           />
-                          <Button onClick={(event) => incrementCount(event, row.id)}>
+                          <Button
+                            onClick={(event) => incrementCount(event, row.cart_id)}
+                          >
                             <AddIcon />
                           </Button>
                         </Stack>
                       </TableCell>
                     ) : null}
-                    {props.title !== "Wishlist" ?
+                    {title !== "Wishlist" ? (
                       <TableCell align="right">
-                        {row.price * row.quantity}
+                        '100000'
                       </TableCell>
-                      : null}
+                    ) : null}
                     <TableCell align="right">
-                      {props.title === "Wishlist" ?
+                      {title === "Wishlist" ? (
                         <>
                           <Tooltip title="AddToCart">
                             <IconButton>
@@ -316,11 +305,13 @@ export default function ListProductCart(props, {listCart}) {
                             </IconButton>
                           </Tooltip>
                         </>
-                        : <Tooltip title="Delete">
+                      ) : (
+                        <Tooltip title="Delete">
                           <IconButton>
                             <DeleteIcon />
                           </IconButton>
-                        </Tooltip>}
+                        </Tooltip>
+                      )}
                     </TableCell>
                   </TableRow>
                 );

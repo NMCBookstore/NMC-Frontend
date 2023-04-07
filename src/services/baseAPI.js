@@ -11,8 +11,6 @@ export const book = createApi({
         headers.set("Authorization", `Bearer ${token}`);
       }
 
-      console.log(token)
-
       return headers;
     },
   }),

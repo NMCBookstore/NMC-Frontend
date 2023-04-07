@@ -10,8 +10,7 @@ const cart = book.injectEndpoints({
     }),
     getCart: builder.query({
       query: () =>({
-          method: 'GET',
-          url: `users/list_book_in_cart`
+          url: `users/list_book_in_cart`,
       })
     })
   }),
