@@ -11,13 +11,11 @@ import Grid from "@mui/material/Grid";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import GoogleIcon from "@mui/icons-material/Google";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
 import { useDispatch } from "react-redux";
-import { sigin } from "../../../features/auth/authSlice";
 import { addSession } from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../services/authAPIs";
@@ -46,15 +44,15 @@ export default function UserLogin() {
   const [values, setValues] = useState({
     username: "",
     password: "",
-    // showPass: false,
+    showPass: false,
   });
 
-  // const handlePassVisibilty = () => {
-  //   setValues({
-  //     ...values,
-  //     showPass: !values.showPass,
-  //   });
-  // };
+  const handlePassVisibilty = () => {
+    setValues({
+      ...values,
+      showPass: !values.showPass,
+    });
+  };
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,7 +61,6 @@ export default function UserLogin() {
     const { data } = await login(values);
     navigate("/");
     dispatch(addSession(data));
-    
 
     // login(values).then(({ data }) => {
     //   navigate("/");
@@ -134,23 +131,23 @@ export default function UserLogin() {
                   setValues({ ...values, password: e.target.value })
                 }
                 defaultValue={values.password}
-                // InputProps={{
-                //   endAdornment: (
-                //     <InputAdornment position="end">
-                //       <IconButton
-                //         onClick={handlePassVisibilty}
-                //         aria-label="toggle password"
-                //         edge="end"
-                //       >
-                //         {values.showPass ? (
-                //           <VisibilityIcon />
-                //         ) : (
-                //           <VisibilityOffIcon />
-                //         )}
-                //       </IconButton>
-                //     </InputAdornment>
-                //   ),
-                // }}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={handlePassVisibilty}
+                        aria-label="toggle password"
+                        edge="end"
+                      >
+                        {values.showPass ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
               />
 
               <Button

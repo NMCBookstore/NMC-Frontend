@@ -12,11 +12,17 @@ const cart = book.injectEndpoints({
       query: () =>({
           url: `users/list_book_in_cart`,
       })
-    })
+    }),
+    addWishList: builder.mutation({
+      query: (id) => ({
+        method:'POST',
+        url: `users/add_to_wishlist/${id}`
+      })
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useAddCartMutation, useGetCartQuery } = cart;
+export const { useAddCartMutation, useGetCartQuery, useAddWishListMutation } = cart;
 
 

@@ -15,7 +15,10 @@ import DetailProductInfo from "./DetailProductInfo";
 import Recommend from "./Recommend";
 import Comment from "./CommentSection";
 import { useGetProductQuery } from "../../services/productAPIs";
-import { useAddCartMutation } from "../../services/cartAPI";
+import {
+  useAddCartMutation,
+  useAddWishListMutation,
+} from "../../services/cartAPI";
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -42,10 +45,16 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { data } = useGetProductQuery(id);
 
-  const [add] = useAddCartMutation(id);
+  const [addWishlist] = useAddWishListMutation(id);
+
+  const [addCart] = useAddCartMutation(id);
 
   const handleAddToCart = () => {
-    add(id);
+    addCart(id);
+  };
+
+  const handleAddToWishlist = () => {
+    addWishlist(id);
   };
 
   return (
@@ -134,6 +143,7 @@ const ProductDetails = () => {
               {/* Add to cart  */}
               <Stack direction="row" alignItems="center" mt={5} spacing={2}>
                 <Button
+                  onClick={handleAddToWishlist}
                   variant="contained"
                   sx={{
                     background: "#1f1f1f",

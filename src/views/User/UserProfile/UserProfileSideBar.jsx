@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
@@ -13,7 +13,6 @@ import { useNavigate } from "react-router-dom";
 import UserContentProfile from "./UserContentProfile";
 import UserContentChangePassword from "./UserContentChangePassword";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
 
 const profileSidebar = [
   {
@@ -30,10 +29,9 @@ const profileSidebar = [
   },
 ];
 
-const [tab, setTab] = useState("")
-
 export default function UserProfileSideBar() {
   const navigate = useNavigate();
+  const [tab, setTab] = useState("");
 
   return (
     <Box sx={{ width: "100%" }}>
@@ -43,7 +41,7 @@ export default function UserProfileSideBar() {
         </Typography>
         {profileSidebar.map((profile, index) => (
           <List disablePadding key={index}>
-            <ListItemButton to ={profile.route}>
+            <ListItemButton to={profile.route}>
               <ListItemText primary={profile.title} />
             </ListItemButton>
           </List>
@@ -64,8 +62,6 @@ export default function UserProfileSideBar() {
           </ListItemButton>
         </List> */}
       </Stack>
-
-
     </Box>
   );
 }
