@@ -3,19 +3,19 @@ import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { IconButton, InputAdornment } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useSignupMutation } from "../../../services/authAPIs";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { signupSuccess } from "../../../features/auth/authSlice";
 
 function Copyright(props) {
   return (
@@ -33,10 +33,15 @@ function Copyright(props) {
 const theme = createTheme();
 
 const UserRegister = () => {
+  const [register] = useSignupMutation();
+
   const [values, setValues] = useState({
-    userName: "",
+    username: "",
+    password: "",
+    full_Name: "",
     email: "",
-    pass: "",
+    image: "",
+    phone_number: "",
     showPass: false,
   });
 
@@ -47,15 +52,20 @@ const UserRegister = () => {
     });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      userName: data.get("userName"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      await register(values);
+      // console.log(t);
+      dispatch(signupSuccess());
+
+      // navigate("/login");
+    } catch (err) {}
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -72,7 +82,7 @@ const UserRegister = () => {
           <Typography component="h1" variant="h5">
             Register
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+          <Box component="form" sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -80,6 +90,7 @@ const UserRegister = () => {
               name="email"
               type="email"
               label="Email"
+              onChange={(e) => setValues({ ...values, email: e.target.value })}
               placeholder="Enter your email"
               autoComplete="email"
               autoFocus
@@ -88,8 +99,45 @@ const UserRegister = () => {
               margin="normal"
               required
               fullWidth
-              name="userName"
+              name="full_Name"
+              label="Full Name"
+              onChange={(e) =>
+                setValues({ ...values, full_Name: e.target.value })
+              }
+              placeholder="Enter your full name"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="phone_number"
+              label="Phone Number"
+              onChange={(e) =>
+                setValues({ ...values, phone_number: e.target.value })
+              }
+              placeholder="Enter your phone number"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="image"
+              label="Image"
+              onChange={(e) => setValues({ ...values, image: e.target.value })}
+              placeholder="Enter your image"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="username"
               label="User name"
+              onChange={(e) =>
+                setValues({ ...values, username: e.target.value })
+              }
               placeholder="Enter your username"
               autoComplete="text"
               autoFocus
@@ -104,7 +152,9 @@ const UserRegister = () => {
               type={values.showPass ? "text" : "password"}
               id="password"
               //   autoComplete="current-password"
-
+              onChange={(e) =>
+                setValues({ ...values, password: e.target.value })
+              }
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">
@@ -124,7 +174,7 @@ const UserRegister = () => {
               }}
             />
             <Button
-              type="submit"
+              onClick={handleRegister}
               fullWidth
               variant="contained"
               color="error"

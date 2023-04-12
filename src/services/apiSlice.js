@@ -1,6 +1,20 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials, logout } from "../features/auth/authSlice";
 
+const baseQuery = fetchBaseQuery({
+  baseUrl: "http://localhost:8080",
+  credentials: "include",
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().auth.token;
+
+    if (token) {
+      headers.set("Authorization", `Bearer ${token}`);
+    }
+
+    return headers;
+  },
+});
+
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
@@ -27,22 +41,7 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   return result;
 };
 
-const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080",
-  credentials: 'include',
-  prepareHeaders: (headers) => {
-    const token = localStorage.getItem("access_token");
-
-    if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
-    }
-
-    return headers;
-  },
-});
-
-export const book = createApi({
-  reducerPath: "bookApi",
-  baseQuery: baseQueryWithReauth,
-  endpoints: () => ({}),
-});
+export const apiSlice = createApi({
+    baseQuery: baseQueryWithReauth,
+    endpoints: builder => ({})
+})

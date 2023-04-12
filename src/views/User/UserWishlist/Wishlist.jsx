@@ -3,8 +3,12 @@ import Typography from "@mui/joy/Typography";
 import React from 'react'
 import MiniCarousel from '../../../components/MiniCarousel/MiniCarousel'
 import ListProductCart from '../../User/UserCart/ListProductCart'
+import { useGetWishListQuery } from '../../../services/wishlistAPI';
 
 export default function Wishlist() {
+
+  const {data, isFetching} = useGetWishListQuery();
+
   return (
     <Box marginTop={3}>
       <ListProductCart title="Wishlist"/>

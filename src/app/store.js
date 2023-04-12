@@ -7,11 +7,12 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(book.middleware),
+  devTools: true,
 
   reducer: {
     [book.reducerPath]: book.reducer,
     user: authSlice,
-    prod: prodDetailSlice,
+    // prod: prodDetailSlice,
   },
 });
 

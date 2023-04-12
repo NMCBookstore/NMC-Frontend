@@ -16,7 +16,11 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
 import { useDispatch } from "react-redux";
-import { addSession } from "../../../features/auth/authSlice";
+import {
+  setCredentials,
+  loginStart,
+  loginFailed,
+} from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../services/authAPIs";
 
@@ -39,7 +43,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function UserLogin() {
-  const [login] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   const [values, setValues] = useState({
     username: "",
@@ -57,10 +61,18 @@ export default function UserLogin() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
-    const { data } = await login(values);
-    navigate("/");
-    dispatch(addSession(data));
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    dispatch(loginStart());
+    try {
+      const { data } = await login(values);
+      dispatch(setCredentials(data));
+    // navigate("/");
+
+    } catch (err) {
+      dispatch(loginFailed);
+    }
+
 
     // login(values).then(({ data }) => {
     //   navigate("/");

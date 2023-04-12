@@ -17,15 +17,15 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
+    <Provider store={store}>
     <BrowserRouter>
     <Suspense fallback={<div><CircularProgress /></div>}>
     <ThemeProvider theme = {theme}>
       <CssBaseline />
-      <Provider store={store}>
         <App />
-        </Provider>
     </ThemeProvider>
     </Suspense>
   </BrowserRouter>
+  </Provider>
   </React.StrictMode>
 );

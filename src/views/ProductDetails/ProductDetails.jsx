@@ -15,10 +15,8 @@ import DetailProductInfo from "./DetailProductInfo";
 import Recommend from "./Recommend";
 import Comment from "./CommentSection";
 import { useGetProductQuery } from "../../services/productAPIs";
-import {
-  useAddCartMutation,
-  useAddWishListMutation,
-} from "../../services/cartAPI";
+import { useAddCartMutation } from "../../services/cartAPI";
+import { useAddWishListMutation } from "../../services/wishlistAPI";
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");

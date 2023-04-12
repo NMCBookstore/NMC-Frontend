@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import Home from "./components/Home/Home";
 import { Navigate } from "react-router-dom";
+import { elements } from "chart.js";
 
 /**** User Layouts*****/
 const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
@@ -8,6 +9,8 @@ const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
 /**** Admin Layouts*****/
 const AdminLayout = lazy(() => import("./layoutAdmin/AdminLayout"));
 
+/**** Protected Routes*****/
+const RequireAuth = lazy(() => import("./features/auth/requireAuth"));
 /**** User Routes*****/
 
 const About = lazy(() => import("./pages/About"));
@@ -21,6 +24,8 @@ const UserCheckout = lazy(() => import("./views/User/UserCheckout"));
 const UserWishlist = lazy(() => import("./views/User/UserWishlist"));
 const ForgotPassword = lazy(() => import("./views/User/ForgotPassword"));
 const ResetPassword = lazy(() => import("./views/User/ResetPassword"));
+
+const Welcome = lazy(() => import("./features/auth/Welcome"));
 
 /**** Admin Routes*****/
 
@@ -43,10 +48,22 @@ const RouterCfg = [
     ],
   },
 
+  // {
+  //   element: [<RequireAuth/>],
+  //   children: [
+  //     {path: "welcome", element: <Welcome />}
+  //   ]
+  // },
+
   {
     path: "/user",
-    element: <Layout />,
+    element: [<Layout />],
     children: [
+      {
+        path: "auth",
+        element: <RequireAuth />,
+        children: [{ path: "welcome", element: <Welcome /> }],
+      },
       { path: "home", element: <Home /> },
       { path: "profile", element: <UserProfile /> },
       { path: "cart", element: <UserCart /> },

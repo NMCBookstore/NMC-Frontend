@@ -32,9 +32,9 @@ const headCells = [
     label: "Price",
   },
   {
-    id: "Quantity",
+    id: "Amount",
     numeric: true,
-    label: "Quantity",
+    label: "Amount",
   },
   {
     id: "Subtotal",
@@ -141,13 +141,14 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function ListProductCart({title, data, isFetching}) {
+export default function ListProductCart({ title, data, isFetching }) {
   const [selected, setSelected] = useState([]);
   const [rows, setRows] = useState([]);
 
-  useEffect(()=>{
-    setRows(data)
-  },[isFetching])
+
+  useEffect(() => {
+    setRows(data);
+  }, [isFetching]);
 
   function incrementCount(event, cart_id) {
     let rs = [...rows];
@@ -193,18 +194,16 @@ export default function ListProductCart({title, data, isFetching}) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          title={title}
-        />
+        <EnhancedTableToolbar numSelected={selected.length} title={title} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <EnhancedTableHead
               numSelected={selected.length}
               onSelectAllClick={handleSelectAllClick}
-              rowCount={rows?.length}
+              rowCount={rows?.length != null ? rows.length :0}
               title={title}
             />
+            
             <TableBody>
               {rows?.map((row, index) => {
                 const isItemSelected = isSelected(row.cart_id);
@@ -217,7 +216,6 @@ export default function ListProductCart({title, data, isFetching}) {
                         aria-checked={isItemSelected}
                         tabIndex={-1}
                         selected={isItemSelected}
-
                         // id cart
                         onClick={(event) => handleClick(event, row.cart_id)}
                         color="primary"
@@ -237,8 +235,8 @@ export default function ListProductCart({title, data, isFetching}) {
                       <Stack direction="row" alignItems="center" margin={1}>
                         {title === "Wishlist" ? (
                           <img
-                            src={row.book.image[0]}
-                            alt={row.book.name}
+                            src={row.image}
+                            alt={row.name}
                             style={{
                               width: "16%",
                               height: "100px",
@@ -246,20 +244,23 @@ export default function ListProductCart({title, data, isFetching}) {
                           />
                         ) : (
                           <img
-                          src={row.book.image[0]}
-                          alt={row.book.name}
+                            src={row.image}
+                            alt={row.name}
                             style={{
                               width: "25%",
                               height: "40%",
                             }}
                           />
                         )}
-                        <Typography marginLeft={2}>
-                          {row.book.name}
-                        </Typography>
+                        <Typography marginLeft={2}>{row.name}</Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell align="right">{row.book.price}</TableCell>
+                    <TableCell align="right">
+                      {parseFloat(row?.price).toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </TableCell>
                     {title !== "Wishlist" ? (
                       <TableCell align="right">
                         <Stack
@@ -268,18 +269,22 @@ export default function ListProductCart({title, data, isFetching}) {
                           marginRight="-57px"
                         >
                           <Button
-                            onClick={(event) => decrementCount(event, row.cart_id)}
+                            onClick={(event) =>
+                              decrementCount(event, row.cart_id)
+                            }
                           >
                             <RemoveIcon />
                           </Button>
                           <TextField
-                            value='0'
+                            value={row.amount}
                             disabled={true}
                             inputProps={{ textAlign: "center" }}
                             sx={{ width: "50px" }}
                           />
                           <Button
-                            onClick={(event) => incrementCount(event, row.cart_id)}
+                            onClick={(event) =>
+                              incrementCount(event, row.cart_id)
+                            }
                           >
                             <AddIcon />
                           </Button>
@@ -288,7 +293,10 @@ export default function ListProductCart({title, data, isFetching}) {
                     ) : null}
                     {title !== "Wishlist" ? (
                       <TableCell align="right">
-                        '100000'
+                        {parseFloat(row?.price*row?.amount).toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
                       </TableCell>
                     ) : null}
                     <TableCell align="right">

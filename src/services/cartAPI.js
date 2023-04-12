@@ -3,26 +3,18 @@ import { book } from "./baseAPI";
 const cart = book.injectEndpoints({
   endpoints: (builder) => ({
     addCart: builder.mutation({
-        query: (id) => ({
-            method: 'POST',
-            url: `users/add_to_cart/${id}`,
-        })
+      query: (id) => ({
+        method: "POST",
+        url: `users/carts/${id}`,
+      }),
     }),
     getCart: builder.query({
-      query: () =>({
-          url: `users/list_book_in_cart`,
-      })
-    }),
-    addWishList: builder.mutation({
-      query: (id) => ({
-        method:'POST',
-        url: `users/add_to_wishlist/${id}`
-      })
+      query: () => ({
+        url: `users/carts`,
+      }),
     }),
   }),
   overrideExisting: false,
 });
 
-export const { useAddCartMutation, useGetCartQuery, useAddWishListMutation } = cart;
-
-
+export const { useAddCartMutation, useGetCartQuery } = cart;
