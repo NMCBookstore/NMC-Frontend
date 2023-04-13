@@ -15,7 +15,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setCredentials,
   loginStart,
@@ -23,6 +23,7 @@ import {
 } from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../services/authAPIs";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -43,7 +44,9 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function UserLogin() {
+
   const [login, { isLoading }] = useLoginMutation();
+  const axiosPASETO = axios.create();
 
   const [values, setValues] = useState({
     username: "",
@@ -67,17 +70,21 @@ export default function UserLogin() {
     try {
       const { data } = await login(values);
       dispatch(setCredentials(data));
-    // navigate("/");
+    navigate("/user/welcome");
 
     } catch (err) {
       dispatch(loginFailed);
     }
-
-
     // login(values).then(({ data }) => {
     //   navigate("/");
     //   dispatch(addSession(data));
     // });
+
+    axiosPASETO.interceptors.request.use(
+      async(config) => {
+        
+      }
+    )
   };
 
   return (

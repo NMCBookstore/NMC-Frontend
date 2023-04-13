@@ -60,15 +60,16 @@ const RouterCfg = [
     element: [<Layout />],
     children: [
       {
-        path: "auth",
+        // protected route
         element: <RequireAuth />,
-        children: [{ path: "welcome", element: <Welcome /> }],
+        children: [
+          { path: "welcome", element: <Welcome /> },
+          { path: "cart", element: <UserCart /> },
+          { path: "profile", element: <UserProfile /> },
+          { path: "wishlist", element: <UserWishlist /> },
+          { path: "checkout", element: <UserCheckout /> },
+        ],
       },
-      { path: "home", element: <Home /> },
-      { path: "profile", element: <UserProfile /> },
-      { path: "cart", element: <UserCart /> },
-      { path: "wishlist", element: <UserWishlist /> },
-      { path: "checkout", element: <UserCheckout /> },
     ],
   },
 

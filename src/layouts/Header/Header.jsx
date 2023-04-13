@@ -7,9 +7,7 @@ import { Stack } from "@mui/system";
 import SearchBar from "../SearchBar";
 import Fade from "@mui/material/Fade";
 import IconButton from "@mui/material/IconButton";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
@@ -108,7 +106,7 @@ const Header = () => {
           &nbsp; Login
         </MenuItem>
       </Link>
-      
+
       <Link className={classes.link}>
         <MenuItem onClick={handleMenuClose}>
           <LogoutOutlinedIcon />
@@ -134,35 +132,7 @@ const Header = () => {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
-    >
-      <MenuItem>
-        <IconButton>
-          <Badge>
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton>
-          <Badge>
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
-    </Menu>
+    ></Menu>
   );
 
   return (
@@ -200,6 +170,21 @@ const Header = () => {
               </Badge>
             </IconButton>
             <IconButton
+              onClick={handleProfileMenuOpen}
+              size="large"
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              sx={{
+                 p: 0,
+                width: "80px",
+                height: "50px"
+                }}
+            >
+              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+            </IconButton>
+            {/* <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
@@ -211,7 +196,7 @@ const Header = () => {
               }}
             >
               <AccountCircle fontSize="100%" />
-            </IconButton>
+            </IconButton> */}
           </Box>
         </Stack>
       </Stack>

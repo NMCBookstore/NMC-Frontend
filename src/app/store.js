@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import authSlice from "../features/auth/authSlice";
+import authReducer from "../features/auth/authSlice";
 import prodDetailSlice from "../features/prodDetailSlice";
 import { book } from "../services/baseAPI";
 import { setupListeners } from "@reduxjs/toolkit/query";
@@ -11,7 +11,7 @@ const store = configureStore({
 
   reducer: {
     [book.reducerPath]: book.reducer,
-    user: authSlice,
+    auth: authReducer,
     // prod: prodDetailSlice,
   },
 });

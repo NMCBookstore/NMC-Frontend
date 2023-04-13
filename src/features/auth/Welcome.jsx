@@ -20,10 +20,10 @@ export default function Welcome() {
   const content = (
     <section className="welcome">
         <h1>{welcome}</h1>
-        <p>Token: {tokenAbbr}</p>
+        <h1>Token: {tokenAbbr}</h1>
         
     </section>
   )
 
-  return <div>Welcome</div>;
+  return content
 }
