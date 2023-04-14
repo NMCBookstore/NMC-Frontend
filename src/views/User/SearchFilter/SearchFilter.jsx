@@ -8,7 +8,7 @@ import { useGetAllProductQuery } from "../../../services/productAPIs";
 
 const SearchFilter = () => {
 
-  const {data} = useGetAllProductQuery({page_id:1, page_size:36});
+  const {data} = useGetAllProductQuery({page_id:1, page_size:24});
 
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>

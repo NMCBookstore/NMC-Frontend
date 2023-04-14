@@ -10,9 +10,10 @@ const auth = book.injectEndpoints({
       }),
     }),
     refresh: builder.mutation({
-      query: () => ({
+      query: (form) => ({
         method: 'POST',
-        url: `tokens/renew_access`
+        url: `tokens/renew_access`,
+        body: form
       })
     }),
     signup: builder.mutation({

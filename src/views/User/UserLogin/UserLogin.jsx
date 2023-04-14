@@ -16,14 +16,18 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  setCredentials,
-  loginStart,
-  loginFailed,
-} from "../../../features/auth/authSlice";
+import { setCredentials,loginStart,loginFailed,refresh } from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../../services/authAPIs";
+import {
+  useLoginMutation,
+  useRefreshMutation,
+} from "../../../services/authAPIs";
 import axios from "axios";
+import {
+  selectCurrentAccessToken,
+  selectCurrentUser,
+  selectCurrentExpiredAccessToken
+} from "../../../features/auth/authSlice";
 
 function Copyright(props) {
   return (
@@ -44,8 +48,14 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function UserLogin() {
-
   const [login, { isLoading }] = useLoginMutation();
+  const [refreshToken] = useRefreshMutation();
+
+  const pasetoToken = useSelector(selectCurrentAccessToken);
+  const user = useSelector(selectCurrentUser);
+  const expiredTime = useSelector(selectCurrentExpiredAccessToken);
+
+  console.log(expiredTime);
   const axiosPASETO = axios.create();
 
   const [values, setValues] = useState({
@@ -69,9 +79,9 @@ export default function UserLogin() {
     dispatch(loginStart());
     try {
       const { data } = await login(values);
-      dispatch(setCredentials(data));
-    navigate("/user/welcome");
-
+     const t= dispatch(setCredentials(data));
+      console.log(t);
+      navigate("/user/welcome");
     } catch (err) {
       dispatch(loginFailed);
     }
@@ -79,13 +89,27 @@ export default function UserLogin() {
     //   navigate("/");
     //   dispatch(addSession(data));
     // });
-
-    axiosPASETO.interceptors.request.use(
-      async(config) => {
-        
-      }
-    )
   };
+  axiosPASETO.interceptors.request.use(
+    async (config) => {
+      let date = new Date();
+      if (expiredTime < date.getTime() / 1000) {
+        const res = await refreshToken();
+        const refreshUser = {
+          ...user,
+          access_token: res.access_token,
+          refreshToken: res.refreshToken,
+        };
+        dispatch(setCredentials(refreshUser));
+        config.headers["token"] = "Bearer" + res.access_token;
+      }
+      return config;
+      
+    },
+    // (err) => {
+    //   return Promise.reject(err);
+    // }
+  );
 
   return (
     <ThemeProvider theme={theme}>

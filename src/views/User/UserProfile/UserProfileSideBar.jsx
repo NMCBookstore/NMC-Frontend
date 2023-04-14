@@ -1,67 +1,103 @@
 import React, { useState } from "react";
-import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemButton from "@mui/material/ListItemButton";
-import { Button } from "@mui/joy";
 import { useNavigate } from "react-router-dom";
-import UserContentProfile from "./UserContentProfile";
 import UserContentChangePassword from "./UserContentChangePassword";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import UserContentProfile from "./UserContentProfile";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import PropTypes from "prop-types";
 
-const profileSidebar = [
-  {
-    title: "Profile",
-    route: "/user-profile",
-  },
-  {
-    title: "Change Password",
-    route: "/user-profile/change_password",
-  },
-  {
-    title: "My order",
-    route: "/user-profile/order",
-  },
-];
 
-export default function UserProfileSideBar() {
-  const navigate = useNavigate();
-  const [tab, setTab] = useState("");
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Stack>
-        <Typography variant="h5" fontWeight="500">
-          Profile
-        </Typography>
-        {profileSidebar.map((profile, index) => (
-          <List disablePadding key={index}>
-            <ListItemButton to={profile.route}>
-              <ListItemText primary={profile.title} />
-            </ListItemButton>
-          </List>
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`vertical-tabpanel-${index}`}
+      aria-labelledby={`vertical-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3, width:800, height: 500}}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+TabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    "aria-controls": `vertical-tabpanel-${index}`,
+  };
+}
+
+export default function UserProfileSideBar() {
+  const [value, setValue] = React.useState(0);
+  const navigate = useNavigate();
+  const [tab, setTab] = useState(false);
+  const [activeTab, setActiveTab] =  React.useState(0);
+
+   
+
+  const handleTabChange = (event, newValue) => {
+    setActiveTab(newValue);
+  };
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const profileSidebar = [
+    {
+      title: "Profile",
+      component: <UserContentProfile />,
+    },
+    {
+      title: "Change Password",
+      component: <UserContentChangePassword />,
+    },
+    {
+      title: "My order",
+      // route: "/user-profile/order",
+    },
+  ];
+
+  return (
+    <Box
+      sx={{
+        flexGrow: 1,
+        bgcolor: "background.paper",
+        display: "flex",
+        height: 224,
+      }}
+    >
+      <Tabs
+        orientation="vertical"
+        variant="fullWidth"
+        value={activeTab}
+        onChange={handleTabChange}
+        aria-label="Vertical tabs example"
+        sx={{ borderRight: 1, borderColor: "divider" }}
+      >
+        {profileSidebar.map((item, index) => (
+          <Tab label={item.title} key={index} />
         ))}
-
-        {/* <List disablePadding>
-          <ListItemButton to="/user-profile">
-            
-            <ListItemText primary="Profile" />
-          </ListItemButton>
-
-          <ListItemButton to="/user-profile/change_password">
-            <ListItemText primary="Change password" />
-          </ListItemButton>
-
-          <ListItemButton to="/user-profile/order">
-            <ListItemText primary="My order" />
-          </ListItemButton>
-        </List> */}
-      </Stack>
+      </Tabs>
+      {/* <TabPanel value={value} index={0}> */}
+        {profileSidebar[activeTab].component}
+      {/* </TabPanel> */}
     </Box>
   );
 }

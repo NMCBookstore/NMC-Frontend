@@ -21,10 +21,15 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SideBar from "../SideBar/SideBar";
 import useStyles from "./styles";
+import { selectCurrentUser } from "../../features/auth/authSlice";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+
+  const user = useSelector(selectCurrentUser);
+  const hello = user ? `Hello ${user}!` : `Hello ! Sign in to explore`;
 
   const naviWishlist = () => navigate("/user/wishlist");
   const naviCart = () => navigate("/user/cart");
@@ -73,8 +78,11 @@ const Header = () => {
       open={open}
       onClose={handleClose}
       TransitionComponent={Fade}
+      sx={{ mt: "5px" }}
     >
-      <Link to="/user/profile" className={classes.link}>
+      <MenuItem> {hello}</MenuItem>
+
+      <Link className={classes.link} to="/user/profile">
         <MenuItem onClick={handleMenuClose}>
           <PersonIcon />
           &nbsp; Profile
@@ -177,10 +185,10 @@ const Header = () => {
               aria-controls={menuId}
               aria-haspopup="true"
               sx={{
-                 p: 0,
+                p: 0,
                 width: "80px",
-                height: "50px"
-                }}
+                height: "50px",
+              }}
             >
               <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
             </IconButton>

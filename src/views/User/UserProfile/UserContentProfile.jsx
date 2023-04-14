@@ -14,40 +14,48 @@ const profileContent = {
   avatarUrl: "",
 };
 
-export default function UserContentProfile() {
-  const [info, setInfo] = React.useState(profileContent);
+export default function UserContentProfile({ data }) {
+  // const [info, setInfo] = React.useState(data);
   return (
     <Stack spacing={2} sx={{ width: "80%", display: "flex", flexWrap: "wrap" }}>
       <TextField
-        label="First Name"
-        defaultValue={info.firstName}
+        InputLabelProps={{ shrink: true }}
+        label="User Name"
+        value={data?.username}
         onChange={(event) => {
           setInfo(event.target.value);
         }}
       />
       <TextField
-        label="Last Name"
-        defaultValue={info.lastName}
+        InputLabelProps={{ shrink: true }}
+        label="Full Name"
+        value={data?.full_name}
         onChange={(event) => {
           setInfo(event.target.value);
         }}
       />
-      <TextField disabled label="Email" defaultValue={info.email} />
+      <TextField
+        InputLabelProps={{ shrink: true }}
+        disabled
+        label="Email"
+        value={data?.email}
+      />
 
       <TextField
+        InputLabelProps={{ shrink: true }}
         label="Phone Number"
-        defaultValue={info.phone}
+        value={data?.phone_number}
         onChange={(event) => {
           setInfo(event.target.value);
         }}
       />
-      <TextField
+      {/* <TextField
         label="Address"
         defaultValue={info.address}
         onChange={(event) => {
           setInfo(event.target.value);
         }}
-      />
+      /> */}
       <Button variant="contained" component="label" sx={{ width: "50%" }}>
         Upload avatar
         <input hidden accept="image/*" multiple type="file" />
@@ -56,14 +64,28 @@ export default function UserContentProfile() {
       <Stack direction="row">
         <Button
           variant="outlined"
-          sx={{ mt: 2, width: "50%", marginLeft: "25%" }}
+          sx={{
+            mt: 2,
+            width: "50%",
+            height: "50%",
+            marginLeft: "25%",
+          }}
         >
           Cancel
         </Button>
         <Button
           type="submit"
           variant="contained"
-          sx={{ mt: 2, width: "50%", marginLeft: "25%" }}
+          sx={{
+            mt: 2,
+            width: "50%",
+            height: "50%",
+            marginLeft: "25%",
+            backgroundColor: "#DB4444",
+            "&:hover": {
+              backgroundColor: "#DB4444",
+            },
+          }}
         >
           Save changes
         </Button>

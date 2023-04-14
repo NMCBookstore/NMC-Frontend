@@ -70,7 +70,7 @@ const authSlice = createSlice({
       localStorage.clear();
     },
     refresh: (state, action) => {
-      state.refresh_token = localStorage.getItem("refresh_token");
+      state.refresh_token = localStorage.setItem("refresh_token");
       state.access_token_expires_at = localStorage.getItem("access_token_expires_at");
       state.refresh_token_expires_at = localStorage.getItem("refresh_token_expires_at");
     },
@@ -94,6 +94,7 @@ export const selectCurrentUser = () => {
   const user = localStorage.getItem('user');
   return user ? JSON.parse(user).username : null;
 }
-export const selectCurrentAccessToken = () => localStorage.getItem('access_token')
-export const selectCurrentRefreshToken = () =>  localStorage.getItem('refresh_token');;
-export const selectCurrentSession = () =>  localStorage.getItem('session_id');;
+export const selectCurrentAccessToken = () => localStorage.getItem('access_token');
+export const selectCurrentRefreshToken = () =>  localStorage.getItem('refresh_token');
+export const selectCurrentSession = () =>  localStorage.getItem('session_id');
+export const selectCurrentExpiredAccessToken = () => localStorage.getItem('access_token_expires_at');
