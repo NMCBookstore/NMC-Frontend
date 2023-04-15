@@ -1,7 +1,11 @@
-import React from 'react'
-import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Pagination from "@mui/material/Pagination";
+import React from "react";
+import {
+  Box,
+  CircularProgress,
+  Pagination,
+  Stack,
+  useMediaQuery,
+} from "@mui/material";
 import PropTypes from "prop-types";
 
 PaginationBottom.PropTypes = {
@@ -11,33 +15,34 @@ PaginationBottom.PropTypes = {
 
 PaginationBottom.defaultProps = {
   onPageChange: null,
-}
+};
 
 export default function PaginationBottom() {
-
   // const {pagination, onPageChange} = props;
+  const isMobile = useMediaQuery('(max-width: 800px)');
 
   function handlePageChange(newPage) {
-    if (onPageChange){
-      onPageChange(newPage)
+    if (onPageChange) {
+      onPageChange(newPage);
     }
   }
 
   return (
-    <Box my={2}
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-    }}
-  >
-    <Stack>
-      <Pagination
-        defaultPage={1}
-        count={10}
-        showFirstButton
-        showLastButton
-      />
-    </Stack>
-  </Box>
-  )
+    <Box
+      my={2}
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <Stack>
+        <Pagination
+         defaultPage={1} 
+         count={10} 
+         size={isMobile ? 'small' : 'large'}
+         showFirstButton 
+         showLastButton />
+      </Stack>
+    </Box>
+  );
 }

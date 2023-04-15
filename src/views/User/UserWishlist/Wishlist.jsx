@@ -1,20 +1,23 @@
-import { Box, Divider } from '@mui/material'
+import { Box, Divider } from "@mui/material";
 import Typography from "@mui/joy/Typography";
-import React from 'react'
-import MiniCarousel from '../../../components/MiniCarousel/MiniCarousel'
-import ListProductCart from '../../User/UserCart/ListProductCart'
-import { useGetWishListQuery } from '../../../services/wishlistAPI';
+import React from "react";
+import MiniCarousel from "../../../components/MiniCarousel/MiniCarousel";
+import ListProductCart from "../../User/UserCart/ListProductCart";
+import ListWishList from "./ListWishList";
+import { useGetWishListQuery } from "../../../services/wishlistAPI";
 
 export default function Wishlist() {
-
-  const {data, isFetching} = useGetWishListQuery();
+  const { data, isFetching } = useGetWishListQuery();
 
   return (
     <Box marginTop={3}>
-      <ListProductCart title="Wishlist"/>
+      <ListWishList title="Wishlist" data = {data} isFetching = {isFetching}/>
       <Box marginTop={20}>
         <Divider sx={{ backgroundColor: "black", marginBottom: "-20px" }} />
-        <Box marginBottom={2} sx={{ display: "flex", justifyContent: "center" }}>
+        <Box
+          marginBottom={2}
+          sx={{ display: "flex", justifyContent: "center" }}
+        >
           <Typography
             lineHeight="lg"
             variant="solid"
@@ -28,8 +31,8 @@ export default function Wishlist() {
             Just For You
           </Typography>
         </Box>
-        <MiniCarousel/>
+        <MiniCarousel />
       </Box>
     </Box>
-  )
+  );
 }
