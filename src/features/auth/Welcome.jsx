@@ -4,12 +4,12 @@ import {
   selectCurrentAccessToken,
   selectCurrentRefreshToken,
   selectCurrentSession,
-  selectCurrentUser,
+  selectCurrentUserName,
 } from "./authSlice";
 import { Link } from "react-router-dom";
 
 export default function Welcome() {
-  const user = useSelector(selectCurrentUser);
+  const user = useSelector(selectCurrentUserName);
   const token = useSelector(selectCurrentAccessToken);
   const rftoken = useSelector(selectCurrentRefreshToken);
   const session = useSelector(selectCurrentSession);

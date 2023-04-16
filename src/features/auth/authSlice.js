@@ -67,7 +67,7 @@ const authSlice = createSlice({
 
     logout: (state, action) => {
       state.isAuthenticated = false;
-      localStorage.clear();
+      // localStorage.clear();
     },
     refresh: (state, action) => {
       state.refresh_token = localStorage.setItem("refresh_token");
@@ -90,11 +90,10 @@ export const {
 
 export default authSlice.reducer;
 
-export const selectCurrentUser = () => {
-  const user = localStorage.getItem('user');
-  return user ? JSON.parse(user).username : null;
-}
-export const selectCurrentAccessToken = () => localStorage.getItem('access_token');
-export const selectCurrentRefreshToken = () =>  localStorage.getItem('refresh_token');
-export const selectCurrentSession = () =>  localStorage.getItem('session_id');
-export const selectCurrentExpiredAccessToken = () => localStorage.getItem('access_token_expires_at');
+
+export const selectCurrentUser = (state) => state.auth.login.user
+export const selectCurrentUserName = (state) => state.auth.login.user.username;
+export const selectCurrentAccessToken = (state) => state.auth.login.access_token
+export const selectCurrentRefreshToken = (state) =>  state.auth.login.refresh_token
+export const selectCurrentSession = (state) =>  state.auth.login.session_id;
+export const selectCurrentExpiredAccessToken = (state) => state.auth.login.access_token_expires_at

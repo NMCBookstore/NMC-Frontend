@@ -16,18 +16,23 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
 import { useDispatch, useSelector } from "react-redux";
-import { setCredentials,loginStart,loginFailed,refresh } from "../../../features/auth/authSlice";
+import {
+  setCredentials,
+  loginStart,
+  loginFailed,
+  refresh,
+} from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import {
   useLoginMutation,
   useRefreshMutation,
 } from "../../../services/authAPIs";
-import axios from "axios";
 import {
   selectCurrentAccessToken,
   selectCurrentUser,
-  selectCurrentExpiredAccessToken
+  selectCurrentExpiredAccessToken,
 } from "../../../features/auth/authSlice";
+import toast, { Toaster } from "react-hot-toast";
 
 function Copyright(props) {
   return (
@@ -55,8 +60,7 @@ export default function UserLogin() {
   const user = useSelector(selectCurrentUser);
   const expiredTime = useSelector(selectCurrentExpiredAccessToken);
 
-  console.log(expiredTime);
-  const axiosPASETO = axios.create();
+  // console.log(expiredTime);
 
   const [values, setValues] = useState({
     username: "",
@@ -79,10 +83,11 @@ export default function UserLogin() {
     dispatch(loginStart());
     try {
       const { data } = await login(values);
-     const t= dispatch(setCredentials(data));
-      console.log(t);
+      dispatch(setCredentials(data));
+      toast.success("Login success !")
       navigate("/user/welcome");
     } catch (err) {
+      toast.error('Login failed !');
       dispatch(loginFailed);
     }
     // login(values).then(({ data }) => {
@@ -90,27 +95,6 @@ export default function UserLogin() {
     //   dispatch(addSession(data));
     // });
   };
-  axiosPASETO.interceptors.request.use(
-    async (config) => {
-      let date = new Date();
-      if (expiredTime < date.getTime() / 1000) {
-        const res = await refreshToken();
-        const refreshUser = {
-          ...user,
-          access_token: res.access_token,
-          refreshToken: res.refreshToken,
-        };
-        dispatch(setCredentials(refreshUser));
-        config.headers["token"] = "Bearer" + res.access_token;
-      }
-      return config;
-      
-    },
-    // (err) => {
-    //   return Promise.reject(err);
-    // }
-  );
-
   return (
     <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh" }}>

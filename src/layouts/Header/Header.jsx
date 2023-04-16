@@ -21,14 +21,18 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SideBar from "../SideBar/SideBar";
 import useStyles from "./styles";
-import { selectCurrentUser } from "../../features/auth/authSlice";
-import { useSelector } from "react-redux";
+import { selectCurrentUserName, logout, selectCurrentExpiredAccessToken } from "../../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import toast, { Toast } from "react-hot-toast";
 
 const Header = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const user = useSelector(selectCurrentUser);
+  const user = useSelector(selectCurrentUserName);
+  const expired = useSelector(selectCurrentExpiredAccessToken);
+  console.log(expired)
   const hello = user ? `Hello ${user}!` : `Hello ! Sign in to explore`;
 
   const naviWishlist = () => navigate("/user/wishlist");
@@ -80,7 +84,16 @@ const Header = () => {
       TransitionComponent={Fade}
       sx={{ mt: "5px" }}
     >
-      <MenuItem> {hello}</MenuItem>
+      {user ? (
+        <MenuItem> {hello}</MenuItem>
+      ) : (
+        <Link className={classes.link} to="/login">
+          <MenuItem onClick={handleMenuClose}>
+            <LoginIcon />
+            &nbsp; Login
+          </MenuItem>
+        </Link>
+      )}
 
       <Link className={classes.link} to="/user/profile">
         <MenuItem onClick={handleMenuClose}>
@@ -108,19 +121,20 @@ const Header = () => {
         </MenuItem>
       </Link>
 
-      <Link className={classes.link} to="/login">
-        <MenuItem onClick={handleMenuClose}>
-          <LoginIcon />
-          &nbsp; Login
-        </MenuItem>
-      </Link>
-
-      <Link className={classes.link}>
-        <MenuItem onClick={handleMenuClose}>
-          <LogoutOutlinedIcon />
-          &nbsp; Logout
-        </MenuItem>
-      </Link>
+      {user ? (
+        <Link className={classes.link}>
+          {/* <MenuItem onClick={() => dispatch(logout()) }> */}
+          <MenuItem>
+            <LogoutOutlinedIcon />
+            &nbsp; Logout
+          </MenuItem>
+        </Link>
+      ) : (
+        <Link className={classes.link} to="/">
+          <MenuItem onClick={handleMenuClose}>
+          </MenuItem>
+        </Link>
+      )}
     </Menu>
   );
 
