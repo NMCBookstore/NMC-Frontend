@@ -7,7 +7,7 @@ import ListProductCart from "./ListProductCart";
 import { useGetCartQuery } from "../../../services/cartAPI";
 
 export default function UserCart() {
-  const { data, isFetching} = useGetCartQuery();
+  const { data, isFetching} = useGetCartQuery('userCart',{refetchOnMountOrArgChange: true});
 
   return (
     <Box sx={{ flexGrow: 1 }}>

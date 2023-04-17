@@ -7,7 +7,7 @@ import ListWishList from "./ListWishList";
 import { useGetWishListQuery } from "../../../services/wishlistAPI";
 
 export default function Wishlist() {
-  const { data, isFetching } = useGetWishListQuery();
+  const { data, isFetching } = useGetWishListQuery('userWishlist',{refetchOnMountOrArgChange: true});
 
   return (
     <Box marginTop={3}>

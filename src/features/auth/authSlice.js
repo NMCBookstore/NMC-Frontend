@@ -42,7 +42,7 @@ const authSlice = createSlice({
       state.login.refresh_token_expires_at = action.payload.refresh_token_expires_at;
       // state.login.isAuthenticated = true;
 
-      // localStorage.setItem("access_token", action.payload.access_token);
+      localStorage.setItem("access_token", action.payload.access_token);
       // localStorage.setItem("user", JSON.stringify(action.payload.user));
       // localStorage.setItem("session_id", action.payload.session_id);
       localStorage.setItem("refresh_token", action.payload.refresh_token);

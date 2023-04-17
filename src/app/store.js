@@ -19,6 +19,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
+  whitelist: ["auth"],
 };
 
 const rootReducer = combineReducers({
@@ -39,7 +40,7 @@ const store = configureStore({
   devTools: true,
 });
 
-export let persistor = persistStore(store)
+export let persistor = persistStore(store);
 
 setupListeners(store.dispatch);
 
