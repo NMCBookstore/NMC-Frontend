@@ -1,18 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials, logout } from "../features/auth/authSlice";
 
-
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080",
-  credentials: 'include',
-  prepareHeaders: (headers) => {
-    const token = localStorage.getItem("access_token");
+  credentials: "include",
+  prepareHeaders: (headers, { getState }) => {
+    const token = getState().auth.login.access_token;
 
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
 
-    // console.log(token)
+    console.log(token);
 
     return headers;
   },
@@ -22,9 +21,11 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (result.error && result.error.status === 401) {
-    const refreshToken = api.getState().auth.login.refresh_token;
+    const refreshToken = api.getState().auth.login.currentUser.refresh_token;
+    const users = api.getState().state.auth.login.currentUser;
+    console.log(users);
     // const refreshToken = state.auth.refreshToken;
-    console.log(refreshToken)
+    console.log(refreshToken);
 
     console.log("sending refresh token");
     //send the request token
@@ -41,11 +42,12 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
     );
     console.log(refreshResult);
 
-    if (refreshResult.data) {
-      const user = api.getState().auth.login.user.username;
-      console.log(user);
+    if (refreshResult?.data) {
+      const user = api.getState().state.auth.login.currentUser;
+      // console.log(user);
+
       //store the new token
-      api.dispatch(setCredentials({...refreshResult.data, user}));
+      api.dispatch(setCredentials({ ...refreshResult.data, user }));
       //retry the original query with new access token
       result = await baseQuery(args, api, extraOptions);
     } else {
@@ -54,7 +56,6 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   }
   return result;
 };
-
 
 export const book = createApi({
   reducerPath: "bookApi",

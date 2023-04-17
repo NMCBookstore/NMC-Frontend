@@ -21,7 +21,13 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import SideBar from "../SideBar/SideBar";
 import useStyles from "./styles";
-import { selectCurrentUserName, logout, selectCurrentExpiredAccessToken } from "../../features/auth/authSlice";
+import {
+  selectCurrentUserName,
+  logout,
+  selectCurrentRefreshToken,
+  selectCurrentExpiredAccessToken,
+  selectCurrentAccessToken,
+} from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toast } from "react-hot-toast";
 
@@ -31,6 +37,8 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(selectCurrentUserName);
+  const accessToken = useSelector(selectCurrentAccessToken);
+  const refreshToken = useSelector(selectCurrentRefreshToken);
   const expired = useSelector(selectCurrentExpiredAccessToken);
   console.log(expired)
   const hello = user ? `Hello ${user}!` : `Hello ! Sign in to explore`;
@@ -131,8 +139,7 @@ const Header = () => {
         </Link>
       ) : (
         <Link className={classes.link} to="/">
-          <MenuItem onClick={handleMenuClose}>
-          </MenuItem>
+          <MenuItem onClick={handleMenuClose}></MenuItem>
         </Link>
       )}
     </Menu>

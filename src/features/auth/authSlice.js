@@ -4,14 +4,16 @@ const authSlice = createSlice({
   name: "auth",
   initialState: {
     login: {
-      session_id: null,
-      user: null,
-      access_token: null,
-      refresh_token: null,
-      access_token_expires_at: null,
-      refresh_token_expires_at: null,
+      // session_id: null,
+      // user: null,
+      // access_token: null,
+      // refresh_token: null,
+      // access_token_expires_at: null,
+      // refresh_token_expires_at: null,
+      currentUser: null,
       isFetching: false,
-      isAuthenticated: localStorage.getItem("access_token") ? true : false,
+      error: false,
+      // isAuthenticated: localStorage.getItem("access_token") ? true : false,
     },
     signup: {
       username: null,
@@ -28,21 +30,25 @@ const authSlice = createSlice({
       state.login.isFetching = true;
     },
     setCredentials: (state, action) => {
-      const { user, session_id, access_token, refresh_token, access_token_expires_at, refresh_token_expires_at } = action.payload;
-      state.login.user = user;
+
+      state.login.isFetching=false;
+      state.login.currentUser = action.payload;
+      state.login.error = false;
+      const { session_id, access_token, refresh_token, access_token_expires_at, refresh_token_expires_at } = action.payload;
+      // state.login.user = user.username;
       state.login.session_id = session_id;
       state.login.access_token = access_token;
       state.login.refresh_token = refresh_token;
       state.login.access_token_expires_at = access_token_expires_at;
       state.login.refresh_token_expires_at = refresh_token_expires_at;
-      state.login.isAuthenticated = true;
+      // state.login.isAuthenticated = true;
 
-      localStorage.setItem("access_token", action.payload.access_token);
-      localStorage.setItem("user", JSON.stringify(action.payload.user));
-      localStorage.setItem("session_id", action.payload.session_id);
-      localStorage.setItem("refresh_token", action.payload.refresh_token);
-      localStorage.setItem("access_token_expires_at", action.payload.access_token_expires_at);
-      localStorage.setItem("refresh_token_expires_at", action.payload.refresh_token_expires_at);
+      // localStorage.setItem("access_token", action.payload.access_token);
+      // localStorage.setItem("user", JSON.stringify(action.payload.user));
+      // localStorage.setItem("session_id", action.payload.session_id);
+      // localStorage.setItem("refresh_token", action.payload.refresh_token);
+      // localStorage.setItem("access_token_expires_at", action.payload.access_token_expires_at);
+      // localStorage.setItem("refresh_token_expires_at", action.payload.refresh_token_expires_at);
     },
     loginFailed: (state) => {
       state.login.isFetching = false;
@@ -69,11 +75,6 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       // localStorage.clear();
     },
-    refresh: (state, action) => {
-      state.refresh_token = localStorage.setItem("refresh_token");
-      state.access_token_expires_at = localStorage.getItem("access_token_expires_at");
-      state.refresh_token_expires_at = localStorage.getItem("refresh_token_expires_at");
-    },
   },
 });
 
@@ -91,9 +92,9 @@ export const {
 export default authSlice.reducer;
 
 
-export const selectCurrentUser = (state) => state.auth.login.user
-export const selectCurrentUserName = (state) => state.auth.login.user.username;
-export const selectCurrentAccessToken = (state) => state.auth.login.access_token
-export const selectCurrentRefreshToken = (state) =>  state.auth.login.refresh_token
-export const selectCurrentSession = (state) =>  state.auth.login.session_id;
-export const selectCurrentExpiredAccessToken = (state) => state.auth.login.access_token_expires_at
+export const selectCurrentUser = (state) => state.auth.login.currentUser.user
+export const selectCurrentUserName = (state) => state.auth.login.currentUser.user.username
+export const selectCurrentAccessToken = (state) => state.auth.login.currentUser.access_token
+export const selectCurrentRefreshToken = (state) =>  state.auth.login.currentUser.refresh_token
+export const selectCurrentSession = (state) =>  state.auth.login.currentUser.session_id
+export const selectCurrentExpiredAccessToken = (state) => state.auth.login.currentUser.access_token_expires_at
