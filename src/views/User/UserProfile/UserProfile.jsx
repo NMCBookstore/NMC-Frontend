@@ -59,7 +59,7 @@ export default function UserProfile() {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  console.log(data);
+  // console.log(data);
 
   const profileSidebar = [
     {

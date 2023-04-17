@@ -37,10 +37,11 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(selectCurrentUserName);
+  console.log("this is user name : " + user);
   const accessToken = useSelector(selectCurrentAccessToken);
   const refreshToken = useSelector(selectCurrentRefreshToken);
   const expired = useSelector(selectCurrentExpiredAccessToken);
-  console.log(expired)
+  console.log("expired time : " + expired)
   const hello = user ? `Hello ${user}!` : `Hello ! Sign in to explore`;
 
   const naviWishlist = () => navigate("/user/wishlist");
