@@ -15,12 +15,12 @@ export default function Welcome() {
   const session = useSelector(selectCurrentSession);
 
   const welcome = user ? `Welcome ${user}!` : `Welcome !`
-  const tokenAbbr = `${token.slice(0,9)}...`
+  const tokenAbbr = `${token.slice(0,1)}...`
 
   const content = (
     <section className="welcome">
         <h1>{welcome}</h1>
-        <h1>Token: {tokenAbbr}</h1>
+        <h1>Token: {token}</h1>
         
     </section>
   )

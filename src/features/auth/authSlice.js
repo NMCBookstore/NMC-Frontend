@@ -5,12 +5,12 @@ const authSlice = createSlice({
   initialState: {
     login: {
       session_id: null,
-      // user: null,
+      user: null,
       access_token: null,
       refresh_token: null,
       access_token_expires_at: null,
       refresh_token_expires_at: null,
-      currentUser: null,
+      // currentUser: null,
       isFetching: false,
       error: false,
       // isAuthenticated: localStorage.getItem("access_token") ? true : false,
@@ -32,7 +32,7 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
 
       state.login.isFetching=false;
-      state.login.currentUser = action.payload.currentUser;
+      state.login.user = action.payload.user;
       state.login.error = false;
       // state.login.user = user.username;
       state.login.session_id = action.payload.session_id;
@@ -42,10 +42,10 @@ const authSlice = createSlice({
       state.login.refresh_token_expires_at = action.payload.refresh_token_expires_at;
       // state.login.isAuthenticated = true;
 
-      localStorage.setItem("access_token", action.payload.access_token);
+      // localStorage.setItem("access_token", action.payload.access_token);
       // localStorage.setItem("user", JSON.stringify(action.payload.user));
       // localStorage.setItem("session_id", action.payload.session_id);
-      localStorage.setItem("refresh_token", action.payload.refresh_token);
+      // localStorage.setItem("refresh_token", action.payload.refresh_token);
       // localStorage.setItem("access_token_expires_at", action.payload.access_token_expires_at);
       // localStorage.setItem("refresh_token_expires_at", action.payload.refresh_token_expires_at);
     },

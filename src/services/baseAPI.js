@@ -5,15 +5,15 @@ import { Mutex } from "async-mutex";
 const mutex = new Mutex();
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080",
-  credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.login.access_token;
+    const tokenTime = getState().auth.login.access_token_expires_at
 
-    if (token) {
+    if (token && tokenTime) {
       headers.set("Authorization", `Bearer ${token}`);
     }
 
-    // console.log(token);
+    console.log("this is the access token: " + token);
 
     return headers;
   },
@@ -22,7 +22,12 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   await mutex.waitForUnlock();
   let result = await baseQuery(args, api, extraOptions);
-  const refreshToken = api.getState().auth.login.refresh_token;
+  const refresh_token = api.getState().auth.login.refresh_token;
+  const user = api.getState().auth.login.user;
+  const session_id = api.getState().auth.login.session_id;
+  const refresh_token_expires_at = api.getState().auth.login.refresh_token_expires_at;
+
+  console.log("this is the refresh token: " + refresh_token)
 
   if (result.error && result.error.status === 401) {
     if (!mutex.isLocked()) {
@@ -35,18 +40,17 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
             url: "tokens/renew_access",
             method: "POST",
             body: {
-              refresh_token: refreshToken,
+              refresh_token: refresh_token,
             },
           },
           api,
           extraOptions
         );
+        console.log("this is refresh result: ", refreshResult)
         if (refreshResult?.data) {
-          const refresh_token = localStorage.getItem("refresh_token");
-
           //store the new token
           api.dispatch(
-            setCredentials({ ...refreshResult.data, refresh_token })
+            setCredentials({...refreshResult.data, refresh_token, user, session_id,refresh_token_expires_at})
           );
           //retry the original query with new access token
           result = await baseQuery(args, api, extraOptions);

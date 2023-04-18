@@ -48,13 +48,6 @@ const RouterCfg = [
     ],
   },
 
-  // {
-  //   element: [<RequireAuth/>],
-  //   children: [
-  //     {path: "welcome", element: <Welcome />}
-  //   ]
-  // },
-
   {
     path: "/user",
     element: [<Layout />],
@@ -62,7 +55,9 @@ const RouterCfg = [
       {
         // protected route
         element: <RequireAuth />,
-        children: [{ path: "welcome", element: <Welcome /> }],
+        children: [
+          { path: "welcome", element: <Welcome /> },
+        ],
       },
       { path: "cart", element: <UserCart /> },
       { path: "profile", element: <UserProfile /> },

@@ -27,6 +27,7 @@ import {
   selectCurrentRefreshToken,
   selectCurrentExpiredAccessToken,
   selectCurrentAccessToken,
+  selectCurrentUser,
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toast } from "react-hot-toast";
@@ -36,13 +37,14 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const user = useSelector(selectCurrentUserName);
-  console.log("this is user name : " + user);
+  const user = useSelector(selectCurrentUser);
+  const userName = user ? useSelector(selectCurrentUserName) : null;
+  // console.log("this is user name : " + user);
   const accessToken = useSelector(selectCurrentAccessToken);
   const refreshToken = useSelector(selectCurrentRefreshToken);
   const expired = useSelector(selectCurrentExpiredAccessToken);
-  console.log("expired time : " + expired)
-  const hello = user ? `Hello ${user}!` : `Hello ! Sign in to explore`;
+  // console.log("expired time : " + expired)
+  const hello = user ? `Hello ${userName}!` : `Hello ! Sign in to explore`;
 
   const naviWishlist = () => navigate("/user/wishlist");
   const naviCart = () => navigate("/user/cart");
@@ -94,7 +96,7 @@ const Header = () => {
       sx={{ mt: "5px" }}
     >
       {user ? (
-        <MenuItem> {hello}</MenuItem>
+        <MenuItem>{hello}</MenuItem>
       ) : (
         <Link className={classes.link} to="/login">
           <MenuItem onClick={handleMenuClose}>
@@ -130,19 +132,12 @@ const Header = () => {
         </MenuItem>
       </Link>
 
-      {user ? (
         <Link className={classes.link}>
-          {/* <MenuItem onClick={() => dispatch(logout()) }> */}
-          <MenuItem>
+          <MenuItem onClick={() => dispatch(logout()) }>
             <LogoutOutlinedIcon />
             &nbsp; Logout
           </MenuItem>
         </Link>
-      ) : (
-        <Link className={classes.link} to="/">
-          <MenuItem onClick={handleMenuClose}></MenuItem>
-        </Link>
-      )}
     </Menu>
   );
 
