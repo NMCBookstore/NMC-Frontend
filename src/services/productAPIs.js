@@ -11,10 +11,16 @@ const product = book.injectEndpoints({
         page_size,
       }) => `books?page_id=${page_id}&page_size=${page_size}`,
     }),
+    getTopNewProduct: builder.query({
+      query: () => `books/newest`
+    }),
+    getTopBestProduct: builder.query({
+      query: () => `books/the_best`
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetProductQuery, useGetAllProductQuery } = product;
+export const { useGetProductQuery, useGetAllProductQuery, useGetTopNewProductQuery, useGetTopBestProductQuery } = product;
 
 

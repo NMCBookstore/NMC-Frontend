@@ -11,8 +11,7 @@ import Slider from "react-slick";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-export default class MiniCarousel extends Component {
-  render() {
+const MiniCarousel = ({value}) => {
     return (
       <Box sx={{ width: "100%" }}>
         <Carousel
@@ -38,29 +37,14 @@ export default class MiniCarousel extends Component {
           ]}
           mobileBreakpoint={464}
         >
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
+          {value?.map((productItem) => (
+            <Carousel.Item key={productItem?.id}>
+              <ProductCard key={productItem?.id} productItem={productItem}/>
+            </Carousel.Item>
+          ))}
         </Carousel>
       </Box>
     );
   }
-}
+
+  export default MiniCarousel

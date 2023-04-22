@@ -4,16 +4,22 @@ import HompageCarousel from "../HomepageCarousel/HomepageCarousel";
 import FiveHeadCategory from "../FiveHeadCategory/FiveHeadCategory";
 import FirstTab from "../FirstTab/FirstTab";
 import Typography from "@mui/joy/Typography";
-import BookList from "../../views/User/SearchFilter/BookList";
 import { Link } from "react-router-dom";
 import QuiltedImageList from "../QuiltedImageList/QuiltedImageList";
 import LocalShippingOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
 import VerifiedUserOutlinedIcon from "@mui/icons-material/VerifiedUserOutlined";
 import useStyles from "./styles";
+import BookList from "../../views/User/SearchFilter/BookList";
+import { useGetAllProductQuery } from "../../services/productAPIs";
+import Grid from "@mui/material/Grid";
 
 const Home = () => {
   const classes = useStyles();
+  const { data: allProduct } = useGetAllProductQuery({
+    page_id: 1,
+    page_size: 24,
+  });
 
   return (
     <>
@@ -57,14 +63,23 @@ const Home = () => {
             Explore Our Products
           </Typography>
         </Box>
-        <Box marginTop={2} className={classes.secbox}>
-          <BookList />
-        </Box>
         <Box
           marginTop={2}
+          flexDirection="column"
+          alignItems="center"
           sx={{ display: "flex", justifyContent: "center", width: "100%" }}
         >
-          <Link to="/search-filter" style={{ textDecoration: "none" }}>
+          <Grid
+            container
+            item
+            xs={12}
+            sm={12}
+            sx={{ flexDirection: { xs: "column", sm: "row" }, marginRight:"-40px" }}
+          >
+            <BookList data={allProduct} />
+          </Grid>
+
+          <Link to="/search-filter" style={{ textDecoration: "none", marginTop: 8 }}>
             <Button
               variant="contained"
               sx={{

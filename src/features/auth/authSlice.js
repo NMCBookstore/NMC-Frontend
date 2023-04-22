@@ -10,7 +10,6 @@ const authSlice = createSlice({
       refresh_token: null,
       access_token_expires_at: null,
       refresh_token_expires_at: null,
-      // currentUser: null,
       isFetching: false,
       error: false,
       // isAuthenticated: localStorage.getItem("access_token") ? true : false,
@@ -21,6 +20,8 @@ const authSlice = createSlice({
       full_Name: null,
       email: null,
       image: null,
+      sex: null,
+      age: null,
       phone_number: null,
       isFetching: false,
     },
@@ -34,7 +35,6 @@ const authSlice = createSlice({
       state.login.isFetching=false;
       state.login.user = action.payload.user;
       state.login.error = false;
-      // state.login.user = user.username;
       state.login.session_id = action.payload.session_id;
       state.login.access_token = action.payload.access_token;
       state.login.refresh_token = action.payload.refresh_token;
@@ -42,12 +42,6 @@ const authSlice = createSlice({
       state.login.refresh_token_expires_at = action.payload.refresh_token_expires_at;
       // state.login.isAuthenticated = true;
 
-      // localStorage.setItem("access_token", action.payload.access_token);
-      // localStorage.setItem("user", JSON.stringify(action.payload.user));
-      // localStorage.setItem("session_id", action.payload.session_id);
-      // localStorage.setItem("refresh_token", action.payload.refresh_token);
-      // localStorage.setItem("access_token_expires_at", action.payload.access_token_expires_at);
-      // localStorage.setItem("refresh_token_expires_at", action.payload.refresh_token_expires_at);
     },
     loginFailed: (state) => {
       state.login.isFetching = false;
@@ -57,14 +51,17 @@ const authSlice = createSlice({
       state.signup.isFetching = true;
     },
     signupSuccess: (state, action) => {
-      const { username, password, full_Name, email, image, phone_number } =
+      const { username, password, full_Name, email, image, phone_number, sex, age } =
         action.payload;
       state.signup.username = username;
       state.signup.password = password;
       state.signup.full_Name = full_Name;
       state.signup.email = email;
       state.signup.image = image;
+      state.signup.sex = sex;
+      state.signup.age = age;
       state.signup.phone_number = phone_number;
+      state.signup.isFetching=false;
     },
     signupFailed: (state) => {
       state.signup.isFetching = false;
@@ -72,7 +69,7 @@ const authSlice = createSlice({
 
     logout: (state, action) => {
       state.isAuthenticated = false;
-      // localStorage.clear();
+      localStorage.clear();
     },
   },
 });
@@ -92,6 +89,8 @@ export default authSlice.reducer;
 
 
 export const selectCurrentUser = (state) => state.auth.login.user
+export const selectCurrentUserRole = (state) => state.auth.login.user.role
+export const selectCurrentUserImage = (state) => state.auth.login.user.image
 export const selectCurrentUserName = (state) => state.auth.login.user.username
 export const selectCurrentAccessToken = (state) => state.auth.login.access_token
 export const selectCurrentRefreshToken = (state) =>  state.auth.login.refresh_token

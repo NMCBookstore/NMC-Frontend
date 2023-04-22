@@ -9,7 +9,7 @@ const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
 /**** Admin Layouts*****/
 const AdminLayout = lazy(() => import("./layoutAdmin/AdminLayout"));
 
-/**** Protected Routes*****/
+/**** Protected User Routes*****/
 const RequireAuth = lazy(() => import("./features/auth/requireAuth"));
 /**** User Routes*****/
 
@@ -30,6 +30,9 @@ const Welcome = lazy(() => import("./features/auth/Welcome"));
 /**** Admin Routes*****/
 
 const AdminDashboard = lazy(() => import("./views/Admin/AdminDashboard"));
+const BookManagement = lazy(() => import("./views/Admin/BookManagement"));
+const GenresManagement = lazy(() => import("./views/Admin/GenresManagement"));
+const EditBook = lazy(() => import("./views/Admin/EditBook"));
 
 const RouterCfg = [
   { path: "login", element: <UserLogin /> },
@@ -57,19 +60,24 @@ const RouterCfg = [
         element: <RequireAuth />,
         children: [
           { path: "welcome", element: <Welcome /> },
+          { path: "cart", element: <UserCart /> },
+          { path: "profile", element: <UserProfile /> },
+          { path: "wishlist", element: <UserWishlist /> },
+          { path: "checkout", element: <UserCheckout /> },
         ],
       },
-      { path: "cart", element: <UserCart /> },
-      { path: "profile", element: <UserProfile /> },
-      { path: "wishlist", element: <UserWishlist /> },
-      { path: "checkout", element: <UserCheckout /> },
     ],
   },
 
   {
     path: "/admin",
     element: <AdminLayout />,
-    children: [{ path: "dashboard", element: <AdminDashboard /> }],
+    children: [
+      { path: "dashboard", element: <AdminDashboard /> },
+      { path: "manage-book", element: <BookManagement /> },
+      { path: "manage-genres", element: <GenresManagement /> },
+      { path: "edit-book", element: <EditBook /> },
+    ],
   },
 ];
 

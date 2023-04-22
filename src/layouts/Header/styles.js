@@ -18,4 +18,9 @@ export default makeStyles((theme) => ({
     textDecoration: "none",
     color: "black",
   },
+  profileMenuUser: {
+    display: "flex",
+    flexDirection: "column",
+    padding: theme.spacing(2),
+  },
 }));

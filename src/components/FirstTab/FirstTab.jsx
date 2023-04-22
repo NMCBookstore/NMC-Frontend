@@ -12,9 +12,16 @@ import MiniCarousel from "../MiniCarousel/MiniCarousel";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import { Stack, width } from "@mui/system";
+import {
+  useGetTopNewProductQuery,
+  useGetTopBestProductQuery,
+} from "../../services/productAPIs";
 
 const FirstTab = () => {
   const [value, setValue] = React.useState("1");
+
+  const { data: topNewBook } = useGetTopNewProductQuery();
+  const { data: topBestBook } = useGetTopBestProductQuery();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -25,19 +32,15 @@ const FirstTab = () => {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} sx={{ color: "#c92127" }}>
-            <Tab label="Most favourite books" value="1" />
-            <Tab label="Most sale books" value="2" />
-            <Tab label="The book that no one need" value="3" />
+            <Tab label="Top Newest books" value="1" />
+            <Tab label="Top 10 Best books" value="2" />
           </TabList>
         </Box>
         <TabPanel value="1">
-            <MiniCarousel />
+          <MiniCarousel value={topNewBook} />
         </TabPanel>
         <TabPanel value="2">
-          <MiniCarousel />
-        </TabPanel>
-        <TabPanel value="3">
-          <MiniCarousel />
+          <MiniCarousel value={topBestBook} />
         </TabPanel>
       </TabContext>
     </Box>

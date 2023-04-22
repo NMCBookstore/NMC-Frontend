@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "./images/logo.png";
@@ -24,13 +24,12 @@ import useStyles from "./styles";
 import {
   selectCurrentUserName,
   logout,
-  selectCurrentRefreshToken,
-  selectCurrentExpiredAccessToken,
-  selectCurrentAccessToken,
+  selectCurrentUserImage,
   selectCurrentUser,
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import toast, { Toast } from "react-hot-toast";
+import { deepOrange} from '@mui/material/colors';
 
 const Header = () => {
   const classes = useStyles();
@@ -39,10 +38,8 @@ const Header = () => {
 
   const user = useSelector(selectCurrentUser);
   const userName = user ? useSelector(selectCurrentUserName) : null;
+  const userImage = user ? useSelector(selectCurrentUserImage) : null;
   // console.log("this is user name : " + user);
-  const accessToken = useSelector(selectCurrentAccessToken);
-  const refreshToken = useSelector(selectCurrentRefreshToken);
-  const expired = useSelector(selectCurrentExpiredAccessToken);
   // console.log("expired time : " + expired)
   const hello = user ? `Hello ${userName}!` : `Hello ! Sign in to explore`;
 
@@ -96,7 +93,11 @@ const Header = () => {
       sx={{ mt: "5px" }}
     >
       {user ? (
-        <MenuItem>{hello}</MenuItem>
+        <div className={classes.profileMenuUser}>
+          <Typography variant="h6" weight="medium">
+            {hello}
+          </Typography>
+        </div>
       ) : (
         <Link className={classes.link} to="/login">
           <MenuItem onClick={handleMenuClose}>
@@ -109,7 +110,7 @@ const Header = () => {
       <Link className={classes.link} to="/user/profile">
         <MenuItem onClick={handleMenuClose}>
           <PersonIcon />
-          &nbsp; Profile
+          &nbsp; My profile
         </MenuItem>
       </Link>
       <Link className={classes.link}>
@@ -132,12 +133,12 @@ const Header = () => {
         </MenuItem>
       </Link>
 
-        <Link className={classes.link}>
-          <MenuItem onClick={() => dispatch(logout()) }>
-            <LogoutOutlinedIcon />
-            &nbsp; Logout
-          </MenuItem>
-        </Link>
+      <Link className={classes.link}>
+        <MenuItem onClick={() => dispatch(logout())}>
+          <LogoutOutlinedIcon />
+          &nbsp; Logout
+        </MenuItem>
+      </Link>
     </Menu>
   );
 
@@ -207,21 +208,12 @@ const Header = () => {
                 height: "50px",
               }}
             >
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+              {user ? (
+                <Avatar src={userImage} />
+              ) : (
+                <Avatar sx={{ bgcolor: deepOrange[300] }} />
+              )}
             </IconButton>
-            {/* <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              sx={{
-                color: "white",
-              }}
-            >
-              <AccountCircle fontSize="100%" />
-            </IconButton> */}
           </Box>
         </Stack>
       </Stack>

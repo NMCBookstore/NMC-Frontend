@@ -5,35 +5,6 @@ import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
 
-const genresOptions = createFilterOptions({
-  matchFrom: "start",
-  stringify: (option) => option.genresTitles,
-});
-
-const subGenresOptions = createFilterOptions({
-  matchFrom: "start",
-  stringify: (option) => option.genresTitles,
-});
-
-const genres = [
-  { genresTitles: "Fiction", total: 100 },
-  { genresTitles: "Children", total: 400 },
-  { genresTitles: "Comic", total: 300 },
-  { genresTitles: "Foreign languages", total: 400 },
-  { genresTitles: "Psychology", total: 300 },
-  { genresTitles: "Economy", total: 400 },
-  { genresTitles: "Engineering", total: 300 },
-];
-
-const subGenres = [
-  { subGenresTitle: "Sci-fi", total: 100 },
-  { subGenresTitle: "Comedy", total: 200 },
-  { subGenresTitle: "English", total: 300 },
-  { subGenresTitle: "Self-help", total: 400 },
-  { subGenresTitle: "Educate", total: 300 },
-  { subGenresTitle: "Economic", total: 400 },
-  { subGenresTitle: "IT-book", total: 300 },
-];
 
 const marks = [
   {
@@ -62,25 +33,40 @@ function valuetext(value) {
   return `${value} VND`;
 }
 
-export default function Filter() {
+export default function Filter({ id, genres, setId, subGenres }) {
+  const genresOptions = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option) => option.genres,
+  });
+
+  const subGenresOptions = createFilterOptions({
+    matchFrom: "start",
+    stringify: (option) => option.genresTitles,
+  });
+
+  const handleChangeGenreId = (_, val) => {
+    setId(val?.id);
+  }
+
   return (
-    <Stack spacing={3} padding={2}>
+    <Stack>
       <Autocomplete
         disablePortal
         id="filter-demo"
+        onChange={handleChangeGenreId}
         options={genres}
-        getOptionLabel={(option) => option.genresTitles}
-        genresOptions={genresOptions}
-        sx={{ width: "90%" }}
+        getOptionLabel={(option) => option?.name}
+        // genresOptions={genresOptions}
+        sx={{ width: "90%", zIndex: 1, marginBottom: 2 }}
         renderInput={(params) => <TextField {...params} label="Genres" />}
       />
 
       <Autocomplete
+        key={id}
         disablePortal
         id="filter-demo2"
-        options={subGenres}
-        getOptionLabel={(option) => option.subGenresTitle}
-        subGenresOptions={subGenresOptions}
+        options={subGenres ? subGenres : []}
+        getOptionLabel={(option) => option?.name}
         sx={{ width: "90%" }}
         renderInput={(params) => <TextField {...params} label="SubGenres" />}
       />

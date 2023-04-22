@@ -20,11 +20,11 @@ export default function DetailProductInfo({ data }) {
             Details product
           </Typography>
         </Box>
-        <div style={{ marginLeft: "8px" }}>
-          <Typography variant="body1">Author: {data?.author}</Typography>
-          <Typography variant="body1">Publisher: {data?.publisher}</Typography>
-          <Typography variant="body1">Descriptions: </Typography>
-          <Typography>{data?.description}</Typography>
+        <div style={{ marginLeft: "8px"}}>
+          <Typography  fontWeight="600" color="black">Author: <Typography fontWeight="400">{data?.author}</Typography></Typography>
+          <Typography  fontWeight="600" color="black">Publisher: <Typography fontWeight="400">{data?.publisher}</Typography></Typography>
+          <Typography  fontWeight="600" color="black">Descriptions: </Typography>
+          <Typography fontWeight="400">{data?.description}</Typography>
         </div>
       </Stack>
     </Box>

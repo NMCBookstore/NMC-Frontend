@@ -47,8 +47,9 @@ const ProductDetails = () => {
 
   const [addCart] = useAddCartMutation(id);
 
-  const handleAddToCart = () => {
-    addCart(id);
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    addCart(id,count);
   };
 
   const handleAddToWishlist = () => {
@@ -138,7 +139,7 @@ const ProductDetails = () => {
                 </div>
               </Stack>
 
-              {/* Add to cart  */}
+              {/* Add to wishlist  */}
               <Stack direction="row" alignItems="center" mt={5} spacing={2}>
                 <Button
                   onClick={handleAddToWishlist}
@@ -151,6 +152,8 @@ const ProductDetails = () => {
                   <Typography variant="body1">Add to wishlist</Typography>
                   <FavoriteIcon />
                 </Button>
+                
+                {/* Add to cart  */}
                 <Button
                   onClick={handleAddToCart}
                   variant="contained"

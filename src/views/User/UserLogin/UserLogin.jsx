@@ -20,12 +20,10 @@ import {
   setCredentials,
   loginStart,
   loginFailed,
-  refresh,
 } from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import {
   useLoginMutation,
-  useRefreshMutation,
 } from "../../../services/authAPIs";
 import {
   selectCurrentAccessToken,
@@ -53,14 +51,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function UserLogin() {
-  const [login, { isLoading }] = useLoginMutation();
-  const [refreshToken] = useRefreshMutation();
-
-  const pasetoToken = useSelector(selectCurrentAccessToken);
-  const user = useSelector(selectCurrentUser);
-  const expiredTime = useSelector(selectCurrentExpiredAccessToken);
-
-  // console.log(expiredTime);
+  const [login] = useLoginMutation();
 
   const [values, setValues] = useState({
     username: "",
@@ -85,10 +76,10 @@ export default function UserLogin() {
       const { data } = await login(values);
       dispatch(setCredentials(data));
       toast.success("Login success !")
-      navigate("/user/welcome");
+      navigate("/");
     } catch (err) {
       toast.error('Login failed !');
-      dispatch(loginFailed);
+      dispatch(loginFailed());
     }
     // login(values).then(({ data }) => {
     //   navigate("/");
