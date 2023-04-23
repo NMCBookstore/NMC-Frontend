@@ -16,10 +16,15 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Button, Stack, TextField } from "@mui/material";
-import RemoveIcon from "@mui/icons-material/Remove";
-import AddIcon from "@mui/icons-material/Add";
+import { Stack } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
+import { useDeleteProductWishlistMutation } from "../../../services/wishlistAPI";
 
 const headCells = [
   {
@@ -131,11 +136,28 @@ EnhancedTableToolbar.propTypes = {
 export default function ListWishList({ title, data, isFetching }) {
   const [selected, setSelected] = useState([]);
   const [rows, setRows] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+
+  const [deleteProduct] = useDeleteProductWishlistMutation();
 
   useEffect(() => {
     setRows(data);
   }, [isFetching]);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleDeleteItem = async (id) => {
+    await deleteProduct({ id });
+    window.location.reload();
+  };
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -212,21 +234,31 @@ export default function ListWishList({ title, data, isFetching }) {
                             src={row.book.image[0]}
                             alt={row.book.name}
                             style={{
-                              width: "16%",
+                              width: "80px",
                               height: "100px",
                             }}
                           />
                         ) : (
                           <img
-                          src={row.book.image[0]}
-                          alt={row.book.name}
+                            src={row.book.image[0]}
+                            alt={row.book.name}
                             style={{
                               width: "25%",
                               height: "40%",
                             }}
                           />
                         )}
-                        <Typography marginLeft={2}>{row?.book.name}</Typography>
+                        <Typography
+                          marginLeft={2}
+                          sx={{
+                            mb: 0.1,
+                            textOverflow: "ellipsis",
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                          }}
+                        >
+                          {row?.book.name}
+                        </Typography>
                       </Stack>
                     </TableCell>
                     <TableCell align="right">
@@ -236,32 +268,70 @@ export default function ListWishList({ title, data, isFetching }) {
                       })}
                     </TableCell>
                     {title !== "Wishlist" ? (
-                      <TableCell align="right">
-                      </TableCell>
+                      <TableCell align="right"></TableCell>
                     ) : null}
                     {title !== "Wishlist" ? (
                       <TableCell align="right">
-                        {parseFloat(row?.book.price).toLocaleString(
-                          "vi-VN",
-                          {
-                            style: "currency",
-                            currency: "VND",
-                          }
-                        )}
+                        {parseFloat(row?.book.price).toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
                       </TableCell>
                     ) : null}
                     <TableCell align="right">
                       {title === "Wishlist" ? (
                         <>
-                          <Tooltip title="AddToCart">
+                          <Tooltip title="Add To Cart">
                             <IconButton>
                               <AddShoppingCartIcon />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Delete">
-                            <IconButton>
-                              <DeleteIcon />
-                            </IconButton>
+                            <div>
+                              <IconButton onClick={handleClickOpen}>
+                                <DeleteIcon />
+                              </IconButton>
+                              <Dialog
+                                fullScreen={fullScreen}
+                                open={open}
+                                onClose={handleClose}
+                                aria-labelledby="responsive-dialog-title"
+                              >
+                                <DialogTitle id="responsive-dialog-title">
+                                  {
+                                    "Are you sure you want to delete this product ?"
+                                  }
+                                </DialogTitle>
+                                <DialogActions>
+                                  <Button
+                                    variant="outlined"
+                                    sx={{
+                                      color: "#db4444",
+                                      "&:hover": {
+                                        background: "#fff",
+                                      },
+                                    }}
+                                    autoFocus
+                                    onClick={handleClose}
+                                  >
+                                    Cancel
+                                  </Button>
+                                  <Button
+                                    variant="contained"
+                                    sx={{
+                                      backgroundColor: "#db4444",
+                                      "&:hover": {
+                                        background: "#ffa071",
+                                      },
+                                    }}
+                                    onClick={() => handleDeleteItem(row?.wishlist_id)}
+                                    autoFocus
+                                  >
+                                    Delete
+                                  </Button>
+                                </DialogActions>
+                              </Dialog>
+                            </div>
                           </Tooltip>
                         </>
                       ) : (

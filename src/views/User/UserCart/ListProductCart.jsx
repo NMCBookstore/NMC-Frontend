@@ -18,9 +18,10 @@ import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, Stack, TextField } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
-import SelectAllIcon from '@mui/icons-material/SelectAll';
+import SelectAllIcon from "@mui/icons-material/SelectAll";
 import AddIcon from "@mui/icons-material/Add";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { useDeleteProductCartMutation } from "../../../services/cartAPI";
 
 const headCells = [
   {
@@ -145,7 +146,15 @@ EnhancedTableToolbar.propTypes = {
 export default function ListProductCart({ title, data, isFetching }) {
   const [selected, setSelected] = useState([]);
   const [rows, setRows] = useState([]);
+  const [deleteProduct] = useDeleteProductCartMutation("userCart", {
+    refetchOnMountOrArgChange: true,
+    skip: false,
+  });
 
+  const handleDelete = async (id) => {
+    await deleteProduct({ id });
+    window.location.reload();
+  };
 
   useEffect(() => {
     setRows(data);
@@ -201,10 +210,10 @@ export default function ListProductCart({ title, data, isFetching }) {
             <EnhancedTableHead
               numSelected={selected.length}
               onSelectAllClick={handleSelectAllClick}
-              rowCount={rows?.length != null ? rows.length :0}
+              rowCount={rows?.length != null ? rows.length : 0}
               title={title}
             />
-            
+
             <TableBody>
               {rows?.map((row, index) => {
                 const isItemSelected = isSelected(row.cart_id);
@@ -239,8 +248,8 @@ export default function ListProductCart({ title, data, isFetching }) {
                             src={row.image}
                             alt={row.name}
                             style={{
-                              width: "16%",
-                              height: "100px",
+                              width: "25%",
+                              height: "40%",
                             }}
                           />
                         ) : (
@@ -253,7 +262,7 @@ export default function ListProductCart({ title, data, isFetching }) {
                             }}
                           />
                         )}
-                        <Typography marginLeft={2}>{row.name}</Typography>
+                        <Typography marginLeft={2}>{row.book_name}</Typography>
                       </Stack>
                     </TableCell>
                     <TableCell align="right">
@@ -294,10 +303,13 @@ export default function ListProductCart({ title, data, isFetching }) {
                     ) : null}
                     {title !== "Wishlist" ? (
                       <TableCell align="right">
-                        {parseFloat(row?.price*row?.amount).toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
+                        {parseFloat(row?.price * row?.amount).toLocaleString(
+                          "vi-VN",
+                          {
+                            style: "currency",
+                            currency: "VND",
+                          }
+                        )}
                       </TableCell>
                     ) : null}
                     <TableCell align="right">
@@ -316,7 +328,9 @@ export default function ListProductCart({ title, data, isFetching }) {
                         </>
                       ) : (
                         <Tooltip title="Delete">
-                          <IconButton>
+                          <IconButton
+                            onClick={() => handleDelete(row?.cart_id)}
+                          >
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>

@@ -17,6 +17,7 @@ import Comment from "./CommentSection";
 import { useGetProductQuery } from "../../services/productAPIs";
 import { useAddCartMutation } from "../../services/cartAPI";
 import { useAddWishListMutation } from "../../services/wishlistAPI";
+import toast from "react-hot-toast";
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -49,11 +50,14 @@ const ProductDetails = () => {
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    addCart(id,count);
+    addCart(id, { amount: count });
+    toast.success("Added to your cart");
   };
 
-  const handleAddToWishlist = () => {
+  const handleAddToWishlist = (e) => {
+    e.preventDefault();
     addWishlist(id);
+    toast.success("Added to your wishlist");
   };
 
   return (
@@ -152,7 +156,7 @@ const ProductDetails = () => {
                   <Typography variant="body1">Add to wishlist</Typography>
                   <FavoriteIcon />
                 </Button>
-                
+
                 {/* Add to cart  */}
                 <Button
                   onClick={handleAddToCart}

@@ -13,8 +13,15 @@ const cart = book.injectEndpoints({
         url: `users/carts`,
       }),
     }),
+    deleteProductCart: builder.mutation({
+      query: ({id}) => ({
+        method: 'DELETE',
+        url: `users/carts/${id}`,
+        body: id,
+      }),
+    })
   }),
   overrideExisting: false,
 });
 
-export const { useAddCartMutation, useGetCartQuery } = cart;
+export const { useAddCartMutation, useGetCartQuery, useDeleteProductCartMutation } = cart;

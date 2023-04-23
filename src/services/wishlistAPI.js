@@ -13,8 +13,15 @@ const wishlist = book.injectEndpoints({
         url: `users/wishlists`,
       }),
     }),
+    deleteProductWishlist: builder.mutation({
+      query: ({id}) => ({
+        method: 'DELETE',
+        url: `users/wishlists/${id}`,
+        body: id,
+      }),
+    })
   }),
   overrideExisting: false,
 });
 
-export const { useAddWishListMutation, useGetWishListQuery } = wishlist;
+export const { useAddWishListMutation, useGetWishListQuery, useDeleteProductWishlistMutation } = wishlist;
