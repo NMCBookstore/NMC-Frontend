@@ -17,36 +17,12 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button, Stack, TextField } from "@mui/material";
-import RemoveIcon from "@mui/icons-material/Remove";
-import SelectAllIcon from "@mui/icons-material/SelectAll";
-import AddIcon from "@mui/icons-material/Add";
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogTitle from "@mui/material/DialogTitle";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 import { useDeleteProductCartMutation } from "../../../services/cartAPI";
-
-const headCells = [
-  {
-    id: "Product",
-    label: "Product",
-  },
-  {
-    id: "Price",
-    numeric: true,
-    label: "Price",
-  },
-  {
-    id: "Amount",
-    numeric: true,
-    label: "Amount",
-  },
-  {
-    id: "Subtotal",
-    numeric: true,
-    label: "Subtotal",
-  },
-  {
-    id: "null",
-  },
-];
 
 function EnhancedTableHead(props) {
   const { onSelectAllClick, numSelected, rowCount } = props;
@@ -145,200 +121,176 @@ EnhancedTableToolbar.propTypes = {
 
 export default function ListProductCart({ title, data, isFetching }) {
   const [selected, setSelected] = useState([]);
+  const [datas, setDatas] = useState(data);
   const [rows, setRows] = useState([]);
-  const [deleteProduct] = useDeleteProductCartMutation("userCart", {
-    refetchOnMountOrArgChange: true,
-    skip: false,
-  });
+  const [open, setOpen] = useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const handleDelete = async (id) => {
-    await deleteProduct({ id });
-    window.location.reload();
+  const [deleteProduct] = useDeleteProductCartMutation();
+
+  var [selectedID, setSelectedID] = useState();
+
+  const handleDeleteItem = async () => {
+    await deleteProduct({ id: selectedID });
+    setOpen(false)
+    // console.log(selectedID);
+    // window.location.reload();
+  };
+
+  const handleClickOpen = (id) => {
+    setOpen(true);
+    setSelectedID(id);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedID(null);
   };
 
   useEffect(() => {
     setRows(data);
+    setDatas(data);
   }, [isFetching]);
 
-  function incrementCount(event, cart_id) {
-    let rs = [...rows];
-    rs[cart_id].detail.quantity++;
-    setRows(rs);
-  }
-  function decrementCount(event, cart_id) {
-    let rs = [...rows];
-    if (rs[cart_id].detail.quantity > 1) {
-      rs[cart_id].detail.quantity--;
-      setRows(rs);
-    }
-  }
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.cart_id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-  const handleClick = (event, cart_id) => {
-    const selectedIndex = selected.indexOf(cart_id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, cart_id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
   const isSelected = (cart_id) => selected.indexOf(cart_id) !== -1;
-
+  // console.log(selected);
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} title={title} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              onSelectAllClick={handleSelectAllClick}
-              rowCount={rows?.length != null ? rows.length : 0}
-              title={title}
-            />
-
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Checkbox
+                    checked={datas?.length === selected?.length}
+                    onClick={(e) => {
+                      if (e.target.checked) {
+                        setSelected(data.map((item) => item.cart_id));
+                      } else {
+                        setSelected([]);
+                      }
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">Product</TableCell>
+                <TableCell align="center">Price</TableCell>
+                <TableCell align="center">Amount</TableCell>
+                <TableCell align="center">Subtotal</TableCell>
+                <TableCell align="center">{""}</TableCell>
+              </TableRow>
+            </TableHead>
             <TableBody>
-              {rows?.map((row, index) => {
-                const isItemSelected = isSelected(row.cart_id);
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow hover key={row.cart_id}>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        selected={isItemSelected}
-                        // id cart
-                        onClick={(event) => handleClick(event, row.cart_id)}
-                        color="primary"
-                        checked={isItemSelected}
-                        sx={{ cursor: "pointer" }}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
+              {datas?.map((item, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>
+                    <Checkbox
+                      checked={selected.some((it) => it === item.cart_id)}
+                      onClick={(e) => {
+                        if (e.target.checked) {
+                          setSelected((prev) => [...prev, item.cart_id]);
+                        } else {
+                          setSelected(
+                            selected.filter((it) => it !== item.cart_id)
+                          );
+                        }
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    <Stack direction="row" alignItems="center" margin={1}>
+                      <img
+                        src={item.image}
+                        alt={item.book_name}
+                        style={{ width: "15%", height: "30%" }}
                       />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      <Stack direction="row" alignItems="center" margin={1}>
-                        {title === "Wishlist" ? (
-                          <img
-                            src={row.image}
-                            alt={row.name}
-                            style={{
-                              width: "25%",
-                              height: "40%",
-                            }}
-                          />
-                        ) : (
-                          <img
-                            src={row.image}
-                            alt={row.name}
-                            style={{
-                              width: "25%",
-                              height: "40%",
-                            }}
-                          />
-                        )}
-                        <Typography marginLeft={2}>{row.book_name}</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="right">
-                      {parseFloat(row?.price).toLocaleString("vi-VN", {
+                      <Typography
+                        marginLeft={2}
+                        sx={{
+                          mb: 0.1,
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {item.book_name}
+                      </Typography>
+                    </Stack>
+                  </TableCell>
+                  <TableCell align="center">
+                    {parseFloat(item?.price).toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </TableCell>
+                  <TableCell align="center">{item.amount}</TableCell>
+                  <TableCell align="center">
+                    {parseFloat(item?.price * item?.amount).toLocaleString(
+                      "vi-VN",
+                      {
                         style: "currency",
                         currency: "VND",
-                      })}
-                    </TableCell>
-                    {title !== "Wishlist" ? (
-                      <TableCell align="right">
-                        <Stack
-                          direction="row"
-                          justifyContent="flex-end"
-                          marginRight="-57px"
-                        >
-                          <Button
-                            onClick={(event) =>
-                              decrementCount(event, row.cart_id)
-                            }
-                          >
-                            <RemoveIcon />
-                          </Button>
-                          <TextField
-                            value={row.amount}
-                            disabled={true}
-                            inputProps={{ textAlign: "center" }}
-                            sx={{ width: "50px" }}
-                          />
-                          <Button
-                            onClick={(event) =>
-                              incrementCount(event, row.cart_id)
-                            }
-                          >
-                            <AddIcon />
-                          </Button>
-                        </Stack>
-                      </TableCell>
-                    ) : null}
-                    {title !== "Wishlist" ? (
-                      <TableCell align="right">
-                        {parseFloat(row?.price * row?.amount).toLocaleString(
-                          "vi-VN",
-                          {
-                            style: "currency",
-                            currency: "VND",
+                      }
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <div>
+                      <Tooltip title="Delete Book">
+                        <IconButton
+                          onClick={(e) =>
+                            e.preventDefault && handleClickOpen(item?.cart_id)
                           }
-                        )}
-                      </TableCell>
-                    ) : null}
-                    <TableCell align="right">
-                      {title === "Wishlist" ? (
-                        <>
-                          <Tooltip title="AddToCart">
-                            <IconButton>
-                              <AddShoppingCartIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Delete">
-                            <IconButton>
-                              <DeleteIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </>
-                      ) : (
-                        <Tooltip title="Delete">
-                          <IconButton
-                            onClick={() => handleDelete(row?.cart_id)}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <Dialog
+                fullScreen={fullScreen}
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="responsive-dialog-title"
+              >
+                <DialogTitle id="responsive-dialog-title">
+                  {"Are you sure you want to delete this product ?"}
+                </DialogTitle>
+                <DialogActions>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      color: "#db4444",
+                      "&:hover": {
+                        background: "#fff",
+                      },
+                    }}
+                    autoFocus
+                    onClick={handleClose}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      backgroundColor: "#db4444",
+                      "&:hover": {
+                        background: "#ffa071",
+                      },
+                    }}
+                    onClick={() => handleDeleteItem()}
+                    autoFocus
+                  >
+                    Delete
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </TableBody>
           </Table>
         </TableContainer>

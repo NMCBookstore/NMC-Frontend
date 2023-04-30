@@ -1,6 +1,5 @@
 import * as React from "react";
 import { styled } from "@mui/material/styles";
-import UserProfileSideBar from "./UserProfileSideBar";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
@@ -47,6 +46,7 @@ function a11yProps(index) {
 
 export default function UserProfile() {
   const { data} = useGetUserQuery();
+
   const [value, setValue] = React.useState(0);
   const navigate = useNavigate();
   const [tab, setTab] = useState(false);
@@ -87,7 +87,7 @@ export default function UserProfile() {
                 flexGrow: 1,
                 bgcolor: "background.paper",
                 display: "flex",
-                height: 224,
+                height: 1000,
               }}
             >
               <Tabs

@@ -12,16 +12,22 @@ const wishlist = book.injectEndpoints({
       query: () => ({
         url: `users/wishlists`,
       }),
+      providesTags: ["WishlistItems"],
     }),
     deleteProductWishlist: builder.mutation({
-      query: ({id}) => ({
-        method: 'DELETE',
+      query: ({ id }) => ({
+        method: "DELETE",
         url: `users/wishlists/${id}`,
         body: id,
       }),
-    })
+      invalidatesTags: ["WishlistItems"],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useAddWishListMutation, useGetWishListQuery, useDeleteProductWishlistMutation } = wishlist;
+export const {
+  useAddWishListMutation,
+  useGetWishListQuery,
+  useDeleteProductWishlistMutation,
+} = wishlist;

@@ -146,6 +146,7 @@ const UserRegister = () => {
                   required
                   fullWidth
                   name="age"
+                  type="number"
                   label="Age"
                   onChange={(e) =>
                     setValues({ ...values, age: parseInt(e.target.value) })

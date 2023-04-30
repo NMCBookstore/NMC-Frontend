@@ -12,6 +12,7 @@ export default function DetailProductInfo({ data }) {
             variant="solid"
             level="h5"
             sx={{
+              my: 3,
               background:
                 "-webkit-linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
               fontSize: 20,

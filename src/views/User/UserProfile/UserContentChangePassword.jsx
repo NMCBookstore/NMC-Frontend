@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState } from "react";
-import { List, Stack, TextField } from "@mui/material";
+import { Container, List, Stack, TextField } from "@mui/material";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Button from "@mui/material/Button";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -34,11 +34,12 @@ export default function UserContentChangePassword() {
   };
 
   return (
-    <Stack
+    <Container>
+          <Stack
       component="form"
       onSubmit={handleSubmit}
       spacing={2}
-      sx={{ width: "80%", display: "flex", flexWrap: "wrap" }}
+      sx={{ width: "60%", display: "flex", flexWrap: "wrap" }}
     >
       {/* <Box  sx={{ mt: 1 }}> */}
       <TextField
@@ -137,5 +138,7 @@ export default function UserContentChangePassword() {
       </Stack>
       {/* </Box> */}
     </Stack>
+    </Container>
+
   );
 }

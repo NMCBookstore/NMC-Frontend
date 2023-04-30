@@ -16,6 +16,7 @@ export default function Recommend() {
           variant="solid"
           level="h5"
           sx={{
+            mt:3,
             background:
               "-webkit-linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
             fontSize: 20,

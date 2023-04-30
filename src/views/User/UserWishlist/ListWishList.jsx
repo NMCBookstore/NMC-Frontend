@@ -135,57 +135,34 @@ EnhancedTableToolbar.propTypes = {
 
 export default function ListWishList({ title, data, isFetching }) {
   const [selected, setSelected] = useState([]);
+  const [datas, setDatas] = useState(data);
   const [rows, setRows] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [deleteProduct] = useDeleteProductWishlistMutation();
+  var [selectedID, setSelectedID] = useState();
 
-  useEffect(() => {
-    setRows(data);
-  }, [isFetching]);
+  const handleDelete = async () => {
+    await deleteProduct({ id: selectedID });
+    setOpen(false);
+  };
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (id) => {
     setOpen(true);
+    setSelectedID(id);
   };
 
   const handleClose = () => {
     setOpen(false);
+    setSelectedID(null);
   };
 
-  const handleDeleteItem = async (id) => {
-    await deleteProduct({ id });
-    window.location.reload();
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.wishlist_id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-  const handleClick = (event, wishlist_id) => {
-    const selectedIndex = selected.indexOf(wishlist_id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, wishlist_id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
+  useEffect(() => {
+    setRows(data);
+    setDatas(data);
+  }, [isFetching]);
   const isSelected = (wishlist_id) => selected.indexOf(wishlist_id) !== -1;
   return (
     <Box sx={{ width: "100%" }}>
@@ -193,158 +170,124 @@ export default function ListWishList({ title, data, isFetching }) {
         <EnhancedTableToolbar numSelected={selected.length} title={title} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
-            <EnhancedTableHead
-              numSelected={selected.length}
-              onSelectAllClick={handleSelectAllClick}
-              rowCount={rows?.length != null ? rows.length : 0}
-              title={title}
-            />
-
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Checkbox
+                    checked={datas?.length === selected?.length}
+                    onClick={(e) => {
+                      if (e.target.checked) {
+                        setSelected(data.map((item) => item?.wishlist_id));
+                      } else {
+                        setSelected([]);
+                      }
+                    }}
+                  />
+                </TableCell>
+                <TableCell align="center">Product</TableCell>
+                <TableCell align="center">Price</TableCell>
+                <TableCell align="center">{""}</TableCell>
+              </TableRow>
+            </TableHead>
             <TableBody>
-              {rows?.map((row, index) => {
-                const isItemSelected = isSelected(row.wishlist_id);
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow hover key={row.wishlist_id}>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        aria-checked={isItemSelected}
-                        tabIndex={-1}
-                        selected={isItemSelected}
-                        // id cart
-                        onClick={(event) => handleClick(event, row.wishlist_id)}
-                        color="primary"
-                        checked={isItemSelected}
-                        sx={{ cursor: "pointer" }}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
+              {datas?.map((item, index) => (
+                <TableRow
+                  key={index}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell>
+                    <Checkbox
+                      checked={selected.some((it) => it === item.wishlist_id)}
+                      onClick={(e) => {
+                        if (e.target.checked) {
+                          setSelected((prev) => [...prev, item.wishlist_id]);
+                        } else {
+                          setSelected(
+                            selected.filter((it) => it !== item.wishlist_id)
+                          );
+                        }
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell component="th" scope="row">
+                    <Stack direction="row" alignItems="center" margin={1}>
+                      <img
+                        src={item?.book.image[0]}
+                        alt={item?.book.name}
+                        style={{ width: "15%", height: "30%" }}
                       />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
+                      <Typography
+                        marginLeft={2}
+                        sx={{
+                          mb: 0.1,
+                          textOverflow: "ellipsis",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {item?.book.name}
+                      </Typography>
+                    </Stack>
+                  </TableCell>
+                  <TableCell align="center">
+                    {parseFloat(item?.book.price).toLocaleString("vi-VN", {
+                      style: "currency",
+                      currency: "VND",
+                    })}
+                  </TableCell>
+                  <TableCell>
+                    <Tooltip title="Delete Book">
+                      <IconButton
+                        onClick={(e) =>
+                          e.preventDefault && handleClickOpen(item?.wishlist_id)
+                        }
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                </TableRow>
+              ))}
+              <div>
+                <Dialog
+                  fullScreen={fullScreen}
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="responsive-dialog-title"
+                >
+                  <DialogTitle id="responsive-dialog-title">
+                    {"Are you sure you want to delete this product ?"}
+                  </DialogTitle>
+                  <DialogActions>
+                    <Button
+                      variant="outlined"
+                      sx={{
+                        color: "#db4444",
+                        "&:hover": {
+                          background: "#fff",
+                        },
+                      }}
+                      autoFocus
+                      onClick={handleClose}
                     >
-                      <Stack direction="row" alignItems="center" margin={1}>
-                        {title === "Wishlist" ? (
-                          <img
-                            src={row.book.image[0]}
-                            alt={row.book.name}
-                            style={{
-                              width: "80px",
-                              height: "100px",
-                            }}
-                          />
-                        ) : (
-                          <img
-                            src={row.book.image[0]}
-                            alt={row.book.name}
-                            style={{
-                              width: "25%",
-                              height: "40%",
-                            }}
-                          />
-                        )}
-                        <Typography
-                          marginLeft={2}
-                          sx={{
-                            mb: 0.1,
-                            textOverflow: "ellipsis",
-                            overflow: "hidden",
-                            whiteSpace: "nowrap",
-                          }}
-                        >
-                          {row?.book.name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="right">
-                      {parseFloat(row?.book.price).toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
-                    </TableCell>
-                    {title !== "Wishlist" ? (
-                      <TableCell align="right"></TableCell>
-                    ) : null}
-                    {title !== "Wishlist" ? (
-                      <TableCell align="right">
-                        {parseFloat(row?.book.price).toLocaleString("vi-VN", {
-                          style: "currency",
-                          currency: "VND",
-                        })}
-                      </TableCell>
-                    ) : null}
-                    <TableCell align="right">
-                      {title === "Wishlist" ? (
-                        <>
-                          <Tooltip title="Add To Cart">
-                            <IconButton>
-                              <AddShoppingCartIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Delete">
-                            <div>
-                              <IconButton onClick={handleClickOpen}>
-                                <DeleteIcon />
-                              </IconButton>
-                              <Dialog
-                                fullScreen={fullScreen}
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="responsive-dialog-title"
-                              >
-                                <DialogTitle id="responsive-dialog-title">
-                                  {
-                                    "Are you sure you want to delete this product ?"
-                                  }
-                                </DialogTitle>
-                                <DialogActions>
-                                  <Button
-                                    variant="outlined"
-                                    sx={{
-                                      color: "#db4444",
-                                      "&:hover": {
-                                        background: "#fff",
-                                      },
-                                    }}
-                                    autoFocus
-                                    onClick={handleClose}
-                                  >
-                                    Cancel
-                                  </Button>
-                                  <Button
-                                    variant="contained"
-                                    sx={{
-                                      backgroundColor: "#db4444",
-                                      "&:hover": {
-                                        background: "#ffa071",
-                                      },
-                                    }}
-                                    onClick={() => handleDeleteItem(row?.wishlist_id)}
-                                    autoFocus
-                                  >
-                                    Delete
-                                  </Button>
-                                </DialogActions>
-                              </Dialog>
-                            </div>
-                          </Tooltip>
-                        </>
-                      ) : (
-                        <Tooltip title="Delete">
-                          <IconButton>
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      )}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                      Cancel
+                    </Button>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "#db4444",
+                        "&:hover": {
+                          background: "#ffa071",
+                        },
+                      }}
+                      onClick={() => handleDelete()}
+                      autoFocus
+                    >
+                      Delete
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </div>
             </TableBody>
           </Table>
         </TableContainer>

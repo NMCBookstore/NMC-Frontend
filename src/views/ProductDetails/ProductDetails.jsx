@@ -18,6 +18,7 @@ import { useGetProductQuery } from "../../services/productAPIs";
 import { useAddCartMutation } from "../../services/cartAPI";
 import { useAddWishListMutation } from "../../services/wishlistAPI";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -26,14 +27,10 @@ const ProductDetails = () => {
   let [count, setCount] = useState(1);
 
   function incrementCount() {
-    count = count + 1;
-    setCount(count);
+    setCount(count + 1);
   }
   function decrementCount() {
-    if (count > 1) {
-      count = count - 1;
-      setCount(count);
-    }
+    setCount(count > 1 ? count - 1 : 1);
   }
 
   const onSelect = (image, ytSrc) => {
@@ -43,6 +40,7 @@ const ProductDetails = () => {
 
   const { id } = useParams();
   const { data } = useGetProductQuery(id);
+  const dispatch = useDispatch();
 
   const [addWishlist] = useAddWishListMutation(id);
 
@@ -50,9 +48,11 @@ const ProductDetails = () => {
 
   const handleAddToCart = (e) => {
     e.preventDefault();
-    addCart(id, { amount: count });
+    const t = addCart({ id, amount: count });
     toast.success("Added to your cart");
   };
+
+
 
   const handleAddToWishlist = (e) => {
     e.preventDefault();

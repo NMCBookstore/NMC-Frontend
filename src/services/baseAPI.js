@@ -3,7 +3,7 @@ import { setCredentials, logout } from "../features/auth/authSlice";
 import { Mutex } from "async-mutex";
 
 const mutex = new Mutex();
-const baseQuery = fetchBaseQuery({
+export const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.login.access_token;
@@ -12,7 +12,6 @@ const baseQuery = fetchBaseQuery({
     if (token && tokenTime) {
       headers.set("Authorization", `Bearer ${token}`);
     }
-
     return headers;
   },
 });

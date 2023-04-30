@@ -1,6 +1,4 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import authReducer from "../features/auth/authSlice";
-import prodDetailSlice from "../features/prodDetailSlice";
 import { book } from "../services/baseAPI";
 import { setupListeners } from "@reduxjs/toolkit/query";
 import {
@@ -14,6 +12,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import authReducer from "../features/auth/authSlice";
 
 const persistConfig = {
   key: "root",
@@ -33,7 +32,9 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false
+      serializableCheck: {
+        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+      },
     }).concat(book.middleware),
   devTools: true,
 });

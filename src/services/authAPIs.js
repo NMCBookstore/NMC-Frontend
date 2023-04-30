@@ -9,13 +9,6 @@ const auth = book.injectEndpoints({
         body: { ...credentials },
       }),
     }),
-    refresh: builder.mutation({
-      query: (form) => ({
-        method: 'POST',
-        url: `tokens/renew_access`,
-        body: form
-      })
-    }),
     signup: builder.mutation({
       query: (form) => ({
         method: "POST",
@@ -27,4 +20,4 @@ const auth = book.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useLoginMutation, useSignupMutation, useRefreshMutation } = auth;
+export const { useLoginMutation, useSignupMutation } = auth;

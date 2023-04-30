@@ -1,6 +1,6 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import logo from "./images/logo.png";
 import "../../theme.js";
 import { Stack } from "@mui/system";
@@ -45,8 +45,7 @@ const Header = () => {
 
   const naviWishlist = () => navigate("/user/wishlist");
   const naviCart = () => navigate("/user/cart");
-
-  const naviProfile = () => navigate("/user/profile");
+  const naviProfile = () => navigate("user/profile");
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -187,12 +186,16 @@ const Header = () => {
           >
             <IconButton size="large" sx={{ color: "white" }}>
               <Badge>
+                <Tooltip title ="My Wishlist">
                 <FavoriteIcon fontSize="100%" onClick={naviWishlist} />
+                </Tooltip>
               </Badge>
             </IconButton>
             <IconButton size="large" sx={{ color: "white" }}>
               <Badge badgeContent="5" color="error">
+                <Tooltip title = "My cart">
                 <ShoppingCartIcon fontSize="100%" onClick={naviCart} />
+                </Tooltip>
               </Badge>
             </IconButton>
             <IconButton
@@ -209,7 +212,9 @@ const Header = () => {
               }}
             >
               {user ? (
+                <Tooltip title="Profile">
                 <Avatar src={userImage} />
+                </Tooltip>
               ) : (
                 <Avatar sx={{ bgcolor: deepOrange[300] }} />
               )}
