@@ -25,6 +25,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useDeleteProductWishlistMutation } from "../../../services/wishlistAPI";
+import { useAddCartMutation } from "../../../services/cartAPI";
+import { toast } from "react-hot-toast";
 
 const headCells = [
   {
@@ -142,10 +144,19 @@ export default function ListWishList({ title, data, isFetching }) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const [deleteProduct] = useDeleteProductWishlistMutation();
+  const [addCart] = useAddCartMutation();
+
   var [selectedID, setSelectedID] = useState();
+
+  const handleAddToCart = async (item) => {
+    await addCart({id: item?.book.id})
+    toast.success("Added to your cart")
+    deleteProduct({id: item?.wishlist_id});
+  }
 
   const handleDelete = async () => {
     await deleteProduct({ id: selectedID });
+    console.log({id: selectedID})
     setOpen(false);
   };
 
@@ -243,6 +254,15 @@ export default function ListWishList({ title, data, isFetching }) {
                         }
                       >
                         <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Add to cart">
+                      <IconButton
+                        onClick={(e) =>
+                          e.preventDefault && handleAddToCart(item)
+                        }
+                      >
+                        <AddShoppingCartIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>

@@ -16,7 +16,7 @@ import Recommend from "./Recommend";
 import Comment from "./CommentSection";
 import { useGetProductQuery } from "../../services/productAPIs";
 import { useAddCartMutation } from "../../services/cartAPI";
-import { useAddWishListMutation } from "../../services/wishlistAPI";
+import { useAddWishListMutation, useGetWishListQuery } from "../../services/wishlistAPI";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
@@ -39,12 +39,20 @@ const ProductDetails = () => {
   };
 
   const { id } = useParams();
+
   const { data } = useGetProductQuery(id);
   const dispatch = useDispatch();
 
   const [addWishlist] = useAddWishListMutation(id);
 
   const [addCart] = useAddCartMutation(id);
+
+  const {data: wishlist} = useGetWishListQuery()
+  for(let i = 0; i < wishlist?.length; i++)
+  {
+    console.log(wishlist?.wishlist_id)
+  }
+
 
   const handleAddToCart = (e) => {
     e.preventDefault();

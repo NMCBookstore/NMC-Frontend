@@ -2,6 +2,7 @@ import { lazy } from "react";
 import Home from "./components/Home/Home";
 import { Navigate } from "react-router-dom";
 import { elements } from "chart.js";
+import { useSelector } from "react-redux";
 
 /**** User Layouts*****/
 const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
@@ -33,6 +34,9 @@ const AdminDashboard = lazy(() => import("./views/Admin/AdminDashboard"));
 const BookManagement = lazy(() => import("./views/Admin/BookManagement"));
 const GenresManagement = lazy(() => import("./views/Admin/GenresManagement"));
 const EditBook = lazy(() => import("./views/Admin/EditBook"));
+
+// const user = useSelector((state) => state.auth.login.user);
+
 
 const RouterCfg = [
   { path: "login", element: <UserLogin /> },

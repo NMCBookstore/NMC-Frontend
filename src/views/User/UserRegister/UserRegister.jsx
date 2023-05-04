@@ -10,7 +10,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { IconButton, InputAdornment } from "@mui/material";
+import { IconButton, InputAdornment, Paper } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { useSignupMutation } from "../../../services/authAPIs";
@@ -81,10 +81,11 @@ const UserRegister = () => {
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-
+        <Paper variant="outlined" sx={{  my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}> 
         <Box
           sx={{
             marginTop: 8,
+            marginBottom: 12,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -243,6 +244,7 @@ const UserRegister = () => {
             {/* </Grid> */}
           </Box>
         </Box>
+        </Paper>
       </Container>
     </ThemeProvider>
   );

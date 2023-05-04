@@ -12,14 +12,18 @@ import InputLabel from "@mui/material/InputLabel";
 import { useUpdateUserMutation } from "../../../services/userAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
+import { setCredentials } from "../../../features/auth/authSlice";
 
 export default function UserContentProfile({ data }) {
   const user = useSelector((state) => state.auth.login.user);
 
   const [userInfo, setUserInfo] = useState(user);
 
-  // console.log(userInfo)
+  console.log("this is user info", userInfo);
 
+  useEffect(() => {
+    userInfo;
+  }, []);
   // const [values, setValues] = useState({
   //   username: "",
   //   full_name: "",
@@ -32,20 +36,6 @@ export default function UserContentProfile({ data }) {
 
   const dispatch = useDispatch();
 
-  //Update user API
-  const [updateUser] = useUpdateUserMutation();
-
-  const handleUpdateInfo = () => {
-    if (userInfo.age > 90) {
-      toast.error("Your age must be less than 90")
-    } else {
-      const newUp = { ...userInfo, age: parseInt(userInfo.age) };
-      dispatch(updateUser(newUp));
-      console.log(newUp)
-      toast.success("Profile updated")
-    }
-  };
-
   // Set avatar
   const [avatar, setAvatar] = useState();
   useEffect(() => {
@@ -57,7 +47,24 @@ export default function UserContentProfile({ data }) {
     const file = e.target.files[0];
     file.preview = URL.createObjectURL(file);
     setAvatar(file);
-    // console.log(URL.createObjectURL(file));
+    console.log(URL.createObjectURL(file));
+  };
+
+  //Update user API
+  const [updateUser] = useUpdateUserMutation();
+
+  const handleUpdateInfo = async (e) => {
+    e.preventDefault();
+    if (userInfo.age > 90) {
+      toast.error("Your age must be less than 90");
+    } else {
+      const newUp = await updateUser({
+        ...userInfo,
+        age: parseInt(userInfo.age),
+      });
+      dispatch(setCredentials({ user: newUp.data }));
+      toast.success("Profile updated");
+    }
   };
 
   //Get user info
@@ -127,14 +134,17 @@ export default function UserContentProfile({ data }) {
           />
 
           <ImageListItem>
-            <img style={{ width: "30%", height: "30%" }} src={user?.image} />
+            <img
+              style={{ width: "50%", height: "30%" }}
+              src={avatar?.preview ? avatar.preview : user?.image}
+            />
             <input
               // hidden
               // accept="image/*"
               type="file"
               onChange={handlePreviewAvatar}
             />
-            {avatar && <img src={avatar.preview} alt="" width="40%" />}
+            {/* {avatar && <img src={avatar.preview} alt="" width="40%" />} */}
           </ImageListItem>
 
           {/* <input
