@@ -15,21 +15,14 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Google from "@mui/icons-material/Google";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   setCredentials,
   loginStart,
   loginFailed,
 } from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
-import {
-  useLoginMutation,
-} from "../../../services/authAPIs";
-import {
-  selectCurrentAccessToken,
-  selectCurrentUser,
-  selectCurrentExpiredAccessToken,
-} from "../../../features/auth/authSlice";
+import { useLoginMutation } from "../../../services/authAPIs";
 import toast, { Toaster } from "react-hot-toast";
 
 function Copyright(props) {
@@ -75,10 +68,14 @@ export default function UserLogin() {
     try {
       const { data } = await login(values);
       dispatch(setCredentials(data));
-      toast.success("Login success !")
-      navigate("/");
+      toast.success("Login success !");
+      {
+        data.user.role === "admin"
+          ? (navigate("/admin/dashboard"))
+          : (navigate("/"));
+      }
     } catch (err) {
-      toast.error('Login failed !');
+      toast.error("Login failed !");
       dispatch(loginFailed());
     }
     // login(values).then(({ data }) => {

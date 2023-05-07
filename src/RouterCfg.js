@@ -3,6 +3,7 @@ import Home from "./components/Home/Home";
 
 /**** User Layouts*****/
 const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
+const Role = lazy(() => import("./features/auth/role"))
 
 /**** Admin Layouts*****/
 const AdminLayout = lazy(() => import("./layoutAdmin/AdminLayout"));
@@ -73,7 +74,7 @@ const RouterCfg = [
 
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: <Role />,
     children: [
       { path: "dashboard", element: <AdminDashboard /> },
       { path: "manage-book", element: <BookManagement /> },

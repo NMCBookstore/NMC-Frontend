@@ -7,6 +7,7 @@ const wishlist = book.injectEndpoints({
         method: "POST",
         url: `users/wishlists/${id}`,
       }),
+      invalidatesTags: ["WishlistItems"]
     }),
     getWishList: builder.query({
       query: () => ({

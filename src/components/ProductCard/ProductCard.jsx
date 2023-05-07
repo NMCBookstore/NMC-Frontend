@@ -48,7 +48,7 @@ const ProductCard = ({ productItem }) => {
 
             <Rating
               readOnly
-              name="hover-feedback"
+              
               value={productItem?.rating}
             />
 

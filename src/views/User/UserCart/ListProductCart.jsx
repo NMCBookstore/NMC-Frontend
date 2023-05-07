@@ -66,19 +66,14 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-  const { title } = props;
-  const {num} = props
-  const arrID = () => {
-    console.log("this clicked", num);
-  };
+  const { numSelected, title, handleDelete } = props;
 
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
+        ...(numSelected.length > 0 && {
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
@@ -87,14 +82,14 @@ function EnhancedTableToolbar(props) {
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {numSelected.length > 0 ? (
         <Typography
           sx={{ flex: "1 1 100%" }}
           color="inherit"
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected.length} selected
         </Typography>
       ) : (
         <Typography
@@ -108,9 +103,9 @@ function EnhancedTableToolbar(props) {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {numSelected.length > 0 ? (
         <Tooltip title="Delete">
-          <IconButton onClick={arrID}>
+          <IconButton onClick={handleDelete} >
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -136,17 +131,12 @@ export default function ListProductCart({ title, data, isFetching }) {
   var [selectedID, setSelectedID] = useState();
 
   const handleDeleteListItem = () => {
-    if (selected.length > 0) {
-      setSelectedID(selected[0].id);
-    }
-    console.log("this clicked");
+    console.log(selected);
   };
 
   const handleDeleteItem = async () => {
     await deleteProduct({ id: selectedID });
     setOpen(false);
-    // console.log(selectedID);
-    // window.location.reload();
   };
 
   const handleClickOpen = (id) => {
@@ -169,7 +159,7 @@ export default function ListProductCart({ title, data, isFetching }) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} title={title} />
+        <EnhancedTableToolbar handleDelete={handleDeleteListItem} numSelected={selected} title={title} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <TableHead>

@@ -82,15 +82,14 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-  const { title } = props;
+  const { numSelected, title, hanldeDelete } = props;
 
   return (
     <Toolbar
       sx={{
         pl: { sm: 2 },
         pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
+        ...(numSelected.length > 0 && {
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
@@ -99,14 +98,14 @@ function EnhancedTableToolbar(props) {
         }),
       }}
     >
-      {numSelected > 0 ? (
+      {numSelected.length > 0 ? (
         <Typography
           sx={{ flex: "1 1 100%" }}
           color="inherit"
           variant="subtitle1"
           component="div"
         >
-          {numSelected} selected
+          {numSelected.length} selected
         </Typography>
       ) : (
         <Typography
@@ -120,9 +119,9 @@ function EnhancedTableToolbar(props) {
         </Typography>
       )}
 
-      {numSelected > 0 ? (
+      {numSelected.length > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={hanldeDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -149,14 +148,19 @@ export default function ListWishList({ title, data, isFetching }) {
   var [selectedID, setSelectedID] = useState();
 
   const handleAddToCart = async (item) => {
-    await addCart({id: item?.book.id})
-    toast.success("Added to your cart")
-    deleteProduct({id: item?.wishlist_id});
-  }
+    await addCart({ id: item?.book.id });
+    toast.success("Added to your cart");
+    deleteProduct({ id: item?.wishlist_id });
+  };
 
-  const handleDelete = async () => {
+  const hanldeDeleteListItem = (e) => {
+    e.preventDefault();
+    console.log(selected);
+  };
+
+  const handleDeleteSingleItem = async () => {
     await deleteProduct({ id: selectedID });
-    console.log({id: selectedID})
+    console.log({ id: selectedID });
     setOpen(false);
   };
 
@@ -178,7 +182,11 @@ export default function ListWishList({ title, data, isFetching }) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} title={title} />
+        <EnhancedTableToolbar
+          hanldeDelete={hanldeDeleteListItem}
+          numSelected={selected}
+          title={title}
+        />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <TableHead>
@@ -300,7 +308,7 @@ export default function ListWishList({ title, data, isFetching }) {
                           background: "#ffa071",
                         },
                       }}
-                      onClick={() => handleDelete()}
+                      onClick={() => handleDeleteSingleItem()}
                       autoFocus
                     >
                       Delete

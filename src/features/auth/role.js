@@ -1,18 +1,18 @@
 import React from "react";
+import { useLocation, Navigate, Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Navigate, Route } from "react-router-dom";
 import { selectCurrentUserRole } from "./authSlice";
+import AdminLayout from "../../layoutAdmin/AdminLayout";
 
 const role = () => {
   const userRole = useSelector(selectCurrentUserRole);
+  const location = useLocation();
 
-  if (userRole === "admin" && location.pathname.startsWith("/user")) {
-    return <Navigate to="/admin/dashboard" replace />;
-  }
-  if (role === "user" && location.pathname.startsWith("/admin")) {
-    return <Navigate to="/" replace />;
-  }
+  return userRole ==="admin" ?(
+    <AdminLayout />
+  ) : (
+    <Navigate to="/" state={{ from: location }} replace />
+  );
+}
 
-  return null;
-};
 export default role;

@@ -16,7 +16,10 @@ import Recommend from "./Recommend";
 import Comment from "./CommentSection";
 import { useGetProductQuery } from "../../services/productAPIs";
 import { useAddCartMutation } from "../../services/cartAPI";
-import { useAddWishListMutation, useGetWishListQuery } from "../../services/wishlistAPI";
+import {
+  useAddWishListMutation,
+  useGetWishListQuery,
+} from "../../services/wishlistAPI";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
@@ -41,26 +44,18 @@ const ProductDetails = () => {
   const { id } = useParams();
 
   const { data } = useGetProductQuery(id);
-  const dispatch = useDispatch();
 
   const [addWishlist] = useAddWishListMutation(id);
 
   const [addCart] = useAddCartMutation(id);
 
-  const {data: wishlist} = useGetWishListQuery()
-  for(let i = 0; i < wishlist?.length; i++)
-  {
-    console.log(wishlist?.wishlist_id)
-  }
-
+  const { data: wishlist } = useGetWishListQuery();
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     const t = addCart({ id, amount: count });
     toast.success("Added to your cart");
   };
-
-
 
   const handleAddToWishlist = (e) => {
     e.preventDefault();
@@ -107,11 +102,7 @@ const ProductDetails = () => {
                 <Typography variant="subtitle2" mb={2}>
                   Author: {data?.author}
                 </Typography>
-                <Rating
-                  readOnly
-                  value={data?.rating}
-                  size="small"
-                />
+                <Rating readOnly value={data? (data.rating):(0)} size="small" />
                 <Typography
                   variant="h5"
                   mt={5}
@@ -151,17 +142,29 @@ const ProductDetails = () => {
 
               {/* Add to wishlist  */}
               <Stack direction="row" alignItems="center" mt={5} spacing={2}>
-                <Button
-                  onClick={handleAddToWishlist}
-                  variant="contained"
-                  sx={{
-                    background: "#1f1f1f",
-                    "&:hover": { background: "#1f1f1f" },
-                  }}
-                >
-                  <Typography variant="body1">Add to wishlist</Typography>
-                  <FavoriteIcon />
-                </Button>
+                {wishlist?.some((item) => item?.book.id == id) ? (
+                  <Button
+                    variant="contained"
+                    disabled
+                  >
+                    <Typography variant="body1">
+                      Already in your wishlist
+                    </Typography>
+                    <FavoriteIcon />
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleAddToWishlist}
+                    variant="contained"
+                    sx={{
+                      background: "#1f1f1f",
+                      "&:hover": { background: "#1f1f1f" },
+                    }}
+                  >
+                    <Typography variant="body1">Add to wishlist</Typography>
+                    <FavoriteIcon />
+                  </Button>
+                )}
 
                 {/* Add to cart  */}
                 <Button
