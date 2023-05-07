@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import { persistor} from './app/store'
 import store from './app/store';
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import ScrollToTop from './components/ScrollToTop';
 
 
 
@@ -27,6 +28,7 @@ root.render(
       <CssBaseline />
       <Toaster />
       <PersistGate loading = {null} persistor={persistor}>
+      <ScrollToTop />
         <App />
       </PersistGate>
     </ThemeProvider>

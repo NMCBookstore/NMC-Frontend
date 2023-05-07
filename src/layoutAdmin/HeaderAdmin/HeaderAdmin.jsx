@@ -3,19 +3,21 @@ import { Tabs, Tab, Toolbar, AppBar, Box, Typography } from "@mui/material";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { UserMenu, Logout } from "react-admin";
 import logo from "./logo.png";
-import useStyles from './styles';
+import useStyles from "./styles";
 
 const HeaderAdmin = () => {
   const location = useLocation();
   const classes = useStyles();
 
-  let currentPath = "/";
-  if (!!matchPath("/contacts/*", location.pathname)) {
-    currentPath = "/contacts";
-  } else if (!!matchPath("/companies/*", location.pathname)) {
-    currentPath = "/companies";
-  } else if (!!matchPath("/deals/*", location.pathname)) {
-    currentPath = "/deals";
+  let currentPath = "/admin/*";
+  if (!!matchPath("/admin/manage-book", location.pathname)) {
+    currentPath = "/admin/manage-book";
+  } else if (!!matchPath("/admin/dashboard", location.pathname)) {
+    currentPath = "/admin/dashboard";
+  } else if (!!matchPath("/admin/manage-genres", location.pathname)) {
+    currentPath = "/admin/manage-genres";
+  } else if (!!matchPath("/admin/manage-order*", location.pathname)) {
+    currentPath = "/admin/manage-order";
   }
 
   return (
@@ -38,7 +40,7 @@ const HeaderAdmin = () => {
               <Tabs
                 value={currentPath}
                 aria-label="Navigation Tabs"
-                indicatorColor='white'
+                indicatorColor="white"
                 textColor="inherit"
               >
                 <Tab
@@ -59,7 +61,12 @@ const HeaderAdmin = () => {
                   to="/admin/manage-genres"
                   value="/admin/manage-genres"
                 />
-                <Tab label={"User"} to="/deals" />
+                <Tab
+                  label={"Order"}
+                  component={Link}
+                  to="/admin/manage-order"
+                  value="/admin/manage-order"
+                />
               </Tabs>
             </Box>
             <Box display="flex">

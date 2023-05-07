@@ -5,6 +5,9 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { Divider, Stack } from "@mui/material";
+import { useCreateOrderMutation } from "../../../services/orderAPIs";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const currencyExchange = (num) => {
   return parseFloat(num).toLocaleString("vi-VN", {
@@ -15,12 +18,27 @@ const currencyExchange = (num) => {
 
 export default function ProductCheckoutCard({ data }) {
 
+  const navigate = useNavigate();
+
+  let arrID = [];
+
+  const [createCart] = useCreateOrderMutation(arrID)
+
+  const hanldeCreateOrder = (e) => {
+    e.preventDefault();
+    for (let i = 0; i < data?.length; i++) {
+      arrID.push(data[i]?.cart_id)
+    }
+    // createCart(arrID);
+    // navigate('/user/checkout')
+  };
+
   let shipping = 21000;
   let total = 0;
   for (let i = 0; i < data?.length; i++) {
     total += parseInt(data[i]?.amount * data[i]?.price);
   }
-//   console.log(total);
+  //   console.log(total);
   return (
     <Card sx={{ minWidth: 400, border: "1px black solid" }}>
       <CardContent>
@@ -72,6 +90,7 @@ export default function ProductCheckoutCard({ data }) {
               backgroundColor: "#DB4444",
             },
           }}
+          onClick={hanldeCreateOrder}
         >
           Proceed to checkout
         </Button>

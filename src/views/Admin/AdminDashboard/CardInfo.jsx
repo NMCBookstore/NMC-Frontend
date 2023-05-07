@@ -6,6 +6,7 @@ import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import Grid from "@mui/material/Unstable_Grid2";
 import useStyles from "./styles";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 
 export default function CardInfo() {
   const classes = useStyles();
@@ -14,17 +15,18 @@ export default function CardInfo() {
     <Grid container spacing={2}>
       <Grid spacing={2} xs={12} sm={6}>
         <Card variant="outlined" className={classes.card}>
-          {/* <CardContent>
-              <Typography
-                level="h6"
-                fontWeight="lg"
-                textColor="#fff"
-                mt={{ xs: 1, sm: 1 }}
-                marginLeft="12"
-              >
-                Image
-              </Typography>
-            </CardContent> */}
+          <CardContent>
+            <Typography
+              level="h5"
+              fontWeight="lg"
+              textColor="#fff"
+              mt={{ xs: 1, sm: 1 }}
+              marginLeft="12"
+            >
+              <MonetizationOnIcon />
+              Total Revenue
+            </Typography>
+          </CardContent>
         </Card>
       </Grid>
       <Grid spacing={2} xs={12} sm={6}>

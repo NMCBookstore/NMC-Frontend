@@ -29,8 +29,7 @@ export default function UserCart() {
           marginTop={3}
           justifyContent="end"
         >
-          <ProductCheckoutCard data={data}
-          />
+          <ProductCheckoutCard data={data} />
         </Grid>
       </Grid>
     </Box>

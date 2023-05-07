@@ -123,7 +123,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function ListProductCart({ title, data, isFetching }) {
+export default function DetailsSubGenresManagement({ title, data, isFetching }) {
   const [selected, setSelected] = useState([]);
   const [datas, setDatas] = useState(data);
   const [rows, setRows] = useState([]);
@@ -131,7 +131,6 @@ export default function ListProductCart({ title, data, isFetching }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [deleteProduct] = useDeleteProductCartMutation();
 
   var [selectedID, setSelectedID] = useState();
 
@@ -168,6 +167,7 @@ export default function ListProductCart({ title, data, isFetching }) {
   // console.log(selected);
   return (
     <Box sx={{ width: "100%" }}>
+      <Typography variant="h5" sx={{my:4}}>Subgenres details</Typography>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} title={title} />
         <TableContainer>
@@ -186,11 +186,8 @@ export default function ListProductCart({ title, data, isFetching }) {
                     }}
                   />
                 </TableCell>
-                <TableCell align="center">Product</TableCell>
-                <TableCell align="center">Price</TableCell>
-                <TableCell align="center">Amount</TableCell>
-                <TableCell align="center">Subtotal</TableCell>
-                <TableCell align="center">{""}</TableCell>
+                <TableCell align="center">Subgenres</TableCell>
+                <TableCell align="center">Action</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

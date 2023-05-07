@@ -108,11 +108,9 @@ const ProductDetails = () => {
                   Author: {data?.author}
                 </Typography>
                 <Rating
-                  name="size-small"
                   readOnly
-                  defaultValue={2}
+                  value={data?.rating}
                   size="small"
-                  precision={0.1}
                 />
                 <Typography
                   variant="h5"

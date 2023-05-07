@@ -18,7 +18,7 @@ const SearchFilter = () => {
   const { data: allGenres } = useGetGenresQuery();
   const { data: allSubGenres } = useGetSubGenresQuery(id, { skip: !id });
 
-  console.log(allSubGenres);
+  // console.log(allSubGenres);
 
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>

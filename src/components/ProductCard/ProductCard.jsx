@@ -4,8 +4,10 @@ import Card from "@mui/joy/Card";
 import Typography from "@mui/joy/Typography";
 import { CardContent, CardMedia } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Rating from "@mui/material/Rating";
 
 const ProductCard = ({ productItem }) => {
+
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -43,6 +45,13 @@ const ProductCard = ({ productItem }) => {
               })}
             </Typography>
           </div>
+
+            <Rating
+              readOnly
+              name="hover-feedback"
+              value={productItem?.rating}
+            />
+
         </CardContent>
       </Card>
     </Box>
