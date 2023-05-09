@@ -155,14 +155,17 @@ export default function ListWishList({ title, data, isFetching }) {
 
   const hanldeDeleteListItem = (e) => {
     e.preventDefault();
-    console.log(selected);
   };
 
   const handleDeleteSingleItem = async () => {
     await deleteProduct({ id: selectedID });
-    console.log({ id: selectedID });
+    if (selected.some((wishlist_id) => selectedID == wishlist_id)) {
+      setSelected(selected.filter((wishlist_id) => wishlist_id !== selectedID));
+    }
     setOpen(false);
   };
+
+
 
   const handleClickOpen = (id) => {
     setOpen(true);

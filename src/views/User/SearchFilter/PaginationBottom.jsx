@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   CircularProgress,
@@ -6,26 +6,17 @@ import {
   Stack,
   useMediaQuery,
 } from "@mui/material";
-import PropTypes from "prop-types";
+import { useSearchParams } from "react-router-dom";
 
-PaginationBottom.PropTypes = {
-  pagination: PropTypes.object.isRequired,
-  onPageChange: PropTypes.func,
-};
-
-PaginationBottom.defaultProps = {
-  onPageChange: null,
-};
-
-export default function PaginationBottom() {
+export default function PaginationBottom({ allProduct, handlePageChange }) {
   // const {pagination, onPageChange} = props;
-  const isMobile = useMediaQuery('(max-width: 800px)');
+  const pageNum = parseInt(allProduct?.total_page);
 
-  function handlePageChange(newPage) {
-    if (onPageChange) {
-      onPageChange(newPage);
-    }
-  }
+  const onPageChange = (_, value) => {
+    handlePageChange(value, 24);
+  };
+
+  const isMobile = useMediaQuery("(max-width: 800px)");
 
   return (
     <Box
@@ -37,11 +28,14 @@ export default function PaginationBottom() {
     >
       <Stack>
         <Pagination
-         defaultPage={1} 
-         count={10} 
-         size={isMobile ? 'small' : 'large'}
-         showFirstButton 
-         showLastButton />
+          count={pageNum}
+          page={allProduct?.page_id}
+          size={isMobile ? "small" : "large"}
+          siblingCount={isMobile ? -1 : 2}
+          onChange={onPageChange}
+          showFirstButton
+          showLastButton
+        />
       </Stack>
     </Box>
   );

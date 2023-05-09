@@ -1,13 +1,49 @@
 import React from "react";
-import { Tabs, Tab, Toolbar, AppBar, Box, Typography } from "@mui/material";
+import {
+  Tabs,
+  Tab,
+  Toolbar,
+  AppBar,
+  Box,
+  Typography,
+  Tooltip,
+  IconButton,
+  Avatar,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import { Link, matchPath, useLocation } from "react-router-dom";
-import { UserMenu, Logout } from "react-admin";
 import logo from "./logo.png";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectCurrentUserName,
+  logout,
+  selectCurrentUserImage,
+  selectCurrentUser,
+} from "../../features/auth/authSlice";
+import { LogoutOutlined } from "@mui/icons-material";
 import useStyles from "./styles";
 
 const HeaderAdmin = () => {
+
+  const user = useSelector(selectCurrentUser);
+  const userName = user ? useSelector(selectCurrentUserName) : null;
+  const hello = user ? `Hello ${userName}!` : `Hello ! Sign in to explore`;
+
   const location = useLocation();
   const classes = useStyles();
+  
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+
+  const dispatch = useDispatch();
+
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   let currentPath = "/admin/*";
   if (!!matchPath("/admin/manage-book", location.pathname)) {
@@ -16,7 +52,7 @@ const HeaderAdmin = () => {
     currentPath = "/admin/dashboard";
   } else if (!!matchPath("/admin/manage-genres", location.pathname)) {
     currentPath = "/admin/manage-genres";
-  } else if (!!matchPath("/admin/manage-order*", location.pathname)) {
+  } else if (!!matchPath("/admin/manage-order", location.pathname)) {
     currentPath = "/admin/manage-order";
   }
 
@@ -81,6 +117,51 @@ const HeaderAdmin = () => {
                 <Logout />
               </UserMenu> */}
             </Box>
+          </Box>
+
+          <Box sx={{ flexGrow: 0 }}>
+            <Tooltip title="Open settings">
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                <Avatar src="" />
+              </IconButton>
+            </Tooltip>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {user ? (
+                <div className={classes.profileMenuUser}>
+                  <Typography variant="h6" weight="medium">
+                    {hello}
+                  </Typography>
+                </div>
+              ) : (
+                <Link className={classes.link} to="/login">
+                  <MenuItem onClick={handleMenuClose}>
+                    <LoginIcon />
+                    &nbsp; Login
+                  </MenuItem>
+                </Link>
+              )}
+              <Link className={classes.link}>
+                <MenuItem onClick={() => dispatch(logout())}>
+                  <LogoutOutlined />
+                  &nbsp; Logout
+                </MenuItem>
+              </Link>
+            </Menu>
           </Box>
         </Toolbar>
       </AppBar>

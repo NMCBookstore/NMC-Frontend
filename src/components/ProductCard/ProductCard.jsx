@@ -8,6 +8,7 @@ import Rating from "@mui/material/Rating";
 
 const ProductCard = ({ productItem }) => {
 
+  
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -46,12 +47,7 @@ const ProductCard = ({ productItem }) => {
             </Typography>
           </div>
 
-            <Rating
-              readOnly
-              
-              value={productItem?.rating}
-            />
-
+          <Rating readOnly value={productItem?.rating} />
         </CardContent>
       </Card>
     </Box>

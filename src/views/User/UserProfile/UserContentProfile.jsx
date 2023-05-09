@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, FormControl, List, Stack, TextField } from "@mui/material";
+import { Box, Container, FormControl, List, Stack, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import ImageListItem from "@mui/material/ImageListItem";
 import { useUpdateUserMutation } from "../../../services/userAPI";
@@ -70,13 +70,14 @@ export default function UserContentProfile({ data }) {
   return (
     info && (
       <Container>
+
         <Stack
           spacing={2}
           sx={{
             width: "60%",
             display: "flex",
             flexWrap: "wrap",
-            justifyItems: "center",
+            justifyContent: "center",
           }}
         >
           <TextField
@@ -126,7 +127,7 @@ export default function UserContentProfile({ data }) {
             onChange={(e) => setUserInfo({ ...userInfo, age: e.target.value })}
           />
 
-          <ImageListItem>
+
             <img
               style={{ width: "50%", height: "30%" }}
               src={avatar?.preview ? avatar.preview : user?.image}
@@ -138,7 +139,7 @@ export default function UserContentProfile({ data }) {
               onChange={handlePreviewAvatar}
             />
             {/* {avatar && <img src={avatar.preview} alt="" width="40%" />} */}
-          </ImageListItem>
+
 
           {/* <input
             // hidden
@@ -179,6 +180,7 @@ export default function UserContentProfile({ data }) {
             </Button>
           </Stack>
         </Stack>
+
       </Container>
     )
   );

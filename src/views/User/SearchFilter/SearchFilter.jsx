@@ -7,25 +7,36 @@ import BookList from "./BookList";
 import { useGetAllProductQuery } from "../../../services/productAPIs";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
 import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
+import { Button } from "@mui/material";
 
 const SearchFilter = () => {
   const [id, setId] = useState(0);
 
+  const [page, setPage] = useState({ id: 1, size: 24 });
+
   const { data: allProduct } = useGetAllProductQuery({
-    page_id: 1,
-    page_size: 24,
+    page_id: page.id,
+    page_size: page.size,
   });
+
   const { data: allGenres } = useGetGenresQuery();
   const { data: allSubGenres } = useGetSubGenresQuery(id, { skip: !id });
 
-  // console.log(allSubGenres);
+  const handlePageChange = (id, size) => {
+    setPage({ id, size });
+  };
 
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
       <Grid container my={2} spacing={2}>
         {/* Filter  */}
         <Grid item xs={12} sm={3}>
-          <Filter id={id} genres={allGenres} subGenres={allSubGenres} setId={setId} />
+          <Filter
+            id={id}
+            genres={allGenres}
+            subGenres={allSubGenres}
+            setId={setId}
+          />
         </Grid>
 
         {/* Product  */}
@@ -36,9 +47,22 @@ const SearchFilter = () => {
           sm={9}
           sx={{ flexDirection: { xs: "column", sm: "row" } }}
         >
-          <BookList data={allProduct} />
+          <BookList allProduct={allProduct} />
         </Grid>
-        <PaginationBottom data={allProduct} />
+        <Grid
+          container
+          item
+          xs={12}
+          sm={12}
+          sx={{ flexDirection: { xs: "column", sm: "row" } }}
+        >
+          <Box sx={{ width: "100%", display: "flex", justifyContent:"center" }}>
+            <PaginationBottom
+              allProduct={allProduct}
+              handlePageChange={handlePageChange}
+            />
+          </Box>
+        </Grid>
       </Grid>
     </Box>
   );

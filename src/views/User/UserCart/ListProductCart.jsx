@@ -105,7 +105,7 @@ function EnhancedTableToolbar(props) {
 
       {numSelected.length > 0 ? (
         <Tooltip title="Delete">
-          <IconButton onClick={handleDelete} >
+          <IconButton onClick={handleDelete}>
             <DeleteIcon />
           </IconButton>
         </Tooltip>
@@ -136,6 +136,10 @@ export default function ListProductCart({ title, data, isFetching }) {
 
   const handleDeleteItem = async () => {
     await deleteProduct({ id: selectedID });
+    if (selected.some((wishlist_id) => selectedID == wishlist_id)) {
+      setSelected(selected.filter((wishlist_id) => wishlist_id === selectedID));
+    }
+    console.log(selected);
     setOpen(false);
   };
 
@@ -159,7 +163,11 @@ export default function ListProductCart({ title, data, isFetching }) {
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <EnhancedTableToolbar handleDelete={handleDeleteListItem} numSelected={selected} title={title} />
+        <EnhancedTableToolbar
+          handleDelete={handleDeleteListItem}
+          numSelected={selected}
+          title={title}
+        />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <TableHead>

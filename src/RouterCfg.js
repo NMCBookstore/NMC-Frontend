@@ -12,7 +12,6 @@ const AdminLayout = lazy(() => import("./layoutAdmin/AdminLayout"));
 const RequireAuth = lazy(() => import("./features/auth/requireAuth"));
 
 /**** User Routes*****/
-const About = lazy(() => import("./pages/About"));
 const UserLogin = lazy(() => import("./views/User/UserLogin"));
 const UserRegister = lazy(() => import("./views/User/UserRegister"));
 const ProductDetails = lazy(() => import("./views/ProductDetails"));
@@ -46,7 +45,6 @@ const RouterCfg = [
     element: <Layout />,
     children: [
       { path: "/", element: <Home /> },
-      { path: "about", element: <About /> },
       { path: "product/:id", element: <ProductDetails /> },
       { path: "search-filter", element: <SearchFilter /> },
       { path: "forgot_password", element: <ForgotPassword /> },
@@ -74,16 +72,23 @@ const RouterCfg = [
 
   {
     path: "/admin",
-    element: <Role />,
+    element: <Role />, //whether is admin or not
     children: [
-      { path: "dashboard", element: <AdminDashboard /> },
-      { path: "manage-book", element: <BookManagement /> },
-      { path: "manage-genres", element: <GenresManagement /> },
-      { path: "manage-order", element: <OrderManagement /> },
-      { path: "edit-book", element: <EditBook /> },
-      { path: "details-book", element: <DetailsBookManagement /> },
-      { path: "details-genres/:id", element: <DetailsGenresManagement /> },
-      { path: "details-subgenres/:id", element: <DetailsSubGenresManagement />},
+      {
+        //protected route
+        element: <RequireAuth />,
+        children: [
+          { path: "dashboard", element: <AdminDashboard /> },
+          { path: "manage-book", element: <BookManagement /> },
+          { path: "manage-genres", element: <GenresManagement /> },
+          { path: "manage-order", element: <OrderManagement /> },
+          { path: "edit-book", element: <EditBook /> },
+          { path: "details-book", element: <DetailsBookManagement /> },
+          { path: "details-genres/:id", element: <DetailsGenresManagement /> },
+          { path: "details-subgenres/:id", element: <DetailsSubGenresManagement />},
+        ]
+      }
+
     ],
   },
 ];

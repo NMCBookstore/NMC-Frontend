@@ -1,52 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Checkbox from "@mui/material/Checkbox";
 
-
-const marks = [
-  {
-    value: 0,
-    label: "0 VND",
-  },
-  {
-    value: 150,
-    label: "150.000 VND",
-  },
-  {
-    value: 300,
-    label: "300.000 VND",
-  },
-  {
-    value: 500,
-    label: "500.000 VND",
-  },
-  {
-    value: 1000,
-    label: "1.000.000 VND",
-  },
-];
+const minDistance = 10;
 
 function valuetext(value) {
   return `${value} VND`;
 }
 
 export default function Filter({ id, genres, setId, subGenres }) {
-  const genresOptions = createFilterOptions({
-    matchFrom: "start",
-    stringify: (option) => option.genres,
-  });
+  const [value2, setValue2] = useState([20, 37]);
 
-  const subGenresOptions = createFilterOptions({
-    matchFrom: "start",
-    stringify: (option) => option.genresTitles,
-  });
+  const handleChange2 = (event, newValue, activeThumb) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (newValue[1] - newValue[0] < minDistance) {
+      if (activeThumb === 0) {
+        const clamped = Math.min(newValue[0], 100 - minDistance);
+        setValue2([clamped, clamped + minDistance]);
+      } else {
+        const clamped = Math.max(newValue[1], minDistance);
+        setValue2([clamped - minDistance, clamped]);
+      }
+    } else {
+      setValue2(newValue);
+    }
+  };
+
+  const [checked, setChecked] = useState([1]);
+
+  const handleToggle = (value) => () => {
+    const currentIndex = checked.indexOf(value);
+    const newChecked = [...checked];
+
+    if (currentIndex === -1) {
+      newChecked.push(value);
+    } else {
+      newChecked.splice(currentIndex, 1);
+    }
+
+    setChecked(newChecked);
+  };
 
   const handleChangeGenreId = (_, val) => {
     setId(val?.id);
-  }
+  };
 
   return (
     <Stack>
@@ -73,15 +82,42 @@ export default function Filter({ id, genres, setId, subGenres }) {
 
       <Box my={2} sx={{ width: "90%", display: "flex", flexWrap: "wrap" }}>
         <Slider
-          sx={{ color: "black" }}
-          aria-label="Custom marks"
-          defaultValue={0}
-          getAriaValueText={valuetext}
-          step={10}
+          sx={{ color: "#000" }}
+          getAriaLabel={() => "Minimum distance shift"}
+          value={value2}
+          onChange={handleChange2}
           valueLabelDisplay="auto"
-          marks={marks}
+          getAriaValueText={valuetext}
+          disableSwap
         />
       </Box>
+
+      <List
+        dense
+        sx={{ width: "100%", maxWidth: 240, bgcolor: "background.paper" }}
+      >
+        {[0, 1, 2, 3, 4].map((value) => {
+          const labelId = `checkbox-list-secondary-label-${value}`;
+          return (
+            <ListItem
+              key={value}
+              secondaryAction={
+                <Checkbox
+                  edge="end"
+                  onChange={handleToggle(value)}
+                  checked={checked.indexOf(value) !== -1}
+                  inputProps={{ "aria-labelledby": labelId }}
+                />
+              }
+              disablePadding
+            >
+              <ListItemButton>
+                <ListItemText id={labelId} primary={`${value + 1} star`} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
     </Stack>
   );
 }

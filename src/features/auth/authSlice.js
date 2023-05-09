@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-hot-toast";
 
 const authSlice = createSlice({
   name: "auth",
@@ -87,6 +88,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.login.access_token = null;
       localStorage.clear();
+      toast.success("You're logged out");
     },
   },
 });

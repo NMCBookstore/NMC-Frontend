@@ -157,7 +157,7 @@ const UserRegister = () => {
                 />
               </Grid>
               <Grid item sm={6}>
-                <FormControl variant="standard" sx={{ m: 1, minWidth: 180 }}>
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 140 }}>
                   <InputLabel id="demo-simple-select-standard-label">
                     Gender
                   </InputLabel>

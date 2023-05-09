@@ -76,7 +76,7 @@ const Home = () => {
             sm={12}
             sx={{ flexDirection: { xs: "column", sm: "row" }, marginRight:"-40px" }}
           >
-            <BookList data={allProduct} />
+            <BookList allProduct={allProduct} />
           </Grid>
 
           <Link to="/search-filter" style={{ textDecoration: "none", marginTop: 8 }}>

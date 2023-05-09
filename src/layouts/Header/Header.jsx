@@ -28,7 +28,6 @@ import {
   selectCurrentUser,
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import toast, { Toast } from "react-hot-toast";
 import { deepOrange} from '@mui/material/colors';
 
 const Header = () => {
@@ -192,7 +191,7 @@ const Header = () => {
               </Badge>
             </IconButton>
             <IconButton size="large" sx={{ color: "white" }}>
-              <Badge badgeContent="5" color="error">
+              <Badge badgeContent="7" color="error">
                 <Tooltip title = "My cart">
                 <ShoppingCartIcon fontSize="100%" onClick={naviCart} />
                 </Tooltip>
