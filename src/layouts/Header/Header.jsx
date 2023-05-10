@@ -26,9 +26,10 @@ import {
   logout,
   selectCurrentUserImage,
   selectCurrentUser,
+  selectCurrentAccessToken,
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { deepOrange} from '@mui/material/colors';
+import { deepOrange } from "@mui/material/colors";
 
 const Header = () => {
   const classes = useStyles();
@@ -36,10 +37,9 @@ const Header = () => {
   const dispatch = useDispatch();
 
   const user = useSelector(selectCurrentUser);
+  const token = useSelector(selectCurrentAccessToken);
   const userName = user ? useSelector(selectCurrentUserName) : null;
   const userImage = user ? useSelector(selectCurrentUserImage) : null;
-  // console.log("this is user name : " + user);
-  // console.log("expired time : " + expired)
   const hello = user ? `Hello ${userName}!` : `Hello ! Sign in to explore`;
 
   const naviWishlist = () => navigate("/user/wishlist");
@@ -50,15 +50,10 @@ const Header = () => {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const isMenuOpen = Boolean(anchorEl);
-  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -71,10 +66,6 @@ const Header = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
-  };
-
-  const handleMobileMenuOpen = (event) => {
-    setMobileMoreAnchorEl(event.currentTarget);
   };
 
   const menuId = "primary-search-account-menu";
@@ -90,12 +81,48 @@ const Header = () => {
       TransitionComponent={Fade}
       sx={{ mt: "5px" }}
     >
-      {user ? (
-        <div className={classes.profileMenuUser}>
-          <Typography variant="h6" weight="medium">
-            {hello}
-          </Typography>
-        </div>
+      {token ? (
+        [
+          <div className={classes.profileMenuUser}>
+            <Typography variant="h6" weight="medium">
+              {hello}
+            </Typography>
+          </div>,
+          <div>
+            <Link className={classes.link} to="/user/profile">
+              <MenuItem onClick={handleMenuClose}>
+                <PersonIcon />
+                &nbsp; My profile
+              </MenuItem>
+            </Link>
+            <Link className={classes.link}>
+              <MenuItem onClick={handleMenuClose}>
+                <LocalMallIcon />
+                &nbsp; My Order
+              </MenuItem>
+            </Link>
+            <Link className={classes.link}>
+              <MenuItem onClick={handleMenuClose}>
+                <CancelIcon />
+                &nbsp; My Cancellations
+              </MenuItem>
+            </Link>
+
+            <Link className={classes.link}>
+              <MenuItem onClick={handleMenuClose}>
+                <ReviewsIcon />
+                &nbsp; My Reviews
+              </MenuItem>
+            </Link>
+
+            <Link className={classes.link}>
+              <MenuItem onClick={() => dispatch(logout())}>
+                <LogoutOutlinedIcon />
+                &nbsp; Logout
+              </MenuItem>
+            </Link>
+          </div>,
+        ]
       ) : (
         <Link className={classes.link} to="/login">
           <MenuItem onClick={handleMenuClose}>
@@ -104,59 +131,7 @@ const Header = () => {
           </MenuItem>
         </Link>
       )}
-
-      <Link className={classes.link} to="/user/profile">
-        <MenuItem onClick={handleMenuClose}>
-          <PersonIcon />
-          &nbsp; My profile
-        </MenuItem>
-      </Link>
-      <Link className={classes.link}>
-        <MenuItem onClick={handleMenuClose}>
-          <LocalMallIcon />
-          &nbsp; My Order
-        </MenuItem>
-      </Link>
-      <Link className={classes.link}>
-        <MenuItem onClick={handleMenuClose}>
-          <CancelIcon />
-          &nbsp; My Cancellations
-        </MenuItem>
-      </Link>
-
-      <Link className={classes.link}>
-        <MenuItem onClick={handleMenuClose}>
-          <ReviewsIcon />
-          &nbsp; My Reviews
-        </MenuItem>
-      </Link>
-
-      <Link className={classes.link}>
-        <MenuItem onClick={() => dispatch(logout())}>
-          <LogoutOutlinedIcon />
-          &nbsp; Logout
-        </MenuItem>
-      </Link>
     </Menu>
-  );
-
-  const mobileMenuId = "primary-search-account-menu-mobile";
-  const renderMobileMenu = (
-    <Menu
-      anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      id={mobileMenuId}
-      keepMounted
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "right",
-      }}
-      open={isMobileMenuOpen}
-      onClose={handleMobileMenuClose}
-    ></Menu>
   );
 
   return (
@@ -185,15 +160,15 @@ const Header = () => {
           >
             <IconButton size="large" sx={{ color: "white" }}>
               <Badge>
-                <Tooltip title ="My Wishlist">
-                <FavoriteIcon fontSize="100%" onClick={naviWishlist} />
+                <Tooltip title="My Wishlist">
+                  <FavoriteIcon fontSize="100%" onClick={naviWishlist} />
                 </Tooltip>
               </Badge>
             </IconButton>
             <IconButton size="large" sx={{ color: "white" }}>
               <Badge badgeContent="7" color="error">
-                <Tooltip title = "My cart">
-                <ShoppingCartIcon fontSize="100%" onClick={naviCart} />
+                <Tooltip title="My cart">
+                  <ShoppingCartIcon fontSize="100%" onClick={naviCart} />
                 </Tooltip>
               </Badge>
             </IconButton>
@@ -212,7 +187,7 @@ const Header = () => {
             >
               {user ? (
                 <Tooltip title="Profile">
-                <Avatar src={userImage} />
+                  <Avatar src={userImage} />
                 </Tooltip>
               ) : (
                 <Avatar sx={{ bgcolor: deepOrange[300] }} />
@@ -222,7 +197,6 @@ const Header = () => {
         </Stack>
       </Stack>
 
-      {renderMobileMenu}
       {renderMenu}
     </>
   );
