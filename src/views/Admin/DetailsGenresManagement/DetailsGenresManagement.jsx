@@ -7,13 +7,13 @@ import { Button } from "@mui/material";
 import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
 import { useNavigate, useParams } from "react-router-dom";
+import SubgenresTable from "./SubgenresTable";
 
 export default function DetailsGenresManagement() {
-
   const { id } = useParams();
-  const { data: subGenres } = useGetSubGenresQuery(id, { skip: !id });
+  const { data, isFetching } = useGetSubGenresQuery(id, { skip: !id });
   const { data: genres } = useGetGenresQuery(id, { skip: !id });
-  // console.log(genres)
+  // console.log(data)
 
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ export default function DetailsGenresManagement() {
           <Autocomplete
             disablePortal
             id="filter-demo2"
-            options={subGenres ? subGenres : []}
+            options={data ? data : []}
             getOptionLabel={(option) => option?.name}
             sx={{ width: "100%" }}
             renderInput={(params) => (
@@ -49,11 +49,16 @@ export default function DetailsGenresManagement() {
           />
         </Grid>
         <Grid item xs={12} sm={2}>
-          <Button onClick={()=> navigate(`/admin/details-subgenres/:id`)}>Edit subgenres</Button>
+          <Button onClick={() => navigate(`/admin/details-subgenres/:id`)}>
+            Edit subgenres
+          </Button>
         </Grid>
         <Grid item xs={12} sm={12}>
           <Button variant="outlined">Cancel</Button>
           &nbsp; <Button>Submit</Button>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <SubgenresTable data={data} isFetching={isFetching} />
         </Grid>
       </Grid>
     </React.Fragment>

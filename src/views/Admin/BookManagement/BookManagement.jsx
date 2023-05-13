@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import MUIDataTable from "mui-datatables";
-import { useGetAllProductQuery } from "../../../services/productAPIs";
 import useStyles from "./styles";
 import { Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useGetAllBookQuery } from "../../../services/productAdminAPI";
 
 export default function BookManagement() {
   const classes = useStyles();
-  const { data: allProduct } = useGetAllProductQuery({
-    page_id: 1,
-    page_size: 24,
-  });
+
+  const navigate = useNavigate();
+
+  const { data: allProduct } = useGetAllBookQuery();
 
   const columns = [
     {
@@ -27,7 +28,6 @@ export default function BookManagement() {
       options: {
         filter: true,
         sort: true,
-        customFilterListOptions: { render: v => `Book name: ${allProduct?.books[0].name}` },
       },
     },
     {
@@ -35,7 +35,7 @@ export default function BookManagement() {
       label: "Price",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -43,7 +43,7 @@ export default function BookManagement() {
       label: "Author",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -51,7 +51,7 @@ export default function BookManagement() {
       label: "Publisher",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -59,7 +59,7 @@ export default function BookManagement() {
       label: "Quantity",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
     {
@@ -67,7 +67,7 @@ export default function BookManagement() {
       label: "Rating",
       options: {
         filter: true,
-        sort: false,
+        sort: true,
       },
     },
   ];
@@ -76,11 +76,11 @@ export default function BookManagement() {
     selectableRows: "none",
     onRowClick: (rowData) => {
       console.log("Row clicked:", rowData);
+      navigate(`/admin/details-book/${rowData[0]}`);
     },
-    serverSide: true,
-    selectableRows: 'multiple',
-    filterType: 'dropdown',
-    responsive: 'vertical',
+    selectableRows: "multiple",
+    filterType: "dropdown",
+    responsive: "vertical",
   };
 
   return (
@@ -92,7 +92,7 @@ export default function BookManagement() {
           </Typography>
           <MUIDataTable
             title="Book Data List"
-            data={allProduct?.books}
+            data={allProduct}
             onRowClick={() => console.log("this clicked")}
             columns={columns}
             options={

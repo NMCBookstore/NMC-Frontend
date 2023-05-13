@@ -86,8 +86,10 @@ const authSlice = createSlice({
 
     logout: (state, action) => {
       state.isAuthenticated = false;
-      state.login.access_token = null;
+      // state.login.access_token = null;
+      // window.location.reload();
       localStorage.clear();
+      // localStorage.removeItem("persist:root");
       toast.success("You're logged out");
     },
   },
@@ -106,14 +108,14 @@ export const {
 
 export default authSlice.reducer;
 
-export const selectCurrentUser = (state) => state.auth.login.user;
-export const selectCurrentUserRole = (state) => state.auth.login.user.role;
-export const selectCurrentUserImage = (state) => state.auth.login.user.image;
-export const selectCurrentUserName = (state) => state.auth.login.user.username;
+export const selectCurrentUser = (state) => state.auth.login?.user;
+export const selectCurrentUserRole = (state) => state.auth.login.user?.role;
+export const selectCurrentUserImage = (state) => state.auth.login.user?.image;
+export const selectCurrentUserName = (state) => state.auth.login.user?.username;
 export const selectCurrentAccessToken = (state) =>
-  state.auth.login.access_token;
+  state.auth.login?.access_token;
 export const selectCurrentRefreshToken = (state) =>
-  state.auth.login.refresh_token;
-export const selectCurrentSession = (state) => state.auth.login.session_id;
+  state.auth.login?.refresh_token;
+export const selectCurrentSession = (state) => state.auth.login?.session_id;
 export const selectCurrentExpiredAccessToken = (state) =>
-  state.auth.login.access_token_expires_at;
+  state.auth.login?.access_token_expires_at;

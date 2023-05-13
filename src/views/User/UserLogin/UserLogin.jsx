@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../services/authAPIs";
 import toast, { Toaster } from "react-hot-toast";
 
+
 function Copyright(props) {
   return (
     <Typography
@@ -93,7 +94,7 @@ export default function UserLogin() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://source.unsplash.com/random)",
+            backgroundImage: "url(https://res.cloudinary.com/doqhasjec/image/upload/v1683836302/samples/NMC%20Bookstore/551519-antique-blur_xtqwhc.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -185,7 +186,7 @@ export default function UserLogin() {
 
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="/forgot_password" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid>

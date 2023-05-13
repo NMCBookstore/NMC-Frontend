@@ -3,6 +3,7 @@ import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import SwipeableViews from "react-swipeable-views";
 import slider from "./slider/slider.jpg";
+import slider1 from "./slider/slider1.jpg";
 import slider2 from "./slider/slider2.jpg";
 import slider3 from "./slider/slider3.jpg";
 import { autoPlay } from "react-swipeable-views-utils";
@@ -18,11 +19,11 @@ const images = [
   },
   {
     // label: "pic2",
-    imgPath: slider2,
+    imgPath: slider1,
   },
   {
     // label: "pic3",
-    imgPath: slider,
+    imgPath: slider2,
   },
   {
     // label: "pic4",

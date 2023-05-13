@@ -23,7 +23,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
     <BrowserRouter>
-    <Suspense fallback={<div><CircularProgress /></div>}>
+    <Suspense fallback={<div style={{display:"flex", justifyContent:"center"  }}><CircularProgress /></div>}>
     <ThemeProvider theme = {theme}>
       <CssBaseline />
       <Toaster />

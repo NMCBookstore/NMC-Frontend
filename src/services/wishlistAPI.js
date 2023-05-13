@@ -7,7 +7,7 @@ const wishlist = book.injectEndpoints({
         method: "POST",
         url: `users/wishlists/${id}`,
       }),
-      invalidatesTags: ["WishlistItems"]
+      invalidatesTags: ["WishlistItems"],
     }),
     getWishList: builder.query({
       query: () => ({
@@ -16,11 +16,14 @@ const wishlist = book.injectEndpoints({
       providesTags: ["WishlistItems"],
     }),
     deleteProductWishlist: builder.mutation({
-      query: ({ id }) => ({
-        method: "DELETE",
-        url: `users/wishlists/${id}`,
-        body: id,
-      }),
+      query: ({ ids }) => {
+        console.log(ids);
+        return {
+          method: "DELETE",
+          url: `users/wishlists?ids=${ids}`,
+          body: ids,
+        };
+      },
       invalidatesTags: ["WishlistItems"],
     }),
   }),

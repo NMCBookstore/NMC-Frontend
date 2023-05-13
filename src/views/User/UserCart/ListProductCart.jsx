@@ -23,6 +23,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useDeleteProductCartMutation } from "../../../services/cartAPI";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
 
 function EnhancedTableHead(props) {
   const { onSelectAllClick, numSelected, rowCount } = props;
@@ -126,18 +128,33 @@ export default function ListProductCart({ title, data, isFetching }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  //set amount of product
+  let [count, setCount] = useState(data?.amount);
+  
+  function incrementCount() {
+    // setCount(count + 1);
+    // console.log(count);
+    console.log("this clicked too");
+    // setDatas(datas?.amount + 1);
+  }
+  function decrementCount() {
+    // setDatas(datas?.amount > 1 ? datas?.amount - 1 : 1);
+    console.log("this clicked");
+  }
+
   const [deleteProduct] = useDeleteProductCartMutation();
 
-  var [selectedID, setSelectedID] = useState();
+  var [selectedID, setSelectedID] = useState([]);
 
-  const handleDeleteListItem = () => {
+  const handleDeleteListItem = async () => {
+    await deleteProduct(selected);
     console.log(selected);
   };
 
   const handleDeleteItem = async () => {
-    await deleteProduct({ id: selectedID });
-    if (selected.some((wishlist_id) => selectedID == wishlist_id)) {
-      setSelected(selected.filter((wishlist_id) => wishlist_id === selectedID));
+    await deleteProduct([selectedID]);
+    if (selected.some((cart_id) => selectedID == cart_id)) {
+      setSelected(selected.filter((cart_id) => cart_id === selectedID));
     }
     console.log(selected);
     setOpen(false);
@@ -211,6 +228,8 @@ export default function ListProductCart({ title, data, isFetching }) {
                       }}
                     />
                   </TableCell>
+
+                  {/* name & image */}
                   <TableCell component="th" scope="row">
                     <Stack direction="row" alignItems="center" margin={1}>
                       <img
@@ -231,13 +250,32 @@ export default function ListProductCart({ title, data, isFetching }) {
                       </Typography>
                     </Stack>
                   </TableCell>
+
+                  {/* price */}
                   <TableCell align="center">
                     {parseFloat(item?.price).toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     })}
                   </TableCell>
-                  <TableCell align="center">{item.amount}</TableCell>
+
+                  {/* amount */}
+                  <TableCell align="center">
+                    <Stack direction="row" spacing={2}>
+                      <Tooltip title="Minus">
+                        <RemoveIcon
+                          onClick={decrementCount}
+                          sx={{ marginRight: 2 }}
+                        />
+                      </Tooltip>
+                      {item?.amount}
+                      <Tooltip title="Add more">
+                        <AddIcon onClick={incrementCount} />
+                      </Tooltip>
+                    </Stack>
+                  </TableCell>
+
+                  {/* sub total */}
                   <TableCell align="center">
                     {parseFloat(item?.price * item?.amount).toLocaleString(
                       "vi-VN",
@@ -247,6 +285,8 @@ export default function ListProductCart({ title, data, isFetching }) {
                       }
                     )}
                   </TableCell>
+
+                  {/* delete icon */}
                   <TableCell>
                     <div>
                       <Tooltip title="Delete Book">

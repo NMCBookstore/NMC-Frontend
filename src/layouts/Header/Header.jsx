@@ -30,6 +30,8 @@ import {
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { deepOrange } from "@mui/material/colors";
+import { useGetCartQuery } from "../../services/cartAPI";
+import { useGetWishListQuery } from "../../services/wishlistAPI";
 
 const Header = () => {
   const classes = useStyles();
@@ -38,20 +40,35 @@ const Header = () => {
 
   const user = useSelector(selectCurrentUser);
   const token = useSelector(selectCurrentAccessToken);
-  const userName = user ? useSelector(selectCurrentUserName) : null;
-  const userImage = user ? useSelector(selectCurrentUserImage) : null;
+  const userName = user ? useSelector(selectCurrentUserName) : "";
+  const userImage = user ? useSelector(selectCurrentUserImage) : "";
   const hello = user ? `Hello ${userName}!` : `Hello ! Sign in to explore`;
+
+  const {data: cartBadge} = useGetCartQuery();
+  const {data: wishlistBadge} = useGetWishListQuery()
 
   const naviWishlist = () => navigate("/user/wishlist");
   const naviCart = () => navigate("/user/cart");
-  const naviProfile = () => navigate("user/profile");
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
+  // const badge = useSelector((state) => state.bookApi.queries.userCart);
+  // console.log(badge);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    location.reload();
+  };
+
   const open = Boolean(anchorEl);
 
   const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleNaviprofile = () => {
+    navigate("/user/profile");
     setAnchorEl(null);
   };
 
@@ -77,7 +94,7 @@ const Header = () => {
       }}
       anchorEl={anchorEl}
       open={open}
-      onClose={handleClose}
+      onClick={handleClose}
       TransitionComponent={Fade}
       sx={{ mt: "5px" }}
     >
@@ -89,38 +106,38 @@ const Header = () => {
             </Typography>
           </div>,
           <div>
-            <Link className={classes.link} to="/user/profile">
-              <MenuItem onClick={handleMenuClose}>
-                <PersonIcon />
-                &nbsp; My profile
-              </MenuItem>
-            </Link>
-            <Link className={classes.link}>
-              <MenuItem onClick={handleMenuClose}>
-                <LocalMallIcon />
-                &nbsp; My Order
-              </MenuItem>
-            </Link>
-            <Link className={classes.link}>
-              <MenuItem onClick={handleMenuClose}>
-                <CancelIcon />
-                &nbsp; My Cancellations
-              </MenuItem>
-            </Link>
+            {/* <Link className={classes.link} to="/user/profile"> */}
+            <MenuItem onClick={handleNaviprofile}>
+              <PersonIcon />
+              &nbsp; My profile
+            </MenuItem>
+            {/* </Link> */}
+            {/* <Link className={classes.link}> */}
+            <MenuItem onClick={handleMenuClose}>
+              <LocalMallIcon />
+              &nbsp; My Order
+            </MenuItem>
+            {/* </Link> */}
+            {/* <Link className={classes.link}> */}
+            <MenuItem onClick={handleMenuClose}>
+              <CancelIcon />
+              &nbsp; My Cancellations
+            </MenuItem>
+            {/* </Link> */}
 
-            <Link className={classes.link}>
-              <MenuItem onClick={handleMenuClose}>
-                <ReviewsIcon />
-                &nbsp; My Reviews
-              </MenuItem>
-            </Link>
+            {/* <Link className={classes.link}> */}
+            <MenuItem onClick={handleMenuClose}>
+              <ReviewsIcon />
+              &nbsp; My Reviews
+            </MenuItem>
+            {/* </Link> */}
 
-            <Link className={classes.link}>
-              <MenuItem onClick={() => dispatch(logout())}>
-                <LogoutOutlinedIcon />
-                &nbsp; Logout
-              </MenuItem>
-            </Link>
+            {/* <Link className={classes.link}> */}
+            <MenuItem onClick={handleLogout}>
+              <LogoutOutlinedIcon />
+              &nbsp; Logout
+            </MenuItem>
+            {/* </Link> */}
           </div>,
         ]
       ) : (
@@ -159,14 +176,14 @@ const Header = () => {
             }}
           >
             <IconButton size="large" sx={{ color: "white" }}>
-              <Badge>
+              <Badge badgeContent={wishlistBadge?.length} color="error">
                 <Tooltip title="My Wishlist">
                   <FavoriteIcon fontSize="100%" onClick={naviWishlist} />
                 </Tooltip>
               </Badge>
             </IconButton>
             <IconButton size="large" sx={{ color: "white" }}>
-              <Badge badgeContent="7" color="error">
+              <Badge badgeContent={cartBadge?.length} color="error">
                 <Tooltip title="My cart">
                   <ShoppingCartIcon fontSize="100%" onClick={naviCart} />
                 </Tooltip>
@@ -185,9 +202,9 @@ const Header = () => {
                 height: "50px",
               }}
             >
-              {user ? (
+              {token ? (
                 <Tooltip title="Profile">
-                  <Avatar src={userImage} />
+                  <Avatar src={user ? userImage : bgcolor} />
                 </Tooltip>
               ) : (
                 <Avatar sx={{ bgcolor: deepOrange[300] }} />

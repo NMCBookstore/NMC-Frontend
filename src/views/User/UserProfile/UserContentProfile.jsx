@@ -1,13 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, FormControl, List, Stack, TextField } from "@mui/material";
+import { Container, Stack, TextField } from "@mui/material";
+import { useFormik } from "formik";
+
+import * as Yup from "yup";
 import Button from "@mui/material/Button";
-import ImageListItem from "@mui/material/ImageListItem";
 import { useUpdateUserMutation } from "../../../services/userAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { setCredentials } from "../../../features/auth/authSlice";
 
 export default function UserContentProfile({ data }) {
+  const formik = useFormik({
+    initialValues: {
+      image: "",
+    },
+    validationSchema: Yup.object({
+      image: Yup.mixed()
+        .required("Image required !!")
+        .test("FILE_SIZE", "TOO BIG", (value) => value && value.size < 1024 * 1024)
+        .test(
+          "FILE_TYPE",
+          "Invalide",
+          (value) =>
+            value &&
+            ["image/png", "image/jpeg", "image/jpg"].includes(value.type)
+        ),
+    }),
+  });
+
   const user = useSelector((state) => state.auth.login.user);
 
   const [userInfo, setUserInfo] = useState(user);
@@ -70,7 +90,6 @@ export default function UserContentProfile({ data }) {
   return (
     info && (
       <Container>
-
         <Stack
           spacing={2}
           sx={{
@@ -127,19 +146,17 @@ export default function UserContentProfile({ data }) {
             onChange={(e) => setUserInfo({ ...userInfo, age: e.target.value })}
           />
 
-
-            <img
-              style={{ width: "50%", height: "30%" }}
-              src={avatar?.preview ? avatar.preview : user?.image}
-            />
-            <input
-              // hidden
-              // accept="image/*"
-              type="file"
-              onChange={handlePreviewAvatar}
-            />
-            {/* {avatar && <img src={avatar.preview} alt="" width="40%" />} */}
-
+          <img
+            style={{ width: "50%", height: "30%" }}
+            src={avatar?.preview ? avatar.preview : user?.image}
+          />
+          <input
+            // hidden
+            // accept="image/*"
+            type="file"
+            onChange={handlePreviewAvatar}
+          />
+          {/* {avatar && <img src={avatar.preview} alt="" width="40%" />} */}
 
           {/* <input
             // hidden
@@ -180,7 +197,6 @@ export default function UserContentProfile({ data }) {
             </Button>
           </Stack>
         </Stack>
-
       </Container>
     )
   );

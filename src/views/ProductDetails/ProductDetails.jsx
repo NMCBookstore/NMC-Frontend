@@ -51,6 +51,7 @@ const ProductDetails = () => {
 
   const { data: wishlist } = useGetWishListQuery();
 
+
   const handleAddToCart = (e) => {
     e.preventDefault();
     const t = addCart({ id, amount: count });
@@ -195,7 +196,7 @@ const ProductDetails = () => {
 
         {/* Comment  */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <Comment />
+          <Comment id={parseInt(id)}/>
         </Grid>
       </Grid>
     </Box>

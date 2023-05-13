@@ -10,6 +10,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
+import { useGetSearchQuery } from "../../../services/searchAPI";
 
 const minDistance = 10;
 
@@ -17,7 +18,15 @@ function valuetext(value) {
   return `${value} VND`;
 }
 
-export default function Filter({ id, genres, setId, subGenres }) {
+export default function Filter({
+  id,
+  genres,
+  setId,
+  subGenres,
+  setSearchInfo,
+}) {
+  const { data, isFetching } = useGetSearchQuery();
+
   const [value2, setValue2] = useState([20, 37]);
 
   const handleChange2 = (event, newValue, activeThumb) => {
@@ -55,6 +64,11 @@ export default function Filter({ id, genres, setId, subGenres }) {
 
   const handleChangeGenreId = (_, val) => {
     setId(val?.id);
+    // setSearchInfo((prev) => {
+    //   return {
+
+    //   }
+    // })
   };
 
   return (

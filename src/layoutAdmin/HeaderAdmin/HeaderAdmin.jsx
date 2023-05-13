@@ -45,7 +45,7 @@ const HeaderAdmin = () => {
     setAnchorElUser(null);
   };
 
-  let currentPath = "/admin/*";
+  let currentPath = "/admin/dashboard";
   if (!!matchPath("/admin/manage-book", location.pathname)) {
     currentPath = "/admin/manage-book";
   } else if (!!matchPath("/admin/dashboard", location.pathname)) {

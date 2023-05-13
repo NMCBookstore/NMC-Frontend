@@ -1,17 +1,17 @@
 import { lazy } from "react";
 import Home from "./components/Home/Home";
 
-/**** User Layouts*****/
+/**** User Layouts *****/
 const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
-const Role = lazy(() => import("./features/auth/role"))
+const Role = lazy(() => import("./features/auth/role"));
 
-/**** Admin Layouts*****/
+/**** Admin Layouts *****/
 const AdminLayout = lazy(() => import("./layoutAdmin/AdminLayout"));
 
-/**** Protected User Routes*****/
+/**** Protected User Routes *****/
 const RequireAuth = lazy(() => import("./features/auth/requireAuth"));
 
-/**** User Routes*****/
+/**** User Routes *****/
 const UserLogin = lazy(() => import("./views/User/UserLogin"));
 const UserRegister = lazy(() => import("./views/User/UserRegister"));
 const ProductDetails = lazy(() => import("./views/ProductDetails"));
@@ -23,20 +23,28 @@ const UserWishlist = lazy(() => import("./views/User/UserWishlist"));
 const ForgotPassword = lazy(() => import("./views/User/ForgotPassword"));
 const ResetPassword = lazy(() => import("./views/User/ResetPassword"));
 const Welcome = lazy(() => import("./features/auth/Welcome"));
+const Error404 = lazy(() => import("./components/Error404"));
 
-/**** Admin Routes*****/
+/**** Admin Routes *****/
 const AdminDashboard = lazy(() => import("./views/Admin/AdminDashboard"));
 const BookManagement = lazy(() => import("./views/Admin/BookManagement"));
 const GenresManagement = lazy(() => import("./views/Admin/GenresManagement"));
 const EditBook = lazy(() => import("./views/Admin/EditBook"));
-const DetailsBookManagement = lazy(() =>import("./views/Admin/DetailsBookManagement"));
-const DetailsGenresManagement = lazy(() =>  import("./views/Admin/DetailsGenresManagement"));
-const DetailsSubGenresManagement = lazy(() => import("./views/Admin/DetailsSubGenresManagement"));
+const DetailsBookManagement = lazy(() =>
+  import("./views/Admin/DetailsBookManagement")
+);
+const DetailsGenresManagement = lazy(() =>
+  import("./views/Admin/DetailsGenresManagement")
+);
+const DetailsSubGenresManagement = lazy(() =>
+  import("./views/Admin/DetailsSubGenresManagement")
+);
 const OrderManagement = lazy(() => import("./views/Admin/OrderManagement"));
 
+/**** 404 page *****/
+const ErrorNotFound404 = { path: "*", element: <Error404 /> };
 
 const RouterCfg = [
-
   { path: "login", element: <UserLogin /> },
   { path: "register", element: <UserRegister /> },
 
@@ -47,8 +55,9 @@ const RouterCfg = [
       { path: "/", element: <Home /> },
       { path: "product/:id", element: <ProductDetails /> },
       { path: "search-filter", element: <SearchFilter /> },
-      { path: "forgot_password", element: <ForgotPassword /> },
       { path: "reset_password", element: <ResetPassword /> },
+      { path: "forgot_password", element: <ForgotPassword /> },
+      ErrorNotFound404,
     ],
   },
 
@@ -65,6 +74,7 @@ const RouterCfg = [
           { path: "profile", element: <UserProfile /> },
           { path: "wishlist", element: <UserWishlist /> },
           { path: "checkout", element: <UserCheckout /> },
+          ErrorNotFound404,
         ],
       },
     ],
@@ -83,15 +93,17 @@ const RouterCfg = [
           { path: "manage-genres", element: <GenresManagement /> },
           { path: "manage-order", element: <OrderManagement /> },
           { path: "edit-book", element: <EditBook /> },
-          { path: "details-book", element: <DetailsBookManagement /> },
+          { path: "details-book/:id", element: <DetailsBookManagement /> },
           { path: "details-genres/:id", element: <DetailsGenresManagement /> },
-          { path: "details-subgenres/:id", element: <DetailsSubGenresManagement />},
-        ]
-      }
-
+          {
+            path: "details-subgenres/:id",
+            element: <DetailsSubGenresManagement />,
+          },
+          ErrorNotFound404,
+        ],
+      },
     ],
   },
 ];
 
 export default RouterCfg;
-

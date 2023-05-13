@@ -20,11 +20,16 @@ const cart = book.injectEndpoints({
       providesTags: ["CartItems"],
     }),
     deleteProductCart: builder.mutation({
-      query: ({ id }) => ({
-        method: "DELETE",
-        url: `users/carts/${id}`,
-        body: id,
-      }),
+      query: (idsArr) => {
+        console.log(idsArr);
+        let endPoint = `users/carts?`;
+        idsArr.forEach(id => endPoint += `ids=${id}&`);
+
+        return {
+          method: "DELETE",
+          url: endPoint,
+          }
+      },
       invalidatesTags: ["CartItems"],
     }),
   }),

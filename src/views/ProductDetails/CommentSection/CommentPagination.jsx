@@ -1,18 +1,14 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Pagination,
-  Stack,
-  useMediaQuery,
-} from "@mui/material";
+import { Box, Pagination, Stack, useMediaQuery } from "@mui/material";
 import { useSearchParams } from "react-router-dom";
 
-export default function PaginationBottom({ allProduct, handlePageChange }) {
+export default function CommentPagination({ data, handleCommentChange }) {
   // const {pagination, onPageChange} = props;
-  const pageNum = parseInt(allProduct?.total_page);
+  const pageNum = parseInt(data?.total_page);
+  // console.log(pageNum);
 
   const onPageChange = (_, value) => {
-    handlePageChange(value, 24);
+    handleCommentChange(value, 5);
   };
 
   const isMobile = useMediaQuery("(max-width: 800px)");
@@ -28,7 +24,7 @@ export default function PaginationBottom({ allProduct, handlePageChange }) {
       <Stack>
         <Pagination
           count={pageNum}
-          page={allProduct?.page_id}
+          page={data?.page_id}
           size={isMobile ? "small" : "large"}
           siblingCount={isMobile ? -1 : 2}
           onChange={onPageChange}

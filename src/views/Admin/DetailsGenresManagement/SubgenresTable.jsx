@@ -16,7 +16,7 @@ import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Stack } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -58,7 +58,7 @@ function EnhancedTableHead(props) {
             }}
           />
         </TableCell>
-        {headCells.map((headCell) =>
+        {/* {headCells.map((headCell) =>
           title === "Wishlist" &&
           (headCell.label === "Quantity" ||
             headCell.label === "Subtotal") ? null : (
@@ -69,7 +69,7 @@ function EnhancedTableHead(props) {
               {headCell.label}
             </TableCell>
           )
-        )}
+        )} */}
       </TableRow>
     </TableHead>
   );
@@ -134,7 +134,7 @@ EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
 };
 
-export default function ListWishList({ title, data, isFetching }) {
+export default function SubgenresTable({ title, data, isFetching }) {
   const [selected, setSelected] = useState([]);
   const [datas, setDatas] = useState(data);
   const [rows, setRows] = useState([]);
@@ -142,27 +142,12 @@ export default function ListWishList({ title, data, isFetching }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  const [deleteProduct] = useDeleteProductWishlistMutation();
-  const [addCart] = useAddCartMutation();
+  // console.log("this is the genres table", data);
 
   var [selectedID, setSelectedID] = useState();
 
-  const handleAddToCart = async (item) => {
-    await addCart({ id: item?.book.id });
-    toast.success("Added to your cart");
-    deleteProduct({ id: item?.wishlist_id });
-  };
-
   const hanldeDeleteListItem = (e) => {
     e.preventDefault();
-  };
-
-  const handleDeleteSingleItem = async () => {
-    await deleteProduct({ ids: selectedID });
-    if (selected.some((wishlist_id) => selectedID == wishlist_id)) {
-      setSelected(selected.filter((wishlist_id) => wishlist_id !== selectedID));
-    }
-    setOpen(false);
   };
 
   const handleClickOpen = (id) => {
@@ -179,14 +164,14 @@ export default function ListWishList({ title, data, isFetching }) {
     setRows(data);
     setDatas(data);
   }, [isFetching]);
-  const isSelected = (wishlist_id) => selected.indexOf(wishlist_id) !== -1;
+
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
           hanldeDelete={hanldeDeleteListItem}
           numSelected={selected}
-          title={title}
+          // title={title}
         />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -197,15 +182,15 @@ export default function ListWishList({ title, data, isFetching }) {
                     checked={datas?.length === selected?.length}
                     onClick={(e) => {
                       if (e.target.checked) {
-                        setSelected(data.map((item) => item?.wishlist_id));
+                        setSelected(data.map((item) => item?.genres_id));
                       } else {
                         setSelected([]);
                       }
                     }}
                   />
                 </TableCell>
-                <TableCell align="center">Product</TableCell>
-                <TableCell align="center">Price</TableCell>
+                <TableCell align="center">ID</TableCell>
+                <TableCell align="center">Sub-genres</TableCell>
                 <TableCell align="center">{""}</TableCell>
               </TableRow>
             </TableHead>
@@ -217,61 +202,28 @@ export default function ListWishList({ title, data, isFetching }) {
                 >
                   <TableCell>
                     <Checkbox
-                      checked={selected.some((it) => it === item.wishlist_id)}
+                      checked={selected.some((it) => it === item.genres_id)}
                       onClick={(e) => {
                         if (e.target.checked) {
-                          setSelected((prev) => [...prev, item.wishlist_id]);
+                          setSelected((prev) => [...prev, item.genres_id]);
                         } else {
                           setSelected(
-                            selected.filter((it) => it !== item.wishlist_id)
+                            selected.filter((it) => it !== item.genres_id)
                           );
                         }
                       }}
                     />
                   </TableCell>
-                  <TableCell component="th" scope="row">
-                    <Stack direction="row" alignItems="center" margin={1}>
-                      <img
-                        src={item?.book.image[0]}
-                        alt={item?.book.name}
-                        style={{ width: "15%", height: "30%" }}
-                      />
-                      <Typography
-                        marginLeft={2}
-                        sx={{
-                          mb: 0.1,
-                          textOverflow: "ellipsis",
-                          overflow: "hidden",
-                          whiteSpace: "nowrap",
-                        }}
-                      >
-                        {item?.book.name}
-                      </Typography>
-                    </Stack>
+                  <TableCell align="center">
+                    <Typography>{item?.id}</Typography>
                   </TableCell>
                   <TableCell align="center">
-                    {parseFloat(item?.book.price).toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
+                    <TextField fullWidth defaultValue={item?.name} />
                   </TableCell>
                   <TableCell>
-                    <Tooltip title="Delete Book">
-                      <IconButton
-                        onClick={(e) =>
-                          e.preventDefault && handleClickOpen(item?.wishlist_id)
-                        }
-                      >
+                    <Tooltip title="Delete Subgenres">
+                      <IconButton>
                         <DeleteIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Add to cart">
-                      <IconButton
-                        onClick={(e) =>
-                          e.preventDefault && handleAddToCart(item)
-                        }
-                      >
-                        <AddShoppingCartIcon />
                       </IconButton>
                     </Tooltip>
                   </TableCell>
@@ -309,7 +261,6 @@ export default function ListWishList({ title, data, isFetching }) {
                           background: "#ffa071",
                         },
                       }}
-                      onClick={() => handleDeleteSingleItem()}
                       autoFocus
                     >
                       Delete
