@@ -25,17 +25,22 @@ import { LogoutOutlined } from "@mui/icons-material";
 import useStyles from "./styles";
 
 const HeaderAdmin = () => {
-
   const user = useSelector(selectCurrentUser);
   const userName = user ? useSelector(selectCurrentUserName) : null;
   const hello = user ? `Hello ${userName}!` : `Hello ! Sign in to explore`;
 
   const location = useLocation();
   const classes = useStyles();
-  
+
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    console.log("log out clicked");
+    dispatch(logout());
+    window.location.reload();
+  };
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -156,7 +161,7 @@ const HeaderAdmin = () => {
                 </Link>
               )}
               <Link className={classes.link}>
-                <MenuItem onClick={() => dispatch(logout())}>
+                <MenuItem onClick={handleLogout}>
                   <LogoutOutlined />
                   &nbsp; Logout
                 </MenuItem>

@@ -23,8 +23,8 @@ import {
 } from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../services/authAPIs";
+import { validateUsername, validatePasswordLogin } from "../../../utils/helper";
 import toast, { Toaster } from "react-hot-toast";
-
 
 function Copyright(props) {
   return (
@@ -53,6 +53,11 @@ export default function UserLogin() {
     showPass: false,
   });
 
+  const [errors, setErrors] = useState({
+    usernameError: "",
+    passwordError: "",
+  });
+
   const handlePassVisibilty = () => {
     setValues({
       ...values,
@@ -65,20 +70,34 @@ export default function UserLogin() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    dispatch(loginStart());
-    try {
-      const { data } = await login(values);
-      dispatch(setCredentials(data));
-      toast.success("Login success !");
-      {
-        data.user.role === "admin"
-          ? (navigate("/admin/dashboard"))
-          : (navigate("/"));
+
+    const { username, password } = values;
+
+    // Validate username
+    const usernameError = validateUsername(username);
+    setErrors((prevErrors) => ({ ...prevErrors, usernameError }));
+
+    // Validate password
+    const passwordError = validatePasswordLogin(password);
+    setErrors((prevErrors) => ({ ...prevErrors, passwordError }));
+
+    if (!usernameError && !passwordError) {
+      dispatch(loginStart());
+      try {
+        const { data } = await login(values);
+        dispatch(setCredentials(data));
+        toast.success("Login success !");
+        {
+          data.user.role === "admin"
+            ? navigate("/admin/dashboard")
+            : navigate("/");
+        }
+      } catch (err) {
+        toast.error("Login failed !");
+        dispatch(loginFailed());
       }
-    } catch (err) {
-      toast.error("Login failed !");
-      dispatch(loginFailed());
     }
+
     // login(values).then(({ data }) => {
     //   navigate("/");
     //   dispatch(addSession(data));
@@ -94,7 +113,8 @@ export default function UserLogin() {
           sm={4}
           md={7}
           sx={{
-            backgroundImage: "url(https://res.cloudinary.com/doqhasjec/image/upload/v1683836302/samples/NMC%20Bookstore/551519-antique-blur_xtqwhc.jpg)",
+            backgroundImage:
+              "url(https://res.cloudinary.com/doqhasjec/image/upload/v1683836302/samples/NMC%20Bookstore/551519-antique-blur_xtqwhc.jpg)",
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
               t.palette.mode === "light"
@@ -120,7 +140,7 @@ export default function UserLogin() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate sx={{ mt: 1 }}>
+            <Box sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -131,7 +151,6 @@ export default function UserLogin() {
                 onChange={(e) =>
                   setValues({ ...values, username: e.target.value })
                 }
-                defaultValue={values.username}
                 autoFocus
               />
               <TextField
@@ -146,7 +165,6 @@ export default function UserLogin() {
                 onChange={(e) =>
                   setValues({ ...values, password: e.target.value })
                 }
-                defaultValue={values.password}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">

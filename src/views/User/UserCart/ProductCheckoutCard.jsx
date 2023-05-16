@@ -16,18 +16,28 @@ const currencyExchange = (num) => {
   });
 };
 
-export default function ProductCheckoutCard({ data }) {
+// change to USD
 
+// const currencyExchange = (num) => {
+//   const formatter = new Intl.NumberFormat("en-US", {
+//     style: "currency",
+//     currency: "USD",
+//   });
+
+//   return formatter.format(parseFloat(num * 0.000043));
+// };
+
+export default function ProductCheckoutCard({ data }) {
   const navigate = useNavigate();
 
   let arrID = [];
 
-  const [createCart] = useCreateOrderMutation(arrID)
+  const [createCart] = useCreateOrderMutation(arrID);
 
   const hanldeCreateOrder = (e) => {
     e.preventDefault();
     for (let i = 0; i < data?.length; i++) {
-      arrID.push(data[i]?.cart_id)
+      arrID.push(data[i]?.cart_id);
     }
     // createCart(arrID);
     // navigate('/user/checkout')

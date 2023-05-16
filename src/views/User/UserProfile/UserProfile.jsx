@@ -82,7 +82,7 @@ export default function UserProfile() {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container my={2} spacing={3}>
           {/* User Side bar  */}
-          <Grid item container spacing={2} xs={12} sm={12}>
+          <Grid item spacing={2} xs={12} sm={12}>
             <Box
               sx={{
                 flexGrow: 1,

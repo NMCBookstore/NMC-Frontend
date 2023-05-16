@@ -9,8 +9,8 @@ import Fade from "@mui/material/Fade";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
-import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
+import Badge from "@mui/material/Badge";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PersonIcon from "@mui/icons-material/Person";
 import LoginIcon from "@mui/icons-material/Login";
@@ -19,6 +19,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 import SideBar from "../SideBar/SideBar";
 import useStyles from "./styles";
 import {
@@ -44,8 +45,13 @@ const Header = () => {
   const userImage = user ? useSelector(selectCurrentUserImage) : "";
   const hello = user ? `Hello ${userName}!` : `Hello ! Sign in to explore`;
 
-  const {data: cartBadge} = useGetCartQuery();
-  const {data: wishlistBadge} = useGetWishListQuery()
+  const { data: cartBadge } = useGetCartQuery("userCart", {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const { data: wishlistBadge } = useGetWishListQuery("userWishlist", {
+    refetchOnMountOrArgChange: true,
+  });
 
   const naviWishlist = () => navigate("/user/wishlist");
   const naviCart = () => navigate("/user/cart");
@@ -57,8 +63,9 @@ const Header = () => {
   // console.log(badge);
 
   const handleLogout = () => {
+    console.log("log out clicked");
     dispatch(logout());
-    location.reload();
+    window.location.reload();
   };
 
   const open = Boolean(anchorEl);
@@ -69,7 +76,7 @@ const Header = () => {
 
   const handleNaviprofile = () => {
     navigate("/user/profile");
-    setAnchorEl(null);
+    // setAnchorEl(null);
   };
 
   const handleProfileMenuOpen = (event) => {
@@ -98,56 +105,64 @@ const Header = () => {
       TransitionComponent={Fade}
       sx={{ mt: "5px" }}
     >
-      {token ? (
-        [
-          <div className={classes.profileMenuUser}>
-            <Typography variant="h6" weight="medium">
-              {hello}
-            </Typography>
-          </div>,
-          <div>
-            {/* <Link className={classes.link} to="/user/profile"> */}
-            <MenuItem onClick={handleNaviprofile}>
-              <PersonIcon />
-              &nbsp; My profile
-            </MenuItem>
-            {/* </Link> */}
-            {/* <Link className={classes.link}> */}
-            <MenuItem onClick={handleMenuClose}>
-              <LocalMallIcon />
-              &nbsp; My Order
-            </MenuItem>
-            {/* </Link> */}
-            {/* <Link className={classes.link}> */}
-            <MenuItem onClick={handleMenuClose}>
-              <CancelIcon />
-              &nbsp; My Cancellations
-            </MenuItem>
-            {/* </Link> */}
+      {token
+        ? [
+            <div className={classes.profileMenuUser}>
+              <Typography variant="h6" weight="medium">
+                {hello}
+              </Typography>
+            </div>,
+            <div>
+              {/* <Link className={classes.link} to="/user/profile"> */}
+              <MenuItem onClick={handleNaviprofile}>
+                <PersonIcon />
+                My profile
+              </MenuItem>
+              {/* </Link> */}
+              {/* <Link className={classes.link}> */}
+              <MenuItem onClick={handleMenuClose}>
+                <LocalMallIcon />
+                &nbsp; My Order
+              </MenuItem>
+              {/* </Link> */}
+              {/* <Link className={classes.link}> */}
+              <MenuItem onClick={handleMenuClose}>
+                <CancelIcon />
+                &nbsp; My Cancellations
+              </MenuItem>
+              {/* </Link> */}
 
-            {/* <Link className={classes.link}> */}
-            <MenuItem onClick={handleMenuClose}>
-              <ReviewsIcon />
-              &nbsp; My Reviews
-            </MenuItem>
-            {/* </Link> */}
+              {/* <Link className={classes.link}> */}
+              <MenuItem onClick={handleMenuClose}>
+                <ReviewsIcon />
+                &nbsp; My Reviews
+              </MenuItem>
+              {/* </Link> */}
 
-            {/* <Link className={classes.link}> */}
-            <MenuItem onClick={handleLogout}>
-              <LogoutOutlinedIcon />
-              &nbsp; Logout
-            </MenuItem>
-            {/* </Link> */}
-          </div>,
-        ]
-      ) : (
-        <Link className={classes.link} to="/login">
-          <MenuItem onClick={handleMenuClose}>
-            <LoginIcon />
-            &nbsp; Login
-          </MenuItem>
-        </Link>
-      )}
+              {/* <Link className={classes.link}> */}
+              <MenuItem onClick={handleLogout}>
+                <LogoutOutlinedIcon />
+                &nbsp; Logout
+              </MenuItem>
+              {/* </Link> */}
+            </div>,
+          ]
+        : [
+            <div>
+              <Link className={classes.link} to="/login">
+                <MenuItem onClick={handleMenuClose}>
+                  <LoginIcon />
+                  &nbsp; Login
+                </MenuItem>
+              </Link>
+              <Link className={classes.link} to="/register">
+                <MenuItem onClick={handleMenuClose}>
+                  <HowToRegIcon />
+                  &nbsp; Register
+                </MenuItem>
+              </Link>
+            </div>,
+          ]}
     </Menu>
   );
 

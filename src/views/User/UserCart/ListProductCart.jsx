@@ -25,7 +25,15 @@ import { useTheme } from "@mui/material/styles";
 import { useDeleteProductCartMutation } from "../../../services/cartAPI";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
+import NoProductInCart from "./NoProductInCart";
+import DialogConfirmDeleteAll from "./DialogConfirmDeleteAll";
 
+const currencyExchange = (num) => {
+  return parseFloat(num).toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+};
 function EnhancedTableHead(props) {
   const { onSelectAllClick, numSelected, rowCount } = props;
   const { title } = props;
@@ -68,7 +76,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, title, handleDelete } = props;
+  const { numSelected, title, handleDelete, handleOpenDeleteDialog } = props;
 
   return (
     <Toolbar
@@ -106,11 +114,10 @@ function EnhancedTableToolbar(props) {
       )}
 
       {numSelected.length > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton onClick={handleDelete}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <DialogConfirmDeleteAll
+          open={handleOpenDeleteDialog}
+          handleDelete={handleDelete}
+        />
       ) : null}
     </Toolbar>
   );
@@ -130,7 +137,7 @@ export default function ListProductCart({ title, data, isFetching }) {
 
   //set amount of product
   let [count, setCount] = useState(data?.amount);
-  
+
   function incrementCount() {
     // setCount(count + 1);
     // console.log(count);
@@ -148,21 +155,28 @@ export default function ListProductCart({ title, data, isFetching }) {
 
   const handleDeleteListItem = async () => {
     await deleteProduct(selected);
+    setSelected(selected.filter((cart_id) => !selected.includes(cart_id)));
     console.log(selected);
   };
 
   const handleDeleteItem = async () => {
     await deleteProduct([selectedID]);
     if (selected.some((cart_id) => selectedID == cart_id)) {
-      setSelected(selected.filter((cart_id) => cart_id === selectedID));
+      setSelected(selected.filter((cart_id) => cart_id !== selectedID));
     }
     console.log(selected);
     setOpen(false);
   };
 
   const handleClickOpen = (id) => {
+    console.log("this click");
     setOpen(true);
     setSelectedID(id);
+  };
+
+  const handleOpenDeleteDialog = () => {
+    console.log("this dialog");
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -175,13 +189,16 @@ export default function ListProductCart({ title, data, isFetching }) {
     setDatas(data);
   }, [isFetching]);
 
+  const totalItemInCart = data?.length;
+
   const isSelected = (cart_id) => selected.indexOf(cart_id) !== -1;
   // console.log(selected);
-  return (
+  return totalItemInCart ? (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
           handleDelete={handleDeleteListItem}
+          handleOpenDeleteDialog={handleOpenDeleteDialog}
           numSelected={selected}
           title={title}
         />
@@ -345,5 +362,7 @@ export default function ListProductCart({ title, data, isFetching }) {
         </TableContainer>
       </Paper>
     </Box>
+  ) : (
+    <NoProductInCart />
   );
 }
