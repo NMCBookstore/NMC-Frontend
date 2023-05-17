@@ -11,6 +11,7 @@ const cart = book.injectEndpoints({
           body: { amount },
         };
       },
+      invalidatesTags: ["CartItems"],
     }),
     getCart: builder.query({
       query: () => ({
@@ -23,12 +24,12 @@ const cart = book.injectEndpoints({
       query: (idsArr) => {
         console.log(idsArr);
         let endPoint = `users/carts?`;
-        idsArr.forEach(id => endPoint += `ids=${id}&`);
+        idsArr.forEach((id) => (endPoint += `ids=${id}&`));
 
         return {
           method: "DELETE",
           url: endPoint,
-          }
+        };
       },
       invalidatesTags: ["CartItems"],
     }),

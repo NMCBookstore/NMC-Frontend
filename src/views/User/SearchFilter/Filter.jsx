@@ -19,6 +19,14 @@ function valuetext(value) {
   return `${value} VND`;
 }
 
+const stars = [
+  { label: "1 star", value: 1 },
+  { label: "2 star", value: 2 },
+  { label: "3 star", value: 3 },
+  { label: "4 star", value: 4 },
+  { label: "5 star", value: 5 },
+];
+
 export default function Filter({
   id,
   genres,
@@ -91,8 +99,16 @@ export default function Filter({
         id="filter-demo2"
         options={subGenres ? subGenres : []}
         getOptionLabel={(option) => option?.name}
-        sx={{ width: "90%" }}
+        sx={{ width: "90%", zIndex: 1, marginBottom: 2 }}
         renderInput={(params) => <TextField {...params} label="SubGenres" />}
+      />
+
+      <Autocomplete
+        disablePortal
+        id="combo-box-demo"
+        options={stars}
+        sx={{ width: "90%", zIndex: 1, marginBottom: 2 }}
+        renderInput={(params) => <TextField {...params} label="Rating star" />}
       />
 
       <Box my={2} sx={{ width: "90%", display: "flex", flexWrap: "wrap" }}>
@@ -106,33 +122,6 @@ export default function Filter({
           disableSwap
         />
       </Box>
-
-      <List
-        dense
-        sx={{ width: "100%", maxWidth: 240, bgcolor: "background.paper" }}
-      >
-        {[0, 1, 2, 3, 4].map((value) => {
-          const labelId = `checkbox-list-secondary-label-${value}`;
-          return (
-            <ListItem
-              key={value}
-              secondaryAction={
-                <Checkbox
-                  edge="end"
-                  onChange={handleToggle(value)}
-                  checked={checked.indexOf(value) !== -1}
-                  inputProps={{ "aria-labelledby": labelId }}
-                />
-              }
-              disablePadding
-            >
-              <ListItemButton>
-                <ListItemText id={labelId} primary={`${value + 1} star`} />
-              </ListItemButton>
-            </ListItem>
-          );
-        })}
-      </List>
       <Link to={`/search-filter?page_id=${page_id}&page_size=${page_size}${text ? '&text=' + text : ''}&min_price=1000&max_price=10000000&rating=0`} style={{ textDecoration: "none", marginTop: 8 }}>
         <Button
           variant="contained"

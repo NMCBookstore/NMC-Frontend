@@ -27,6 +27,8 @@ import { useTheme } from "@mui/material/styles";
 import { useDeleteProductWishlistMutation } from "../../../services/wishlistAPI";
 import { useAddCartMutation } from "../../../services/cartAPI";
 import { toast } from "react-hot-toast";
+import NoProductInWishlist from "./NoProductInWishlist";
+import DialogConfirmDeleteAllWishlist from "./DialogConfirmDeleteAllWishlist";
 
 const headCells = [
   {
@@ -82,7 +84,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, title, hanldeDelete } = props;
+  const { numSelected, title, handleDelete, handleOpenDeleteDialog } = props;
 
   return (
     <Toolbar
@@ -120,11 +122,10 @@ function EnhancedTableToolbar(props) {
       )}
 
       {numSelected.length > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton onClick={hanldeDelete}>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <DialogConfirmDeleteAllWishlist
+          open={handleOpenDeleteDialog}
+          handleDelete={handleDelete}
+        />
       ) : null}
     </Toolbar>
   );
@@ -153,8 +154,9 @@ export default function ListWishList({ title, data, isFetching }) {
     deleteProduct({ id: item?.wishlist_id });
   };
 
-  const hanldeDeleteListItem = (e) => {
-    e.preventDefault();
+  const handleDeleteListItem = () => {
+    // setSelected(selected.filter((wishlist_id) => !selected.includes(wishlist_id)));
+    console.log("this dialog");
   };
 
   const handleDeleteSingleItem = async () => {
@@ -163,6 +165,11 @@ export default function ListWishList({ title, data, isFetching }) {
       setSelected(selected.filter((wishlist_id) => wishlist_id !== selectedID));
     }
     setOpen(false);
+  };
+
+  const handleOpenDeleteDialog = () => {
+    console.log("this dialog");
+    setOpen(true);
   };
 
   const handleClickOpen = (id) => {
@@ -179,12 +186,17 @@ export default function ListWishList({ title, data, isFetching }) {
     setRows(data);
     setDatas(data);
   }, [isFetching]);
+
   const isSelected = (wishlist_id) => selected.indexOf(wishlist_id) !== -1;
-  return (
+
+  const totalItemInWishlist = data?.length;
+
+  return totalItemInWishlist ? (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar
-          hanldeDelete={hanldeDeleteListItem}
+          handleDelete={handleDeleteListItem}
+          handleOpenDeleteDialog={handleOpenDeleteDialog}
           numSelected={selected}
           title={title}
         />
@@ -322,5 +334,7 @@ export default function ListWishList({ title, data, isFetching }) {
         </TableContainer>
       </Paper>
     </Box>
+  ) : (
+    <NoProductInWishlist />
   );
 }

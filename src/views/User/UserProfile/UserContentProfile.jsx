@@ -1,38 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Container, Stack, TextField } from "@mui/material";
-import { useFormik } from "formik";
-
-import * as Yup from "yup";
+import { Box, Container, Stack, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useUpdateUserMutation } from "../../../services/userAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { setCredentials } from "../../../features/auth/authSlice";
+import { isValidImage } from "../../../utils/helper";
+import {
+  validateRegisterUsername,
+  validatePasswordLogin,
+  validAge,
+  validPhoneNumber,
+  validateRegisterEmail,
+  validFullName,
+} from "../../../utils/helper";
 
 export default function UserContentProfile({ data }) {
-  const formik = useFormik({
-    initialValues: {
-      image: "",
-    },
-    validationSchema: Yup.object({
-      image: Yup.mixed()
-        .required("Image required !!")
-        .test("FILE_SIZE", "TOO BIG", (value) => value && value.size < 1024 * 1024)
-        .test(
-          "FILE_TYPE",
-          "Invalide",
-          (value) =>
-            value &&
-            ["image/png", "image/jpeg", "image/jpg"].includes(value.type)
-        ),
-    }),
-  });
-
   const user = useSelector((state) => state.auth.login.user);
 
   const [userInfo, setUserInfo] = useState(user);
 
-  console.log("this is user info", userInfo);
+  const [errors, setErrors] = useState(user);
+
+  // console.log("this is user info", userInfo);
 
   useEffect(() => {
     userInfo;
@@ -56,11 +46,18 @@ export default function UserContentProfile({ data }) {
       avatar && URL.revokeObjectURL(avatar.preview);
     };
   }, [avatar]);
+
   const handlePreviewAvatar = (e) => {
     const file = e.target.files[0];
-    file.preview = URL.createObjectURL(file);
-    setAvatar(file);
-    console.log(URL.createObjectURL(file));
+    if (!file) {
+      return;
+    }
+    if (isValidImage(file)) {
+      file.preview = URL.createObjectURL(file);
+      setAvatar(file);
+    } else {
+      toast.error("Only  png, jpeg, jpg files accepted");
+    }
   };
 
   //Update user API
@@ -68,15 +65,28 @@ export default function UserContentProfile({ data }) {
 
   const handleUpdateInfo = async (e) => {
     e.preventDefault();
-    if (userInfo.age > 90) {
-      toast.error("Your age must be less than 90");
-    } else {
-      const newUp = await updateUser({
-        ...userInfo,
-        age: parseInt(userInfo.age),
-      });
-      dispatch(setCredentials({ user: newUp.data }));
-      toast.success("Profile updated");
+    const { full_Name, age, phone_number } = user;
+
+    const full_NameError = validFullName(full_Name);
+    setErrors((prevErrors) => ({ ...prevErrors, full_NameError }));
+
+    const ageError = validAge(age);
+    setErrors((prevErrors) => ({ ...prevErrors, ageError }));
+
+    const phone_numberError = validPhoneNumber(phone_number);
+    setErrors((prevErrors) => ({ ...prevErrors, phone_numberError }));
+
+    if (!full_NameError && !ageError && !phone_numberError) {
+      try {
+        const newUp = await updateUser({
+          ...userInfo,
+          age: parseInt(userInfo.age),
+        });
+        dispatch(setCredentials({ user: newUp.data }));
+        toast.success("Profile updated");
+      } catch {
+        toast.error("Can't update your profile");
+      }
     }
   };
 
@@ -90,75 +100,83 @@ export default function UserContentProfile({ data }) {
   return (
     info && (
       <Container>
-        <Stack
-          spacing={2}
+        <Box
           sx={{
-            width: "60%",
             display: "flex",
-            flexWrap: "wrap",
             justifyContent: "center",
           }}
         >
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            disabled
-            label="User Name"
-            name="username"
-            value={user?.username}
-          />
+          <Stack
+            spacing={2}
+            sx={{
+              width: "60%",
+              display: "flex",
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              disabled
+              label="User Name"
+              name="username"
+              value={user?.username}
+            />
 
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            label="Full Name"
-            name="full_name"
-            defaultValue={user?.full_name}
-            onChange={(e) =>
-              setUserInfo({ ...userInfo, full_name: e.target.value })
-            }
-          />
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              label="Full Name"
+              name="full_name"
+              defaultValue={user?.full_name}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, full_name: e.target.value })
+              }
+            />
 
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            label="Email"
-            name="email"
-            defaultValue={user?.email}
-            onChange={(e) =>
-              setUserInfo({ ...userInfo, email: e.target.value })
-            }
-          />
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              label="Email"
+              name="email"
+              defaultValue={user?.email}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, email: e.target.value })
+              }
+            />
 
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            label="Phone Number"
-            name="phone_number"
-            defaultValue={user?.phone_number}
-            onChange={(e) =>
-              setUserInfo({ ...userInfo, phone_number: e.target.value })
-            }
-          />
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              label="Phone Number"
+              name="phone_number"
+              defaultValue={user?.phone_number}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, phone_number: e.target.value })
+              }
+            />
 
-          <TextField
-            InputLabelProps={{ shrink: true }}
-            label="Age"
-            name="age"
-            type="number"
-            defaultValue={user?.age}
-            onChange={(e) => setUserInfo({ ...userInfo, age: e.target.value })}
-          />
+            <TextField
+              InputLabelProps={{ shrink: true }}
+              label="Age"
+              name="age"
+              type="number"
+              defaultValue={user?.age}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, age: e.target.value })
+              }
+            />
 
-          <img
-            style={{ width: "50%", height: "30%" }}
-            src={avatar?.preview ? avatar.preview : user?.image}
-          />
-          <input
-            // hidden
-            // accept="image/*"
-            type="file"
-            onChange={handlePreviewAvatar}
-          />
-          {/* {avatar && <img src={avatar.preview} alt="" width="40%" />} */}
+            <img
+              style={{ width: "200px", height: "200px" }}
+              src={avatar?.preview ? avatar.preview : user?.image}
+            />
+            <input
+              // hidden
+              // accept="image/*"
+              type="file"
+              onChange={handlePreviewAvatar}
+            />
+            {/* {avatar && <img src={avatar.preview} alt="" width="40%" />} */}
 
-          {/* <input
+            {/* <input
             // hidden
             // accept="image/*"
             type="file"
@@ -166,37 +184,38 @@ export default function UserContentProfile({ data }) {
           />
           {avatar && <img src={avatar.preview} alt="" width="40%" />} */}
 
-          <Stack direction="row">
-            <Button
-              variant="outlined"
-              sx={{
-                mt: 2,
-                width: "50%",
-                height: "50%",
-                marginLeft: "25%",
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              onClick={handleUpdateInfo}
-              sx={{
-                mt: 2,
-                width: "50%",
-                height: "50%",
-                marginLeft: "25%",
-                backgroundColor: "#DB4444",
-                "&:hover": {
+            <Stack direction="row">
+              <Button
+                variant="outlined"
+                sx={{
+                  mt: 2,
+                  width: "50%",
+                  height: "50%",
+                  marginLeft: "25%",
+                }}
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                onClick={handleUpdateInfo}
+                sx={{
+                  mt: 2,
+                  width: "50%",
+                  height: "50%",
+                  marginLeft: "25%",
                   backgroundColor: "#DB4444",
-                },
-              }}
-            >
-              Save changes
-            </Button>
+                  "&:hover": {
+                    backgroundColor: "#DB4444",
+                  },
+                }}
+              >
+                Save changes
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
+        </Box>
       </Container>
     )
   );
