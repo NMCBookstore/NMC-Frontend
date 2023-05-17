@@ -9,24 +9,28 @@ import { useGetGenresQuery } from "../../../services/genresAPIs";
 import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
 import { Button } from "@mui/material";
 import { useGetSearchQuery } from "../../../services/searchAPI";
+import { useSearchParams } from "react-router-dom";
 
 const SearchFilter = () => {
   const [id, setId] = useState(0);
 
-  const [searchInfo, setSearchInfo] = useState(null);
+  const [searchInfo, setSearchInfo] = useSearchParams();
 
   const [page, setPage] = useState({ id: 1, size: 24 });
 
-  const { data: allProduct } = searchInfo
+  const { data: allProduct } = searchInfo.get("text")
     ? useGetSearchQuery({
-        ...searchInfo,
-        page_id: page.id??1,
-        page_size: page.size??24,
-      })
+      page_id: searchInfo.get("page_id"),
+      page_size: searchInfo.get("page_size"),
+      text: searchInfo.get("text"),
+      min_price:searchInfo.get("min_price"),
+      max_price:searchInfo.get("max_price"),
+      rating:searchInfo.get("rating"),
+    })
     : useGetAllProductQuery({
-        page_id: page.id,
-        page_size: page.size,
-      });
+      page_id: page.id,
+      page_size: page.size,
+    });
 
   const { data: allGenres } = useGetGenresQuery();
   const { data: allSubGenres } = useGetSubGenresQuery(id, { skip: !id });
