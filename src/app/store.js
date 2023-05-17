@@ -12,7 +12,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import authReducer from "../features/auth/authSlice";
+import authSlice from "../features/auth/authSlice";
 
 const persistConfig = {
   key: "root",
@@ -23,7 +23,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   [book.reducerPath]: book.reducer,
-  auth: authReducer,
+  auth: authSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -32,9 +32,7 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      serializableCheck: false,
     }).concat(book.middleware),
   devTools: true,
 });

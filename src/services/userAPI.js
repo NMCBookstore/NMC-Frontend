@@ -6,18 +6,18 @@ const user = book.injectEndpoints({
       query: () => ({
         url: `users`,
       }),
-      providesTags: ['UserInfo'],
+      providesTags: ["UserInfo"],
     }),
     updateUser: builder.mutation({
-      query: (info) => {
+      query: (formData) => {
         // console.log(info)
         return {
           method: "PUT",
           url: `users`,
-          body: info,
+          body: formData,
         };
       },
-      invalidatesTags: ['UserInfo'],
+      invalidatesTags: ["UserInfo"],
     }),
   }),
   overrideExisting: false,

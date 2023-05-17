@@ -25,8 +25,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import { useDeleteProductWishlistMutation } from "../../../services/wishlistAPI";
-import { useAddCartMutation } from "../../../services/cartAPI";
+import { useAddCartMutation, useGetCartQuery } from "../../../services/cartAPI";
 import { toast } from "react-hot-toast";
+import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import NoProductInWishlist from "./NoProductInWishlist";
 import DialogConfirmDeleteAllWishlist from "./DialogConfirmDeleteAllWishlist";
 
@@ -148,23 +149,34 @@ export default function ListWishList({ title, data, isFetching }) {
 
   var [selectedID, setSelectedID] = useState();
 
+  const { data: cart } = useGetCartQuery();
+
+  console.log(cart);
+
+  let count = 1;
+
   const handleAddToCart = async (item) => {
-    await addCart({ id: item?.book.id });
+    await addCart({ id: item?.book.id, amount: count });
     toast.success("Added to your cart");
-    deleteProduct({ id: item?.wishlist_id });
+    await deleteProduct([item?.book.id]);
+    console.log([item?.book.id]);
   };
 
-  const handleDeleteListItem = () => {
-    // setSelected(selected.filter((wishlist_id) => !selected.includes(wishlist_id)));
-    console.log("this dialog");
+  const handleDeleteListItem = async () => {
+    await deleteProduct(selected);
+    setSelected(
+      selected.filter((wishlist_id) => !selected.includes(wishlist_id))
+    );
+    console.log(selected);
   };
 
   const handleDeleteSingleItem = async () => {
-    await deleteProduct({ ids: selectedID });
+    await deleteProduct([selectedID]);
     if (selected.some((wishlist_id) => selectedID == wishlist_id)) {
       setSelected(selected.filter((wishlist_id) => wishlist_id !== selectedID));
     }
     setOpen(false);
+    console.log([selectedID]);
   };
 
   const handleOpenDeleteDialog = () => {
@@ -277,15 +289,25 @@ export default function ListWishList({ title, data, isFetching }) {
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="Add to cart">
-                      <IconButton
-                        onClick={(e) =>
-                          e.preventDefault && handleAddToCart(item)
-                        }
-                      >
-                        <AddShoppingCartIcon />
-                      </IconButton>
-                    </Tooltip>
+                    {cart?.some(
+                      (cartItem) => cartItem?.book_id === item?.book?.id
+                    ) ? (
+                      <Tooltip title="Already in cart">
+                        <IconButton >
+                          <ShoppingBagIcon disabled sx={{ color: "#db4444" }} />
+                        </IconButton>
+                      </Tooltip>
+                    ) : (
+                      <Tooltip title="Add to cart">
+                        <IconButton
+                          onClick={(e) =>
+                            e.preventDefault && handleAddToCart(item)
+                          }
+                        >
+                          <AddShoppingCartIcon />
+                        </IconButton>
+                      </Tooltip>
+                    )}
                   </TableCell>
                 </TableRow>
               ))}

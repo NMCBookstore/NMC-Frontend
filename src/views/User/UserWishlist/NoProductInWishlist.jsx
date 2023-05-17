@@ -18,7 +18,7 @@ const bull = (
 
 export default function NoProductInWishlist() {
   return (
-    <Card sx={{ minWidth: 300, border: 1 }}>
+    <Card sx={{ maxWidth: 500, border: 1 }}>
       <CardContent>
         <Typography variant="subtitle1">
           Oops, looks like you don't have any product in your wishlist.
@@ -33,7 +33,7 @@ export default function NoProductInWishlist() {
           <Button
             variant="contained"
             sx={{
-              marginLeft: 22,
+              marginLeft: 32,
               backgroundColor: "#db4444",
               "&:hover": {
                 background: "#ffa071",
