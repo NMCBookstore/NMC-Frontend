@@ -55,6 +55,7 @@ const RouterCfg = [
       { path: "/", element: <Home /> },
       { path: "product/:id", element: <ProductDetails /> },
       { path: "search-filter", element: <SearchFilter /> },
+      // { path: "search-filter?page_id&page_size&text&genres&sub_genres&min_price&max_price&rating", element: <SearchFilter /> },
       { path: "reset_password", element: <ResetPassword /> },
       { path: "forgot_password", element: <ForgotPassword /> },
       ErrorNotFound404,

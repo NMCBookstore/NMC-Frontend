@@ -11,6 +11,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
 import { useGetSearchQuery } from "../../../services/searchAPI";
+import { Link } from "react-router-dom";
 
 const minDistance = 10;
 
@@ -121,6 +122,19 @@ export default function Filter({
           disableSwap
         />
       </Box>
+      <Link to={`/search-filter?page_id=${page_id}&page_size=${page_size}${text ? '&text=' + text : ''}&min_price=1000&max_price=10000000&rating=0`} style={{ textDecoration: "none", marginTop: 8 }}>
+        <Button
+          variant="contained"
+          sx={{
+            backgroundColor: "#db4444",
+            "&:hover": {
+              background: "#ffa071",
+            },
+          }}
+        >
+          Apply Filter
+        </Button>
+      </Link>
     </Stack>
   );
 }
