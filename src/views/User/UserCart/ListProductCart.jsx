@@ -169,13 +169,11 @@ export default function ListProductCart({ title, data, isFetching }) {
   };
 
   const handleClickOpen = (id) => {
-    console.log("this click");
     setOpen(true);
     setSelectedID(id);
   };
 
   const handleOpenDeleteDialog = () => {
-    console.log("this dialog");
     setOpen(true);
   };
 
@@ -188,6 +186,10 @@ export default function ListProductCart({ title, data, isFetching }) {
     setRows(data);
     setDatas(data);
   }, [isFetching]);
+
+  useEffect(() => {
+    console.log(datas?.selected);
+  }, [selected]);
 
   const totalItemInCart = data?.length;
 
@@ -237,6 +239,7 @@ export default function ListProductCart({ title, data, isFetching }) {
                       onClick={(e) => {
                         if (e.target.checked) {
                           setSelected((prev) => [...prev, item.cart_id]);
+                          // console.log(selected);
                         } else {
                           setSelected(
                             selected.filter((it) => it !== item.cart_id)

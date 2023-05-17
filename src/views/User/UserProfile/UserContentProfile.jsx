@@ -61,7 +61,7 @@ export default function UserContentProfile({ data }) {
   };
 
   //Update user API
-  const [updateUser] = useUpdateUserMutation();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   const handleUpdateInfo = async (e) => {
     e.preventDefault();
@@ -77,16 +77,40 @@ export default function UserContentProfile({ data }) {
     setErrors((prevErrors) => ({ ...prevErrors, phone_numberError }));
 
     if (!full_NameError && !ageError && !phone_numberError) {
-      try {
-        const newUp = await updateUser({
-          ...userInfo,
-          age: parseInt(userInfo.age),
-        });
-        dispatch(setCredentials({ user: newUp.data }));
-        toast.success("Profile updated");
-      } catch {
-        toast.error("Can't update your profile");
+      const formData = new FormData();
+
+      formData.append("full_name", userInfo.full_name);
+      formData.append("phone_number", userInfo.phone_number);
+      formData.append("age", userInfo.age);
+
+      if (avatar) {
+        formData.append("image", avatar);
       }
+
+      const v = await updateUser(formData);
+      // console.log("dispatch one",v.data);
+      if (v.error && v.error.status === 500) {
+        toast.error("Username existed");
+      } else {
+        toast.success("Updated your profile");
+      }
+      dispatch(setCredentials({ user: v.data }));
+      console.log(v.data.image);
+
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      // try {
+      //   const newUp = await updateUser({
+      //     ...userInfo,
+      //     age: parseInt(userInfo.age),
+      //   });
+      //   dispatch(setCredentials({ user: newUp.data }));
+      //   toast.success("Profile updated");
+      // } catch {
+      //   toast.error("Can't update your profile");
+      // }
     }
   };
 
@@ -187,6 +211,7 @@ export default function UserContentProfile({ data }) {
             <Stack direction="row">
               <Button
                 variant="outlined"
+                disabled={isLoading}
                 sx={{
                   mt: 2,
                   width: "50%",
@@ -200,6 +225,7 @@ export default function UserContentProfile({ data }) {
                 type="submit"
                 variant="contained"
                 onClick={handleUpdateInfo}
+                disabled={isLoading}
                 sx={{
                   mt: 2,
                   width: "50%",

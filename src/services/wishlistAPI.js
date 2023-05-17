@@ -16,12 +16,14 @@ const wishlist = book.injectEndpoints({
       providesTags: ["WishlistItems"],
     }),
     deleteProductWishlist: builder.mutation({
-      query: ({ ids }) => {
-        console.log(ids);
+      query: (IDsArr) => {
+        console.log(IDsArr);
+        let endPoint = `users/wishlists?`;
+        IDsArr.forEach((id) => (endPoint += `IDs=${id}&`));
+
         return {
           method: "DELETE",
-          url: `users/wishlists?ids=${ids}`,
-          body: ids,
+          url: endPoint,
         };
       },
       invalidatesTags: ["WishlistItems"],

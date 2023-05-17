@@ -51,7 +51,7 @@ function Copyright(props) {
 const theme = createTheme();
 
 const UserRegister = () => {
-  const [register] = useSignupMutation();
+  const [signup] = useSignupMutation();
 
   const [values, setValues] = useState({
     username: "",
@@ -88,6 +88,7 @@ const UserRegister = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    //validate
     const { username, password, full_Name, email, age, phone_number } = values;
 
     const usernameError = validateRegisterUsername(username);
@@ -107,6 +108,7 @@ const UserRegister = () => {
 
     const phone_numberError = validPhoneNumber(phone_number);
     setErrors((prevErrors) => ({ ...prevErrors, phone_numberError }));
+    //
 
     if (
       !usernameError &&
@@ -116,18 +118,25 @@ const UserRegister = () => {
       !ageError &&
       !phone_numberError
     ) {
-      dispatch(signupStart());
-      try {
-        if (result.error && result.error.status === 500) {
-          toast.error("Username or email existed");
-        }
-        const { v } = await register(values);
-        dispatch(signupSuccess(v));
-        toast.success("Register success !");
+      const formData = new FormData();
+      formData.append("username", values.username);
+      formData.append("password", values.password);
+      formData.append("full_name", values.full_Name);
+      formData.append("email", values.email);
+      formData.append("age", values.age);
+      formData.append("sex", values.sex);
+      formData.append("phone_number", values.phone_number);
+
+      const v = await signup(formData);
+      if (v.error && v.error.status === 500) {
+        toast.error("Username or email existed");
+      } else {
+        toast.success("Welcome to NMC Book store");
         navigate("/login");
-      } catch (err) {
-        toast.error("Register failed !");
-        dispatch(signupFailed());
+      }
+
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
       }
     }
   };
@@ -190,6 +199,7 @@ const UserRegister = () => {
                     margin="normal"
                     required
                     fullWidth
+                    type="number"
                     name="phone_number"
                     label="Phone Number"
                     onChange={(e) =>

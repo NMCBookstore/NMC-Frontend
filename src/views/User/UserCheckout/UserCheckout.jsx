@@ -16,17 +16,16 @@ import PaymentForm from "./PaymentForm";
 import InfoCheckout from "./InfoCheckout";
 import ReviewOrder from "./ReviewOrder";
 
-
-const steps = ["Shipping address", "Payment details", "Review your order"];
+const steps = ["Info & shipping", "Review order", "Payment"];
 
 function getStepContent(step) {
   switch (step) {
     case 0:
       return <InfoCheckout />;
     case 1:
-      return <PaymentForm />;
-    case 2:
       return <ReviewOrder />;
+    case 2:
+      return <PaymentForm />;
     default:
       throw new Error("Unknown step");
   }
@@ -53,7 +52,7 @@ export default function UserCheckout() {
           variant="outlined"
           sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
         >
-          <Typography component="h1" variant="h4" align="center">
+          <Typography component="h1" fontWeight={500} variant="h4" align="center">
             Checkout
           </Typography>
           <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>

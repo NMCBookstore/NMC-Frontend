@@ -60,24 +60,14 @@ const authSlice = createSlice({
       state.signup.isFetching = true;
     },
     signupSuccess: (state, action) => {
-      const {
-        username,
-        password,
-        full_Name,
-        email,
-        image,
-        phone_number,
-        sex,
-        age,
-      } = action.payload;
-      state.signup.username = username;
-      state.signup.password = password;
-      state.signup.full_Name = full_Name;
-      state.signup.email = email;
-      state.signup.image = image;
-      state.signup.sex = sex;
-      state.signup.age = age;
-      state.signup.phone_number = phone_number;
+      state.signup.username = action.payload.username;
+      state.signup.password = action.payload.password;
+      state.signup.full_Name = action.payload.full_Name;
+      state.signup.email = action.payload.email;
+      state.signup.image = action.payload.image;
+      state.signup.sex = action.payload.sex;
+      state.signup.age = action.payload.age;
+      state.signup.phone_number = action.payload.phone_number;
       state.signup.isFetching = false;
     },
     signupFailed: (state) => {

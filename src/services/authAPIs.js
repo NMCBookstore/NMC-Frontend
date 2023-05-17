@@ -10,10 +10,10 @@ const auth = book.injectEndpoints({
       }),
     }),
     signup: builder.mutation({
-      query: (form) => ({
+      query: (formData) => ({
         method: "POST",
         url: `signup`,
-        body: form,
+        body: formData,
       }),
     }),
   }),
