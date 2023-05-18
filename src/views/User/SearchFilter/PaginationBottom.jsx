@@ -9,7 +9,7 @@ import { useSearchParams } from "react-router-dom";
 
 export default function PaginationBottom({ allProduct, handlePageChange }) {
   // const {pagination, onPageChange} = props;
-  const pageNum = parseInt(allProduct?.total_page);
+  // const pageNum = parseInt(allProduct?.total_page);
 
   const onPageChange = (_, value) => {
     handlePageChange(value, 24);
@@ -27,7 +27,7 @@ export default function PaginationBottom({ allProduct, handlePageChange }) {
     >
       <Stack>
         <Pagination
-          count={pageNum}
+          count={allProduct?.total_page}
           page={allProduct?.page_id}
           size={isMobile ? "small" : "large"}
           siblingCount={isMobile ? -1 : 2}

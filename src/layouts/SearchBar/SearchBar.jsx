@@ -4,6 +4,7 @@ import { Paper, IconButton, InputBase } from "@mui/material";
 import { Search } from "@mui/icons-material";
 
 const SearchBar = () => {
+  const navigate = useNavigate();
   const [text, setText] = useState("");
   const page_id = 1
   const page_size = 24
@@ -27,11 +28,11 @@ const SearchBar = () => {
           inputProps={{ "aria-label": "search google maps" }}
           onChange={(e) => {setText(e.target.value)}}
         />
-        <Link to={`/search-filter?page_id=${page_id}&page_size=${page_size}${text ? '&text='+text:''}&min_price=1000&max_price=10000000&rating=0`} style={{ textDecoration: "none", marginTop: 8 }}>
-          <IconButton type="submit" sx={{ p: "5px", color: "black" }}>
+          <IconButton
+            onClick={() => window.location.replace(`/search-filter?text=${text}`)}
+           sx={{ p: "5px", color: "black" }}>
             <Search />
           </IconButton>
-        </Link>
       </Paper>
     </div>
   );

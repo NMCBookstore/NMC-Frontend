@@ -1,42 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Filter from "./Filter";
 import PaginationBottom from "./PaginationBottom";
 import BookList from "./BookList";
-import { useGetAllProductQuery } from "../../../services/productAPIs";
-import { useGetGenresQuery } from "../../../services/genresAPIs";
-import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
-import { Button } from "@mui/material";
 import { useGetSearchQuery } from "../../../services/searchAPI";
 import { useSearchParams } from "react-router-dom";
+import { Typography } from "@mui/material";
 
 const SearchFilter = () => {
-  const [id, setId] = useState(0);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [searchInfo, setSearchInfo] = useSearchParams();
+  let searchInfo = {
+    page_id: !isNaN(parseInt(searchParams.get("page_id"))) ? parseInt(searchParams.get("page_id")) : 1,
+    page_size: !isNaN(parseInt(searchParams.get("page_size"))) ? parseInt(searchParams.get("page_size")) : 24,
+    min_price: !isNaN(parseInt(searchParams.get("min_price"))) ? parseInt(searchParams.get("min_price")) : 0,
+    max_price: !isNaN(parseInt(searchParams.get("max_price"))) ? parseInt(searchParams.get("max_price")) : 100000000,
+  }
 
-  const [page, setPage] = useState({ id: 1, size: 24 });
+  if (searchParams.get("text") !== null) {
+    searchInfo["text"] = searchParams.get("text")
+  }
 
-  const { data: allProduct } = searchInfo.get("text")
-    ? useGetSearchQuery({
-      page_id: searchInfo.get("page_id"),
-      page_size: searchInfo.get("page_size"),
-      text: searchInfo.get("text"),
-      min_price:searchInfo.get("min_price"),
-      max_price:searchInfo.get("max_price"),
-      rating:searchInfo.get("rating"),
-    })
-    : useGetAllProductQuery({
-      page_id: page.id,
-      page_size: page.size,
-    });
+  if (searchParams.get("genres_id") !== null) {
+    searchInfo["genres_id"] = parseFloat(searchParams.get("genres_id"))
+  }
 
-  const { data: allGenres } = useGetGenresQuery();
-  const { data: allSubGenres } = useGetSubGenresQuery(id, { skip: !id });
+  if (searchParams.get("subgenres_id") !== null) {
+    searchInfo["subgenres_id"] = parseFloat(searchParams.get("subgenres_id"))
+  }
+
+  if (searchParams.get("rating") !== null) {
+    searchInfo["rating"] = parseInt(searchParams.get("rating"))
+  }
+
+  console.log(searchInfo)
+
+  const { data: allProduct } = useGetSearchQuery(searchInfo, "searchBook", { refetchOnMountOrArgChange: true });
 
   const handlePageChange = (id, size) => {
-    setPage({ id, size });
+    searchInfo["page_id"] = id;
+    searchInfo["page_size"] = size;
   };
 
   return (
@@ -45,11 +49,9 @@ const SearchFilter = () => {
         {/* Filter  */}
         <Grid item xs={12} sm={3}>
           <Filter
-            id={id}
-            genres={allGenres}
-            subGenres={allSubGenres}
-            setId={setId}
-            setSearchInfo={setSearchInfo}
+            searchInfo={searchInfo}
+            searchParams={searchParams}
+            setSearchParams={setSearchParams}
           />
         </Grid>
 
@@ -61,6 +63,11 @@ const SearchFilter = () => {
           sm={9}
           sx={{ flexDirection: { xs: "column", sm: "row" } }}
         >
+          <Box
+            sx={{ width: "100%", display: "flex", justifyContent: "start" }}
+          >
+            {searchParams.get("text") && <Typography variant="h6">Search result for: {searchParams.get("text")}</Typography>}
+          </Box>
           <BookList allProduct={allProduct} />
         </Grid>
         <Grid
