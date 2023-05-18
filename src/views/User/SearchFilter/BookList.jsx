@@ -5,7 +5,7 @@ import ProductCard from "../../../components/ProductCard/ProductCard";
 export default function BookList({ allProduct }) {
   return (
     <>
-      {allProduct?.books.map((productItem) => (
+      {allProduct?.books?.map((productItem) => (
         <Grid
           key={productItem.id}
           item
