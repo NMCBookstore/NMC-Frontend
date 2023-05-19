@@ -34,8 +34,6 @@ const SearchFilter = () => {
     searchInfo["rating"] = parseInt(searchParams.get("rating"))
   }
 
-  console.log(searchInfo)
-
   const { data: allProduct } = useGetSearchQuery(searchInfo, "searchBook", { refetchOnMountOrArgChange: true });
 
   const handlePageChange = (id, size) => {

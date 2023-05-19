@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import React from "react";
 import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
+import { alpha, useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -21,8 +21,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useTheme } from "@mui/material/styles";
-import { useDeleteProductCartMutation } from "../../../services/cartAPI";
+import { useDeleteProductCartMutation, useUpdateCartMutation } from "../../../services/cartAPI";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import NoProductInCart from "./NoProductInCart";
@@ -54,8 +53,8 @@ function EnhancedTableHead(props) {
         </TableCell>
         {headCells.map((headCell) =>
           title === "Wishlist" &&
-          (headCell.label === "Quantity" ||
-            headCell.label === "Subtotal") ? null : (
+            (headCell.label === "Quantity" ||
+              headCell.label === "Subtotal") ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}
@@ -134,19 +133,15 @@ export default function ListProductCart({ title, data, isFetching }) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+  const [updateCart] = useUpdateCartMutation()
 
   //set amount of product
-  let [count, setCount] = useState(data?.amount);
+  function incrementCount(id, amount) {
 
-  function incrementCount() {
-    // setCount(count + 1);
-    // console.log(count);
-    console.log("this clicked too");
-    // setDatas(datas?.amount + 1);
+    updateCart({ "id": id, "amount": amount + 1 })
   }
-  function decrementCount() {
-    // setDatas(datas?.amount > 1 ? datas?.amount - 1 : 1);
-    console.log("this clicked");
+  function decrementCount(id, amount) {
+    updateCart({ "id": id, "amount": amount > 1 ? amount - 1 : 1 })
   }
 
   const [deleteProduct] = useDeleteProductCartMutation();
@@ -156,7 +151,6 @@ export default function ListProductCart({ title, data, isFetching }) {
   const handleDeleteListItem = async () => {
     await deleteProduct(selected);
     setSelected(selected.filter((cart_id) => !selected.includes(cart_id)));
-    console.log(selected);
   };
 
   const handleDeleteItem = async () => {
@@ -164,7 +158,6 @@ export default function ListProductCart({ title, data, isFetching }) {
     if (selected.some((cart_id) => selectedID == cart_id)) {
       setSelected(selected.filter((cart_id) => cart_id !== selectedID));
     }
-    console.log(selected);
     setOpen(false);
   };
 
@@ -186,10 +179,6 @@ export default function ListProductCart({ title, data, isFetching }) {
     setRows(data);
     setDatas(data);
   }, [isFetching]);
-
-  useEffect(() => {
-    console.log(datas?.selected);
-  }, [selected]);
 
   const totalItemInCart = data?.length;
 
@@ -230,7 +219,7 @@ export default function ListProductCart({ title, data, isFetching }) {
             <TableBody>
               {datas?.map((item, index) => (
                 <TableRow
-                  key={index}
+                  key={item}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell>
@@ -284,13 +273,13 @@ export default function ListProductCart({ title, data, isFetching }) {
                     <Stack direction="row" spacing={2}>
                       <Tooltip title="Minus">
                         <RemoveIcon
-                          onClick={decrementCount}
+                          onClick={() => decrementCount(item?.cart_id, item?.amount)}
                           sx={{ marginRight: 2 }}
                         />
                       </Tooltip>
                       {item?.amount}
                       <Tooltip title="Add more">
-                        <AddIcon onClick={incrementCount} />
+                        <AddIcon onClick={() => incrementCount(item?.cart_id, item?.amount)} />
                       </Tooltip>
                     </Stack>
                   </TableCell>

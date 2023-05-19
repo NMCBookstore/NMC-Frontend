@@ -4,34 +4,8 @@ import ButtonBase from "@mui/material/ButtonBase";
 import comic from "./pic/comic.jpg";
 import novel from "./pic/novel.jpg";
 import { Box, Typography } from "@mui/material";
-
-const images = [
-  {
-    url: comic,
-    title: "Comic",
-    width: "15%",
-  },
-  {
-    url: novel,
-    title: "Novel",
-    width: "15%",
-  },
-  {
-    url: comic,
-    title: "Normal book",
-    width: "15%",
-  },
-  {
-    url: novel,
-    title: "Book 1",
-    width: "15%",
-  },
-  {
-    url: comic,
-    title: "Book 2",
-    width: "15%",
-  },
-];
+import { useGetSubGenresNoticeableQuery } from "../../services/subGenresAPIs";
+import { useNavigate } from "react-router-dom";
 
 //the image button
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
@@ -47,8 +21,6 @@ const ImageButton = styled(ButtonBase)(({ theme }) => ({
     zIndex: 1,
     "& .MuiImageBackdrop-root": {
       opacity: 0.15,
-      //   borderRadius: 20,
-      // ***********
     },
     "& .MuiImageMarked-root": {
       opacity: 0,
@@ -112,7 +84,10 @@ const ImageMarked = styled("span")(({ theme }) => ({
   transition: theme.transitions.create("opacity"),
 }));
 
-const FiveHeadCategory = () => {
+const HeadCategory = () => {
+  const navigate = useNavigate()
+  const { data: subgenresNoticeable } = useGetSubGenresNoticeableQuery()
+
   return (
     <Box
       sx={{
@@ -120,23 +95,24 @@ const FiveHeadCategory = () => {
         flexWrap: "wrap",
         width: "100%",
         "& > :not(style)": {
-          m: "2.5%",  
+          m: "2.5%",
           width: 120,
-          height: 80 ,
+          height: 80,
         },
       }}
     >
-      {images.map((image) => (
+      {subgenresNoticeable?.map((subgenre, index) => (
         <ImageButton
           focusRipple
-          key={image.title}
+          key={subgenre?.id}
           style={{
-            width: image.width,
+            width: "28%",
             borderRadius: 10,
           }}
+          onClick={()=> navigate(`/search-filter?genres_id=${subgenre?.genres_id}&subgenres_id=${subgenre?.id}`)}
         >
           <ImageSrc
-            style={{ backgroundImage: `url(${image.url})`, borderRadius: 10 }}
+            style={{ backgroundImage: index % 2 == 0 ? `url(${comic})` : `url(${novel})`, borderRadius: 10 }}
           />
 
           <ImageBackdrop className="MuiImageBackdrop-root" />
@@ -152,7 +128,7 @@ const FiveHeadCategory = () => {
                 pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
               }}
             >
-              {image.title}
+              {subgenre?.name}
               <ImageMarked className="MuiImageMarked-root" />
             </Typography>
           </Image>
@@ -162,4 +138,4 @@ const FiveHeadCategory = () => {
   );
 };
 
-export default FiveHeadCategory;
+export default HeadCategory;
