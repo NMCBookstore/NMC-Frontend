@@ -32,10 +32,6 @@ const stars = [
 ];
 
 export default function Filter({
-  // id,
-  // genres,
-  // setId,
-  // subGenres,
   searchInfo,
   searchParams,
   setSearchParams,
