@@ -44,6 +44,7 @@
     "cors": "^2.8.5",
     "formik": "^2.2.9",
     "lightgallery": "^2.7.1",
+    "material-ui-popup-state": "^5.0.8",
     "mui-datatables": "^4.3.0",
     "quill": "^1.3.6",
     "react": "^18.2.0",

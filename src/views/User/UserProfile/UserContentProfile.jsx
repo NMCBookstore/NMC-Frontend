@@ -88,7 +88,6 @@ export default function UserContentProfile({ data }) {
       }
 
       const v = await updateUser(formData);
-      // console.log("dispatch one",v.data);
       if (v.error && v.error.status === 500) {
         toast.error("Username existed");
       } else {
@@ -100,17 +99,6 @@ export default function UserContentProfile({ data }) {
       for (let [key, value] of formData.entries()) {
         console.log(key, value);
       }
-
-      // try {
-      //   const newUp = await updateUser({
-      //     ...userInfo,
-      //     age: parseInt(userInfo.age),
-      //   });
-      //   dispatch(setCredentials({ user: newUp.data }));
-      //   toast.success("Profile updated");
-      // } catch {
-      //   toast.error("Can't update your profile");
-      // }
     }
   };
 
@@ -198,16 +186,6 @@ export default function UserContentProfile({ data }) {
               type="file"
               onChange={handlePreviewAvatar}
             />
-            {/* {avatar && <img src={avatar.preview} alt="" width="40%" />} */}
-
-            {/* <input
-            // hidden
-            // accept="image/*"
-            type="file"
-            onChange={handlePreviewAvatar}
-          />
-          {avatar && <img src={avatar.preview} alt="" width="40%" />} */}
-
             <Stack direction="row">
               <Button
                 variant="outlined"

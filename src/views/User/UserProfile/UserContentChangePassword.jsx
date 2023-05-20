@@ -1,11 +1,10 @@
 import * as React from "react";
 import { useState } from "react";
-import { Container, List, Stack, TextField } from "@mui/material";
+import { Container, List, Stack, TextField, IconButton, InputAdornment } from "@mui/material";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import Button from "@mui/material/Button";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { IconButton, InputAdornment } from "@mui/material";
 import Box from "@mui/material/Box";
 
 export default function UserContentChangePassword() {

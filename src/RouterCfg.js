@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import Home from "./components/Home/Home";
+import UserOrdered from "./views/User/UserProfile/UserOrdered";
 
 /**** User Layouts *****/
 const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
@@ -23,6 +24,13 @@ const UserWishlist = lazy(() => import("./views/User/UserWishlist"));
 const ForgotPassword = lazy(() => import("./views/User/ForgotPassword"));
 const ResetPassword = lazy(() => import("./views/User/ResetPassword"));
 const Welcome = lazy(() => import("./features/auth/Welcome"));
+const UserOrder = lazy(() => import("./views/User/UserProfile/UserOrder"));
+const UserContentProfile = lazy(() =>
+  import("./views/User/UserProfile/UserContentProfile")
+);
+const UserContentChangePassword = lazy(() =>
+  import("./views/User/UserProfile/UserContentChangePassword")
+);
 const Error404 = lazy(() => import("./components/Error404"));
 
 /**** Admin Routes *****/
@@ -55,7 +63,6 @@ const RouterCfg = [
       { path: "/", element: <Home /> },
       { path: "product/:id", element: <ProductDetails /> },
       { path: "search-filter", element: <SearchFilter /> },
-      // { path: "search-filter?page_id&page_size&text&genres&sub_genres&min_price&max_price&rating", element: <SearchFilter /> },
       { path: "reset_password", element: <ResetPassword /> },
       { path: "forgot_password", element: <ForgotPassword /> },
       ErrorNotFound404,
@@ -72,7 +79,45 @@ const RouterCfg = [
         children: [
           { path: "welcome", element: <Welcome /> },
           { path: "cart", element: <UserCart /> },
-          { path: "profile", element: <UserProfile /> },
+          {
+            path: "profile",
+            children: [
+              {
+                path: "",
+                element: <UserProfile id={0} />,
+              },
+              {
+                path: "change-password",
+                element: <UserProfile id={1} />,
+              },
+              {
+                path: "my-order",
+                element: <UserProfile id={2} />,
+                children: [
+                  {
+                    path: "ordered",
+                    element: <UserOrder idOrder={0} />,
+                  },
+                  {
+                    path: "shipping",
+                    element: <UserOrder idOrder={1} />,
+                  },
+                  {
+                    path: "completed",
+                    element: <UserOrder idOrder={2} />,
+                  },
+                ],
+              },
+              {
+                path: "my-cancellations",
+                element: <UserOrder />,
+              },
+              {
+                path: "my-reviews",
+                element: <UserOrder />,
+              },
+            ],
+          },
           { path: "wishlist", element: <UserWishlist /> },
           { path: "checkout", element: <UserCheckout /> },
           ErrorNotFound404,

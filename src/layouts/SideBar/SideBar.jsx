@@ -82,8 +82,8 @@ export default function SideBar() {
                   <Accordion key={genre?.id}
                     expanded={expanded === index}
                     onClick={() => {
-                      setId(genre?.id)
                       setSubOpen(!subOpen)
+                      setId(genre?.id)
                     }}
                     sx={{ boxShadow: 0, pl: 4, position:"static" }}
                     disableGutters
