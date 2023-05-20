@@ -13,7 +13,6 @@ const authSlice = createSlice({
       refresh_token_expires_at: null,
       isFetching: false,
       error: false,
-      // isAuthenticated: localStorage.getItem("access_token") ? true : false,
     },
     signup: {
       username: null,
@@ -50,7 +49,6 @@ const authSlice = createSlice({
         state.login.refresh_token_expires_at =
           action.payload.refresh_token_expires_at;
       }
-      // state.login.isAuthenticated = true;
     },
     loginFailed: (state) => {
       state.login.isFetching = false;
@@ -74,12 +72,8 @@ const authSlice = createSlice({
       state.signup.isFetching = false;
     },
 
-    logout: (state, action) => {
-      state.isAuthenticated = false;
-      // state.login.access_token = null;
-      // window.location.reload();
-      localStorage.clear();
-      // localStorage.removeItem("persist:root");
+    logout: () => {
+      window.localStorage.clear();
       toast.success("You're logged out");
     },
   },

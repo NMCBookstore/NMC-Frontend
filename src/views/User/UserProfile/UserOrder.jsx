@@ -6,6 +6,8 @@ import UserOrdered from "./UserOrdered";
 import UserShipping from "./UserShipping";
 import UserCompleted from "./UserCompleted";
 import { useNavigate } from "react-router-dom";
+import UserCancellations from "./UserCancellations";
+import UserAllOrder from "./userAllOrder";
 
 export default function UserOrder({ idOrder }) {
   const navigate = useNavigate();
@@ -17,21 +19,33 @@ export default function UserOrder({ idOrder }) {
   const orderSidebar = [
     {
       id: 0,
-      title: "Ordered",
+      title: "All",
       url: "",
-      component: <UserOrdered />
+      component: <UserAllOrder />
     },
     {
       id: 1,
+      title: "Ordered",
+      url: "ordered",
+      component: <UserOrdered />
+    },
+    {
+      id: 2,
       title: "Shipping",
       url: "shipping",
       component: <UserShipping />
     },
     {
-      id: 2,
+      id: 3,
       title: "Completed",
       url: "completed",
       component: <UserCompleted />
+    },
+    {
+      id: 4,
+      title: "Cancellations",
+      url: "cancellations",
+      component: <UserCancellations />
     },
   ];
 
@@ -40,7 +54,7 @@ export default function UserOrder({ idOrder }) {
       <Tabs
         orientation="horizontal"
         variant="fullWidth"
-        value={idOrder ? idOrder : activeTabOrder}
+        value={idOrder != null ? idOrder : activeTabOrder}
         onChange={handleTabChange}
         aria-label="Horizontal tabs example"
       >
@@ -50,7 +64,7 @@ export default function UserOrder({ idOrder }) {
           />
         ))}
       </Tabs>
-      {orderSidebar[idOrder ? idOrder : activeTabOrder].component}
+      {orderSidebar[idOrder != null ? idOrder : activeTabOrder].component}
     </Container>
   );
 }

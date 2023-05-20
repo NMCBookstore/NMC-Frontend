@@ -17,9 +17,8 @@ const wishlist = book.injectEndpoints({
     }),
     deleteProductWishlist: builder.mutation({
       query: (IDsArr) => {
-        console.log(IDsArr);
         let endPoint = `users/wishlists?`;
-        IDsArr.forEach((id) => (endPoint += `IDs=${id}&`));
+        IDsArr.forEach((id) => (endPoint += `ids=${id}&`));
 
         return {
           method: "DELETE",

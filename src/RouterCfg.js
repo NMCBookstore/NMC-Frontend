@@ -1,6 +1,5 @@
 import { lazy } from "react";
 import Home from "./components/Home/Home";
-import UserOrdered from "./views/User/UserProfile/UserOrdered";
 
 /**** User Layouts *****/
 const Layout = lazy(() => import("./layouts/FullLayout/Layout"));
@@ -91,30 +90,37 @@ const RouterCfg = [
                 element: <UserProfile id={1} />,
               },
               {
-                path: "my-order",
+                path: "address",
                 element: <UserProfile id={2} />,
+              },
+              {
+                path: "my-order",
                 children: [
                   {
+                    path: "",
+                    element: <UserProfile id={3} idOrder={0} />,
+                  },
+                  {
                     path: "ordered",
-                    element: <UserOrder idOrder={0} />,
+                    element: <UserProfile id={3} idOrder={1} />,
                   },
                   {
                     path: "shipping",
-                    element: <UserOrder idOrder={1} />,
+                    element: <UserProfile id={3} idOrder={2} />,
                   },
                   {
                     path: "completed",
-                    element: <UserOrder idOrder={2} />,
+                    element: <UserProfile id={3} idOrder={3} />,
+                  },
+                  {
+                    path: "cancellations",
+                    element: <UserProfile id={3} idOrder={4} />,
                   },
                 ],
               },
               {
-                path: "my-cancellations",
-                element: <UserOrder />,
-              },
-              {
                 path: "my-reviews",
-                element: <UserOrder />,
+                element: <UserProfile id={4} />,
               },
             ],
           },

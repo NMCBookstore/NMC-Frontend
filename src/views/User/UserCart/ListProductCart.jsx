@@ -146,7 +146,7 @@ export default function ListProductCart({ title, data, isFetching }) {
 
   const [deleteProduct] = useDeleteProductCartMutation();
 
-  var [selectedID, setSelectedID] = useState([]);
+  const [selectedID, setSelectedID] = useState([]);
 
   const handleDeleteListItem = async () => {
     await deleteProduct(selected);
@@ -183,7 +183,6 @@ export default function ListProductCart({ title, data, isFetching }) {
   const totalItemInCart = data?.length;
 
   const isSelected = (cart_id) => selected.indexOf(cart_id) !== -1;
-  // console.log(selected);
   return totalItemInCart ? (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -228,7 +227,6 @@ export default function ListProductCart({ title, data, isFetching }) {
                       onClick={(e) => {
                         if (e.target.checked) {
                           setSelected((prev) => [...prev, item.cart_id]);
-                          // console.log(selected);
                         } else {
                           setSelected(
                             selected.filter((it) => it !== item.cart_id)

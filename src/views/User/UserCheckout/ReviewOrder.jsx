@@ -4,32 +4,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
-import { useGetMyOrderQuery } from "../../../services/orderAPIs";
+import { useGetAllOrderQuery, useGetMyOrderQuery } from "../../../services/orderAPIs";
 import { useEditContext } from "react-admin";
-
-// const products = [
-//   {
-//     name: "Product 1",
-//     desc: "A nice thing",
-//     price: "$9.99",
-//   },
-//   {
-//     name: "Product 2",
-//     desc: "Another thing",
-//     price: "$3.45",
-//   },
-//   {
-//     name: "Product 3",
-//     desc: "Something else",
-//     price: "$6.51",
-//   },
-//   {
-//     name: "Product 4",
-//     desc: "Best thing of all",
-//     price: "$14.11",
-//   },
-//   { name: "Shipping", desc: "", price: "Free" },
-// ];
 
 const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
 const payments = [
@@ -40,10 +16,7 @@ const payments = [
 ];
 
 export default function ReviewOrder() {
-  const { data } = useGetMyOrderQuery({
-    page_id: 1,
-    page_size: 5,
-  });
+  const { data } = useGetAllOrderQuery();
 
   // console.log(data)
   console.log(data?.length > 0 ? data[0].books : []);
@@ -56,7 +29,7 @@ export default function ReviewOrder() {
       <List disablePadding>
         {data?.length > 0 &&
           data[0].books.map((item, index) => (
-            <ListItem key={index} sx={{ py: 1, px: 0 }}>
+            <ListItem key={item?.id} sx={{ py: 1, px: 0 }}>
               <ListItemText primary={item?.name} secondary={item?.author} />
               <Typography variant="body2">{item?.price}</Typography>
             </ListItem>

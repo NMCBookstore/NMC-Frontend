@@ -20,7 +20,7 @@ const MiniCarousel = ({ value }) => {
         responsiveLayout={[
           {
             breakpoint: 3000,
-            cols: 4,
+            cols: 5,
           },
           {
             breakpoint: 1024,
