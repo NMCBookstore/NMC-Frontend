@@ -6,11 +6,13 @@ import Tab from "@mui/material/Tab";
 import UserContentChangePassword from "./UserContentChangePassword";
 import UserContentProfile from "./UserContentProfile"; "react-router-dom";
 import { useGetUserQuery } from "../../../services/userAPI";
-import PropTypes from "prop-types";
 import UserOrder from "./UserOrder";
 import { useNavigate } from "react-router-dom";
+import UserAddress from "./UserAddress";
+import UserReviews from "./UserReviews";
+import { Container } from "@mui/joy";
 
-export default function UserProfile({ id }) {
+export default function UserProfile({ id, idOrder }) {
   const { data } = useGetUserQuery();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = React.useState(0);
@@ -28,20 +30,32 @@ export default function UserProfile({ id }) {
     },
     {
       id: 1,
-      title: "Change Password",
+      title: "Password",
       url: "change-password",
       component: <UserContentChangePassword data={data} />,
     },
     {
       id: 2,
+      title: "address",
+      url: "address",
+      component: <UserAddress />,
+    },
+    {
+      id: 3,
       title: "My order",
       url: "my-order",
-      component: <UserOrder idOrder={0} />
+      component: <UserOrder idOrder={idOrder} />
+    },
+    {
+      id: 4,
+      title: "My reviews",
+      url: "my-reviews",
+      component: <UserReviews />
     },
   ];
 
   return (
-    <>
+    <Container >
       <Box sx={{ flexGrow: 1 }}>
         <Grid container my={2} spacing={3}>
           {/* User Side bar  */}
@@ -60,7 +74,7 @@ export default function UserProfile({ id }) {
                 value={id ? id : activeTab}
                 onChange={handleTabChange}
                 aria-label="Vertical tabs example"
-                sx={{ borderRight: 1, borderColor: "divider" }}
+                sx={{ borderRight: 1, borderColor: "divider",alignItems: "end"}}
               >
                 {profileSidebar.map((item, index) => (
                   <Tab label={item.title} key={item.id}
@@ -73,6 +87,6 @@ export default function UserProfile({ id }) {
           </Grid>
         </Grid>
       </Box>
-    </>
+    </Container>
   );
 }

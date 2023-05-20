@@ -18,7 +18,7 @@ const Home = () => {
   const classes = useStyles();
   const { data: allProduct } = useGetAllProductQuery({
     page_id: 1,
-    page_size: 24,
+    page_size: 25,
   });
 
   return (

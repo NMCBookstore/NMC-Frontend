@@ -85,7 +85,7 @@ export default function SideBar() {
                       setSubOpen(!subOpen)
                       setId(genre?.id)
                     }}
-                    sx={{ boxShadow: 0, pl: 4, position:"static" }}
+                    sx={{ boxShadow: 0, pl: 4, position: "static" }}
                     disableGutters
                     onChange={handleChange(index)}
                   >
@@ -137,15 +137,18 @@ export default function SideBar() {
         />
 
         <Drawer anchor={"left"} open={state} onClose={toggleDrawer(false)}>
-          <Link to="/"
+          <div
             style={{
               display: "flex",
               justifyContent: "center",
               paddingTop: "5%",
-              paddingBottom: "10%"
-            }}>
+              paddingBottom: "10%",
+              cursor:"pointer"
+            }}
+            onClick={() => window.location.replace("/")}
+          >
             <img src={logoColorRevert} alt="logo" height={60} />
-          </Link>
+          </div>
           {list()}
         </Drawer>
       </React.Fragment>

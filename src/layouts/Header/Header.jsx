@@ -74,9 +74,13 @@ const Header = () => {
           }}
         >
           <SideBar />
-          <Link to="/" className={classes.mainLogo}>
+          <div
+            style={{ cursor: "pointer" }}
+            className={classes.mainLogo}
+            onClick={() => window.location.replace("/")}
+          >
             <img src={logo} alt="logo" height={40} />
-          </Link>
+          </div>
           <SearchBar />
           <Box
             marginRight={3}
@@ -99,7 +103,8 @@ const Header = () => {
                 </Tooltip>
               </Badge>
             </IconButton>
-            <PopupState variant="popover" popupId="popup-menu">
+
+            <PopupState key={1} variant="popover" popupId="demo-popup-menu">
               {(popupState) => (
                 <Fragment>
                   <IconButton
@@ -148,17 +153,16 @@ const Header = () => {
                         <MenuItem
                           onClick={() => {
                             popupState.close()
-                            navigate("/user/profile/")
+                            navigate("/user/profile/my-order/cancellations")
                           }}>
                           <CancelIcon />
                           &nbsp; My Cancellations
                         </MenuItem>
-
                         <MenuItem
-                          onClick={() => {
-                            popupState.close()
-                            navigate("/user/profile")
-                          }}>
+                        onClick={() => {
+                          popupState.close()
+                          navigate("/user/profile/my-reviews")
+                        }}>
                           <ReviewsIcon />
                           &nbsp; My Reviews
                         </MenuItem>

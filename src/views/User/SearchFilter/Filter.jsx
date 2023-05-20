@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Checkbox from "@mui/material/Checkbox";
-import { useGetSearchQuery } from "../../../services/searchAPI";
-import { Link } from "react-router-dom";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
 import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
 import { Button, Typography } from "@mui/material";
@@ -122,24 +114,21 @@ export default function Filter({
           }}
         />
       </Box>
-      {/* <Link to={`/search-filter?page_id=${page_id}&page_size=${page_size}${text ? '&text=' + text : ''}&min_price=1000&max_price=10000000&rating=0`} style={{ textDecoration: "none", marginTop: 8 }}> */}
-      {/* <Link style={{ textDecoration: "none", marginTop: 8 }}> */}
-        <Button
-          onClick={() => {
-            console.log(searchInfo)
-            setSearchParams(searchInfo)
-          }}
-          variant="contained"
-          sx={{
-            backgroundColor: "#2b7de9",
-            "&:hover": {
-              background: "#6aa4ef",
-            },
-          }}
-        >
-          Apply Filter
-        </Button>
-      {/* </Link> */}
+      <Button
+        onClick={() => {
+          console.log(searchInfo)
+          setSearchParams(searchInfo)
+        }}
+        variant="contained"
+        sx={{
+          backgroundColor: "#2b7de9",
+          "&:hover": {
+            background: "#6aa4ef",
+          },
+        }}
+      >
+        Apply Filter
+      </Button>
     </Stack>
   );
 }

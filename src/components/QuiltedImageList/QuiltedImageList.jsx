@@ -68,7 +68,7 @@ export default function QuiltedImageList() {
         >
           <Link>
             <img
-              {...srcset(item.img, 284, item.rows, item.cols)}
+              {...srcset(item.img, 368, item.rows, item.cols)}
               alt={item.title}
             />
             {/* <ImageListItemBar title={item.title} subtitle={item.author} position="top" /> */}
