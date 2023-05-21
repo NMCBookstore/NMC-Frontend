@@ -387,9 +387,9 @@ export default function ListProductCart({ title, data, isFetching }) {
                           </IconButton>
                         </Tooltip>
                       ) : (
-                        <Tooltip title="Not in your order">
+                        <Tooltip title="Not in order">
                           <IconButton>
-                            <CreditScoreIcon />
+                            <CreditScoreIcon/>
                           </IconButton>
                         </Tooltip>
                       )}
