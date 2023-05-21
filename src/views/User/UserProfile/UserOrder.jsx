@@ -1,40 +1,70 @@
 import React from "react";
-import Tabs from "@mui/joy/Tabs";
-import TabList from "@mui/joy/TabList";
-import Tab, { tabClasses } from "@mui/joy/Tab";
 import { Container } from "@mui/material";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import UserOrdered from "./UserOrdered";
+import UserShipping from "./UserShipping";
+import UserCompleted from "./UserCompleted";
+import { useNavigate } from "react-router-dom";
+import UserCancellations from "./UserCancellations";
+import UserAllOrder from "./userAllOrder";
 
-export default function UserOrder() {
+export default function UserOrder({ idOrder }) {
+  const navigate = useNavigate();
+  const [activeTabOrder, setActiveTabOrder] = React.useState(0);
+  const handleTabChange = (event, newValue) => {
+    setActiveTabOrder(newValue);
+  };
+
+  const orderSidebar = [
+    {
+      id: 0,
+      title: "All",
+      url: "",
+      component: <UserAllOrder />
+    },
+    {
+      id: 1,
+      title: "Ordered",
+      url: "ordered",
+      component: <UserOrdered />
+    },
+    {
+      id: 2,
+      title: "Shipping",
+      url: "shipping",
+      component: <UserShipping />
+    },
+    {
+      id: 3,
+      title: "Completed",
+      url: "completed",
+      component: <UserCompleted />
+    },
+    {
+      id: 4,
+      title: "Cancellations",
+      url: "cancellations",
+      component: <UserCancellations />
+    },
+  ];
+
   return (
     <Container>
-      <Tabs aria-label="tabs" defaultValue={0}>
-        <TabList
-          variant="plain"
-          sx={{
-            "--List-padding": "0px",
-            "--List-radius": "0px",
-            "--ListItem-minHeight": "48px",
-            [`& .${tabClasses.root}`]: {
-              boxShadow: "none",
-              fontWeight: "md",
-              [`&.${tabClasses.selected}::before`]: {
-                content: '""',
-                display: "block",
-                position: "absolute",
-                left: "var(--ListItem-paddingLeft)", // change to `0` to stretch to the edge.
-                right: "var(--ListItem-paddingRight)", // change to `0` to stretch to the edge.
-                bottom: 0,
-                height: 3,
-                bgcolor: "primary.400",
-              },
-            },
-          }}
-        >
-          <Tab>Ordered</Tab>
-          <Tab>Shipping</Tab>
-          <Tab>Completed</Tab>
-        </TabList>
+      <Tabs
+        orientation="horizontal"
+        variant="fullWidth"
+        value={idOrder != null ? idOrder : activeTabOrder}
+        onChange={handleTabChange}
+        aria-label="Horizontal tabs example"
+      >
+        {orderSidebar.map((item, index) => (
+          <Tab label={item.title} key={item.id}
+            onClick={() => navigate(`/user/profile/my-order/${item.url}`)}
+          />
+        ))}
       </Tabs>
+      {orderSidebar[idOrder != null ? idOrder : activeTabOrder].component}
     </Container>
   );
 }

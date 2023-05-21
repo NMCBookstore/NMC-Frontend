@@ -1,84 +1,61 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
-import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Unstable_Grid2";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import UserContentChangePassword from "./UserContentChangePassword";
-import UserContentProfile from "./UserContentProfile";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import UserContentProfile from "./UserContentProfile"; "react-router-dom";
 import { useGetUserQuery } from "../../../services/userAPI";
-import PropTypes from "prop-types";
 import UserOrder from "./UserOrder";
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+import { useNavigate } from "react-router-dom";
+import UserAddress from "./UserAddress";
+import UserReviews from "./UserReviews";
+import { Container } from "@mui/joy";
 
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3, width: 800, height: 500 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    "aria-controls": `vertical-tabpanel-${index}`,
-  };
-}
-
-export default function UserProfile() {
-  const { data} = useGetUserQuery();
-
-  const [value, setValue] = React.useState(0);
+export default function UserProfile({ id, idOrder }) {
+  const { data } = useGetUserQuery();
   const navigate = useNavigate();
-  const [tab, setTab] = useState(false);
   const [activeTab, setActiveTab] = React.useState(0);
 
   const handleTabChange = (event, newValue) => {
     setActiveTab(newValue);
   };
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-  // console.log(data);
-
   const profileSidebar = [
     {
+      id: 0,
       title: "Profile",
-      component: <UserContentProfile data = {data}/>,
+      url: "",
+      component: <UserContentProfile data={data} />,
     },
     {
-      title: "Change Password",
-      component: <UserContentChangePassword data = {data}/>,
+      id: 1,
+      title: "Password",
+      url: "change-password",
+      component: <UserContentChangePassword data={data} />,
     },
     {
+      id: 2,
+      title: "address",
+      url: "address",
+      component: <UserAddress />,
+    },
+    {
+      id: 3,
       title: "My order",
-      component: <UserOrder />
+      url: "my-order",
+      component: <UserOrder idOrder={idOrder} />
+    },
+    {
+      id: 4,
+      title: "My reviews",
+      url: "my-reviews",
+      component: <UserReviews />
     },
   ];
 
   return (
-    <>
+    <Container >
       <Box sx={{ flexGrow: 1 }}>
         <Grid container my={2} spacing={3}>
           {/* User Side bar  */}
@@ -88,28 +65,28 @@ export default function UserProfile() {
                 flexGrow: 1,
                 bgcolor: "background.paper",
                 display: "flex",
-                minHeight:800,
+                minHeight: 800,
               }}
             >
               <Tabs
                 orientation="vertical"
                 variant="fullWidth"
-                value={activeTab}
+                value={id ? id : activeTab}
                 onChange={handleTabChange}
                 aria-label="Vertical tabs example"
-                sx={{ borderRight: 1, borderColor: "divider" }}
+                sx={{ borderRight: 1, borderColor: "divider",alignItems: "end"}}
               >
                 {profileSidebar.map((item, index) => (
-                  <Tab label={item.title} key={index} />
+                  <Tab label={item.title} key={item.id}
+                    onClick={() => navigate(`/user/profile/${item.url}`)}
+                  />
                 ))}
               </Tabs>
-              {/* <TabPanel value={value} index={0}> */}
-              {profileSidebar[activeTab].component}
-              {/* </TabPanel> */}
+              {profileSidebar[id ? id : activeTab].component}
             </Box>
           </Grid>
         </Grid>
       </Box>
-    </>
+    </Container>
   );
 }

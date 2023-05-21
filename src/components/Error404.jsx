@@ -14,7 +14,7 @@ export default function Error404() {
           minHeight: "100vh",
         }}
       >
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <Grid container spacing={2}>
             <Grid xs={6}>
               <Typography variant="h1">404</Typography>

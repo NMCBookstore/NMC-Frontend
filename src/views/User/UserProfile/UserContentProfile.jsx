@@ -23,20 +23,9 @@ export default function UserContentProfile({ data }) {
 
   const [errors, setErrors] = useState(user);
 
-  // console.log("this is user info", userInfo);
-
   useEffect(() => {
     userInfo;
   }, []);
-  // const [values, setValues] = useState({
-  //   username: "",
-  //   full_name: "",
-  //   email: "",
-  //   image: "",
-  //   age: "",
-  //   sex: "",
-  //   phone_number: "",
-  // },user);
 
   const dispatch = useDispatch();
 
@@ -89,7 +78,6 @@ export default function UserContentProfile({ data }) {
       }
 
       const v = await updateUser(formData);
-      // console.log("dispatch one",v.data);
       if (v.error && v.error.status === 500) {
         toast.error("Username existed");
       } else {
@@ -101,17 +89,6 @@ export default function UserContentProfile({ data }) {
       for (let [key, value] of formData.entries()) {
         console.log(key, value);
       }
-
-      // try {
-      //   const newUp = await updateUser({
-      //     ...userInfo,
-      //     age: parseInt(userInfo.age),
-      //   });
-      //   dispatch(setCredentials({ user: newUp.data }));
-      //   toast.success("Profile updated");
-      // } catch {
-      //   toast.error("Can't update your profile");
-      // }
     }
   };
 
@@ -125,129 +102,117 @@ export default function UserContentProfile({ data }) {
   return (
     info && (
       <Container>
-        <Box
+        <Stack
+          spacing={2}
           sx={{
+            width: "60%",
             display: "flex",
+            flexWrap: "wrap",
             justifyContent: "center",
           }}
         >
-          <Stack
-            spacing={2}
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            disabled
+            label="User Name"
+            name="username"
+            value={user?.username}
+          />
+
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            label="Full Name"
+            name="full_name"
+            defaultValue={user?.full_name}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, full_name: e.target.value })
+            }
+          />
+
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            label="Email"
+            name="email"
+            defaultValue={user?.email}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, email: e.target.value })
+            }
+          />
+
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            label="Phone Number"
+            name="phone_number"
+            defaultValue={user?.phone_number}
+            onChange={(e) =>
+              setUserInfo({ ...userInfo, phone_number: e.target.value })
+            }
+          />
+
+          <TextField
+            InputLabelProps={{ shrink: true }}
+            label="Age"
+            name="age"
+            type="number"
+            defaultValue={user?.age}
+            onChange={(e) => setUserInfo({ ...userInfo, age: e.target.value })}
+          />
+
+          <Avatar
+            sx={{ width: "200px", height: "200px" }}
+            src={avatar?.preview ? avatar.preview : user?.image}
+          />
+          <Button
+            variant="contained"
+            component="label"
             sx={{
-              width: "60%",
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
+              width: "15%",
+              height: "5%",
+              backgroundColor: "#3498db",
+              "&:hover": {
+                backgroundColor: "#27b7b7",
+              },
             }}
           >
-            <TextField
-              InputLabelProps={{ shrink: true }}
-              disabled
-              label="User Name"
-              name="username"
-              value={user?.username}
+            <input
+              hidden
+              // accept="image/*"
+              type="file"
+              onChange={handlePreviewAvatar}
             />
+            <PhotoCamera />
+          </Button>
 
-            <TextField
-              InputLabelProps={{ shrink: true }}
-              label="Full Name"
-              name="full_name"
-              defaultValue={user?.full_name}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, full_name: e.target.value })
-              }
-            />
-
-            <TextField
-              InputLabelProps={{ shrink: true }}
-              label="Email"
-              name="email"
-              defaultValue={user?.email}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, email: e.target.value })
-              }
-            />
-
-            <TextField
-              InputLabelProps={{ shrink: true }}
-              label="Phone Number"
-              name="phone_number"
-              defaultValue={user?.phone_number}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, phone_number: e.target.value })
-              }
-            />
-
-            <TextField
-              InputLabelProps={{ shrink: true }}
-              label="Age"
-              name="age"
-              type="number"
-              defaultValue={user?.age}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, age: e.target.value })
-              }
-            />
-
-            <Avatar
-              sx={{ width: "200px", height: "200px" }}
-              src={avatar?.preview ? avatar.preview : user?.image}
-            />
+          <Stack direction="row">
             <Button
-              variant="contained"
-              component="label"
+              variant="outlined"
+              disabled={isLoading}
               sx={{
-                width: "15%",
-                height: "5%",
-                backgroundColor: "#3498db",
-                "&:hover": {
-                  backgroundColor: "#27b7b7",
-                },
+                mt: 2,
+                width: "50%",
+                height: "50%",
+                marginLeft: "25%",
               }}
             >
-              <input
-                hidden
-                // accept="image/*"
-                type="file"
-                onChange={handlePreviewAvatar}
-              />
-              <PhotoCamera />
+              Cancel
             </Button>
-
-            <Stack direction="row">
-              <Button
-                variant="outlined"
-                disabled={isLoading}
-                sx={{
-                  mt: 2,
-                  width: "50%",
-                  height: "50%",
-                  marginLeft: "25%",
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                variant="contained"
-                onClick={handleUpdateInfo}
-                disabled={isLoading}
-                sx={{
-                  mt: 2,
-                  width: "50%",
-                  height: "50%",
-                  marginLeft: "25%",
-                  backgroundColor: "#DB4444",
-                  "&:hover": {
-                    backgroundColor: "#DB4444",
-                  },
-                }}
-              >
-                Save changes
-              </Button>
-            </Stack>
+            <Button
+              type="submit"
+              variant="contained"
+              onClick={handleUpdateInfo}
+              disabled={isLoading}
+              sx={{
+                mt: 2,
+                width: "50%",
+                height: "50%",
+                marginLeft: "25%",
+                backgroundColor: "#DB4444",
+              }}
+            >
+              Save changes
+            </Button>
           </Stack>
-        </Box>
+        </Stack>
       </Container>
     )
   );

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, Divider, Stack } from "@mui/material";
 import HompageCarousel from "../HomepageCarousel/HomepageCarousel";
-import FiveHeadCategory from "../FiveHeadCategory/FiveHeadCategory";
+import HeadCategory from "../HeadCategory/HeadCategory";
 import FirstTab from "../FirstTab/FirstTab";
 import Typography from "@mui/joy/Typography";
 import { Link } from "react-router-dom";
@@ -18,7 +18,7 @@ const Home = () => {
   const classes = useStyles();
   const { data } = useGetAllProductQuery({
     page_id: 1,
-    page_size: 24,
+    page_size: 25,
   });
 
   return (
@@ -33,10 +33,10 @@ const Home = () => {
             level="h5"
             className={classes.colorTypo}
           >
-            The most five categories chosen by user
+            The most noticeable genres
           </Typography>
         </Box>
-        <FiveHeadCategory />
+        <HeadCategory />
       </Box>
       <Box marginTop={10}>
         <FirstTab />

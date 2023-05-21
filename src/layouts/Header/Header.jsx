@@ -1,11 +1,10 @@
 import { Box, Tooltip, Typography } from "@mui/material";
-import React from "react";
+import React, { useState, Fragment } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import logo from "./images/logo.png";
 import "../../theme.js";
 import { Stack } from "@mui/system";
 import SearchBar from "../SearchBar";
-import Fade from "@mui/material/Fade";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
@@ -33,6 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deepOrange } from "@mui/material/colors";
 import { useGetCartQuery } from "../../services/cartAPI";
 import { useGetWishListQuery } from "../../services/wishlistAPI";
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 
 const Header = () => {
   const classes = useStyles();
@@ -56,115 +56,10 @@ const Header = () => {
   const naviWishlist = () => navigate("/user/wishlist");
   const naviCart = () => navigate("/user/cart");
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
-  // const badge = useSelector((state) => state.bookApi.queries.userCart);
-  // console.log(badge);
-
   const handleLogout = () => {
-    console.log("log out clicked");
     dispatch(logout());
     window.location.reload();
   };
-
-  const open = Boolean(anchorEl);
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleNaviprofile = () => {
-    navigate("/user/profile");
-    // setAnchorEl(null);
-  };
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    handleMobileMenuClose();
-  };
-
-  const menuId = "primary-search-account-menu";
-  const renderMenu = (
-    <Menu
-      id="fade-menu"
-      MenuListProps={{
-        "aria-labelledby": "fade-button",
-      }}
-      anchorEl={anchorEl}
-      open={open}
-      onClick={handleClose}
-      TransitionComponent={Fade}
-      sx={{ mt: "5px" }}
-    >
-      {token
-        ? [
-            <div className={classes.profileMenuUser}>
-              <Typography variant="h6" weight="medium">
-                {hello}
-              </Typography>
-            </div>,
-            <div>
-              {/* <Link className={classes.link} to="/user/profile"> */}
-              <MenuItem onClick={handleNaviprofile}>
-                <PersonIcon />
-                My profile
-              </MenuItem>
-              {/* </Link> */}
-              {/* <Link className={classes.link}> */}
-              <MenuItem onClick={handleMenuClose}>
-                <LocalMallIcon />
-                &nbsp; My Order
-              </MenuItem>
-              {/* </Link> */}
-              {/* <Link className={classes.link}> */}
-              <MenuItem onClick={handleMenuClose}>
-                <CancelIcon />
-                &nbsp; My Cancellations
-              </MenuItem>
-              {/* </Link> */}
-
-              {/* <Link className={classes.link}> */}
-              <MenuItem onClick={handleMenuClose}>
-                <ReviewsIcon />
-                &nbsp; My Reviews
-              </MenuItem>
-              {/* </Link> */}
-
-              {/* <Link className={classes.link}> */}
-              <MenuItem onClick={handleLogout}>
-                <LogoutOutlinedIcon />
-                &nbsp; Logout
-              </MenuItem>
-              {/* </Link> */}
-            </div>,
-          ]
-        : [
-            <div>
-              <Link className={classes.link} to="/login">
-                <MenuItem onClick={handleMenuClose}>
-                  <LoginIcon />
-                  &nbsp; Login
-                </MenuItem>
-              </Link>
-              <Link className={classes.link} to="/register">
-                <MenuItem onClick={handleMenuClose}>
-                  <HowToRegIcon />
-                  &nbsp; Register
-                </MenuItem>
-              </Link>
-            </div>,
-          ]}
-    </Menu>
-  );
 
   return (
     <>
@@ -179,9 +74,13 @@ const Header = () => {
           }}
         >
           <SideBar />
-          <Link to="/" className={classes.mainLogo}>
+          <div
+            style={{ cursor: "pointer" }}
+            className={classes.mainLogo}
+            onClick={() => window.location.replace("/")}
+          >
             <img src={logo} alt="logo" height={40} />
-          </Link>
+          </div>
           <SearchBar />
           <Box
             marginRight={3}
@@ -204,32 +103,104 @@ const Header = () => {
                 </Tooltip>
               </Badge>
             </IconButton>
-            <IconButton
-              onClick={handleProfileMenuOpen}
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              sx={{
-                p: 0,
-                width: "80px",
-                height: "50px",
-              }}
-            >
-              {token ? (
-                <Tooltip title="Profile">
-                  <Avatar src={user ? userImage : bgcolor} />
-                </Tooltip>
-              ) : (
-                <Avatar sx={{ bgcolor: deepOrange[300] }} />
+
+            <PopupState key={1} variant="popover" popupId="demo-popup-menu">
+              {(popupState) => (
+                <Fragment>
+                  <IconButton
+                    sx={{
+                      p: 0,
+                      width: "80px",
+                      height: "50px",
+                    }}
+                    {...bindTrigger(popupState)}
+                  >
+                    {token ? (
+                      <Tooltip title="Profile">
+                        <Avatar src={user ? userImage : bgcolor} />
+                      </Tooltip>
+                    ) : (
+                      <Avatar sx={{ bgcolor: deepOrange[300] }} />
+                    )}
+                  </IconButton>
+                  <Menu {...bindMenu(popupState)}>
+                    {token
+                      ?
+                      <div>
+                        <div key={0} className={classes.profileMenuUser}>
+                          <Typography variant="h6" weight="medium">
+                            {hello}
+                          </Typography>
+                        </div>
+                        <MenuItem
+                          onClick={() => {
+                            popupState.close()
+                            navigate("/user/profile")
+                          }}>
+                          <PersonIcon />
+                          My profile
+                        </MenuItem>
+
+                        <MenuItem
+                          onClick={() => {
+                            popupState.close()
+                            navigate("/user/profile/my-order")
+                          }}>
+                          <LocalMallIcon />
+                          &nbsp; My Order
+                        </MenuItem>
+
+                        <MenuItem
+                          onClick={() => {
+                            popupState.close()
+                            navigate("/user/profile/my-order/cancellations")
+                          }}>
+                          <CancelIcon />
+                          &nbsp; My Cancellations
+                        </MenuItem>
+                        <MenuItem
+                        onClick={() => {
+                          popupState.close()
+                          navigate("/user/profile/my-reviews")
+                        }}>
+                          <ReviewsIcon />
+                          &nbsp; My Reviews
+                        </MenuItem>
+
+                        <MenuItem onClick={handleLogout}>
+                          <LogoutOutlinedIcon />
+                          &nbsp; Logout
+                        </MenuItem>
+                      </div>
+                      :
+                      <div>
+                        <Link className={classes.link} to="/login">
+                          <MenuItem onClick={popupState.close}>
+                            <LoginIcon />
+                            &nbsp; Login
+                          </MenuItem>
+                        </Link>
+                        <Link className={classes.link} to="/register">
+                          <MenuItem onClick={popupState.close}>
+                            <HowToRegIcon />
+                            &nbsp; Register
+                          </MenuItem>
+                        </Link>
+                      </div>
+                    }
+                    {/* <MenuItem onClick={()=>{
+                    popupState.close()
+                    navigate("/user/profile")
+                  }}>Profile</MenuItem>
+                  <MenuItem onClick={popupState.close}>My account</MenuItem>
+                  <MenuItem onClick={popupState.close}>Logout</MenuItem> */}
+                  </Menu>
+                </Fragment>
               )}
-            </IconButton>
+            </PopupState>
           </Box>
         </Stack>
       </Stack>
-
-      {renderMenu}
     </>
   );
 };

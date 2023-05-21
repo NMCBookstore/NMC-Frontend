@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
-import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Slider from "@mui/material/Slider";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Checkbox from "@mui/material/Checkbox";
-import { useGetSearchQuery } from "../../../services/searchAPI";
-import { Link } from "react-router-dom";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
 import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
 import { Button, Typography } from "@mui/material";
@@ -32,10 +24,6 @@ const stars = [
 ];
 
 export default function Filter({
-  // id,
-  // genres,
-  // setId,
-  // subGenres,
   searchInfo,
   searchParams,
   setSearchParams,

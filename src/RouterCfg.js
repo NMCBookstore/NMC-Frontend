@@ -23,6 +23,13 @@ const UserWishlist = lazy(() => import("./views/User/UserWishlist"));
 const ForgotPassword = lazy(() => import("./views/User/ForgotPassword"));
 const ResetPassword = lazy(() => import("./views/User/ResetPassword"));
 const Welcome = lazy(() => import("./features/auth/Welcome"));
+const UserOrder = lazy(() => import("./views/User/UserProfile/UserOrder"));
+const UserContentProfile = lazy(() =>
+  import("./views/User/UserProfile/UserContentProfile")
+);
+const UserContentChangePassword = lazy(() =>
+  import("./views/User/UserProfile/UserContentChangePassword")
+);
 const Error404 = lazy(() => import("./components/Error404"));
 
 /**** Admin Routes *****/
@@ -55,7 +62,6 @@ const RouterCfg = [
       { path: "/", element: <Home /> },
       { path: "product/:id", element: <ProductDetails /> },
       { path: "search-filter", element: <SearchFilter /> },
-      // { path: "search-filter?page_id&page_size&text&genres&sub_genres&min_price&max_price&rating", element: <SearchFilter /> },
       { path: "reset_password", element: <ResetPassword /> },
       { path: "forgot_password", element: <ForgotPassword /> },
       ErrorNotFound404,
@@ -72,7 +78,52 @@ const RouterCfg = [
         children: [
           { path: "welcome", element: <Welcome /> },
           { path: "cart", element: <UserCart /> },
-          { path: "profile", element: <UserProfile /> },
+          {
+            path: "profile",
+            children: [
+              {
+                path: "",
+                element: <UserProfile id={0} />,
+              },
+              {
+                path: "change-password",
+                element: <UserProfile id={1} />,
+              },
+              {
+                path: "address",
+                element: <UserProfile id={2} />,
+              },
+              {
+                path: "my-order",
+                children: [
+                  {
+                    path: "",
+                    element: <UserProfile id={3} idOrder={0} />,
+                  },
+                  {
+                    path: "ordered",
+                    element: <UserProfile id={3} idOrder={1} />,
+                  },
+                  {
+                    path: "shipping",
+                    element: <UserProfile id={3} idOrder={2} />,
+                  },
+                  {
+                    path: "completed",
+                    element: <UserProfile id={3} idOrder={3} />,
+                  },
+                  {
+                    path: "cancellations",
+                    element: <UserProfile id={3} idOrder={4} />,
+                  },
+                ],
+              },
+              {
+                path: "my-reviews",
+                element: <UserProfile id={4} />,
+              },
+            ],
+          },
           { path: "wishlist", element: <UserWishlist /> },
           { path: "checkout", element: <UserCheckout /> },
           ErrorNotFound404,

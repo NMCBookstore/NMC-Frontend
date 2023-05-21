@@ -12,10 +12,10 @@ export default function UserCart() {
   });
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1, width: "100%" }}>
       <Grid container my={2} spacing={2}>
         {/* User Side bar  */}
-        <Grid item container spacing={2} xs={12} sm={12}>
+        <Grid item spacing={2} xs={12} sm={12}>
           <ListProductCart title="Cart" data={data} isFetching={isFetching} />
         </Grid>
 

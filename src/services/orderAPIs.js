@@ -11,11 +11,19 @@ const order = book.injectEndpoints({
         };
       },
     }),
-    getMyOrder: builder.query({
-      query: ({ page_id, page_size }) => {
+    getAllOrder: builder.query({
+      query: () => {
         return {
           method: "GET",
-          url: `users/orders?page_id=${page_id}&page_size=${page_size}`,
+          url: `users/orders`,
+        };
+      },
+    }),
+    getOrdersPaid: builder.query({
+      query: () => {
+        return {
+          method: "GET",
+          url: `users/orders/paid`,
         };
       },
     }),
@@ -36,4 +44,6 @@ export const {
   useCreateOrderMutation,
   useGetMyOrderQuery,
   useCreatePaymentMutation,
+  useGetAllOrderQuery,
+  useGetOrdersPaidQuery,
 } = order;
