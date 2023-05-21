@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 export default function InfoCheckout() {
   const user = useSelector((state) => state.auth.login.user);
 
-  console.log(user);
+  // console.log(user);
 
   const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
   const payments = [

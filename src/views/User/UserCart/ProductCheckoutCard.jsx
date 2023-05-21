@@ -8,6 +8,8 @@ import { Divider, Stack } from "@mui/material";
 import { useCreateOrderMutation } from "../../../services/orderAPIs";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectCurrentProductArr } from "../../../features/cart/cartSlice";
 
 const currencyExchange = (num) => {
   return parseFloat(num).toLocaleString("vi-VN", {
@@ -30,23 +32,24 @@ const currencyExchange = (num) => {
 export default function ProductCheckoutCard({ data }) {
   const navigate = useNavigate();
 
-  let arrID = [];
+  const totalItemArr = useSelector(selectCurrentProductArr);
 
-  const [createCart] = useCreateOrderMutation(arrID);
-
-  const hanldeCreateOrder = (e) => {
+  const handleNaviCheckout = (e) => {
     e.preventDefault();
-    for (let i = 0; i < data?.length; i++) {
-      arrID.push(data[i]?.cart_id);
-    }
-    // createCart(arrID);
-    // navigate('/user/checkout')
+    navigate("/user/checkout");
   };
 
-  let shipping = 21000;
+  let shipping = 0;
+  if (totalItemArr.length > 5) {
+    shipping = 0;
+  } else {
+    shipping = 30000;
+  }
+
+  //set total price of selected product
   let total = 0;
-  for (let i = 0; i < data?.length; i++) {
-    total += parseInt(data[i]?.amount * data[i]?.price);
+  for (let i = 0; i < totalItemArr?.length; i++) {
+    total += parseInt(totalItemArr[i]?.amount * totalItemArr[i]?.price);
   }
   //   console.log(total);
   return (
@@ -89,21 +92,38 @@ export default function ProductCheckoutCard({ data }) {
         </Stack>
       </CardContent>
       <CardActions>
-        <Button
-          type="submit"
-          variant="contained"
-          sx={{
-            width: "100%",
-            mt: 2,
-            backgroundColor: "#DB4444",
-            "&:hover": {
+        {totalItemArr.length ? (
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              width: "100%",
+              mt: 2,
               backgroundColor: "#DB4444",
-            },
-          }}
-          onClick={hanldeCreateOrder}
-        >
-          Proceed to checkout
-        </Button>
+              "&:hover": {
+                backgroundColor: "#DB4444",
+              },
+            }}
+            onClick={handleNaviCheckout}
+          >
+            Proceed to checkout
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            disabled
+            sx={{
+              width: "100%",
+              mt: 2,
+              backgroundColor: "#DB4444",
+              "&:hover": {
+                backgroundColor: "#DB4444",
+              },
+            }}
+          >
+            Please set your order
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

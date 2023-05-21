@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Stack, TextField } from "@mui/material";
+import { Avatar, Box, Container, Stack, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useUpdateUserMutation } from "../../../services/userAPI";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import {
   validateRegisterEmail,
   validFullName,
 } from "../../../utils/helper";
+import { PhotoCamera } from "@mui/icons-material";
 
 export default function UserContentProfile({ data }) {
   const user = useSelector((state) => state.auth.login.user);
@@ -154,21 +155,34 @@ export default function UserContentProfile({ data }) {
             name="age"
             type="number"
             defaultValue={user?.age}
-            onChange={(e) =>
-              setUserInfo({ ...userInfo, age: e.target.value })
-            }
+            onChange={(e) => setUserInfo({ ...userInfo, age: e.target.value })}
           />
 
-          <img
-            style={{ width: "200px", height: "200px" }}
+          <Avatar
+            sx={{ width: "200px", height: "200px" }}
             src={avatar?.preview ? avatar.preview : user?.image}
           />
-          <input
-            // hidden
-            // accept="image/*"
-            type="file"
-            onChange={handlePreviewAvatar}
-          />
+          <Button
+            variant="contained"
+            component="label"
+            sx={{
+              width: "15%",
+              height: "5%",
+              backgroundColor: "#3498db",
+              "&:hover": {
+                backgroundColor: "#27b7b7",
+              },
+            }}
+          >
+            <input
+              hidden
+              // accept="image/*"
+              type="file"
+              onChange={handlePreviewAvatar}
+            />
+            <PhotoCamera />
+          </Button>
+
           <Stack direction="row">
             <Button
               variant="outlined"
@@ -193,9 +207,6 @@ export default function UserContentProfile({ data }) {
                 height: "50%",
                 marginLeft: "25%",
                 backgroundColor: "#DB4444",
-                "&:hover": {
-                  backgroundColor: "#DB4444",
-                },
               }}
             >
               Save changes

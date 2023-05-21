@@ -101,7 +101,7 @@ export default function Comment({ id }) {
           <Paper key={index} style={{ padding: "40px 20px", width: "70rem" }}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
-                <Avatar alt="Remy Sharp" src={imgLink} />
+                <Avatar alt="Remy Sharp" src={token ? userImg : imgLink} />
               </Grid>
               <Grid justifyContent="left" item xs zeroMinWidth>
                 <h4 style={{ margin: 0, textAlign: "left" }}>

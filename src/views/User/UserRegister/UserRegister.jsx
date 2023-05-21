@@ -17,11 +17,6 @@ import { useSignupMutation } from "../../../services/authAPIs";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  signupStart,
-  signupSuccess,
-  signupFailed,
-} from "../../../features/auth/authSlice";
-import {
   validateRegisterUsername,
   validatePasswordLogin,
   validAge,

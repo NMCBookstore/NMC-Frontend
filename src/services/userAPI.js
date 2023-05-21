@@ -13,7 +13,7 @@ const user = book.injectEndpoints({
         // console.log(info)
         return {
           method: "PUT",
-          url: `users`,
+          url: `users/`,
           body: formData,
         };
       },

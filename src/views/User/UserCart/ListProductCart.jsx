@@ -26,6 +26,20 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import NoProductInCart from "./NoProductInCart";
 import DialogConfirmDeleteAll from "./DialogConfirmDeleteAll";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearCheckOutInfoArr,
+  clearCartIdArr,
+  setCartIdArr,
+  setCheckOutInfoArr,
+  selectCurrentCartOrder,
+  selectCurrentProductArr,
+} from "../../../features/cart/cartSlice";
+import PaymentIcon from "@mui/icons-material/Payment";
+import { book } from "../../../services/baseAPI";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import CreditScoreIcon from "@mui/icons-material/CreditScore";
+import { toast } from "react-hot-toast";
 
 const currencyExchange = (num) => {
   return parseFloat(num).toLocaleString("vi-VN", {
@@ -75,7 +89,14 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const { numSelected, title, handleDelete, handleOpenDeleteDialog } = props;
+  const {
+    numSelected,
+    title,
+    handleDelete,
+    handleOpenDeleteDialog,
+    handleStore,
+    handleResetInfo,
+  } = props;
 
   return (
     <Toolbar
@@ -113,10 +134,22 @@ function EnhancedTableToolbar(props) {
       )}
 
       {numSelected.length > 0 ? (
-        <DialogConfirmDeleteAll
-          open={handleOpenDeleteDialog}
-          handleDelete={handleDelete}
-        />
+        <>
+          <DialogConfirmDeleteAll
+            open={handleOpenDeleteDialog}
+            handleDelete={handleDelete}
+          />
+          <Tooltip title="Set order">
+            <IconButton onClick={handleStore}>
+              <PaymentIcon sx={{ color: "#5AB24B" }} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Reset order">
+            <IconButton onClick={handleResetInfo}>
+              <RestartAltIcon sx={{ color: "#11BBBB" }} />
+            </IconButton>
+          </Tooltip>
+        </>
       ) : null}
     </Toolbar>
   );
@@ -135,6 +168,9 @@ export default function ListProductCart({ title, data, isFetching }) {
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
   const [updateCart] = useUpdateCartMutation()
 
+  const [bookInfo, setBookInfo] = useState([]);
+
+  const dispatch = useDispatch();
   //set amount of product
   function incrementCount(id, amount) {
 
@@ -180,9 +216,30 @@ export default function ListProductCart({ title, data, isFetching }) {
     setDatas(data);
   }, [isFetching]);
 
+  //store cart ID to redux
+  const handleStore = () => {
+    dispatch(setCartIdArr(selected));
+    dispatch(setCheckOutInfoArr(bookInfo));
+    console.log(bookInfo, selected);
+  };
+
+  //reset order info
+  const cartIdsArr = useSelector(selectCurrentCartOrder);
+  const orderInfo = useSelector(selectCurrentProductArr);
+
+  console.log(orderInfo);
+
+  const handleResetInfo = () => {
+    dispatch(clearCartIdArr(cartIdsArr));
+    dispatch(clearCheckOutInfoArr(orderInfo));
+    console.log("this clicked");
+    toast.success("You have reset your order");
+  };
+
   const totalItemInCart = data?.length;
 
   const isSelected = (cart_id) => selected.indexOf(cart_id) !== -1;
+
   return totalItemInCart ? (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -190,20 +247,34 @@ export default function ListProductCart({ title, data, isFetching }) {
           handleDelete={handleDeleteListItem}
           handleOpenDeleteDialog={handleOpenDeleteDialog}
           numSelected={selected}
+          handleStore={handleStore}
           title={title}
+          handleResetInfo={handleResetInfo}
         />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <TableHead>
               <TableRow>
+                {/* check box all */}
                 <TableCell>
                   <Checkbox
                     checked={datas?.length === selected?.length}
                     onClick={(e) => {
                       if (e.target.checked) {
                         setSelected(data.map((item) => item.cart_id));
+                        setBookInfo(
+                          data.map((book) => ({
+                            cart_id: book.cart_id,
+                            book_id: book.book_id,
+                            book_name: book.book_name,
+                            image: book.image,
+                            price: book.price,
+                            amount: book.amount,
+                          }))
+                        );
                       } else {
                         setSelected([]);
+                        setBookInfo([]);
                       }
                     }}
                   />
@@ -221,15 +292,32 @@ export default function ListProductCart({ title, data, isFetching }) {
                   key={item}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
+                  {/* check box */}
                   <TableCell>
                     <Checkbox
                       checked={selected.some((it) => it === item.cart_id)}
                       onClick={(e) => {
                         if (e.target.checked) {
                           setSelected((prev) => [...prev, item.cart_id]);
+                          setBookInfo((prevBookInfo) => [
+                            ...prevBookInfo,
+                            {
+                              cart_id: item.cart_id,
+                              book_id: item.book_id,
+                              book_name: item.book_name,
+                              image: item.image,
+                              price: item.price,
+                              amount: item.amount,
+                            },
+                          ]);
                         } else {
                           setSelected(
                             selected.filter((it) => it !== item.cart_id)
+                          );
+                          setBookInfo((prevBookInfo) =>
+                            prevBookInfo.filter(
+                              (book) => book.cart_id !== item.cart_id
+                            )
                           );
                         }
                       }}
@@ -240,8 +328,8 @@ export default function ListProductCart({ title, data, isFetching }) {
                   <TableCell component="th" scope="row">
                     <Stack direction="row" alignItems="center" margin={1}>
                       <img
-                        src={item.image}
-                        alt={item.book_name}
+                        src={item?.image}
+                        alt={item?.book_name}
                         style={{ width: "15%", height: "30%" }}
                       />
                       <Typography
@@ -253,17 +341,14 @@ export default function ListProductCart({ title, data, isFetching }) {
                           whiteSpace: "nowrap",
                         }}
                       >
-                        {item.book_name}
+                        {item?.book_name}
                       </Typography>
                     </Stack>
                   </TableCell>
 
                   {/* price */}
                   <TableCell align="center">
-                    {parseFloat(item?.price).toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
+                    {currencyExchange(item?.price)}
                   </TableCell>
 
                   {/* amount */}
@@ -284,13 +369,7 @@ export default function ListProductCart({ title, data, isFetching }) {
 
                   {/* sub total */}
                   <TableCell align="center">
-                    {parseFloat(item?.price * item?.amount).toLocaleString(
-                      "vi-VN",
-                      {
-                        style: "currency",
-                        currency: "VND",
-                      }
-                    )}
+                    {currencyExchange(item?.price * item?.amount)}
                   </TableCell>
 
                   {/* delete icon */}
@@ -302,9 +381,24 @@ export default function ListProductCart({ title, data, isFetching }) {
                             e.preventDefault && handleClickOpen(item?.cart_id)
                           }
                         >
-                          <DeleteIcon />
+                          <DeleteIcon sx={{ color: "#E35454" }} />
                         </IconButton>
                       </Tooltip>
+                      {orderInfo.some(
+                        (orderItem) => orderItem.cart_id === item?.cart_id
+                      ) ? (
+                        <Tooltip title="In your order">
+                          <IconButton>
+                            <CreditScoreIcon sx={{ color: "#4cd137" }} />
+                          </IconButton>
+                        </Tooltip>
+                      ) : (
+                        <Tooltip title="Not in order">
+                          <IconButton>
+                            <CreditScoreIcon/>
+                          </IconButton>
+                        </Tooltip>
+                      )}
                     </div>
                   </TableCell>
                 </TableRow>

@@ -27,12 +27,23 @@ const order = book.injectEndpoints({
         };
       },
     }),
+    createPayment: builder.mutation({
+      query: (form) => {
+        return {
+          method: "POST",
+          url: `users/payments`,
+          body: form,
+        };
+      },
+    }),
   }),
   overrideExisting: false,
 });
 
 export const {
   useCreateOrderMutation,
+  useGetMyOrderQuery,
+  useCreatePaymentMutation,
   useGetAllOrderQuery,
   useGetOrdersPaidQuery,
 } = order;
