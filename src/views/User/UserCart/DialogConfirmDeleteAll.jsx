@@ -32,7 +32,7 @@ export default function DialogConfirmDeleteAll({ handleDelete }) {
     <>
       <Tooltip title="Delete All">
         <IconButton onClick={handleClickOpen}>
-          <Delete />
+          <Delete sx={{ color: "#eb2f06" }} />
         </IconButton>
       </Tooltip>
       <Dialog

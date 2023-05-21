@@ -15,17 +15,6 @@ const authSlice = createSlice({
       error: false,
       // isAuthenticated: localStorage.getItem("access_token") ? true : false,
     },
-    signup: {
-      username: null,
-      password: null,
-      full_Name: null,
-      email: null,
-      image: null,
-      sex: null,
-      age: null,
-      phone_number: null,
-      isFetching: false,
-    },
   },
   reducers: {
     loginStart: (state) => {
@@ -56,23 +45,7 @@ const authSlice = createSlice({
       state.login.isFetching = false;
     },
 
-    signupStart: (state) => {
-      state.signup.isFetching = true;
-    },
-    signupSuccess: (state, action) => {
-      state.signup.username = action.payload.username;
-      state.signup.password = action.payload.password;
-      state.signup.full_Name = action.payload.full_Name;
-      state.signup.email = action.payload.email;
-      state.signup.image = action.payload.image;
-      state.signup.sex = action.payload.sex;
-      state.signup.age = action.payload.age;
-      state.signup.phone_number = action.payload.phone_number;
-      state.signup.isFetching = false;
-    },
-    signupFailed: (state) => {
-      state.signup.isFetching = false;
-    },
+
 
     logout: (state, action) => {
       state.isAuthenticated = false;
@@ -91,9 +64,6 @@ export const {
   loginStart,
   logout,
   refresh,
-  signupFailed,
-  signupStart,
-  signupSuccess,
 } = authSlice.actions;
 
 export default authSlice.reducer;

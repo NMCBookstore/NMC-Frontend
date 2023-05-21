@@ -16,7 +16,7 @@ import Grid from "@mui/material/Grid";
 
 const Home = () => {
   const classes = useStyles();
-  const { data: allProduct } = useGetAllProductQuery({
+  const { data } = useGetAllProductQuery({
     page_id: 1,
     page_size: 24,
   });
@@ -74,12 +74,18 @@ const Home = () => {
             item
             xs={12}
             sm={12}
-            sx={{ flexDirection: { xs: "column", sm: "row" }, marginRight:"-40px" }}
+            sx={{
+              flexDirection: { xs: "column", sm: "row" },
+              marginRight: "-40px",
+            }}
           >
-            <BookList allProduct={allProduct} />
+            <BookList data={data} />
           </Grid>
 
-          <Link to="/search-filter" style={{ textDecoration: "none", marginTop: 8 }}>
+          <Link
+            to="/search-filter"
+            style={{ textDecoration: "none", marginTop: 8 }}
+          >
             <Button
               variant="contained"
               sx={{

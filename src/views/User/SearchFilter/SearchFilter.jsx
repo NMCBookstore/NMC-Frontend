@@ -7,41 +7,75 @@ import BookList from "./BookList";
 import { useGetSearchQuery } from "../../../services/searchAPI";
 import { useSearchParams } from "react-router-dom";
 import { Typography } from "@mui/material";
+import { useGetAllProductQuery } from "../../../services/productAPIs";
 
 const SearchFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   let searchInfo = {
-    page_id: !isNaN(parseInt(searchParams.get("page_id"))) ? parseInt(searchParams.get("page_id")) : 1,
-    page_size: !isNaN(parseInt(searchParams.get("page_size"))) ? parseInt(searchParams.get("page_size")) : 24,
-    min_price: !isNaN(parseInt(searchParams.get("min_price"))) ? parseInt(searchParams.get("min_price")) : 0,
-    max_price: !isNaN(parseInt(searchParams.get("max_price"))) ? parseInt(searchParams.get("max_price")) : 100000000,
-  }
+    page_id: !isNaN(parseInt(searchParams.get("page_id")))
+      ? parseInt(searchParams.get("page_id"))
+      : 1,
+    page_size: !isNaN(parseInt(searchParams.get("page_size")))
+      ? parseInt(searchParams.get("page_size"))
+      : 24,
+    min_price: !isNaN(parseInt(searchParams.get("min_price")))
+      ? parseInt(searchParams.get("min_price"))
+      : 0,
+    max_price: !isNaN(parseInt(searchParams.get("max_price")))
+      ? parseInt(searchParams.get("max_price"))
+      : 100000000,
+  };
 
   if (searchParams.get("text") !== null) {
-    searchInfo["text"] = searchParams.get("text")
+    searchInfo["text"] = searchParams.get("text");
   }
 
   if (searchParams.get("genres_id") !== null) {
-    searchInfo["genres_id"] = parseFloat(searchParams.get("genres_id"))
+    searchInfo["genres_id"] = parseFloat(searchParams.get("genres_id"));
   }
 
   if (searchParams.get("subgenres_id") !== null) {
-    searchInfo["subgenres_id"] = parseFloat(searchParams.get("subgenres_id"))
+    searchInfo["subgenres_id"] = parseFloat(searchParams.get("subgenres_id"));
   }
 
   if (searchParams.get("rating") !== null) {
-    searchInfo["rating"] = parseInt(searchParams.get("rating"))
+    searchInfo["rating"] = parseInt(searchParams.get("rating"));
   }
 
-  console.log(searchInfo)
+  // console.log(searchInfo);
+  const [pagination, setPagination] = useState({ pageNum: 1, pageSize: 24 });
 
-  const { data: allProduct } = useGetSearchQuery(searchInfo, "searchBook", { refetchOnMountOrArgChange: true });
+  //API Search
+  const { data: allProduct } = useGetSearchQuery(searchInfo, "searchBook", {
+    refetchOnMountOrArgChange: true,
+    page_id: pagination.pageNum,
+    page_size: pagination.pageSize,
+  });
+
+  console.log("this is search", allProduct);
+
+  // Api All product
+  const { data: allProductForPagination } = useGetAllProductQuery({
+    page_id: pagination.pageNum,
+    page_size: pagination.pageSize,
+    refetchOnMountOrArgChange: true,
+  });
+
+  console.log("this is all product", allProductForPagination);
+
+  const handlePagination = (pageNum, pageSize) => {
+    setPagination({ pageNum, pageSize });
+    console.log(pageNum, pageSize);
+  };
 
   const handlePageChange = (id, size) => {
     searchInfo["page_id"] = id;
     searchInfo["page_size"] = size;
+    setPagination(id, size);
   };
+
+  const [isSearching, setIsSearching] = useState(false);
 
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
@@ -52,6 +86,8 @@ const SearchFilter = () => {
             searchInfo={searchInfo}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
+            isSearching={isSearching}
+            setIsSearching={setIsSearching}
           />
         </Grid>
 
@@ -63,12 +99,20 @@ const SearchFilter = () => {
           sm={9}
           sx={{ flexDirection: { xs: "column", sm: "row" } }}
         >
-          <Box
-            sx={{ width: "100%", display: "flex", justifyContent: "start" }}
-          >
-            {searchParams.get("text") && <Typography variant="h6">Search result for: {searchParams.get("text")}</Typography>}
+          <Box sx={{ width: "100%", display: "flex", justifyContent: "start" }}>
+            {searchParams.get("text") && (
+              <Typography variant="h6">
+                Search result for: {searchParams.get("text")}
+              </Typography>
+            )}
           </Box>
-          <BookList allProduct={allProduct} />
+          {isSearching ? (
+            // Search
+            <BookList data={allProduct} />
+          ) : (
+            //All book
+            <BookList data={allProductForPagination} />
+          )}
         </Grid>
         <Grid
           container
@@ -77,14 +121,27 @@ const SearchFilter = () => {
           sm={12}
           sx={{ flexDirection: { xs: "column", sm: "row" } }}
         >
-          <Box
-            sx={{ width: "100%", display: "flex", justifyContent: "center" }}
-          >
-            <PaginationBottom
-              allProduct={allProduct}
-              handlePageChange={handlePageChange}
-            />
-          </Box>
+          {isSearching ? (
+            <Box
+              sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+            >
+              <PaginationBottom
+                //searching
+                allProduct={allProduct}
+                handlePageChange={handlePageChange}
+              />
+            </Box>
+          ) : (
+            <Box
+              sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+            >
+              <PaginationBottom
+                //all product
+                allProduct={allProductForPagination}
+                handlePageChange={handlePagination}
+              />
+            </Box>
+          )}
         </Grid>
       </Grid>
     </Box>

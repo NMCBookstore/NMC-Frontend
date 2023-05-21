@@ -39,6 +39,7 @@ export default function Filter({
   searchInfo,
   searchParams,
   setSearchParams,
+  setIsSearching,
 }) {
   const [value2, setValue2] = useState([1000, 10000000]);
   const [id, setId] = useState(0);
@@ -92,21 +93,17 @@ export default function Filter({
         renderInput={(params) => <TextField {...params} label="SubGenres" />}
       />
 
-      <Typography variant="h6">
-        Rating Filter:
-      </Typography>
+      <Typography variant="h6">Rating Filter:</Typography>
       <Rating
         name="rating"
         defaultValue={1}
         onChange={(e) => {
-          searchInfo["rating"] = e.target.value
+          searchInfo["rating"] = e.target.value;
         }}
       />
 
       <Box my={2} sx={{ width: "90%", display: "flex", flexWrap: "wrap" }}>
-        <Typography variant="h6">
-          Price Filter:
-        </Typography>
+        <Typography variant="h6">Price Filter:</Typography>
         <Slider
           sx={{ color: "#000" }}
           getAriaLabel={() => "Temperature"}
@@ -128,21 +125,22 @@ export default function Filter({
       </Box>
       {/* <Link to={`/search-filter?page_id=${page_id}&page_size=${page_size}${text ? '&text=' + text : ''}&min_price=1000&max_price=10000000&rating=0`} style={{ textDecoration: "none", marginTop: 8 }}> */}
       {/* <Link style={{ textDecoration: "none", marginTop: 8 }}> */}
-        <Button
-          onClick={() => {
-            console.log(searchInfo)
-            setSearchParams(searchInfo)
-          }}
-          variant="contained"
-          sx={{
-            backgroundColor: "#2b7de9",
-            "&:hover": {
-              background: "#6aa4ef",
-            },
-          }}
-        >
-          Apply Filter
-        </Button>
+      <Button
+        onClick={() => {
+          console.log(searchInfo);
+          setSearchParams(searchInfo);
+          setIsSearching(true);
+        }}
+        variant="contained"
+        sx={{
+          backgroundColor: "#2b7de9",
+          "&:hover": {
+            background: "#6aa4ef",
+          },
+        }}
+      >
+        Apply Filter
+      </Button>
       {/* </Link> */}
     </Stack>
   );

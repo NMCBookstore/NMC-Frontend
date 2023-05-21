@@ -2,10 +2,10 @@ import React from "react";
 import Grid from "@mui/material/Grid";
 import ProductCard from "../../../components/ProductCard/ProductCard";
 
-export default function BookList({ allProduct }) {
+export default function BookList({ data }) {
   return (
     <>
-      {allProduct?.books?.map((productItem) => (
+      {data?.books?.map((productItem) => (
         <Grid
           key={productItem.id}
           item

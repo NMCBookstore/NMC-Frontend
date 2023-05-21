@@ -216,6 +216,7 @@ export default function ListWishList({ title, data, isFetching }) {
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
             <TableHead>
               <TableRow>
+                {/* check box all */}
                 <TableCell>
                   <Checkbox
                     checked={datas?.length === selected?.length}
@@ -239,6 +240,7 @@ export default function ListWishList({ title, data, isFetching }) {
                   key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
+                  {/* check box */}
                   <TableCell>
                     <Checkbox
                       checked={selected.some((it) => it === item.wishlist_id)}
@@ -253,6 +255,8 @@ export default function ListWishList({ title, data, isFetching }) {
                       }}
                     />
                   </TableCell>
+
+                  {/* name and image */}
                   <TableCell component="th" scope="row">
                     <Stack direction="row" alignItems="center" margin={1}>
                       <img
@@ -273,12 +277,16 @@ export default function ListWishList({ title, data, isFetching }) {
                       </Typography>
                     </Stack>
                   </TableCell>
+
+                  {/* price */}
                   <TableCell align="center">
                     {parseFloat(item?.book.price).toLocaleString("vi-VN", {
                       style: "currency",
                       currency: "VND",
                     })}
                   </TableCell>
+
+                  {/* delete icon */}
                   <TableCell>
                     <Tooltip title="Delete Book">
                       <IconButton
@@ -286,14 +294,14 @@ export default function ListWishList({ title, data, isFetching }) {
                           e.preventDefault && handleClickOpen(item?.wishlist_id)
                         }
                       >
-                        <DeleteIcon />
+                        <DeleteIcon sx={{ color: "#E35454" }} />
                       </IconButton>
                     </Tooltip>
                     {cart?.some(
                       (cartItem) => cartItem?.book_id === item?.book?.id
                     ) ? (
                       <Tooltip title="Already in cart">
-                        <IconButton >
+                        <IconButton>
                           <ShoppingBagIcon disabled sx={{ color: "#db4444" }} />
                         </IconButton>
                       </Tooltip>
