@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import MUIDataTable from "mui-datatables";
 import useStyles from "./styles";
-import { Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 import { useGetAllBookQuery } from "../../../services/productAdminAPI";
 
 export default function BookManagement() {
@@ -85,23 +85,41 @@ export default function BookManagement() {
 
   return (
     <>
-      <Grid container spacing={4}>
-        <Grid item xs={12}>
-          <Typography variant="h4" my={3}>
-            List of book
-          </Typography>
-          <MUIDataTable
-            title="Book Data List"
-            data={allProduct}
-            onRowClick={() => console.log("this clicked")}
-            columns={columns}
-            options={
-              //   filterType: "checkbox",
-              options
-            }
-          />
+      <Box sx={{ my: 5 }}>
+        <Stack direction="row" spacing={100}>
+          <Typography variant="h4">List of book</Typography>
+          <Link to="/admin/create-book" style={{ textDecoration: "none" }}>
+            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+              <Button
+                variant="contained"
+                sx={{
+                  my: 1,
+                  backgroundColor: "#db4444",
+                  "&:hover": {
+                    backgroundColor: "#db4444",
+                  },
+                }}
+              >
+                Create new book
+              </Button>
+            </Box>
+          </Link>
+        </Stack>
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <MUIDataTable
+              title="Book Data List"
+              data={allProduct}
+              onRowClick={() => console.log("this clicked")}
+              columns={columns}
+              options={
+                //   filterType: "checkbox",
+                options
+              }
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </Box>
     </>
   );
 }

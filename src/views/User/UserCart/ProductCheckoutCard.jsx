@@ -9,7 +9,10 @@ import { useCreateOrderMutation } from "../../../services/orderAPIs";
 import { toast } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCurrentProductArr } from "../../../features/cart/cartSlice";
+import {
+  selectCurrentProductArr,
+  selectCurrentShipping,
+} from "../../../features/cart/cartSlice";
 
 const currencyExchange = (num) => {
   return parseFloat(num).toLocaleString("vi-VN", {
@@ -34,17 +37,13 @@ export default function ProductCheckoutCard({ data }) {
 
   const totalItemArr = useSelector(selectCurrentProductArr);
 
+  const shipping = useSelector(selectCurrentShipping);
+  console.log(shipping);
+
   const handleNaviCheckout = (e) => {
     e.preventDefault();
     navigate("/user/checkout");
   };
-
-  let shipping = 0;
-  if (totalItemArr.length > 5) {
-    shipping = 0;
-  } else {
-    shipping = 30000;
-  }
 
   //set total price of selected product
   let total = 0;

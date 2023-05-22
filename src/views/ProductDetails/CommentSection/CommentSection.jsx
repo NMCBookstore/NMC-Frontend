@@ -65,7 +65,7 @@ export default function Comment({ id }) {
       <h1>Comments</h1>
 
       {/* The add comment section */}
-      <Paper component="form" style={{ padding: "40px 20px", width: "70rem" }}>
+      <Paper component="form" style={{ padding: "40px 20px", width: "90rem" }}>
         <Stack direction="column">
           <Avatar alt="Remy Sharp" src={token ? userImg : imgLink} />
 
@@ -98,7 +98,7 @@ export default function Comment({ id }) {
       {/* The view other's comment section */}
       {!isFetching &&
         listReview?.reviews?.map((rev, index) => (
-          <Paper key={index} style={{ padding: "40px 20px", width: "70rem" }}>
+          <Paper key={index} style={{ padding: "40px 20px", width: "90rem" }}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
                 <Avatar alt="Remy Sharp" src={token ? userImg : imgLink} />
@@ -131,7 +131,7 @@ export default function Comment({ id }) {
       {/* The view other's comment section */}
       {!isFetching &&
         listReview?.reviews?.map((rev, index) => (
-          <Paper key={index} style={{ padding: "40px 20px", width: "70rem" }}>
+          <Paper key={index} style={{ padding: "40px 20px", width: "90rem" }}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
                 <Avatar alt="Remy Sharp" src={token ? userImg : imgLink} />

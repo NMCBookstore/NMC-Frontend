@@ -48,11 +48,6 @@ export default function DetailsGenresManagement() {
             )}
           />
         </Grid>
-        <Grid item xs={12} sm={2}>
-          <Button onClick={() => navigate(`/admin/details-subgenres/:id`)}>
-            Edit subgenres
-          </Button>
-        </Grid>
         <Grid item xs={12} sm={12}>
           <Button variant="outlined">Cancel</Button>
           &nbsp; <Button>Submit</Button>
