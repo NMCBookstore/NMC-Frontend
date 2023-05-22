@@ -17,6 +17,28 @@ const isValidImage = (img) => {
   return false;
 };
 
+const isValidImageList = (images) => {
+  for (let i = 0; i < images.length; i++) {
+    const img = images[i];
+    const fileSize = img.size / 1024 / 1024;
+    const fileType = img.type;
+
+    if (fileSize > 10) {
+      return false;
+    }
+
+    if (
+      fileType !== "image/jpeg" &&
+      fileType !== "image/jpg" &&
+      fileType !== "image/png"
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 const validateUsername = (value) => {
   const userNameRegex = /^[a-zA-Z0-9_]{1,10}$/;
   if (!userNameRegex.test(value)) {
@@ -46,7 +68,7 @@ const validateRegisterUsername = (value) => {
   const userNameRegex = /^[a-zA-Z0-9_]{1,10}$/;
   if (!userNameRegex.test(value)) {
     toast.error("Username only accepted from 1 to 10 in length");
-  } 
+  }
   // else useName.test(value);
   // toast.error("This username already exist !");
 
@@ -79,6 +101,7 @@ const validFullName = (value) => {
 
 export {
   isValidImage,
+  isValidImageList,
   validateUsername,
   validatePasswordLogin,
   validAge,
