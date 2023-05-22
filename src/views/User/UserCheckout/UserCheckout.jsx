@@ -51,9 +51,6 @@ export default function UserCheckout() {
   const cartIdsArr = useSelector(selectCurrentCartOrder);
   const orderInfo = useSelector(selectCurrentProductArr);
 
-  console.log("this is cart array", cartIdsArr);
-  console.log("this is order info", orderInfo);
-
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };

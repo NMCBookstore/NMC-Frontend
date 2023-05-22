@@ -6,7 +6,10 @@ import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 import { useEditContext } from "react-admin";
 import { useSelector } from "react-redux";
-import { selectCurrentProductArr } from "../../../features/cart/cartSlice";
+import {
+  selectCurrentProductArr,
+  selectCurrentShipping,
+} from "../../../features/cart/cartSlice";
 import { ImageListItem } from "@mui/material";
 
 const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
@@ -42,10 +45,10 @@ export default function ReviewOrder() {
   };
 
   //currency
-  let shipping = 21000;
+  const shipping = useSelector(selectCurrentShipping);
   let total = 0;
   for (let i = 0; i < totalItem?.length; i++) {
-    total += parseInt(totalItem[i]?.amount * totalItem[i]?.price);
+    total += parseInt(totalItem[i]?.amount * totalItem[i]?.price + shipping);
   }
 
   return (
@@ -68,12 +71,27 @@ export default function ReviewOrder() {
                   loading="lazy"
                 />
               </ImageListItem> */}
-              <Typography variant="body2">{currencyExchange(item?.price)}</Typography>
+              <Typography variant="body2">
+                {currencyExchange(item?.price)}
+              </Typography>
             </ListItem>
           ))}
+        <Typography
+          variant="subtitle1"
+          sx={{ fontWeight: 450, marginRight: 1 }}
+        >
+          Shipping: {currencyExchange(shipping)}
+        </Typography>
 
         <ListItem sx={{ py: 1, px: 0 }}>
-          <ListItemText primary="Total" />
+          <ListItemText>
+            <Typography
+              variant="subtitle1"
+              sx={{ fontWeight: 550, marginRight: 1 }}
+            >
+              Total
+            </Typography>{" "}
+          </ListItemText>
           <Typography
             variant="subtitle1"
             sx={{ fontWeight: 700, marginRight: 1 }}

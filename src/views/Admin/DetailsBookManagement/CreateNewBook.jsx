@@ -17,18 +17,8 @@ import {
 import React from "react";
 import { useState } from "react";
 import { isValidImage } from "../../../utils/helper";
-import { useParams } from "react-router-dom";
-import { useGetProductQuery } from "../../../services/productAPIs";
 
-export default function DetailsBookManageMent() {
-  const { id } = useParams();
-
-  const { data } = useGetProductQuery(id);
-
-  const [bookInfo, setBookInfo] = useState(data);
-
-  console.log(data);
-
+export default function CreateNewBook() {
   const [selectedImage, setSelectedImage] = useState([]);
 
   const onSelectFile = (e) => {
@@ -51,59 +41,43 @@ export default function DetailsBookManageMent() {
     <>
       <Box sx={{ my: 5 }}>
         <Typography variant="h5" sx={{ my: 2 }}>
-          Edit details book
+          Create book
         </Typography>
         <Grid container spacing={2}>
           <Grid item xs={12} md={5}>
             <Grid container spacing={1} sx={{ mt: 5 }}>
-              <Grid item xs={12} md={12}>
-                <TextField
-                  InputLabelProps={{ shrink: true }}
-                  fullWidth
-                  label="Name of the book"
-                  name="name"
-                  variant="outlined"
-                  defaultValue={data?.name}
-                  onChange={(e) =>
-                    setBookInfo({ ...bookInfo, name: e.target.value })
-                  }
-                />
-              </Grid>
               <Grid item xs={12} md={6}>
                 <Stack direction="column" spacing={3}>
                   <TextField
-                    InputLabelProps={{ shrink: true }}
-                    name="price"
+                    id="outlined-basic"
+                    label="Name of the book"
+                    variant="outlined"
+                  />
+                  <TextField
+                    id="outlined-basic"
                     label="Price"
                     type="number"
                     variant="outlined"
-                    value={data?.price}
                   />
                   <TextField
-                    InputLabelProps={{ shrink: true }}
-                    name="quantity"
+                    id="outlined-basic"
                     label="Quantity"
                     type="number"
                     variant="outlined"
-                    value={data?.quantity}
                   />
                 </Stack>
               </Grid>
               <Grid item xs={12} md={6}>
                 <Stack direction="column" spacing={3}>
                   <TextField
-                    InputLabelProps={{ shrink: true }}
-                    name="author"
+                    id="outlined-basic"
                     label="Author"
                     variant="outlined"
-                    value={data?.author}
                   />
                   <TextField
-                    InputLabelProps={{ shrink: true }}
-                    name="publisher"
+                    id="outlined-basic"
                     label="Publisher"
                     variant="outlined"
-                    value={data?.publisher}
                   />
                 </Stack>
               </Grid>
@@ -139,35 +113,39 @@ export default function DetailsBookManageMent() {
 
             {/* <Box sx={{ border: 1 }}> */}
             <ImageList
-              sx={{ height: 450, border: 1, backgroundColor: "#ecf0f1" }}
+              sx={{  height: 450, border: 1 }}
               cols={3}
               rowHeight={164}
             >
-              {data?.image.map((item) => {
-                return (
-                  <ImageListItem key={item}>
-                    <img src={item} />
-                    <ImageListItemBar
-                      sx={{
-                        background:
-                          "linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, " +
-                          "rgba(0,0,0,0.0) 70%, rgba(0,0,0,0) 100%)",
-                      }}
-                      actionIcon={
-                        <IconButton
-                          // onClick={() => {
-                          //   setBookInfo(data?.image.filter((e) => e !== item));
-                          //   console.log(item);
-                          // }}
-                        >
-                          <Delete sx={{ color: "#e55039" }} />
-                        </IconButton>
-                      }
-                      actionPosition="right"
-                    />
-                  </ImageListItem>
-                );
-              })}
+              {selectedImage &&
+                selectedImage.map((image, index) => {
+                  return (
+                    <ImageListItem key={image}>
+                      <img src={image} />
+                      <ImageListItemBar
+                        sx={{
+                          background:
+                            "linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, " +
+                            "rgba(0,0,0,0.0) 70%, rgba(0,0,0,0) 100%)",
+                        }}
+                        actionIcon={
+                          <IconButton
+                            onClick={() => {
+                              setSelectedImage(
+                                selectedImage.filter((e) => e !== image)
+                              );
+                              console.log(image);
+                            }}
+                          >
+                            <Delete sx={{ color: "#e55039" }} />
+                          </IconButton>
+                        }
+                        actionPosition="right"
+                      />
+                      {index}
+                    </ImageListItem>
+                  );
+                })}
             </ImageList>
             {/* </Stack> */}
           </Grid>
@@ -182,7 +160,6 @@ export default function DetailsBookManageMent() {
                   rowsMax={8}
                   maxRows={10}
                   minRows={3}
-                  value={data?.description}
                 />
               </Stack>
             </Paper>

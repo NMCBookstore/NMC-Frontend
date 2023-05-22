@@ -9,6 +9,13 @@ import { toast } from "react-hot-toast";
 import { useCreatePaymentMutation } from "../../../services/orderAPIs";
 import { Box, Button, FormControl } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import paymenticon from "./paymenticon.png";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../../features/auth/authSlice";
+import {
+  selectCurrentProductArr,
+  selectCurrentShipping,
+} from "../../../features/cart/cartSlice";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
@@ -34,6 +41,18 @@ export default function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
 
+  const user = useSelector(selectCurrentUser);
+
+  const totalItemArr = useSelector(selectCurrentProductArr);
+
+  const shipping = useSelector(selectCurrentShipping);
+
+  //set total price of selected product
+  let total = 0;
+  for (let i = 0; i < totalItemArr?.length; i++) {
+    total += parseInt(totalItemArr[i]?.amount * totalItemArr[i]?.price);
+  }
+
   const [values, setValues] = useState({
     from_address: "aaa",
     to_address: "222",
@@ -49,33 +68,47 @@ export default function PaymentForm() {
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardElement),
+      billing_details: {
+        address: {
+          line1: "113/8/8, Le Van chi",
+        },
+        email: user.email,
+        name: user.full_name,
+        phone: user.phone_number,
+      },
     });
 
-    if (!error) {
-      try {
-        const { id } = paymentMethod;
-        const { response } = await createPayment(values);
+    console.log("day la chi tiet hoa don", paymentMethod.billing_details);
 
-        if (response.data.success) {
-          console.log("Success payment");
-        }
-      } catch (error) {
-        console.log("Erroe", error);
-      }
-    } else {
-      toast.error(error.message);
-    }
+    // if (!error) {
+    //   try {
+    //     const { id } = paymentMethod;
+    //     const { response } = await createPayment({
+    //       amount: total,
+    //       id,
+    //     });
+
+    //     if (response.data.success) {
+    //       console.log("Success payment");
+    //     }
+    //   } catch (error) {
+    //     console.log("Erroe", error);
+    //   }
+    // } else {
+    //   toast.error(error.message);
+    // }
   };
 
   return (
     <>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={12}>
-          <div>
-            <Typography fontWeight={450}>
-              We accept all kind of international card
+          <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Typography fontWeight={450} variant="subtitle" sx={{ mr: 2 }}>
+              We accept
             </Typography>
-          </div>
+            <img style={{ width: "30%", height: "6%" }} src={paymenticon} />
+          </Box>
         </Grid>
         <Grid item xs={12} sm={12}>
           {!success ? (
