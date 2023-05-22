@@ -23,13 +23,8 @@ const UserWishlist = lazy(() => import("./views/User/UserWishlist"));
 const ForgotPassword = lazy(() => import("./views/User/ForgotPassword"));
 const ResetPassword = lazy(() => import("./views/User/ResetPassword"));
 const Welcome = lazy(() => import("./features/auth/Welcome"));
-const UserOrder = lazy(() => import("./views/User/UserProfile/UserOrder"));
-const UserContentProfile = lazy(() =>
-  import("./views/User/UserProfile/UserContentProfile")
-);
-const UserContentChangePassword = lazy(() =>
-  import("./views/User/UserProfile/UserContentChangePassword")
-);
+const Contact = lazy(() => import("./components/Contact"));
+const About = lazy(() => import("./components/About"));
 const Error404 = lazy(() => import("./components/Error404"));
 
 /**** Admin Routes *****/
@@ -57,7 +52,6 @@ const ErrorNotFound404 = { path: "*", element: <Error404 /> };
 const RouterCfg = [
   { path: "login", element: <UserLogin /> },
   { path: "register", element: <UserRegister /> },
-
   {
     path: "/",
     element: <Layout />,
@@ -67,6 +61,8 @@ const RouterCfg = [
       { path: "search-filter", element: <SearchFilter /> },
       { path: "reset_password", element: <ResetPassword /> },
       { path: "forgot_password", element: <ForgotPassword /> },
+      // { path: "contact", element: <Contact /> },
+      { path: "about", element: <About /> },
       ErrorNotFound404,
     ],
   },
@@ -107,23 +103,19 @@ const RouterCfg = [
                     path: "ordered",
                     element: <UserProfile id={3} idOrder={1} />,
                   },
-                  {
-                    path: "shipping",
-                    element: <UserProfile id={3} idOrder={2} />,
-                  },
-                  {
-                    path: "completed",
-                    element: <UserProfile id={3} idOrder={3} />,
-                  },
-                  {
-                    path: "cancellations",
-                    element: <UserProfile id={3} idOrder={4} />,
-                  },
+                  // {
+                  //   path: "shipping",
+                  //   element: <UserProfile id={3} idOrder={2} />,
+                  // },
+                  // {
+                  //   path: "completed",
+                  //   element: <UserProfile id={3} idOrder={3} />,
+                  // },
+                  // {
+                  //   path: "cancellations",
+                  //   element: <UserProfile id={3} idOrder={4} />,
+                  // },
                 ],
-              },
-              {
-                path: "my-reviews",
-                element: <UserProfile id={4} />,
               },
             ],
           },

@@ -23,6 +23,7 @@ import {
   clearCartIdArr,
   selectCurrentCartOrder,
   selectCurrentProductArr,
+  selectCurrentShipping,
 } from "../../../features/cart/cartSlice";
 import { toast } from "react-hot-toast";
 import { Grid } from "@mui/material";
@@ -51,6 +52,8 @@ export default function UserCheckout() {
   const cartIdsArr = useSelector(selectCurrentCartOrder);
   const orderInfo = useSelector(selectCurrentProductArr);
 
+  const shipping = useSelector(selectCurrentShipping);
+
   const handleNext = () => {
     setActiveStep(activeStep + 1);
   };
@@ -65,7 +68,12 @@ export default function UserCheckout() {
     e.preventDefault();
 
     try {
-      const v = await createOrder(cartIdsArr);
+      const v = await createOrder({
+        cart_ids: cartIdsArr,
+        to_address: "123 le van chi",
+        total_shipping: shipping,
+        status: "success"
+      });
       dispatch(clearCheckOutInfoArr(cartIdsArr));
       dispatch(clearCartIdArr(orderInfo));
 

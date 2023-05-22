@@ -46,12 +46,6 @@ export default function UserProfile({ id, idOrder }) {
       url: "my-order",
       component: <UserOrder idOrder={idOrder} />
     },
-    {
-      id: 4,
-      title: "My reviews",
-      url: "my-reviews",
-      component: <UserReviews />
-    },
   ];
 
   return (

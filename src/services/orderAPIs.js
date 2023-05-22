@@ -3,11 +3,11 @@ import { book } from "./baseAPI";
 const order = book.injectEndpoints({
   endpoints: (builder) => ({
     createOrder: builder.mutation({
-      query: (cart_ids) => {
+      query: ({ cart_ids, to_address, total_shipping, status }) => {
         return {
           method: "POST",
           url: `users/orders`,
-          body: { cart_ids },
+          body: { cart_ids, to_address, total_shipping, status },
         };
       },
     }),

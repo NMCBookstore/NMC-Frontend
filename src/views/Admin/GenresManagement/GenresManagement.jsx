@@ -47,9 +47,7 @@ export default function GenresManagement() {
   const options = {
     selectableRows: "none",
     onRowClick: (rowData) => {
-      // console.log(rowData[0], rowData)
       navigate(`/admin/details-genres/${rowData[0]}`);
-      // navigate(`/admin/details-genres`)
     },
   };
   return (

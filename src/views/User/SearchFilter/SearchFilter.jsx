@@ -24,7 +24,7 @@ const SearchFilter = () => {
       : 0,
     max_price: !isNaN(parseInt(searchParams.get("max_price")))
       ? parseInt(searchParams.get("max_price"))
-      : 100000000,
+      : 10000000,
   };
 
   if (searchParams.get("text") !== null) {
@@ -43,39 +43,16 @@ const SearchFilter = () => {
     searchInfo["rating"] = parseInt(searchParams.get("rating"));
   }
 
-  // console.log(searchInfo);
-  const [pagination, setPagination] = useState({ pageNum: 1, pageSize: 24 });
-
   //API Search
   const { data: allProduct } = useGetSearchQuery(searchInfo, "searchBook", {
     refetchOnMountOrArgChange: true,
-    page_id: pagination.pageNum,
-    page_size: pagination.pageSize,
   });
-
-  console.log("this is search", allProduct);
-
-  // Api All product
-  const { data: allProductForPagination } = useGetAllProductQuery({
-    page_id: pagination.pageNum,
-    page_size: pagination.pageSize,
-    refetchOnMountOrArgChange: true,
-  });
-
-  console.log("this is all product", allProductForPagination);
 
   const handlePagination = (pageNum, pageSize) => {
-    setPagination({ pageNum, pageSize });
-    console.log(pageNum, pageSize);
+    searchInfo["page_id"] = pageNum;
+    searchInfo["page_size"] = pageSize;
+    setSearchParams(searchInfo)
   };
-
-  const handlePageChange = (id, size) => {
-    searchInfo["page_id"] = id;
-    searchInfo["page_size"] = size;
-    setPagination(id, size);
-  };
-
-  const [isSearching, setIsSearching] = useState(false);
 
   return (
     <Box sx={{ width: "100%", display: "flex", flexWrap: "wrap" }}>
@@ -86,8 +63,6 @@ const SearchFilter = () => {
             searchInfo={searchInfo}
             searchParams={searchParams}
             setSearchParams={setSearchParams}
-            isSearching={isSearching}
-            setIsSearching={setIsSearching}
           />
         </Grid>
 
@@ -106,13 +81,7 @@ const SearchFilter = () => {
               </Typography>
             )}
           </Box>
-          {isSearching ? (
-            // Search
-            <BookList data={allProduct} />
-          ) : (
-            //All book
-            <BookList data={allProductForPagination} />
-          )}
+          <BookList data={allProduct} />
         </Grid>
         <Grid
           container
@@ -121,27 +90,17 @@ const SearchFilter = () => {
           sm={12}
           sx={{ flexDirection: { xs: "column", sm: "row" } }}
         >
-          {isSearching ? (
-            <Box
-              sx={{ width: "100%", display: "flex", justifyContent: "center" }}
-            >
-              <PaginationBottom
-                //searching
-                allProduct={allProduct}
-                handlePageChange={handlePageChange}
-              />
-            </Box>
-          ) : (
-            <Box
-              sx={{ width: "100%", display: "flex", justifyContent: "center" }}
-            >
-              <PaginationBottom
-                //all product
-                allProduct={allProductForPagination}
-                handlePageChange={handlePagination}
-              />
-            </Box>
-          )}
+
+          <Box
+            sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+          >
+            <PaginationBottom
+              allProduct={allProduct}
+              searchParams={searchParams}
+              handlePageChange={handlePagination}
+            />
+          </Box>
+
         </Grid>
       </Grid>
     </Box>

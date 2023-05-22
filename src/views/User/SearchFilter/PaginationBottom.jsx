@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Pagination, Stack, useMediaQuery } from "@mui/material";
 
-export default function PaginationBottom({ allProduct, handlePageChange }) {
+export default function PaginationBottom({ allProduct,searchParams, handlePageChange }) {
   // const {pagination, onPageChange} = props;
   const pageNum = parseInt(allProduct?.total_page);
 
