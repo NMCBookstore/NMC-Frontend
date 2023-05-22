@@ -8,7 +8,7 @@ const Layout = () => {
   return (
     <>
       <Header />
-      <Container maxWidth='xl'>
+      <Container>
         <Outlet />
       </Container>
       <Footer />

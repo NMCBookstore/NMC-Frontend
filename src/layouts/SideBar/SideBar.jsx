@@ -25,6 +25,33 @@ import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { shadows } from "@mui/system";
 
+const sidebar = [
+  {
+    id: 0,
+    title: "Home",
+    icon: <HomeIcon />,
+    url: "",
+  },
+  {
+    id: 1,
+    title: "Category",
+    icon: <CategoryIcon />,
+    url: "category",
+  },
+  // {
+  //   id: 2,
+  //   title: "Contact",
+  //   icon: <PermContactCalendarIcon />,
+  //   url: "https://github.com/minhhcuongg-theonefour/NMC-Frontend",
+  // },
+  {
+    id: 3,
+    title: "About",
+    icon: <InfoIcon />,
+    url: "about",
+  },
+]
+
 export default function SideBar() {
   const [state, setState] = useState(false);
   const navigate = useNavigate()
@@ -59,21 +86,15 @@ export default function SideBar() {
       role="presentation"
     >
       <List sx={{ paddingLeft: "5%" }} disablePadding>
-        {["Home", "Category", "Contact", "About"].map((text, index) => (
+        {sidebar.map((item, index) => (
           <>
-            <ListItemButton key={text} onClick={index === 1 ?
+            <ListItemButton key={item.id} onClick={index === 1 ?
               (() => setOpen(!open)) :
-              (() => navigate(index !== 0 ? `/${text}` : "/"))}>
+              (() => navigate(`/${item.url}`))}>
               <ListItemIcon>
-                {index === 0 ? <HomeIcon /> :
-                  (index === 1 ? <CategoryIcon /> :
-                    (index === 2 ? <PermContactCalendarIcon /> :
-                      <InfoIcon />
-                    )
-                  )
-                }
+                {item.icon}
               </ListItemIcon>
-              <ListItemText primary={text} />
+              <ListItemText primary={item.title} />
               {index === 1 && (open ? <ExpandLess /> : <ExpandMore />)}
             </ListItemButton>
             {index === 1 && (<Collapse in={open} timeout="auto" unmountOnExit>
@@ -110,7 +131,6 @@ export default function SideBar() {
                     </AccordionDetails>
                   </Accordion>))}
               </List>
-
             </Collapse>
             )}
           </>
@@ -143,7 +163,7 @@ export default function SideBar() {
               justifyContent: "center",
               paddingTop: "5%",
               paddingBottom: "10%",
-              cursor:"pointer"
+              cursor: "pointer"
             }}
             onClick={() => window.location.replace("/")}
           >

@@ -18,7 +18,7 @@ const Home = () => {
   const classes = useStyles();
   const { data } = useGetAllProductQuery({
     page_id: 1,
-    page_size: 25,
+    page_size: 24,
   });
 
   return (
@@ -83,7 +83,7 @@ const Home = () => {
           </Grid>
 
           <Link
-            to="/search-filter"
+            to="/search-filter?page_id=1&page_size=24&min_price=0&max_price=10000000"
             style={{ textDecoration: "none", marginTop: 8 }}
           >
             <Button
@@ -134,7 +134,7 @@ const Home = () => {
           <Stack direction="column" sx={{ alignItems: "center" }}>
             <VerifiedUserOutlinedIcon sx={{ fontSize: 60 }} />
             <Typography>MONEY BACK GUARANTEE</Typography>
-            <Typography>We reurn money within 30 days</Typography>
+            <Typography>We return money within 30 days</Typography>
           </Stack>
         </Stack>
       </Box>

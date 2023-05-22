@@ -29,7 +29,7 @@ const SearchBar = () => {
           onChange={(e) => {setText(e.target.value)}}
         />
           <IconButton
-            onClick={() => window.location.replace(`/search-filter?text=${text}`)}
+            onClick={() => window.location.replace(`/search-filter?page_id=1&page_size=24${text ? "&text=" + text : ""}`)}
            sx={{ p: "5px", color: "black" }}>
             <Search />
           </IconButton>

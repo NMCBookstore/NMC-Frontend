@@ -150,22 +150,14 @@ const Header = () => {
                           &nbsp; My Order
                         </MenuItem>
 
-                        <MenuItem
+                        {/* <MenuItem
                           onClick={() => {
                             popupState.close()
                             navigate("/user/profile/my-order/cancellations")
                           }}>
                           <CancelIcon />
                           &nbsp; My Cancellations
-                        </MenuItem>
-                        <MenuItem
-                        onClick={() => {
-                          popupState.close()
-                          navigate("/user/profile/my-reviews")
-                        }}>
-                          <ReviewsIcon />
-                          &nbsp; My Reviews
-                        </MenuItem>
+                        </MenuItem> */}
 
                         <MenuItem onClick={handleLogout}>
                           <LogoutOutlinedIcon />
@@ -188,12 +180,6 @@ const Header = () => {
                         </Link>
                       </div>
                     }
-                    {/* <MenuItem onClick={()=>{
-                    popupState.close()
-                    navigate("/user/profile")
-                  }}>Profile</MenuItem>
-                  <MenuItem onClick={popupState.close}>My account</MenuItem>
-                  <MenuItem onClick={popupState.close}>Logout</MenuItem> */}
                   </Menu>
                 </Fragment>
               )}
