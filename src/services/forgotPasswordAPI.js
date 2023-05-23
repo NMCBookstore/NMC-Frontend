@@ -2,11 +2,11 @@ import { book } from "./baseAPI";
 
 const forgotPassword = book.injectEndpoints({
   endpoints: (builder) => ({
-    sendEmailForgotPassword: builder.query({
+    sendEmailForgotPassword: builder.mutation({
       query: (email) => {
-        console.log(email);
         return {
           url: `forgot_password`,
+          method: "POST",
           body: email,
         };
       },
@@ -15,4 +15,4 @@ const forgotPassword = book.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useSendEmailForgotPasswordQuery } = forgotPassword;
+export const { useSendEmailForgotPasswordMutation } = forgotPassword;
