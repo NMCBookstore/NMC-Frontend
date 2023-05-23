@@ -85,7 +85,7 @@ export default function Filter({
     <Stack>
       <FormControl
         sx={{ width: "90%", zIndex: 1, marginBottom: 2 }}>
-        <InputLabel id="genres-select-label">Age</InputLabel>
+        <InputLabel id="genres-select-label">Genres</InputLabel>
         <Select
           labelId="genres-select-label"
           id="genres-select"
@@ -109,7 +109,7 @@ export default function Filter({
             ? false : true
         }
       >
-        <InputLabel id="subgenres-select-label">Age</InputLabel>
+        <InputLabel id="subgenres-select-label">Subgenres</InputLabel>
         <Select
           labelId="subgenres-select-label"
           id="subgenres-select"

@@ -7,8 +7,15 @@ const productAdmin = book.injectEndpoints({
         url: `admin/books`,
       }),
     }),
+    createNewBook: builder.mutation({
+      query: (formData) => ({
+        method: "POST",
+        url: `admin/books/`,
+        body: formData,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllBookQuery } = productAdmin;
+export const { useGetAllBookQuery, useCreateNewBookMutation } = productAdmin;

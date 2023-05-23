@@ -16,6 +16,7 @@ import {
   selectCurrentProductArr,
   selectCurrentShipping,
 } from "../../../features/cart/cartSlice";
+import { selectCurrentCartOrder } from "../../../features/cart/cartSlice";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
@@ -44,8 +45,7 @@ export default function PaymentForm() {
   const user = useSelector(selectCurrentUser);
 
   const totalItemArr = useSelector(selectCurrentProductArr);
-
-  const shipping = useSelector(selectCurrentShipping);
+  const totalCartIdArr = useSelector(selectCurrentCartOrder);
 
   //set total price of selected product
   let total = 0;
@@ -62,6 +62,8 @@ export default function PaymentForm() {
   });
 
   const [createPayment] = useCreatePaymentMutation();
+
+  const shipping = useSelector(selectCurrentShipping);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,23 +82,27 @@ export default function PaymentForm() {
 
     console.log("day la chi tiet hoa don", paymentMethod.billing_details);
 
-    // if (!error) {
-    //   try {
-    //     const { id } = paymentMethod;
-    //     const { response } = await createPayment({
-    //       amount: total,
-    //       id,
-    //     });
+    if (!error) {
+      try {
+        const { id } = paymentMethod;
+        const { response } = await createPayment({
+          cart_ids: totalCartIdArr,
+          to_address: "113/8/8, Le Van chi",
+          total_shipping: shipping,
+          status: "success",
+          id,
+        });
 
-    //     if (response.data.success) {
-    //       console.log("Success payment");
-    //     }
-    //   } catch (error) {
-    //     console.log("Erroe", error);
-    //   }
-    // } else {
-    //   toast.error(error.message);
-    // }
+        if (response.data.success) {
+          toast.success("Payment success");
+        }
+      } catch (error) {
+        toast.error("Failed to create ")
+        console.log("Erroe", error);
+      }
+    } else {
+      toast.error(error.message);
+    }
   };
 
   return (

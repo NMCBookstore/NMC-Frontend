@@ -28,8 +28,9 @@ const cartSlice = createSlice({
       if (action.payload.length < 5) {
         state.checkOutInfo.shipping = 30000;
       }
-
-      toast.success("Your order is set");
+      else {
+        state.checkOutInfo.shipping = 0;
+      }
     },
     clearCheckOutInfoArr: (state, action) => {
       state.checkOutInfo.checkout = [];

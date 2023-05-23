@@ -21,7 +21,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useDeleteProductCartMutation, useUpdateCartMutation } from "../../../services/cartAPI";
+import {
+  useDeleteProductCartMutation,
+  useUpdateCartMutation,
+} from "../../../services/cartAPI";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import NoProductInCart from "./NoProductInCart";
@@ -67,8 +70,8 @@ function EnhancedTableHead(props) {
         </TableCell>
         {headCells.map((headCell) =>
           title === "Wishlist" &&
-            (headCell.label === "Quantity" ||
-              headCell.label === "Subtotal") ? null : (
+          (headCell.label === "Quantity" ||
+            headCell.label === "Subtotal") ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}
@@ -89,14 +92,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-  const {
-    numSelected,
-    title,
-    handleDelete,
-    handleOpenDeleteDialog,
-    handleStore,
-    handleResetInfo,
-  } = props;
+  const { numSelected, title, handleDelete, handleOpenDeleteDialog } = props;
 
   return (
     <Toolbar
@@ -139,16 +135,6 @@ function EnhancedTableToolbar(props) {
             open={handleOpenDeleteDialog}
             handleDelete={handleDelete}
           />
-          <Tooltip title="Set order">
-            <IconButton onClick={handleStore}>
-              <PaymentIcon sx={{ color: "#5AB24B" }} />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Reset order">
-            <IconButton onClick={handleResetInfo}>
-              <RestartAltIcon sx={{ color: "#11BBBB" }} />
-            </IconButton>
-          </Tooltip>
         </>
       ) : null}
     </Toolbar>
@@ -166,18 +152,24 @@ export default function ListProductCart({ title, data, isFetching }) {
   const [open, setOpen] = useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-  const [updateCart] = useUpdateCartMutation()
+  const [updateCart] = useUpdateCartMutation();
 
   const [bookInfo, setBookInfo] = useState([]);
 
   const dispatch = useDispatch();
   //set amount of product
   function incrementCount(id, amount) {
-
-    updateCart({ "id": id, "amount": amount + 1 })
+    updateCart({ id: id, amount: amount + 1 });
   }
   function decrementCount(id, amount) {
-    updateCart({ "id": id, "amount": amount > 1 ? amount - 1 : 1 })
+    updateCart({ id: id, amount: amount > 1 ? amount - 1 : 1 });
+
+    setBookInfo((prevBookInfo) =>
+      prevBookInfo.map((book) =>
+        book.book_id === id ? { ...book, amount: newAmount } : book
+      )
+    );
+    dispatch(setCheckOutInfoArr(bookInfo));
   }
 
   const [deleteProduct] = useDeleteProductCartMutation();
@@ -186,13 +178,27 @@ export default function ListProductCart({ title, data, isFetching }) {
 
   const handleDeleteListItem = async () => {
     await deleteProduct(selected);
-    setSelected(selected.filter((cart_id) => !selected.includes(cart_id)));
+    // setSelected(selected.filter((cart_id) => !selected.includes(cart_id)));
+    setSelected([]);
+    dispatch(setCartIdArr([]));
+    setBookInfo([]);
+    dispatch(setCheckOutInfoArr([]));
   };
 
   const handleDeleteItem = async () => {
     await deleteProduct([selectedID]);
     if (selected.some((cart_id) => selectedID == cart_id)) {
       setSelected(selected.filter((cart_id) => cart_id !== selectedID));
+      dispatch(
+        setCartIdArr(selected.filter((cart_id) => cart_id !== selectedID))
+      );
+    }
+    if (bookInfo.some((item) => item.cart_id === selectedID)) {
+      const updatedBookInfo = bookInfo.filter(
+        (item) => item.cart_id !== selectedID
+      );
+      setBookInfo(updatedBookInfo);
+      dispatch(setCheckOutInfoArr(updatedBookInfo));
     }
     setOpen(false);
   };
@@ -216,25 +222,17 @@ export default function ListProductCart({ title, data, isFetching }) {
     setDatas(data);
   }, [isFetching]);
 
-  //store cart ID to redux
-  const handleStore = () => {
+  //store product to redux
+  useEffect(() => {
     dispatch(setCartIdArr(selected));
     dispatch(setCheckOutInfoArr(bookInfo));
-    console.log(bookInfo, selected);
-  };
+  }, [bookInfo, selected]);
 
   //reset order info
   const cartIdsArr = useSelector(selectCurrentCartOrder);
   const orderInfo = useSelector(selectCurrentProductArr);
 
   console.log(orderInfo);
-
-  const handleResetInfo = () => {
-    dispatch(clearCartIdArr(cartIdsArr));
-    dispatch(clearCheckOutInfoArr(orderInfo));
-    console.log("this clicked");
-    toast.success("You have reset your order");
-  };
 
   const totalItemInCart = data?.length;
 
@@ -247,9 +245,7 @@ export default function ListProductCart({ title, data, isFetching }) {
           handleDelete={handleDeleteListItem}
           handleOpenDeleteDialog={handleOpenDeleteDialog}
           numSelected={selected}
-          handleStore={handleStore}
           title={title}
-          handleResetInfo={handleResetInfo}
         />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle">
@@ -289,7 +285,7 @@ export default function ListProductCart({ title, data, isFetching }) {
             <TableBody>
               {datas?.map((item, index) => (
                 <TableRow
-                  key={item}
+                  key={index}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   {/* check box */}
@@ -356,13 +352,19 @@ export default function ListProductCart({ title, data, isFetching }) {
                     <Stack direction="row" spacing={2}>
                       <Tooltip title="Minus">
                         <RemoveIcon
-                          onClick={() => decrementCount(item?.cart_id, item?.amount)}
+                          onClick={() =>
+                            decrementCount(item?.cart_id, item?.amount)
+                          }
                           sx={{ marginRight: 2 }}
                         />
                       </Tooltip>
                       {item?.amount}
                       <Tooltip title="Add more">
-                        <AddIcon onClick={() => incrementCount(item?.cart_id, item?.amount)} />
+                        <AddIcon
+                          onClick={() =>
+                            incrementCount(item?.cart_id, item?.amount)
+                          }
+                        />
                       </Tooltip>
                     </Stack>
                   </TableCell>
@@ -395,7 +397,7 @@ export default function ListProductCart({ title, data, isFetching }) {
                       ) : (
                         <Tooltip title="Not in order">
                           <IconButton>
-                            <CreditScoreIcon/>
+                            <CreditScoreIcon />
                           </IconButton>
                         </Tooltip>
                       )}
