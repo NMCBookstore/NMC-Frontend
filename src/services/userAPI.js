@@ -10,7 +10,6 @@ const user = book.injectEndpoints({
     }),
     updateUser: builder.mutation({
       query: (formData) => {
-        // console.log(info)
         return {
           method: "PUT",
           url: `users/`,

@@ -63,7 +63,7 @@ const Header = () => {
 
   return (
     <>
-      <Stack paddingTop={2} className={classes.mainStack}>
+      <Stack paddingTop={2} className={classes.mainStack} zIndex={10}>
         <Stack
           direction="row"
           alignItems="center"

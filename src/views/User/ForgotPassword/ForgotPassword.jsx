@@ -7,50 +7,46 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useSendEmailForgotPasswordQuery } from "../../../services/forgotPasswordAPI";
+import { useSendEmailForgotPasswordMutation } from "../../../services/forgotPasswordAPI";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
-  // const [email, setEmail] = useState("");
-
-  // const { data } = useSendEmailForgotPasswordQuery(email);
+  const navigate = useNavigate()
 
   const initialValues = {
     email: "",
   };
 
+  const [ sendResetEmail ] = useSendEmailForgotPasswordMutation(initialValues);
+
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required"),
   });
 
-  const handleSubmit = (initialValues, formikHelper) => {
-    console.log(initialValues);
-    formikHelper.resetForm();
+  const handleSubmit = async (initialValues) => {
+    const v = await sendResetEmail(initialValues)
+    navigate("/send_email_succeed");
   };
 
   return (
-    <Container>
+    <Container sx={{ mt: 21.1 }}>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validationSchema}
       >
-        {() => (
+        <Box sx={{ display: "flex", justifyContent: "center", width: "100%" }}>
           <Form>
             <Card
               sx={{
-                maxWidth: "40%",
-                marginY: "20px",
-                marginLeft: "30%",
                 border: 0.1,
               }}
             >
               <CardContent>
                 <Typography
-                  sx={{ fontSize: 28, marginLeft: "12%" }}
+                  sx={{ fontSize: 28 }}
                   color="text.primary"
                   gutterBottom
                   display="center"
@@ -61,37 +57,32 @@ const ForgotPassword = () => {
                 <Field
                   as={TextField}
                   name="email"
-                  type = "email"
+                  type="email"
                   fullWidth
-                  // required
                   label="Enter your email"
-                  helperText={<ErrorMessage name="email"/>}
-                  // onChange={(event) => {
-                  //   setEmail(event.target.value);
-                  // }}
+                  helperText={<ErrorMessage name="email" />}
                 />
               </CardContent>
-              <CardActions>
+              <CardActions sx={{ justifyContent: "end", mr: 3 }}>
                 <Button
                   type="submit"
                   variant="contained"
                   sx={{
-                    marginLeft: "70%",
                     marginY: "10px",
                     backgroundColor: "#db4444",
                     "&:hover": {
                       background: "#ffa071",
                     },
                   }}
-                  // type="submit"
                   size="small"
+                  onClick={handleSubmit}
                 >
-                  Verify Email
+                  Send email
                 </Button>
               </CardActions>
             </Card>
           </Form>
-        )}
+        </Box>
       </Formik>
     </Container>
   );

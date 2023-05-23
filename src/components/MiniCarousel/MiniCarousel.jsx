@@ -1,11 +1,11 @@
-import React, { Component } from "react";
+import React from "react";
 import Box from "@mui/material/Box";
-// import Carousel from "react-multi-carousel";
 import Carousel from "react-grid-carousel";
 import "react-multi-carousel/lib/styles.css";
 import ProductCard from "../ProductCard/ProductCard";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import _ from "./styles.css"
 
 const MiniCarousel = ({ value }) => {
   return (
@@ -20,7 +20,7 @@ const MiniCarousel = ({ value }) => {
         responsiveLayout={[
           {
             breakpoint: 3000,
-            cols: 5,
+            cols: 4,
           },
           {
             breakpoint: 1024,
