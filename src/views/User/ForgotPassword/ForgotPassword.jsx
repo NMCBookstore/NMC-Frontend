@@ -13,21 +13,27 @@ import { useSendEmailForgotPasswordMutation } from "../../../services/forgotPass
 import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
+
   const navigate = useNavigate()
 
   const initialValues = {
     email: "",
   };
 
+
   const [ sendResetEmail ] = useSendEmailForgotPasswordMutation(initialValues);
+
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().required("Email is required"),
   });
 
+
+
   const handleSubmit = async (initialValues) => {
     const v = await sendResetEmail(initialValues)
     navigate("/send_email_succeed");
+
   };
 
   return (
@@ -61,6 +67,7 @@ const ForgotPassword = () => {
                   fullWidth
                   label="Enter your email"
                   helperText={<ErrorMessage name="email" />}
+
                 />
               </CardContent>
               <CardActions sx={{ justifyContent: "end", mr: 3 }}>

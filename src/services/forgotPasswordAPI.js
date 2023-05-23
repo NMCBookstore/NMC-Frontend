@@ -5,6 +5,7 @@ const forgotPassword = book.injectEndpoints({
     sendEmailForgotPassword: builder.mutation({
       query: (email) => {
         return {
+          method: "POST",
           url: `forgot_password`,
           method: "POST",
           body: email,

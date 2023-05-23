@@ -45,6 +45,7 @@
     "chart.js": "^4.2.1",
     "cors": "^2.8.5",
     "draft-js": "^0.11.7",
+    "draft-js-export-html": "^1.4.1",
     "draftjs-to-html": "^0.9.1",
     "formik": "^2.2.9",
     "html-to-draftjs": "^1.5.0",

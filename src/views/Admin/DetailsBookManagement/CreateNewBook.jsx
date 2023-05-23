@@ -4,37 +4,45 @@ import {
   Box,
   Button,
   Card,
+  FormControl,
   Grid,
   IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   TextField,
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { isValidImageList } from "../../../utils/helper";
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertFromHTML, convertToRaw } from "draft-js";
+import { stateToHTML } from "draft-js-export-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import draftToHtml from "draftjs-to-html";
-import htmlToDraft from "html-to-draftjs";
 import { toast } from "react-hot-toast";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
 import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
+import { useCreateNewBookMutation } from "../../../services/productAdminAPI";
 
 export default function CreateNewBook() {
   const [selectedImage, setSelectedImage] = useState([]);
 
+  const [selectedFiles, setSelectedFiles] = useState([]);
+
   const onSelectFile = (e) => {
-    const selectedFiles = e.target.files;
     if (isValidImageList(selectedFiles)) {
-      const selectedFilesArr = Array.from(selectedFiles);
-      const imagesArr = selectedFilesArr.map((file) => {
+      const previewImage = Array.from(e.target.files);
+      setSelectedFiles(Array.from(e.target.files));
+
+      const imagesArr = previewImage.map((file) => {
         return URL.createObjectURL(file);
       });
 
@@ -45,24 +53,58 @@ export default function CreateNewBook() {
   };
 
   const [id, setId] = useState(0);
+  const [idSubgenres, setIdSubgenres] = useState(0);
   const { data: genres } = useGetGenresQuery();
   const { data: subGenres } = useGetSubGenresQuery(id, { skip: !id });
+  const [genre, setGenre] = useState("");
+  const [subgenre, setSubgenre] = useState("");
 
-  console.log(subGenres);
+  const [bookInfo, setBookInfo] = useState({
+    name: "",
+    price: 0,
+    author: "",
+    publisher: "",
+    quantity: 0,
+  });
 
-  const [editorState, setEditorState] = useState(() =>
-    EditorState.createEmpty()
-  );
+  const handleGenreChange = (event) => {
+    setGenre(event.target.value);
+    setId(event.target.value);
+  };
+
+  const handleSubgenreChange = (event) => {
+    setSubgenre(event.target.value);
+    setIdSubgenres(event.target.value);
+  };
+
+  const [editorState, setEditorState] = useState("");
 
   const handleEditorChange = (newEditorState) => {
     setEditorState(newEditorState);
   };
 
-  const handlePrintValue = () => {
+  const [createNewBook] = useCreateNewBookMutation();
+
+  const handleCreateBook = () => {
     const contentState = editorState.getCurrentContent();
-    const rawContentState = convertToRaw(contentState);
-    const a = draftToHtml(rawContentState);
-    console.log(a);
+    const html = stateToHTML(contentState);
+
+    const formData = new FormData();
+
+    formData.append("name", bookInfo.name);
+    formData.append("price", bookInfo.price);
+    formData.append("author", bookInfo.author);
+    formData.append("publisher", bookInfo.publisher);
+    formData.append("quantity", bookInfo.quantity);
+    formData.append("image", selectedFiles);
+    formData.append("genres_Id", id);
+    formData.append("subgenres_Id", idSubgenres);
+    formData.append("description", html);
+
+    console.log("Form Add Genres:");
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
   };
 
   return (
@@ -80,6 +122,10 @@ export default function CreateNewBook() {
                   id="outlined-basic"
                   label="Name of the book"
                   variant="outlined"
+                  name="name"
+                  onChange={(e) =>
+                    setBookInfo({ ...bookInfo, name: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -88,23 +134,40 @@ export default function CreateNewBook() {
                     id="outlined-basic"
                     label="Price"
                     type="number"
+                    name="price"
                     variant="outlined"
+                    onChange={(e) =>
+                      setBookInfo({ ...bookInfo, price: e.target.value })
+                    }
                   />
                   <TextField
                     id="outlined-basic"
                     label="Quantity"
                     type="number"
+                    name="quantity"
                     variant="outlined"
+                    onChange={(e) =>
+                      setBookInfo({ ...bookInfo, quantity: e.target.value })
+                    }
                   />
-                  <Autocomplete
-                    disablePortal
-                    options={genres}
-                    getOptionLabel={(option) => option?.name}
-                    // sx={{ zIndex: 1, marginBottom: 2 }}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Genres" />
-                    )}
-                  />
+                  <FormControl
+                    sx={{ width: "90%", zIndex: 1, marginBottom: 2 }}
+                  >
+                    <InputLabel id="genres-select-label">Genres</InputLabel>
+                    <Select
+                      labelId="genres-select-label"
+                      id="genres-select"
+                      value={genre}
+                      label="Genres"
+                      onChange={handleGenreChange}
+                    >
+                      {genres?.map((item, index) => (
+                        <MenuItem key={item?.id} value={item?.id}>
+                          {item?.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Stack>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -113,23 +176,41 @@ export default function CreateNewBook() {
                     id="outlined-basic"
                     label="Author"
                     variant="outlined"
+                    name="author"
+                    onChange={(e) =>
+                      setBookInfo({ ...bookInfo, author: e.target.value })
+                    }
                   />
                   <TextField
                     id="outlined-basic"
                     label="Publisher"
                     variant="outlined"
+                    name="Publisher"
+                    onChange={(e) =>
+                      setBookInfo({ ...bookInfo, publisher: e.target.value })
+                    }
                   />
-                  <Autocomplete
-                    key={id}
-                    // disablePortal
-                    id="filter-demo2"
-                    options={subGenres ? subGenres : []}
-                    getOptionLabel={(option) => option?.name}
+                  <FormControl
                     sx={{ width: "90%", zIndex: 1, marginBottom: 2 }}
-                    renderInput={(params) => (
-                      <TextField {...params} label="SubGenres" />
-                    )}
-                  />
+                    disabled={genre ? false : true}
+                  >
+                    <InputLabel id="subgenres-select-label">
+                      Subgenres
+                    </InputLabel>
+                    <Select
+                      labelId="subgenres-select-label"
+                      id="subgenres-select"
+                      value={subgenre}
+                      label="Sub Genres"
+                      onChange={handleSubgenreChange}
+                    >
+                      {subGenres?.map((item, index) => (
+                        <MenuItem key={item?.id} value={item?.id}>
+                          {item?.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
                 </Stack>
               </Grid>
             </Grid>
@@ -179,7 +260,7 @@ export default function CreateNewBook() {
                               setSelectedImage(
                                 selectedImage.filter((e) => e !== image)
                               );
-                              console.log(image);
+                              // console.log(image);
                             }}
                           >
                             <Delete sx={{ color: "#e55039" }} />
@@ -213,7 +294,7 @@ export default function CreateNewBook() {
           </Button>
           <Button
             variant="contained"
-            onClick={handlePrintValue}
+            onClick={handleCreateBook}
             sx={{ width: "10%", marginTop: "10px" }}
           >
             Submit
