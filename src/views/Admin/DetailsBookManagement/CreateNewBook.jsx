@@ -1,5 +1,6 @@
 import { Delete, PhotoCamera } from "@mui/icons-material";
 import {
+  Autocomplete,
   Box,
   Button,
   Card,
@@ -16,25 +17,52 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useState } from "react";
-import { isValidImage } from "../../../utils/helper";
+import { isValidImageList } from "../../../utils/helper";
+import { Editor } from "react-draft-wysiwyg";
+import { EditorState, convertToRaw } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
+import { toast } from "react-hot-toast";
+import { useGetGenresQuery } from "../../../services/genresAPIs";
+import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
 
 export default function CreateNewBook() {
   const [selectedImage, setSelectedImage] = useState([]);
 
   const onSelectFile = (e) => {
     const selectedFiles = e.target.files;
-    if (!selectedFiles) {
-      return;
+    if (isValidImageList(selectedFiles)) {
+      const selectedFilesArr = Array.from(selectedFiles);
+      const imagesArr = selectedFilesArr.map((file) => {
+        return URL.createObjectURL(file);
+      });
+
+      setSelectedImage((prevImage) => prevImage.concat(imagesArr));
+    } else {
+      toast.error("Only png, jpeg, jpg files accepted");
     }
-    const selectedFilesArr = Array.from(selectedFiles);
+  };
 
-    const imagesArr = selectedFilesArr.map((file) => {
-      return URL.createObjectURL(file);
-    });
+  const [id, setId] = useState(0);
+  const { data: genres } = useGetGenresQuery();
+  const { data: subGenres } = useGetSubGenresQuery(id, { skip: !id });
 
-    console.log(imagesArr);
+  console.log(subGenres);
 
-    setSelectedImage((prevImage) => prevImage.concat(imagesArr));
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
+
+  const handleEditorChange = (newEditorState) => {
+    setEditorState(newEditorState);
+  };
+
+  const handlePrintValue = () => {
+    const contentState = editorState.getCurrentContent();
+    const rawContentState = convertToRaw(contentState);
+    const a = draftToHtml(rawContentState);
+    console.log(a);
   };
 
   return (
@@ -46,13 +74,16 @@ export default function CreateNewBook() {
         <Grid container spacing={2}>
           <Grid item xs={12} md={5}>
             <Grid container spacing={1} sx={{ mt: 5 }}>
+              <Grid item xs={12} md={12}>
+                <TextField
+                  fullWidth
+                  id="outlined-basic"
+                  label="Name of the book"
+                  variant="outlined"
+                />
+              </Grid>
               <Grid item xs={12} md={6}>
                 <Stack direction="column" spacing={3}>
-                  <TextField
-                    id="outlined-basic"
-                    label="Name of the book"
-                    variant="outlined"
-                  />
                   <TextField
                     id="outlined-basic"
                     label="Price"
@@ -64,6 +95,15 @@ export default function CreateNewBook() {
                     label="Quantity"
                     type="number"
                     variant="outlined"
+                  />
+                  <Autocomplete
+                    disablePortal
+                    options={genres}
+                    getOptionLabel={(option) => option?.name}
+                    // sx={{ zIndex: 1, marginBottom: 2 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Genres" />
+                    )}
                   />
                 </Stack>
               </Grid>
@@ -78,6 +118,17 @@ export default function CreateNewBook() {
                     id="outlined-basic"
                     label="Publisher"
                     variant="outlined"
+                  />
+                  <Autocomplete
+                    key={id}
+                    // disablePortal
+                    id="filter-demo2"
+                    options={subGenres ? subGenres : []}
+                    getOptionLabel={(option) => option?.name}
+                    sx={{ width: "90%", zIndex: 1, marginBottom: 2 }}
+                    renderInput={(params) => (
+                      <TextField {...params} label="SubGenres" />
+                    )}
                   />
                 </Stack>
               </Grid>
@@ -110,13 +161,7 @@ export default function CreateNewBook() {
                 </Button>
               </Stack>
             </Box>
-
-            {/* <Box sx={{ border: 1 }}> */}
-            <ImageList
-              sx={{  height: 450, border: 1 }}
-              cols={3}
-              rowHeight={164}
-            >
+            <ImageList sx={{ height: 450, border: 1 }} cols={3} rowHeight={164}>
               {selectedImage &&
                 selectedImage.map((image, index) => {
                   return (
@@ -147,22 +192,16 @@ export default function CreateNewBook() {
                   );
                 })}
             </ImageList>
-            {/* </Stack> */}
           </Grid>
 
           <Grid xs={12} md={12}>
-            <Paper style={{ padding: "40px 20px", width: "73rem", border: 1 }}>
-              <Stack direction="column">
-                <TextareaAutosize
-                  placeholder="Description of the book"
-                  name="description"
-                  rowsMin={8}
-                  rowsMax={8}
-                  maxRows={10}
-                  minRows={3}
-                />
-              </Stack>
-            </Paper>
+            <Box sx={{ border: 1 }}>
+              <Editor
+                editorStyle={{ height: 200 }}
+                editorState={editorState}
+                onEditorStateChange={handleEditorChange}
+              />
+            </Box>
           </Grid>
         </Grid>
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
@@ -172,7 +211,11 @@ export default function CreateNewBook() {
           >
             Cancel
           </Button>
-          <Button variant="contained" sx={{ width: "10%", marginTop: "10px" }}>
+          <Button
+            variant="contained"
+            onClick={handlePrintValue}
+            sx={{ width: "10%", marginTop: "10px" }}
+          >
             Submit
           </Button>
           {/* </Stack> */}

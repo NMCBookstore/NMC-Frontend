@@ -11,7 +11,7 @@ import SubgenresTable from "./SubgenresTable";
 
 export default function DetailsGenresManagement() {
   const { id } = useParams();
-  const { data, isFetching } = useGetSubGenresQuery(id, { skip: !id });
+  const { data, isFetching } = useGetSubGenresQuery(id);
   const { data: genres } = useGetGenresQuery(id, { skip: !id });
   // console.log(data)
 
