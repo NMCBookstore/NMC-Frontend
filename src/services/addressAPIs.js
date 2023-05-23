@@ -20,7 +20,7 @@ const address = book.injectEndpoints({
       providesTags: ["AddressItems"],
     }),
     listAddress: builder.query({
-      query: (id) => ({
+      query: () => ({
         method: "GET",
         url: `users/addresses/`,
       }),

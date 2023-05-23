@@ -26,8 +26,8 @@ const FirstTab = () => {
       <TabContext value={value}>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <TabList onChange={handleChange} sx={{ color: "#c92127" }}>
-            <Tab label="Top Newest books" value="1" />
-            <Tab label="Top 10 Best books" value="2" />
+            <Tab label="Top Newest Books" value="1" />
+            <Tab label="Top The Best Books" value="2" />
           </TabList>
         </Box>
         <TabPanel value="1">

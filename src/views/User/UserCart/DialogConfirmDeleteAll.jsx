@@ -1,14 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, IconButton, Tooltip } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import { useState } from "react";
 import { Delete } from "@mui/icons-material";
 
-export default function DialogConfirmDeleteAll({ handleDelete }) {
+export default function DialogConfirmDeleteAll({ handleDelete, sx }) {
   const theme = useTheme();
 
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -30,9 +29,9 @@ export default function DialogConfirmDeleteAll({ handleDelete }) {
 
   return (
     <>
-      <Tooltip title="Delete All">
-        <IconButton onClick={handleClickOpen}>
-          <Delete sx={{ color: "#eb2f06" }} />
+      <Tooltip title="Delete All" >
+        <IconButton  onClick={handleClickOpen}>
+          <Delete sx={sx} />
         </IconButton>
       </Tooltip>
       <Dialog
@@ -42,7 +41,7 @@ export default function DialogConfirmDeleteAll({ handleDelete }) {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title">
-          {"Are you sure you want to delete these product in your cart ?"}
+          {"Are you sure you want to delete these addresses ?"}
         </DialogTitle>
         <DialogActions>
           <Button

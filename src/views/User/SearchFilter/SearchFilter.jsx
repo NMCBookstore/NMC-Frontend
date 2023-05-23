@@ -7,7 +7,6 @@ import BookList from "./BookList";
 import { useGetSearchQuery } from "../../../services/searchAPI";
 import { useSearchParams } from "react-router-dom";
 import { Typography } from "@mui/material";
-import { useGetAllProductQuery } from "../../../services/productAPIs";
 
 const SearchFilter = () => {
   const [searchParams, setSearchParams] = useSearchParams();

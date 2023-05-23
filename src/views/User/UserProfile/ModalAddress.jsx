@@ -4,9 +4,14 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Stack, TextField, Autocomplete } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
 import { useListCitiesQuery } from "../../../services/citiesAPIs"
 import { useListDistrictsQuery } from "../../../services/districtsAPIs"
+import { useCreateAddressMutation } from '../../../services/addressAPIs';
 
 
 const style = {
@@ -26,8 +31,28 @@ export default function ModalAddress() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [id, setId] = useState(0);
-    const {data: cities} = useListCitiesQuery();
-    const {data: districts} = useListDistrictsQuery(id, { skip: !id });
+    const [address, setAddress] = useState({});
+    const [city, setCity] = useState("");
+    const [district, setDistrict] = useState("");
+    const { data: cities } = useListCitiesQuery();
+    const { data: districts } = useListDistrictsQuery(id, { skip: !id });
+    const [createAddress] = useCreateAddressMutation();
+
+    const handleCityChange = (e) => {
+        setCity(e.target.value);
+        setId(e.target.value)
+        setAddress((prev) => ({ ...prev, "city_id": e.target.value }))
+    };
+
+    const handleDistrictChange = (e) => {
+        setDistrict(e.target.value);
+        setAddress((prev) => ({ ...prev, "district_id": e.target.value }))
+    };
+
+    const handleSubmit = () => {
+        const v = createAddress(address)
+        handleClose()
+    }
 
     return (
         <div>
@@ -63,27 +88,42 @@ export default function ModalAddress() {
                             label="Address"
                             placeholder="Enter your address"
                             type="text"
-                            sx={{ width: "100%", my:2 }}
+                            onChange={(e, prev) => setAddress({ ...prev, "address": e.target.value })}
+                            sx={{ width: "100%", my: 2 }}
                         />
-                        <Autocomplete
-                            disablePortal
-                            id="filter-city"
-                            options={cities}
-                            onChange={(e, option) => {
-                                setId(option?.id);
-                              }}
-                            getOptionLabel={(option) => option?.name}
-                            sx={{ zIndex: 1, marginBottom: 2 }}
-                            renderInput={(params) => <TextField {...params} label="City" />}
-                        />
-                        <Autocomplete
-                            disablePortal
-                            id="filter-district"
-                            options={districts ? districts : []}
-                            getOptionLabel={(option) => option?.name}
-                            sx={{ zIndex: 1, marginBottom: 2 }}
-                            renderInput={(params) => <TextField {...params} label="District" />}
-                        />
+                        <FormControl
+                            sx={{ width: "100%", my: 2 }}
+                        >
+                            <InputLabel id="city-select-label">City</InputLabel>
+                            <Select
+                                labelId="city-select-label"
+                                id="city-select"
+                                value={city}
+                                label="City"
+                                onChange={(e) => handleCityChange(e)}
+                            >
+                                {cities?.map((item, index) => (
+                                    <MenuItem key={item?.id} value={item?.id}>{item?.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                        <FormControl
+                            sx={{ width: "100%", my: 2 }}
+                            disabled={id == 0 ? true : false}
+                        >
+                            <InputLabel id="districts-select-label">District</InputLabel>
+                            <Select
+                                labelId="districts-select-label"
+                                id="districts-select"
+                                value={district}
+                                label="District"
+                                onChange={(e) => handleDistrictChange(e)}
+                            >
+                                {districts?.map((item, index) => (
+                                    <MenuItem key={item?.id} value={item?.id}>{item?.name}</MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
                     </Box>
                     <Stack direction="row">
                         <Button
@@ -97,7 +137,6 @@ export default function ModalAddress() {
                             Cancel
                         </Button>
                         <Button
-                            type="submit"
                             variant="contained"
                             sx={{
                                 mt: 2,
@@ -107,6 +146,7 @@ export default function ModalAddress() {
                                     backgroundColor: "#DB4444",
                                 },
                             }}
+                            onClick={handleSubmit}
                         >
                             Save changes
                         </Button>

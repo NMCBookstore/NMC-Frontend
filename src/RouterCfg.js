@@ -25,6 +25,8 @@ const ResetPassword = lazy(() => import("./views/User/ResetPassword"));
 const Welcome = lazy(() => import("./features/auth/Welcome"));
 const Contact = lazy(() => import("./components/Contact"));
 const About = lazy(() => import("./components/About"));
+const SendEmailSucceed = lazy(() => import("./components/SendEmailSucceed"));
+const VerifiedEmail = lazy(() => import("./components/VerifiedEmail"));
 const Error404 = lazy(() => import("./components/Error404"));
 
 /**** Admin Routes *****/
@@ -60,7 +62,9 @@ const RouterCfg = [
       { path: "product/:id", element: <ProductDetails /> },
       { path: "search-filter", element: <SearchFilter /> },
       { path: "reset_password", element: <ResetPassword /> },
+      { path: "send_email_succeed", element: <SendEmailSucceed /> },
       { path: "forgot_password", element: <ForgotPassword /> },
+      { path: "verified_email", element: <VerifiedEmail /> },
       // { path: "contact", element: <Contact /> },
       { path: "about", element: <About /> },
       ErrorNotFound404,

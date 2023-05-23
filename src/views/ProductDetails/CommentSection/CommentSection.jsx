@@ -8,9 +8,7 @@ import {
   selectCurrentUserImage,
   selectCurrentUserName,
 } from "../../../features/auth/authSlice";
-import { useGetReviewQuery } from "../../../services/reviewAPI";
-import { useParams } from "react-router-dom";
-import { useAddReviewMutation } from "../../../services/reviewAPI";
+import { useGetReviewQuery, useAddReviewMutation } from "../../../services/reviewAPI";
 import { toast } from "react-hot-toast";
 import CommentPagination from "./CommentPagination";
 
@@ -54,7 +52,6 @@ export default function Comment({ id }) {
         rating: parseInt(values.rating),
       });
       toast.success("Your comment has been posted");
-      // console.log(values);
     } catch (err) {
       toast.error("Couldn't posted your comment");
     }
@@ -98,10 +95,10 @@ export default function Comment({ id }) {
       {/* The view other's comment section */}
       {!isFetching &&
         listReview?.reviews?.map((rev, index) => (
-          <Paper key={index} style={{ padding: "40px 20px", width: "90rem" }}>
+          <Paper key={rev?.id} style={{ padding: "40px 20px", width: "90rem" }}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
-                <Avatar alt="Remy Sharp" src={token ? userImg : imgLink} />
+                <Avatar alt="Remy Sharp" src={rev?.image} />
               </Grid>
               <Grid justifyContent="left" item xs zeroMinWidth>
                 <h4 style={{ margin: 0, textAlign: "left" }}>
