@@ -29,24 +29,24 @@ export default function UserOrder({ idOrder }) {
       url: "ordered",
       component: <UserOrdered />
     },
-    {
-      id: 2,
-      title: "Shipping",
-      url: "shipping",
-      component: <UserShipping />
-    },
-    {
-      id: 3,
-      title: "Completed",
-      url: "completed",
-      component: <UserCompleted />
-    },
-    {
-      id: 4,
-      title: "Cancellations",
-      url: "cancellations",
-      component: <UserCancellations />
-    },
+    // {
+    //   id: 2,
+    //   title: "Shipping",
+    //   url: "shipping",
+    //   component: <UserShipping />
+    // },
+    // {
+    //   id: 3,
+    //   title: "Completed",
+    //   url: "completed",
+    //   component: <UserCompleted />
+    // },
+    // {
+    //   id: 4,
+    //   title: "Cancellations",
+    //   url: "cancellations",
+    //   component: <UserCancellations />
+    // },
   ];
 
   return (

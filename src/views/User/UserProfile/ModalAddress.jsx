@@ -1,11 +1,13 @@
 import * as React from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import { Stack, TextField, Autocomplete } from "@mui/material";
+import { useListCitiesQuery } from "../../../services/citiesAPIs"
+import { useListDistrictsQuery } from "../../../services/districtsAPIs"
 
-const city = ['test', 'hehe', 'kaka']
 
 const style = {
     position: 'absolute',
@@ -23,6 +25,9 @@ export default function ModalAddress() {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const [id, setId] = useState(0);
+    const {data: cities} = useListCitiesQuery();
+    const {data: districts} = useListDistrictsQuery(id, { skip: !id });
 
     return (
         <div>
@@ -50,7 +55,7 @@ export default function ModalAddress() {
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         Address
                     </Typography>
-                    <Box mx={2}>
+                    <Box mx={2} my={2}>
                         <TextField
                             margin="normal"
                             required
@@ -58,23 +63,26 @@ export default function ModalAddress() {
                             label="Address"
                             placeholder="Enter your address"
                             type="text"
-                            sx={{ width: "100%" }}
+                            sx={{ width: "100%", my:2 }}
                         />
                         <Autocomplete
                             disablePortal
-                            id="filter-demo"
-                            options={city}
-                            getOptionLabel={(option) => option}
-                            sx={{ zIndex: 1, marginBottom: 2 }}
-                            renderInput={(params) => <TextField {...params} label="District" />}
-                        />
-                        <Autocomplete
-                            disablePortal
-                            id="filter-demo"
-                            options={city}
-                            getOptionLabel={(option) => option}
+                            id="filter-city"
+                            options={cities}
+                            onChange={(e, option) => {
+                                setId(option?.id);
+                              }}
+                            getOptionLabel={(option) => option?.name}
                             sx={{ zIndex: 1, marginBottom: 2 }}
                             renderInput={(params) => <TextField {...params} label="City" />}
+                        />
+                        <Autocomplete
+                            disablePortal
+                            id="filter-district"
+                            options={districts ? districts : []}
+                            getOptionLabel={(option) => option?.name}
+                            sx={{ zIndex: 1, marginBottom: 2 }}
+                            renderInput={(params) => <TextField {...params} label="District" />}
                         />
                     </Box>
                     <Stack direction="row">

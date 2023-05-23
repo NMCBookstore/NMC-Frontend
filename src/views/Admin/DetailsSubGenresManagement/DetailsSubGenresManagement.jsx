@@ -138,7 +138,6 @@ export default function DetailsSubGenresManagement({ title, data, isFetching }) 
     if (selected.length > 0) {
       setSelectedID(selected[0].id);
     }
-    console.log("this clicked");
   };
 
   const handleDeleteItem = async () => {
