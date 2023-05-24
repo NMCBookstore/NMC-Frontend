@@ -163,7 +163,7 @@ export default function DetailsSubGenresManagement({ title, data, isFetching }) 
   }, [isFetching]);
 
   const isSelected = (cart_id) => selected.indexOf(cart_id) !== -1;
-  // console.log(selected);
+  
   return (
     <Box sx={{ width: "100%" }}>
       <Typography variant="h5" sx={{my:4}}>Subgenres details</Typography>

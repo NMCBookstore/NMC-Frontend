@@ -1,26 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import { Box, Card, Typography } from "@mui/joy";
-import { IconButton, Stack, TextField, Tooltip } from "@mui/material";
-import { Edit } from "@mui/icons-material";
-import { toast } from "react-hot-toast";
-import { useGetOneSubGenresQuery } from "../../../services/subGenresAPIs";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Stack, TextField } from '@mui/material'
+import React, { useState } from 'react'
+import { useCreateSubGenresMutation } from '../../../services/subGenresAPIs';
 
-export default function UpdateGenresDialog({id}) {
-  const {data, isFetching} = useGetOneSubGenresQuery(id)
-  const [subgenresInfo, setSubgenresInfo] = useState();
+export default function CreateNewSubgenre({ id }) {
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    setSubgenresInfo(data)
-  }, [isFetching])
-  
+  const [name, setName] = useState();
+  const [createSubgenre] = useCreateSubGenresMutation()
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -30,17 +15,26 @@ export default function UpdateGenresDialog({id}) {
     setOpen(false);
   };
 
-  const handleUpdateGenres = () => {
-    console.log("this clicked");
+  const handleCreateGenres = async () => {
+    const v = await createSubgenre({ genre_id: parseInt(id), name })
+    handleClose();
   };
 
   return (
     <>
-      <Tooltip title="Edit subgenre name">
-        <IconButton onClick={handleClickOpen}>
-          <Edit />
-        </IconButton>
-      </Tooltip>
+      <Button
+        variant="contained"
+        onClick={handleClickOpen}
+        sx={{
+          my: 1,
+          backgroundColor: "#db4444",
+          "&:hover": {
+            backgroundColor: "#db4444",
+          },
+        }}
+      >
+        Create new subgenre
+      </Button>
       <Dialog
         PaperProps={{
           style: {
@@ -60,7 +54,7 @@ export default function UpdateGenresDialog({id}) {
         style={{ minWidth: "100%", minHeight: "100%" }}
       >
         <DialogTitle sx={{ color: "#fff" }} id="alert-dialog-title">
-          Update sub-genres name
+          Create subgenre
         </DialogTitle>
         <DialogContent>
           <Grid container>
@@ -75,10 +69,7 @@ export default function UpdateGenresDialog({id}) {
                 placeholder="Name of the genre"
                 fullWidth
                 name="name"
-                value={subgenresInfo?.name}
-                onChange={(e) =>
-                  setSubgenresInfo({ ...subgenresInfo, name: e.target.value })
-                }
+                onChange={(e) => setName(e.target.value)}
               ></TextField>
             </Grid>
           </Grid>
@@ -98,7 +89,6 @@ export default function UpdateGenresDialog({id}) {
                 },
               }}
               onClick={handleClose}
-              // disabled={isLoading}
             >
               Cancel
             </Button>
@@ -110,14 +100,14 @@ export default function UpdateGenresDialog({id}) {
                   backgroundColor: "#DB4444",
                 },
               }}
-              onClick={handleUpdateGenres}
-              // disabled={isLoading}
+              onClick={handleCreateGenres}
             >
-              Update
+              Create
             </Button>
           </Stack>
         </DialogActions>
       </Dialog>
     </>
-  );
+
+  )
 }
