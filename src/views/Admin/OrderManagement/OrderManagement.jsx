@@ -1,17 +1,122 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MUIDataTable from "mui-datatables";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { Typography } from "@mui/material";
+import { useGetAdminAllOrderQuery } from "../../../services/orderAPIs";
+
+const currencyExchange = (num) => {
+  return parseFloat(num).toLocaleString("vi-VN", {
+    style: "currency",
+    currency: "VND",
+  });
+};
 
 export default function OrderManagement() {
-  const columns = ["Name", "Company", "City", "State"];
+  const { data, isFetching } = useGetAdminAllOrderQuery()
+  const [allOrder, setAllOrder] = useState([])
 
-  const data = [
-    ["Joe James", "Test Corp", "Yonkers", "NY"],
-    ["John Walsh", "Test Corp", "Hartford", "CT"],
-    ["Bob Herm", "Test Corp", "Tampa", "FL"],
-    ["James Houston", "Test Corp", "Dallas", "TX"],
+  const columns = [
+    {
+      name: "id",
+      label: "ID",
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+    {
+      name: "username",
+      label: "User",
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+    {
+      name: "books",
+      label: "Books",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => (
+          value?.map((book, index) => (
+            <Typography mt={1}
+              key={book?.id}
+            >
+              {book?.name}
+            </Typography>
+          ))
+        )
+      }
+    },
+    {
+      name: "transactions",
+      label: "Each Amount",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => (
+          value?.map((transaction, index) => (
+            <Typography mt={1}
+              key={transaction?.id}
+            >
+              x{transaction?.amount}
+            </Typography>
+          ))
+        )
+      }
+    },
+    {
+      name: "transactions",
+      label: "Book Price",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => (
+          value?.map((transaction, index) => (
+            <Typography mt={1}
+              key={transaction?.id}
+            >
+              {currencyExchange(transaction?.total)}
+            </Typography>
+          ))
+        )
+      }
+    },
+    {
+      name: "sub_amount",
+      label: "Total Amount",
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
+    {
+      name: "sub_total",
+      label: "Total",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRenderLite: (dataIndex) => {
+          let val = currencyExchange(data[dataIndex].sub_total);
+          return val;
+        }
+      }
+    },
+    {
+      name: "status",
+      label: "Status",
+      options: {
+        filter: true,
+        sort: true,
+      }
+    },
   ];
+
+  useEffect(() => {
+    setAllOrder(data)
+  }, [isFetching])
+
 
   const options = {
     filterType: "checkbox",
@@ -25,9 +130,10 @@ export default function OrderManagement() {
           </Typography>
           <MUIDataTable
             title={"Customer's order"}
-            data={data}
+            data={allOrder}
             columns={columns}
             options={options}
+            
           />
         </Grid>
       </Grid>

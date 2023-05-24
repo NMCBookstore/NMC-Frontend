@@ -7,11 +7,15 @@ const genres = book.injectEndpoints({
             url:  `genres`
         })
     }),
-
+    getOneGenres: builder.query({
+      query: (id) => ({
+          url:  `genres/${id}`
+      })
+  }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetGenresQuery } = genres;
+export const { useGetGenresQuery, useGetOneGenresQuery} = genres;
 
 

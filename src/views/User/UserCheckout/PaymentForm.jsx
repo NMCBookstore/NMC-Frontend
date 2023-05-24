@@ -6,7 +6,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-import { useCreatePaymentMutation } from "../../../services/orderAPIs";
+import { useCreateOrderMutation } from "../../../services/orderAPIs";
 import { Box, Button, FormControl } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import paymenticon from "./paymenticon.png";
@@ -53,15 +53,7 @@ export default function PaymentForm() {
     total += parseInt(totalItemArr[i]?.amount * totalItemArr[i]?.price);
   }
 
-  const [values, setValues] = useState({
-    from_address: "aaa",
-    to_address: "222",
-    total_shipping: 20000,
-    sub_total: 520000,
-    status: "success",
-  });
-
-  const [createPayment] = useCreatePaymentMutation();
+  const [createPayment] = useCreateOrderMutation();
 
   const shipping = useSelector(selectCurrentShipping);
 
@@ -80,17 +72,15 @@ export default function PaymentForm() {
       },
     });
 
-    console.log("day la chi tiet hoa don", paymentMethod.billing_details);
-
     if (!error) {
       try {
         const { id } = paymentMethod;
         const { response } = await createPayment({
+          payment_id: id,
           cart_ids: totalCartIdArr,
           to_address: "113/8/8, Le Van chi",
           total_shipping: shipping,
           status: "success",
-          id,
         });
 
         if (response.data.success) {

@@ -14,8 +14,7 @@ import {
   TextareaAutosize,
   Typography,
 } from "@mui/material";
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { isValidImage } from "../../../utils/helper";
 import { useParams } from "react-router-dom";
 import { useGetProductQuery } from "../../../services/productAPIs";
@@ -23,13 +22,16 @@ import { useGetProductQuery } from "../../../services/productAPIs";
 export default function DetailsBookManageMent() {
   const { id } = useParams();
 
-  const { data } = useGetProductQuery(id);
+  const { data, isFetching } = useGetProductQuery(id);
 
   const [bookInfo, setBookInfo] = useState(data);
 
-  console.log(data);
-
   const [selectedImage, setSelectedImage] = useState([]);
+
+  useEffect(() => {
+    setBookInfo(data)
+  }, [isFetching])
+
 
   const onSelectFile = (e) => {
     const selectedFiles = e.target.files;
@@ -41,8 +43,6 @@ export default function DetailsBookManageMent() {
     const imagesArr = selectedFilesArr.map((file) => {
       return URL.createObjectURL(file);
     });
-
-    console.log(imagesArr);
 
     setSelectedImage((prevImage) => prevImage.concat(imagesArr));
   };
@@ -62,8 +62,7 @@ export default function DetailsBookManageMent() {
                   fullWidth
                   label="Name of the book"
                   name="name"
-                  variant="outlined"
-                  defaultValue={data?.name}
+                  value={bookInfo?.name}
                   onChange={(e) =>
                     setBookInfo({ ...bookInfo, name: e.target.value })
                   }
@@ -77,7 +76,10 @@ export default function DetailsBookManageMent() {
                     label="Price"
                     type="number"
                     variant="outlined"
-                    value={data?.price}
+                    value={bookInfo?.price}
+                    onChange={(e) =>
+                      setBookInfo({ ...bookInfo, price: e.target.value })
+                    }
                   />
                   <TextField
                     InputLabelProps={{ shrink: true }}
@@ -85,7 +87,10 @@ export default function DetailsBookManageMent() {
                     label="Quantity"
                     type="number"
                     variant="outlined"
-                    value={data?.quantity}
+                    value={bookInfo?.quantity}
+                    onChange={(e) =>
+                      setBookInfo({ ...bookInfo, quantity: e.target.value })
+                    }
                   />
                 </Stack>
               </Grid>
@@ -96,14 +101,20 @@ export default function DetailsBookManageMent() {
                     name="author"
                     label="Author"
                     variant="outlined"
-                    value={data?.author}
+                    value={bookInfo?.author}
+                    onChange={(e) =>
+                      setBookInfo({ ...bookInfo, author: e.target.value })
+                    }
                   />
                   <TextField
                     InputLabelProps={{ shrink: true }}
                     name="publisher"
                     label="Publisher"
                     variant="outlined"
-                    value={data?.publisher}
+                    value={bookInfo?.publisher}
+                    onChange={(e) =>
+                      setBookInfo({ ...bookInfo, publisher: e.target.value })
+                    }
                   />
                 </Stack>
               </Grid>
@@ -143,7 +154,7 @@ export default function DetailsBookManageMent() {
               cols={3}
               rowHeight={164}
             >
-              {data?.image.map((item) => {
+              {bookInfo?.image.map((item) => {
                 return (
                   <ImageListItem key={item}>
                     <img src={item} />
@@ -155,52 +166,54 @@ export default function DetailsBookManageMent() {
                       }}
                       actionIcon={
                         <IconButton
-                          // onClick={() => {
-                          //   setBookInfo(data?.image.filter((e) => e !== item));
-                          //   console.log(item);
-                          // }}
+                          onClick={() => {
+                            setBookInfo({ ...bookInfo,image: bookInfo?.image.filter(img => img !== item)});
+                          }}
                         >
-                          <Delete sx={{ color: "#e55039" }} />
-                        </IconButton>
+                    <Delete sx={{ color: "#e55039" }} />
+                  </IconButton>
                       }
-                      actionPosition="right"
-                    />
-                  </ImageListItem>
-                );
-              })}
-            </ImageList>
-            {/* </Stack> */}
-          </Grid>
-
-          <Grid xs={12} md={12}>
-            <Paper style={{ padding: "40px 20px", width: "73rem", border: 1 }}>
-              <Stack direction="column">
-                <TextareaAutosize
-                  placeholder="Description of the book"
-                  name="description"
-                  rowsMin={8}
-                  rowsMax={8}
-                  maxRows={10}
-                  minRows={3}
-                  value={data?.description}
+                      actionPosition = "right"
                 />
-              </Stack>
-            </Paper>
-          </Grid>
-        </Grid>
-        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <Button
-            variant="contained"
-            sx={{ width: "10%", marginTop: "10px", mr: 3 }}
-          >
-            Cancel
-          </Button>
-          <Button variant="contained" sx={{ width: "10%", marginTop: "10px" }}>
-            Submit
-          </Button>
+                  </ImageListItem>
+            );
+              })}
+          </ImageList>
           {/* </Stack> */}
-        </Box>
+        </Grid>
+
+        <Grid xs={12} md={12}>
+          <Paper style={{ padding: "40px 20px", width: "73rem", border: 1 }}>
+            <Stack direction="column">
+              <TextareaAutosize
+                placeholder="Description of the book"
+                name="description"
+                rowsMin={8}
+                rowsMax={8}
+                maxRows={10}
+                minRows={3}
+                value={bookInfo?.description}
+                onChange={(e) =>
+                  setBookInfo({ ...bookInfo, description: e.target.value })
+                }
+              />
+            </Stack>
+          </Paper>
+        </Grid>
+      </Grid>
+      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <Button
+          variant="contained"
+          sx={{ width: "10%", marginTop: "10px", mr: 3 }}
+        >
+          Cancel
+        </Button>
+        <Button variant="contained" sx={{ width: "10%", marginTop: "10px" }}>
+          Submit
+        </Button>
+        {/* </Stack> */}
       </Box>
+    </Box >
     </>
   );
 }

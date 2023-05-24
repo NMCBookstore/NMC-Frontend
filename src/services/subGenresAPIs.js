@@ -5,6 +5,9 @@ const subGenres = book.injectEndpoints({
     getSubGenres: builder.query({
       query: (genre_id) => `subgenres/${genre_id}`,
     }),
+    getOneSubGenres: builder.query({
+      query: (id) => `subgenres/one/${id}`,
+    }),
     getSubGenresNoticeable: builder.query({
       query: () => "subgenres/noticeable",
     }),
@@ -12,5 +15,5 @@ const subGenres = book.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetSubGenresQuery, useGetSubGenresNoticeableQuery } =
+export const { useGetSubGenresQuery, useGetSubGenresNoticeableQuery, useGetOneSubGenresQuery } =
   subGenres;
