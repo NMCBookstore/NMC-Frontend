@@ -3,8 +3,8 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import MUIDataTable from "mui-datatables";
 import makeStyles from "@mui/styles/makeStyles";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
-import { Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Box, Button, Stack, Typography } from "@mui/material";
+import { Link, useNavigate } from "react-router-dom";
 
 const datatableData = [
   ["Sach loai 1", "3"],
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GenresManagement() {
 
-  const {data} = useGetGenresQuery();
+  const { data } = useGetGenresQuery();
   const navigate = useNavigate();
 
   const columns = [
@@ -51,20 +51,38 @@ export default function GenresManagement() {
     },
   };
   return (
-    <>
+    <Box sx={{ my: 5 }}>
+      <Stack direction="row" display="flex" justifyContent="space-between">
+        <Typography variant="h4">
+        List of Genres
+          </Typography>
+        <Link to="/admin/create-book" style={{ textDecoration: "none" }}>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              variant="contained"
+              sx={{
+                my: 1,
+                backgroundColor: "#db4444",
+                "&:hover": {
+                  backgroundColor: "#db4444",
+                },
+              }}
+            >
+              Create new book
+            </Button>
+          </Box>
+        </Link>
+      </Stack>
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <Typography variant="h4" my={3}>
-            List of Genres
-          </Typography>
           <MUIDataTable
             title="Genres Data List"
             data={data}
             columns={columns}
-            options={ options }
+            options={options}
           />
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 }

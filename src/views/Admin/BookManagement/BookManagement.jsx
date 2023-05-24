@@ -75,7 +75,6 @@ export default function BookManagement() {
   const options = {
     selectableRows: "none",
     onRowClick: (rowData) => {
-      console.log("Row clicked:", rowData);
       navigate(`/admin/details-book/${rowData[0]}`);
     },
     selectableRows: "multiple",
@@ -84,7 +83,6 @@ export default function BookManagement() {
   };
 
   return (
-    <>
       <Box sx={{ my: 5 }}>
         <Stack direction="row" spacing={100}>
           <Typography variant="h4">List of book</Typography>
@@ -120,6 +118,5 @@ export default function BookManagement() {
           </Grid>
         </Grid>
       </Box>
-    </>
   );
 }

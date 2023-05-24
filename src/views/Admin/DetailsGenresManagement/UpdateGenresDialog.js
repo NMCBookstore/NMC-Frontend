@@ -10,9 +10,17 @@ import { Box, Card, Typography } from "@mui/joy";
 import { IconButton, Stack, TextField, Tooltip } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { toast } from "react-hot-toast";
+import { useGetOneSubGenresQuery } from "../../../services/subGenresAPIs";
 
-export default function UpdateGenresDialog() {
+export default function UpdateGenresDialog({id}) {
+  const {data, isFetching} = useGetOneSubGenresQuery(id)
+  const [subgenresInfo, setSubgenresInfo] = useState();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setSubgenresInfo(data)
+  }, [isFetching])
+  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,8 +33,6 @@ export default function UpdateGenresDialog() {
   const handleUpdateGenres = () => {
     console.log("this clicked");
   };
-
-  const [genresInfo, setGenresInfo] = useState(1);
 
   return (
     <>
@@ -69,10 +75,10 @@ export default function UpdateGenresDialog() {
                 placeholder="Name of the genre"
                 fullWidth
                 name="name"
-                defaultValue={"DICTIONARIES & LANGUAGES"}
-                // onChange={(e) =>
-                //   setGenresInfo({ ...genresInfo, name: e.target.value })
-                // }
+                value={subgenresInfo?.name}
+                onChange={(e) =>
+                  setSubgenresInfo({ ...subgenresInfo, name: e.target.value })
+                }
               ></TextField>
             </Grid>
           </Grid>

@@ -1,72 +1,101 @@
 import React from "react";
 import Chart from "react-apexcharts";
-import LineChart from "reactochart/LineChart";
-import { Line } from "react-chartjs-2";
 import "reactochart/styles.css";
-import { Card } from "@mui/material";
+import { Card, Stack, Typography } from "@mui/material";
 
-const chartOptions = {
-  series: [
-    {
-      name: "Online customer",
-      data: [50, 69, 79, 54, 91, 88, 84, 41, 43, 45, 78, 57],
+export default function ChartDashboard({ revenueInfo }) {
+  const chartSumOptions = {
+    series: [
+      {
+        name: "Total Revenue",
+        data: revenueInfo?.revenue && revenueInfo?.revenue.map(item => item.sum_revenue),
+      },
+    ],
+    options: {
+      color: ["#6a04c", "#2980b9", "#DC3545"],
+      chart: {
+        background: "transparent",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+      },
+      xaxis: {
+        categories: revenueInfo?.revenue && revenueInfo?.revenue.map(item => item.time_revenue),
+      },
+      legend: {
+        position: "bottom",
+      },
+      grid: {
+        show: true,
+      },
     },
-    {
-      name: "Store customer",
-      data: [77, 50, 42, 81, 82, 95, 48, 70, 99, 84, 96, 82],
-    },
-    {
-      name: "Total Revenue",
-      data: [57, 50, 54, 99, 59, 63, 51, 89, 86, 82, 86, 46],
-    },
-  ],
-  options: {
-    color: ["#6a04c", "#2980b9", "#DC3545"],
-    chart: {
-      background: "transparent",
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    stroke: {
-      curve: "smooth",
-    },
-    xaxis: {
-      categories: [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr ",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oc",
-        "Nov",
-        "Dec",
-      ],
-    },
-    legend: {
-      position: "bottom",
-    },
-    grid: {
-      show: false,
-    },
-  },
-};
+  };
 
-export default function ChartDashboard() {
+  const chartAvgOptions = {
+    series: [
+      {
+        name: "Total Revenue",
+        data: revenueInfo?.revenue && revenueInfo?.revenue.map(item => item.avg_revenue),
+      },
+    ],
+    options: {
+      color: ["#6a04c", "#2980b9", "#DC3545"],
+      chart: {
+        background: "transparent",
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: "smooth",
+      },
+      xaxis: {
+        categories: revenueInfo?.revenue && revenueInfo?.revenue.map(item => item.time_revenue),
+      },
+      legend: {
+        position: "bottom",
+      },
+      grid: {
+        show: true,
+      },
+    },
+  };
+
   return (
-    <Card sx={{ minHeight: 350 }}>
-      <Chart
-        options={{
-          ...chartOptions.options,
-        }}
-        series={chartOptions.series}
-        type="line"
-        height="100%"
-      />
-    </Card>
+    <Stack spacing={3}>
+      <Typography
+        variant="h3"
+      >
+        Sum revenue {revenueInfo?.name}
+      </Typography>
+      <Card sx={{ minHeight: 400 }}>
+        <Chart
+          options={{
+            ...chartSumOptions.options,
+          }}
+          series={chartSumOptions.series}
+          type="line"
+          height="100%"
+        />
+      </Card>
+      <Typography
+        variant="h3"
+      >
+        Average revenue {revenueInfo?.name}
+      </Typography>
+      <Card sx={{ minHeight: 400 }}>
+        <Chart
+          options={{
+            ...chartAvgOptions.options,
+          }}
+          series={chartAvgOptions.series}
+          type="line"
+          height="100%"
+        />
+      </Card>
+    </Stack>
   );
 }

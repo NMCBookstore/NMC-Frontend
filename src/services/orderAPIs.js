@@ -3,11 +3,11 @@ import { book } from "./baseAPI";
 const order = book.injectEndpoints({
   endpoints: (builder) => ({
     createOrder: builder.mutation({
-      query: ({ cart_ids, to_address, total_shipping, status }) => {
+      query: ({ payment_id, cart_ids, to_address, total_shipping, status }) => {
         return {
           method: "POST",
           url: `users/orders`,
-          body: { cart_ids, to_address, total_shipping, status },
+          body: { cart_ids, to_address, total_shipping, status, payment_id },
         };
       },
     }),
@@ -19,20 +19,19 @@ const order = book.injectEndpoints({
         };
       },
     }),
+    getAdminAllOrder: builder.query({
+      query: () => {
+        return {
+          method: "GET",
+          url: `admin/orders/`,
+        };
+      },
+    }),
     getOrdersPaid: builder.query({
       query: () => {
         return {
           method: "GET",
           url: `users/orders/paid`,
-        };
-      },
-    }),
-    createPayment: builder.mutation({
-      query: (form) => {
-        return {
-          method: "POST",
-          url: `users/payments`,
-          body: form,
         };
       },
     }),
@@ -43,7 +42,7 @@ const order = book.injectEndpoints({
 export const {
   useCreateOrderMutation,
   useGetMyOrderQuery,
-  useCreatePaymentMutation,
   useGetAllOrderQuery,
   useGetOrdersPaidQuery,
+  useGetAdminAllOrderQuery,
 } = order;
