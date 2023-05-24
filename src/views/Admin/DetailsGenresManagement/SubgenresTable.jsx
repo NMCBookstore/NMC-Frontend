@@ -54,7 +54,7 @@ export default function SubgenresTable({ id }) {
                     </Tooltip>
                   </TableCell>
                   <TableCell>
-                    <UpdateGenresDialog id={item?.id} />
+                    <UpdateGenresDialog id={item?.id} genre_id={id} />
                   </TableCell>
                 </TableRow>
               ))}

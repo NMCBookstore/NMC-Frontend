@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Card,
+  CardActionArea,
   Grid,
   IconButton,
   ImageList,
@@ -150,70 +151,73 @@ export default function DetailsBookManageMent() {
 
             {/* <Box sx={{ border: 1 }}> */}
             <ImageList
-              sx={{ height: 450, border: 1, backgroundColor: "#ecf0f1" }}
+              sx={{ height: 500, border: 1, backgroundColor: "#ecf0f1" }}
               cols={3}
-              rowHeight={164}
+              rowHeight={350}
             >
               {bookInfo?.image.map((item) => {
                 return (
-                  <ImageListItem key={item}>
-                    <img src={item} />
-                    <ImageListItemBar
-                      sx={{
-                        background:
-                          "linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, " +
-                          "rgba(0,0,0,0.0) 70%, rgba(0,0,0,0) 100%)",
-                      }}
-                      actionIcon={
-                        <IconButton
-                          onClick={() => {
-                            setBookInfo({ ...bookInfo,image: bookInfo?.image.filter(img => img !== item)});
-                          }}
-                        >
-                    <Delete sx={{ color: "#e55039" }} />
-                  </IconButton>
-                      }
-                      actionPosition = "right"
-                />
-                  </ImageListItem>
-            );
-              })}
-          </ImageList>
-          {/* </Stack> */}
-        </Grid>
+                  <CardActionArea key={item}>
+                    <ImageListItem >
+                      <img src={item} />
+                      <ImageListItemBar
+                        sx={{
+                          background:
+                            "linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, " +
+                            "rgba(0,0,0,0.0) 70%, rgba(0,0,0,0) 100%)",
+                        }}
+                        actionIcon={
+                          <IconButton
+                            onClick={() => {
+                              setBookInfo({ ...bookInfo, image: bookInfo?.image.filter(img => img !== item) });
+                            }}
+                          >
+                            <Delete sx={{ color: "#e55039" }} />
+                          </IconButton>
+                        }
+                        actionPosition="right"
+                      />
 
-        <Grid xs={12} md={12}>
-          <Paper style={{ padding: "40px 20px", width: "73rem", border: 1 }}>
-            <Stack direction="column">
-              <TextareaAutosize
-                placeholder="Description of the book"
-                name="description"
-                rowsMin={8}
-                rowsMax={8}
-                maxRows={10}
-                minRows={3}
-                value={bookInfo?.description}
-                onChange={(e) =>
-                  setBookInfo({ ...bookInfo, description: e.target.value })
-                }
-              />
-            </Stack>
-          </Paper>
+                    </ImageListItem>
+                  </CardActionArea>
+                );
+              })}
+            </ImageList>
+            {/* </Stack> */}
+          </Grid>
+          <Grid xs={12} md={12}>
+            <Paper style={{ padding: "40px 20px", width: "73rem", border: 1 }}>
+              <Stack direction="column">
+                <TextareaAutosize
+                  placeholder="Description of the book"
+                  name="description"
+                  rowsMin={8}
+                  rowsMax={8}
+                  maxRows={10}
+                  minRows={3}
+                  value={bookInfo?.description}
+                  onChange={(e) =>
+                    setBookInfo({ ...bookInfo, description: e.target.value })
+                  }
+                />
+              </Stack>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
-      <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-        <Button
-          variant="contained"
-          sx={{ width: "10%", marginTop: "10px", mr: 3 }}
-        >
-          Cancel
-        </Button>
-        <Button variant="contained" sx={{ width: "10%", marginTop: "10px" }}>
-          Submit
-        </Button>
-        {/* </Stack> */}
-      </Box>
-    </Box >
+        <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+          <Button
+            variant="contained"
+            sx={{ width: "10%", marginTop: "10px", mr: 3 }}
+            onClick={() => navigate("/admin/manage-book")}
+          >
+            Cancel
+          </Button>
+          <Button variant="contained" sx={{ width: "10%", marginTop: "10px" }}>
+            Submit
+          </Button>
+          {/* </Stack> */}
+        </Box>
+      </Box >
     </>
   );
 }

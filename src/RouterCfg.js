@@ -47,6 +47,9 @@ const OrderManagement = lazy(() => import("./views/Admin/OrderManagement"));
 const CreateNewBook = lazy(() =>
   import("./views/Admin/DetailsBookManagement/CreateNewBook")
 );
+const CreateNewGenre = lazy(() =>
+  import("./views/Admin/GenresManagement/CreateNewGenre")
+);
 
 /**** 404 page *****/
 const ErrorNotFound404 = { path: "*", element: <Error404 /> };
@@ -151,6 +154,7 @@ const RouterCfg = [
             element: <DetailsSubGenresManagement />,
           },
           { path: "create-book", element: <CreateNewBook /> },
+          { path: "create-genre", element: <CreateNewGenre /> },
           ErrorNotFound404,
         ],
       },

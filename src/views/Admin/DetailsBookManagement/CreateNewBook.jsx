@@ -1,9 +1,8 @@
 import { Delete, PhotoCamera } from "@mui/icons-material";
 import {
-  Autocomplete,
   Box,
   Button,
-  Card,
+  CardActionArea,
   FormControl,
   Grid,
   IconButton,
@@ -12,27 +11,24 @@ import {
   ImageListItemBar,
   InputLabel,
   MenuItem,
-  Paper,
   Select,
   Stack,
   TextField,
-  TextareaAutosize,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { isValidImageList } from "../../../utils/helper";
 import { Editor } from "react-draft-wysiwyg";
-import { EditorState, convertFromHTML, convertToRaw } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import draftToHtml from "draftjs-to-html";
 import { toast } from "react-hot-toast";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
 import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
 import { useCreateNewBookMutation } from "../../../services/productAdminAPI";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateNewBook() {
+  const navigate = useNavigate()
   const [selectedImage, setSelectedImage] = useState([]);
 
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -100,11 +96,6 @@ export default function CreateNewBook() {
     formData.append("genres_Id", id);
     formData.append("subgenres_Id", idSubgenres);
     formData.append("description", html);
-
-    console.log("Form Add Genres:");
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
-    }
   };
 
   return (
@@ -242,34 +233,40 @@ export default function CreateNewBook() {
                 </Button>
               </Stack>
             </Box>
-            <ImageList sx={{ height: 450, border: 1 }} cols={3} rowHeight={164}>
+            <ImageList
+              sx={{ height: 450, border: 1 }}
+              cols={3}
+              rowHeight={350}
+            >
               {selectedImage &&
                 selectedImage.map((image, index) => {
                   return (
-                    <ImageListItem key={image}>
-                      <img src={image} />
-                      <ImageListItemBar
-                        sx={{
-                          background:
-                            "linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, " +
-                            "rgba(0,0,0,0.0) 70%, rgba(0,0,0,0) 100%)",
-                        }}
-                        actionIcon={
-                          <IconButton
-                            onClick={() => {
-                              setSelectedImage(
-                                selectedImage.filter((e) => e !== image)
-                              );
-                              // console.log(image);
-                            }}
-                          >
-                            <Delete sx={{ color: "#e55039" }} />
-                          </IconButton>
-                        }
-                        actionPosition="right"
-                      />
-                      {index}
-                    </ImageListItem>
+                    <CardActionArea key={image}>
+                      <ImageListItem>
+                        <img src={image} />
+                        <ImageListItemBar
+                          sx={{
+                            background:
+                              "linear-gradient(to bottom, rgba(0,0,0,0.0) 0%, " +
+                              "rgba(0,0,0,0.0) 70%, rgba(0,0,0,0) 100%)",
+                          }}
+                          actionIcon={
+                            <IconButton
+                              onClick={() => {
+                                setSelectedImage(
+                                  selectedImage.filter((e) => e !== image)
+                                );
+                                // console.log(image);
+                              }}
+                            >
+                              <Delete sx={{ color: "#e55039" }} />
+                            </IconButton>
+                          }
+                          actionPosition="right"
+                        />
+                        {index}
+                      </ImageListItem>
+                    </CardActionArea>
                   );
                 })}
             </ImageList>
@@ -289,6 +286,7 @@ export default function CreateNewBook() {
           <Button
             variant="contained"
             sx={{ width: "10%", marginTop: "10px", mr: 3 }}
+            onClick={()=>navigate("/admin/manage-book")}
           >
             Cancel
           </Button>
