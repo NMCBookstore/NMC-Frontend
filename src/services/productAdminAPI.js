@@ -6,6 +6,7 @@ const productAdmin = book.injectEndpoints({
       query: () => ({
         url: `admin/books`,
       }),
+      providesTags: ["books"],
     }),
     createNewBook: builder.mutation({
       query: (formData) => ({
@@ -13,9 +14,21 @@ const productAdmin = book.injectEndpoints({
         url: `admin/books/`,
         body: formData,
       }),
+      invalidatesTags: ["books"],
+    }),
+    UpdateBook: builder.mutation({
+      query: (formData ) => ({
+        method: "PUT",
+        url: `admin/books/${formData.get("id")}`,
+        body: formData,
+      }),
     }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetAllBookQuery, useCreateNewBookMutation } = productAdmin;
+export const {
+  useGetAllBookQuery,
+  useCreateNewBookMutation,
+  useUpdateBookMutation,
+} = productAdmin;

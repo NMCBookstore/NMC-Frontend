@@ -22,6 +22,10 @@ const subGenres = book.injectEndpoints({
       query: (genre_id) => `subgenres/${genre_id}`,
       providesTags:["subgenres"]
     }),
+    listSubGenres: builder.query({
+      query: () => `subgenres/`,
+      providesTags:["subgenres"]
+    }),
     getOneSubGenres: builder.query({
       query: (id) => `subgenres/one/${id}`,
       providesTags:["subgenres"]
@@ -40,4 +44,5 @@ export const {
   useGetSubGenresQuery,
   useGetSubGenresNoticeableQuery,
   useGetOneSubGenresQuery,
+  useListSubGenresQuery
 } = subGenres;

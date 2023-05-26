@@ -16,44 +16,30 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { isValidImageList } from "../../../utils/helper";
 import { Editor } from "react-draft-wysiwyg";
 import { stateToHTML } from "draft-js-export-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { toast } from "react-hot-toast";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
-import { useGetSubGenresQuery } from "../../../services/subGenresAPIs";
+import { useListSubGenresQuery } from "../../../services/subGenresAPIs";
 import { useCreateNewBookMutation } from "../../../services/productAdminAPI";
 import { useNavigate } from "react-router-dom";
+import Autocomplete from '@mui/material/Autocomplete';
+import getSubgenreGroup from "./getSubgenreGroup";
 
 export default function CreateNewBook() {
   const navigate = useNavigate()
+  const { data: listSubgenre } = useListSubGenresQuery();
   const [selectedImage, setSelectedImage] = useState([]);
-
   const [selectedFiles, setSelectedFiles] = useState([]);
-
-  const onSelectFile = (e) => {
-    if (isValidImageList(selectedFiles)) {
-      const previewImage = Array.from(e.target.files);
-      setSelectedFiles(Array.from(e.target.files));
-
-      const imagesArr = previewImage.map((file) => {
-        return URL.createObjectURL(file);
-      });
-
-      setSelectedImage((prevImage) => prevImage.concat(imagesArr));
-    } else {
-      toast.error("Only png, jpeg, jpg files accepted");
-    }
-  };
-
-  const [id, setId] = useState(0);
-  const [idSubgenres, setIdSubgenres] = useState(0);
   const { data: genres } = useGetGenresQuery();
-  const { data: subGenres } = useGetSubGenresQuery(id, { skip: !id });
-  const [genre, setGenre] = useState("");
-  const [subgenre, setSubgenre] = useState("");
+  const [genreID, setGenreID] = useState([]);
+  const [subgenreID, setSubgenreID] = useState([]);
+  const [createNewBook] = useCreateNewBookMutation();
+  const [editorState, setEditorState] = useState("");
+  const [subgenres, setSubgenres] = useState([]);
 
   const [bookInfo, setBookInfo] = useState({
     name: "",
@@ -63,39 +49,75 @@ export default function CreateNewBook() {
     quantity: 0,
   });
 
-  const handleGenreChange = (event) => {
-    setGenre(event.target.value);
-    setId(event.target.value);
+  const handleGenreChange = (event, option) => {
+    if (option.length > 0) {
+      setGenreID(option.map(item => item.id));
+
+      let subGenre = getSubgenreGroup(option, bookInfo?.subgenres ? bookInfo?.subgenres : [])
+      setBookInfo({ ...bookInfo, genres: option, subgenres: subGenre })
+
+      let subgenresFromGenreID = getSubgenreGroup(option, listSubgenre)
+      setSubgenres(subgenresFromGenreID.slice().
+        sort((a, b) => a.genres_id - b.genres_id))
+    } else {
+      setGenreID([]);
+      setSubgenreID([])
+      setBookInfo({ ...bookInfo, genres: option, subgenres: option })
+      setSubgenres([])
+    }
   };
 
-  const handleSubgenreChange = (event) => {
-    setSubgenre(event.target.value);
-    setIdSubgenres(event.target.value);
+  const handleSubgenreChange = (event, option) => {
+    if (option.length > 0) {
+      setSubgenreID(option.map(item => item.id));
+    } else {
+      setSubgenreID([]);
+    }
+    setBookInfo({ ...bookInfo, subgenres: option })
   };
-
-  const [editorState, setEditorState] = useState("");
 
   const handleEditorChange = (newEditorState) => {
     setEditorState(newEditorState);
   };
 
-  const [createNewBook] = useCreateNewBookMutation();
+  const onSelectFile = (e) => {
+    if (isValidImageList(selectedFiles)) {
+      const selectedFilesArr = Array.from(e.target.files);
+      setSelectedFiles(selectedFilesArr)
 
-  const handleCreateBook = () => {
+      const imagesArr = selectedFilesArr.map((file) => {
+        return URL.createObjectURL(file);
+      });
+
+      setSelectedImage((prevImage) => prevImage.concat(imagesArr));
+    }
+  };
+
+  const handleCreateBook = async () => {
     const contentState = editorState.getCurrentContent();
     const html = stateToHTML(contentState);
 
     const formData = new FormData();
 
     formData.append("name", bookInfo.name);
-    formData.append("price", bookInfo.price);
+    formData.append("price", parseFloat(bookInfo.price));
     formData.append("author", bookInfo.author);
     formData.append("publisher", bookInfo.publisher);
     formData.append("quantity", bookInfo.quantity);
-    formData.append("image", selectedFiles);
-    formData.append("genres_Id", id);
-    formData.append("subgenres_Id", idSubgenres);
+    selectedFiles.forEach((file) => {
+      formData.append("image", file);
+    });
+    genreID.forEach((file) => {
+      formData.append("genres_id", file);
+    });
+    subgenreID.forEach((file) => {
+      formData.append("subgenres_id", file);
+    });
     formData.append("description", html);
+
+
+    const v = await createNewBook(formData)
+    navigate("/admin/manage-book")
   };
 
   return (
@@ -141,24 +163,18 @@ export default function CreateNewBook() {
                       setBookInfo({ ...bookInfo, quantity: e.target.value })
                     }
                   />
-                  <FormControl
-                    sx={{ width: "90%", zIndex: 1, marginBottom: 2 }}
-                  >
-                    <InputLabel id="genres-select-label">Genres</InputLabel>
-                    <Select
-                      labelId="genres-select-label"
-                      id="genres-select"
-                      value={genre}
-                      label="Genres"
-                      onChange={handleGenreChange}
-                    >
-                      {genres?.map((item, index) => (
-                        <MenuItem key={item?.id} value={item?.id}>
-                          {item?.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  <Autocomplete
+                    multiple
+                    disablePortal
+                    limitTags={3}
+                    id="multiple-limit-tags"
+                    options={genres ? genres : []}
+                    getOptionLabel={(option) => option?.name}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Genres" />
+                    )}
+                    onChange={(e, option) => handleGenreChange(e, option)}
+                  />
                 </Stack>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -181,27 +197,37 @@ export default function CreateNewBook() {
                       setBookInfo({ ...bookInfo, publisher: e.target.value })
                     }
                   />
-                  <FormControl
-                    sx={{ width: "90%", zIndex: 1, marginBottom: 2 }}
-                    disabled={genre ? false : true}
-                  >
-                    <InputLabel id="subgenres-select-label">
-                      Subgenres
-                    </InputLabel>
-                    <Select
-                      labelId="subgenres-select-label"
-                      id="subgenres-select"
-                      value={subgenre}
-                      label="Sub Genres"
-                      onChange={handleSubgenreChange}
-                    >
-                      {subGenres?.map((item, index) => (
-                        <MenuItem key={item?.id} value={item?.id}>
-                          {item?.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  <Autocomplete
+                    multiple
+                    disablePortal
+                    limitTags={3}
+                    id="multiple-limit-tags"
+                    options={subgenres ? subgenres : []}
+                    getOptionLabel={(option) => option?.name}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Subgenres" />
+                    )}
+                    onChange={(e, option) => {
+                      handleSubgenreChange(e, option)
+                    }}
+                    value={bookInfo?.subgenres && listSubgenre ?
+                      bookInfo.subgenres.map(item =>
+                        listSubgenre[item.id - 1]) : []
+                    }
+                    groupBy={(genre) =>
+                      genres[genre.genres_id - 1].name
+                    }
+                    renderGroup={(params) => (
+                      <Typography sx={{ px: 2 }}>
+                        <Typography variant="body2" sx={{pt:2, color:"#7599cc"}}>
+                          {params.group}
+                        </Typography>
+                        <Typography variant="body1" sx={{pt:1}}>
+                          {params.children}
+                        </Typography>
+                      </Typography>
+                    )}
+                  />
                 </Stack>
               </Grid>
             </Grid>
@@ -256,7 +282,6 @@ export default function CreateNewBook() {
                                 setSelectedImage(
                                   selectedImage.filter((e) => e !== image)
                                 );
-                                // console.log(image);
                               }}
                             >
                               <Delete sx={{ color: "#e55039" }} />
@@ -286,7 +311,7 @@ export default function CreateNewBook() {
           <Button
             variant="contained"
             sx={{ width: "10%", marginTop: "10px", mr: 3 }}
-            onClick={()=>navigate("/admin/manage-book")}
+            onClick={() => navigate("/admin/manage-book")}
           >
             Cancel
           </Button>
@@ -297,7 +322,6 @@ export default function CreateNewBook() {
           >
             Submit
           </Button>
-          {/* </Stack> */}
         </Box>
       </Box>
     </>

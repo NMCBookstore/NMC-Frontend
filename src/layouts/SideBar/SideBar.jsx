@@ -122,7 +122,7 @@ export default function SideBar() {
                         {subGenres?.map((subgenre, index) => (
                           <ListItemButton key={subgenre?.id}
                             sx={{ px: 1, py: 0.5 }}
-                            onClick={() => navigate(`/search-filter?genres_id=${genre?.id}&subgenres_id=${subgenre?.id}`)}
+                            onClick={() => window.location.replace(`/search-filter?genres_id=${genre?.id}&subgenres_id=${subgenre?.id}`)}
                           >
                             <ListItemText primary={subgenre?.name} />
                           </ListItemButton>
