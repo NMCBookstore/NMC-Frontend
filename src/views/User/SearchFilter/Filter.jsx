@@ -35,20 +35,20 @@ export default function Filter({
 }) {
   const [id, setId] = useState(searchParams.get("genres_id") ? searchParams.get("genres_id") : 0);
   const { data: genres } = useGetGenresQuery();
-  const { data: subGenres } = useGetSubGenresQuery(id, { skip: !id });
+  const { data: subGenres } = useGetSubGenresQuery(id, { skip: !id, refetchOnMountOrArgChange: true });
   const [genre, setGenre] = useState("");
   const [subgenre, setSubgenre] = useState("");
   const [rating, setRating] = useState(0);
   const [price, setPrice] = useState([1000, 10000000]);
 
   const handleGenreChange = (event) => {
+    delete searchInfo.subgenres_id
     setGenre(event.target.value);
     if (event.target.value) {
       searchInfo["genres_id"] = event.target.value
     } else {
       delete searchInfo.genres_id
     }
-    delete searchInfo.subgenres_id
     setId(searchInfo["genres_id"]);
     setSearchParams(searchInfo);
   };

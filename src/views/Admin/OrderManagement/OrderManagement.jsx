@@ -20,7 +20,7 @@ export default function OrderManagement() {
       name: "id",
       label: "ID",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       }
     },
@@ -28,7 +28,7 @@ export default function OrderManagement() {
       name: "username",
       label: "User",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       }
     },
@@ -36,8 +36,8 @@ export default function OrderManagement() {
       name: "books",
       label: "Books",
       options: {
-        filter: true,
-        sort: true,
+        filter: false,
+        sort: false,
         customBodyRender: (value) => (
           value?.map((book, index) => (
             <Typography mt={1}
@@ -53,7 +53,7 @@ export default function OrderManagement() {
       name: "transactions",
       label: "Each Amount",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         customBodyRender: (value) => (
           value?.map((transaction, index) => (
@@ -70,7 +70,7 @@ export default function OrderManagement() {
       name: "transactions",
       label: "Book Price",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         customBodyRender: (value) => (
           value?.map((transaction, index) => (
@@ -87,7 +87,7 @@ export default function OrderManagement() {
       name: "sub_amount",
       label: "Total Amount",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       }
     },

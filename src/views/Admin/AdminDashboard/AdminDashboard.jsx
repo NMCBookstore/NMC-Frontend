@@ -10,7 +10,7 @@ export default function AdminDashboard() {
   const [revenueMonthsInfo, setRevenueMonthsInfo] = useState()
   const [revenueQuartersInfo, setRevenueQuartersInfo] = useState()
   const [revenueYearsInfo, setRevenueYearsInfo] = useState()
-  const [revenueInfo, setRevenueInfo] = useState()
+  const [revenueInfo, setRevenueInfo] = useState(null)
 
   useEffect(() => {
     setRevenueInfo({name: "days",revenue: data})
@@ -18,25 +18,32 @@ export default function AdminDashboard() {
 
 
   return (
-    <Grid container my={2} spacing={2}>
-      <Grid spacing={2} xs={12} sm={8}>
-        <ChartDashboard
-          revenueInfo={revenueInfo}
-        />
-      </Grid>
-      <Grid spacing={2} xs={12} sm={4}>
-        <CardInfo
-          revenueDaysInfo={revenueDaysInfo}
-          revenueMonthsInfo={revenueMonthsInfo}
-          revenueQuartersInfo={revenueQuartersInfo}
-          revenueYearsInfo={revenueYearsInfo}
-          setRevenueDaysInfo={setRevenueDaysInfo}
-          setRevenueMonthsInfo={setRevenueMonthsInfo}
-          setRevenueQuartersInfo={setRevenueQuartersInfo}
-          setRevenueYearsInfo={setRevenueYearsInfo}
-          setRevenueInfo={setRevenueInfo}
-        />
-      </Grid>
-    </Grid>
+    <>
+    {revenueInfo?.revenue && revenueInfo?.revenue.length > 0  ? 
+    // (<Grid container my={2} spacing={2}>
+    //   <Grid spacing={2} xs={12} sm={8}>
+    //     <ChartDashboard
+    //       revenueInfo={revenueInfo}
+    //     />
+    //   </Grid>
+    //   <Grid spacing={2} xs={12} sm={4}>
+    //     <CardInfo
+    //       revenueDaysInfo={revenueDaysInfo}
+    //       revenueMonthsInfo={revenueMonthsInfo}
+    //       revenueQuartersInfo={revenueQuartersInfo}
+    //       revenueYearsInfo={revenueYearsInfo}
+    //       setRevenueDaysInfo={setRevenueDaysInfo}
+    //       setRevenueMonthsInfo={setRevenueMonthsInfo}
+    //       setRevenueQuartersInfo={setRevenueQuartersInfo}
+    //       setRevenueYearsInfo={setRevenueYearsInfo}
+    //       setRevenueInfo={setRevenueInfo}
+    //     />
+    //   </Grid>
+    // </Grid>)
+    (console.log(revenueInfo))
+    :(
+      <>No payment</>
+    )}
+    </>
   );
 }
