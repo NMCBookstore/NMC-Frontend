@@ -20,7 +20,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useDeleteProductCartMutation, useUpdateCartMutation } from "../../../services/cartAPI";
+import {
+    useDeleteProductCartMutation,
+    useUpdateCartMutation,
+} from "../../../services/cartAPI";
 import DialogConfirmDeleteAll from "../UserCart/DialogConfirmDeleteAll";
 import ModalAddress from "./ModalAddress";
 import { useDeleteAddressMutation } from "../../../services/addressAPIs";
@@ -44,14 +47,14 @@ function EnhancedTableHead(props) {
                         }}
                     />
                 </TableCell>
-                {headCells.map((headCell) =>
+                {headCells.map((headCell) => (
                     <TableCell
                         key={headCell.id}
                         align={headCell.numeric ? "right" : "left"}
                     >
                         {headCell.label}
                     </TableCell>
-                )}
+                ))}
             </TableRow>
         </TableHead>
     );
@@ -64,12 +67,7 @@ EnhancedTableHead.propTypes = {
 };
 
 function EnhancedTableToolbar(props) {
-    const {
-        numSelected,
-        title,
-        handleDelete,
-        handleOpenDeleteDialog,
-    } = props;
+    const { numSelected, title, handleDelete, handleOpenDeleteDialog } = props;
 
     return (
         <Toolbar
@@ -218,9 +216,7 @@ export default function ListAddress({ title, data, isFetching }) {
                                     {/* address */}
                                     <TableCell align="left">
                                         <Stack direction="column">
-                                            <Typography variant="h6">
-                                                {item?.address}
-                                            </Typography>
+                                            <Typography variant="h6">{item?.address}</Typography>
                                             <Typography mt={1} variant="subtitle1">
                                                 {item?.district}, {item?.city}
                                             </Typography>

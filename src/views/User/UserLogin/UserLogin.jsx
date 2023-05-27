@@ -23,7 +23,6 @@ import {
 } from "../../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../../../services/authAPIs";
-import { validateUsername, validatePasswordLogin } from "../../../utils/helper";
 import toast, { Toaster } from "react-hot-toast";
 
 function Copyright(props) {
@@ -53,11 +52,6 @@ export default function UserLogin() {
     showPass: false,
   });
 
-  const [errors, setErrors] = useState({
-    usernameError: "",
-    passwordError: "",
-  });
-
   const handlePassVisibilty = () => {
     setValues({
       ...values,
@@ -71,31 +65,19 @@ export default function UserLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const { username, password } = values;
-
-    // Validate username
-    const usernameError = validateUsername(username);
-    setErrors((prevErrors) => ({ ...prevErrors, usernameError }));
-
-    // Validate password
-    const passwordError = validatePasswordLogin(password);
-    setErrors((prevErrors) => ({ ...prevErrors, passwordError }));
-
-    if (!usernameError && !passwordError) {
-      dispatch(loginStart());
-      try {
-        const { data } = await login(values);
-        dispatch(setCredentials(data));
-        toast.success("Login success !");
-        {
-          data.user.role === "admin"
-            ? navigate("/admin/dashboard")
-            : navigate("/");
-        }
-      } catch (err) {
-        toast.error("Login failed !");
-        dispatch(loginFailed());
+    dispatch(loginStart());
+    try {
+      const { data } = await login(values);
+      dispatch(setCredentials(data));
+      toast.success("Login success !");
+      {
+        data.user.role === "admin"
+          ? navigate("/admin/dashboard")
+          : navigate("/");
       }
+    } catch (err) {
+      toast.error("Login failed !");
+      dispatch(loginFailed());
     }
 
     // login(values).then(({ data }) => {
