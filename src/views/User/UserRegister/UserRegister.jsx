@@ -123,12 +123,21 @@ const UserRegister = () => {
       formData.append("phone_number", values.phone_number);
 
       const v = await signup(formData);
-      if (v.error && v.error.status === 500) {
-        toast.error("Username or email existed");
-      } else {
-        toast.success("Welcome to NMC Book store");
-        navigate("/login");
+      try {
+        if (v.error && v.error.status === 500) {
+          toast.error("Username or email existed");
+        }
+        if (v.error && v.error.status === 400) {
+          toast.error("Register failed");
+        } else if (v.data) {
+          toast.success("Welcome to NMC Book store");
+          navigate("/login");
+        }
+      } catch (err) {
+        toast.error("Register failed");
       }
+
+      // console.log(v);
 
       for (let [key, value] of formData.entries()) {
         console.log(key, value);

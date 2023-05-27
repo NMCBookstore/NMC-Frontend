@@ -1,6 +1,13 @@
 import * as React from "react";
 import { useState } from "react";
-import { Container, List, Stack, TextField, IconButton, InputAdornment } from "@mui/material";
+import {
+  Container,
+  List,
+  Stack,
+  TextField,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
@@ -130,6 +137,5 @@ export default function UserContentChangePassword() {
         {/* </Box> */}
       </Stack>
     </Container>
-
   );
 }

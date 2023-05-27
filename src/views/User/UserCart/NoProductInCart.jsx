@@ -18,7 +18,7 @@ const bull = (
 
 export default function NoProductInCart() {
   return (
-    <Card sx={{ minWidth: 300, border: 1 }}>
+    <Card sx={{ maxWidth: 450, border: 1 }}>
       <CardContent>
         <Typography variant="subtitle1">
           Oops, looks like you don't have any product in your cart.

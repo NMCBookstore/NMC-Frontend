@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import { Container, Stack } from "@mui/material";
 
 export default function UserCompleted() {
@@ -13,5 +13,5 @@ export default function UserCompleted() {
         <div>Completed</div>
       </Stack>
     </Container>
-  )
+  );
 }
