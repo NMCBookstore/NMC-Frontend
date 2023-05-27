@@ -1,33 +1,39 @@
 import React, { useState, useEffect } from "react";
-import { Avatar, Box, Container, Stack, TextField } from "@mui/material";
+import {
+  Avatar,
+  Container,
+  Stack,
+  TextField,
+  Tooltip
+} from "@mui/material";
 import Button from "@mui/material/Button";
-import { useUpdateUserMutation } from "../../../services/userAPI";
+import { useGetUserQuery, useUpdateUserMutation } from "../../../services/userAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { setCredentials } from "../../../features/auth/authSlice";
-import { isValidImage } from "../../../utils/helper";
 import {
-  validateRegisterUsername,
-  validatePasswordLogin,
+  isValidImage,
   validAge,
   validPhoneNumber,
-  validateRegisterEmail,
   validFullName,
 } from "../../../utils/helper";
 import { PhotoCamera } from "@mui/icons-material";
+import CheckIcon from '@mui/icons-material/Check';
+import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
+import {
+  useSendVerifiedEmailMutation
+} from "../../../services/verifiedEmailAPIs";
 
 export default function UserContentProfile({ data }) {
   const user = useSelector((state) => state.auth.login.user);
+  const {data: getUser} = useGetUserQuery()
 
   const [userInfo, setUserInfo] = useState(user);
-
   const [errors, setErrors] = useState(user);
 
-  useEffect(() => {
-    userInfo;
-  }, []);
-
   const dispatch = useDispatch();
+
+  const [sendVerifiedEmail ] = useSendVerifiedEmailMutation()
 
   // Set avatar
   const [avatar, setAvatar] = useState();
@@ -72,6 +78,7 @@ export default function UserContentProfile({ data }) {
       formData.append("full_name", userInfo.full_name);
       formData.append("phone_number", userInfo.phone_number);
       formData.append("age", userInfo.age);
+      formData.append("email", userInfo.email);
 
       if (avatar) {
         formData.append("image", avatar);
@@ -84,20 +91,18 @@ export default function UserContentProfile({ data }) {
         toast.success("Updated your profile");
       }
       dispatch(setCredentials({ user: v.data }));
-      console.log(v.data.image);
-
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
     }
   };
 
   //Get user info
   const [info, setInfo] = useState(null);
   useEffect(() => {
-    // console.log(data)
     setInfo(data);
   }, [data]);
+
+  const handleVerify = () => {
+    sendVerifiedEmail()
+  }
 
   return (
     info && (
@@ -105,13 +110,14 @@ export default function UserContentProfile({ data }) {
         <Stack
           spacing={2}
           sx={{
-            width: "60%",
+            width: "65%",
             display: "flex",
             flexWrap: "wrap",
             justifyContent: "center",
           }}
         >
           <TextField
+            sx={{ width: "85%" }}
             InputLabelProps={{ shrink: true }}
             disabled
             label="User Name"
@@ -120,6 +126,7 @@ export default function UserContentProfile({ data }) {
           />
 
           <TextField
+            sx={{ width: "85%" }}
             InputLabelProps={{ shrink: true }}
             label="Full Name"
             name="full_name"
@@ -128,18 +135,39 @@ export default function UserContentProfile({ data }) {
               setUserInfo({ ...userInfo, full_name: e.target.value })
             }
           />
+          <Stack direction="row" sx={{ alignItems: "center" }}>
+            <TextField
+              sx={{ width: "85%" }}
+              InputLabelProps={{ shrink: true }}
+              label="Email"
+              name="email"
+              defaultValue={user?.email}
+              onChange={(e) =>
+                setUserInfo({ ...userInfo, email: e.target.value })
+              }
+            />
+            {getUser?.is_email_verified ?
+              <Tooltip title="email verified">
+                <CheckIcon
+                  fontSize="small"
+                  color="success" />
+              </Tooltip>
+              :
+              <Stack direction="row" sx={{ alignItems: "center" }}>
+                <Tooltip
+                  title="email not verify (click here to verify)"
+                  onClick={handleVerify}
+                >
+                  <PriorityHighIcon
+                    fontSize="small"
+                    color="warning" />
+                </Tooltip>
+              </Stack>}
+          </Stack>
+
 
           <TextField
-            InputLabelProps={{ shrink: true }}
-            label="Email"
-            name="email"
-            defaultValue={user?.email}
-            onChange={(e) =>
-              setUserInfo({ ...userInfo, email: e.target.value })
-            }
-          />
-
-          <TextField
+            sx={{ width: "85%" }}
             InputLabelProps={{ shrink: true }}
             label="Phone Number"
             name="phone_number"
@@ -150,6 +178,7 @@ export default function UserContentProfile({ data }) {
           />
 
           <TextField
+            sx={{ width: "85%" }}
             InputLabelProps={{ shrink: true }}
             label="Age"
             name="age"
@@ -176,7 +205,6 @@ export default function UserContentProfile({ data }) {
           >
             <input
               hidden
-              // accept="image/*"
               type="file"
               onChange={handlePreviewAvatar}
             />

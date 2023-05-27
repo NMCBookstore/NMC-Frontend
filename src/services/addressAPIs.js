@@ -27,20 +27,23 @@ const address = book.injectEndpoints({
       providesTags: ["AddressItems"],
     }),
     deleteAddress: builder.mutation({
-      query: (id) => {
+      query: (idsArr) => {
+        let endPoint = `users/addresses?`;
+        idsArr.forEach((id) => (endPoint += `ids=${id}&`));
+
         return {
           method: "DELETE",
-          url: `users/Addresss/${id}`,
+          url: endPoint,
         };
       },
       invalidatesTags: ["AddressItems"],
     }),
     updateAddress: builder.mutation({
-      query: ({ id, address, district, city }) => {
+      query: ({ id, address, district_id, city_id }) => {
         return {
           method: "PUT",
-          url: `users/Addresss/${id}`,
-          body: { address, district, city },
+          url: `users/addresses/${id}`,
+          body: { id, address, district_id, city_id },
         };
       },
       invalidatesTags: ["AddressItems"],

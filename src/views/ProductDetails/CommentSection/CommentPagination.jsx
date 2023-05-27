@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Pagination, Stack, useMediaQuery } from "@mui/material";
-import { useSearchParams } from "react-router-dom";
 
 export default function CommentPagination({ data, handleCommentChange }) {
-  // const {pagination, onPageChange} = props;
   const pageNum = parseInt(data?.total_page);
-  // console.log(pageNum);
 
   const onPageChange = (_, value) => {
     handleCommentChange(value, 5);
+    window.scrollTo({top: 2200, left: 0, behavior: 'smooth'});
   };
 
   const isMobile = useMediaQuery("(max-width: 800px)");

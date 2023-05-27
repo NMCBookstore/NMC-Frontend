@@ -3,16 +3,10 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import MUIDataTable from "mui-datatables";
 import makeStyles from "@mui/styles/makeStyles";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
-import { Box, Button, Stack, Typography } from "@mui/material";
+import { Box, Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import CreateNewGenre from "./CreateNewGenre";
-
-const datatableData = [
-  ["Sach loai 1", "3"],
-  ["Sach loai 2", "4"],
-  ["Sach loai 3", "5"],
-];
-
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const useStyles = makeStyles((theme) => ({
   tableOverflow: {
@@ -42,6 +36,21 @@ export default function GenresManagement() {
         sort: true,
       },
     },
+    {
+      name: "",
+      label: " ",
+      options: {
+        customBodyRender: () => (
+          <Stack alignItems="end" sx={{pr:2}}>
+            <Tooltip
+            title="Edit genre and subgenres of it"
+          >
+            <ArrowForwardIosIcon />
+          </Tooltip>
+          </Stack>
+        )
+      },
+    },
   ]
 
   const classes = useStyles();
@@ -55,9 +64,9 @@ export default function GenresManagement() {
     <Box sx={{ my: 5 }}>
       <Stack direction="row" display="flex" justifyContent="space-between">
         <Typography variant="h4">
-        List of Genres
-          </Typography>
-        <CreateNewGenre/>
+          List of Genres
+        </Typography>
+        <CreateNewGenre />
       </Stack>
       <Grid container spacing={4}>
         <Grid item xs={12}>

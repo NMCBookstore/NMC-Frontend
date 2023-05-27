@@ -42,6 +42,7 @@ export default function Filter({
   const [price, setPrice] = useState([1000, 10000000]);
 
   const handleGenreChange = (event) => {
+    searchInfo["page_id"] = 1
     delete searchInfo.subgenres_id
     setGenre(event.target.value);
     if (event.target.value) {
@@ -54,6 +55,7 @@ export default function Filter({
   };
 
   const handleSubgenreChange = (event) => {
+    searchInfo["page_id"] = 1
     setSubgenre(event.target.value);
     if (event.target.value) {
       searchInfo["subgenres_id"] = event.target.value
@@ -130,6 +132,7 @@ export default function Filter({
           defaultValue={0}
           value={searchParams.get("rating") ? searchParams.get("rating") : rating}
           onChange={(e) => {
+            searchInfo["page_id"] = 1
             setRating(e.target.value)
             if (e.target.value !== 0) {
               searchInfo["rating"] = e.target.value
@@ -178,6 +181,7 @@ export default function Filter({
           max={1000000}
           defaultValue={0}
           onChange={(e) => {
+            searchInfo["page_id"] = 1
             handleChangePrice(e, e.target.value, true);
             searchInfo["min_price"] = e.target.value[0];
             searchInfo["max_price"] = e.target.value[1];

@@ -1,6 +1,6 @@
 import React from "react";
 import { Stack } from "@mui/system";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "./images/logo.png";
 import QRCode from "./images/Qrcode.png";
 import appStore from "./images/appstore.png";
@@ -14,6 +14,8 @@ import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import CopyrightIcon from "@mui/icons-material/Copyright";
 
 const Footer = () => {
+  const navigate = useNavigate()
+
   return (
     <Stack
       marginTop={20}
@@ -62,39 +64,84 @@ const Footer = () => {
             Account
           </Typography>
           <Box marginTop={2}>
-            <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography marginBottom={1}>My Account</Typography>
+            <Link
+              to="/user/profile"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Typography marginBottom={1}>
+                My Profile
+              </Typography>
             </Link>
-            <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography marginBottom={1}>Login/Register</Typography>
+            <Link
+              to="/login"
+              style={{ textDecoration: "none", color: "white" }}>
+              <Typography marginBottom={1}>
+                Login/Register
+              </Typography>
             </Link>
-            <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography marginBottom={1}>Cart</Typography>
+            <Link
+              to="/user/cart"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Typography marginBottom={1}>
+                Cart
+              </Typography>
             </Link>
-            <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography marginBottom={1}>Wishlist</Typography>
+            <Link
+              to="user/wishlist"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Typography marginBottom={1}>
+                Wishlist
+              </Typography>
             </Link>
-            <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography marginBottom={1}>Shop</Typography>
+            <Link
+              to="/search-filter?page_id=1&page_size=24&min_price=0&max_price=10000000"
+              style={{ textDecoration: "none", color: "white" }}>
+              <Typography marginBottom={1}>
+                Books
+              </Typography>
             </Link>
           </Box>
         </Stack>
         <Stack direction="column" alignItems="left" p={2} sx={{ width: "15%" }}>
           <Typography variant="h5" sx={{ fontWeight: "medium" }}>
-            Quick Link
+            Information
           </Typography>
           <Box marginTop={2}>
-            <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography marginBottom={1}>Privacy Policy</Typography>
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Typography marginBottom={1}>
+                Privacy Policy
+              </Typography>
+            </Link>
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Typography marginBottom={1}>
+                Terms Of Use
+              </Typography>
+            </Link>
+            <Link
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Typography marginBottom={1}>
+                FAQ
+              </Typography>
             </Link>
             <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography marginBottom={1}>Terms Of Use</Typography>
+              <Typography marginBottom={1}>
+                Contact
+              </Typography>
             </Link>
-            <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography marginBottom={1}>FAQ</Typography>
-            </Link>
-            <Link style={{ textDecoration: "none", color: "white" }}>
-              <Typography marginBottom={1}>Contact</Typography>
+            <Link
+              to="/about"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              <Typography marginBottom={1}>
+                About
+              </Typography>
             </Link>
           </Box>
         </Stack>

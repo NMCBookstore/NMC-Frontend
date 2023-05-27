@@ -43,7 +43,7 @@ const ProductDetails = () => {
 
   const { id } = useParams();
 
-  const { data } = useGetProductQuery(id);
+  const { data } = useGetProductQuery(id, { refetchOnMountOrArgChange: true });
 
   const [addWishlist] = useAddWishListMutation(id);
 
@@ -103,7 +103,11 @@ const ProductDetails = () => {
                 <Typography variant="subtitle2" mb={2}>
                   Author: {data?.author}
                 </Typography>
-                <Rating readOnly value={data? (data.rating):(0)} size="small" />
+                <Rating
+                  precision={0.5}
+                  readOnly
+                  value={data ? (data?.rating) : (0)} size="small"
+                />
                 <Typography
                   variant="h5"
                   mt={5}
@@ -196,7 +200,7 @@ const ProductDetails = () => {
 
         {/* Comment  */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <Comment id={parseInt(id)}/>
+          <Comment id={parseInt(id)} />
         </Grid>
       </Grid>
     </Box>
