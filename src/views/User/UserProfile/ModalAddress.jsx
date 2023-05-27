@@ -4,14 +4,16 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
-import { Stack, TextField } from "@mui/material";
+import { IconButton, Stack, TextField, Tooltip } from "@mui/material";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import { useListCitiesQuery } from "../../../services/citiesAPIs"
 import { useListDistrictsQuery } from "../../../services/districtsAPIs"
-import { useCreateAddressMutation } from '../../../services/addressAPIs';
+import { useCreateAddressMutation, useGetAddressQuery, useUpdateAddressMutation } from '../../../services/addressAPIs';
+import EditIcon from '@mui/icons-material/Edit';
+import { useEffect } from 'react';
 
 
 const style = {
@@ -26,7 +28,7 @@ const style = {
     p: 4,
 };
 
-export default function ModalAddress() {
+export default function ModalAddress({ mode, addressID }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -37,39 +39,66 @@ export default function ModalAddress() {
     const { data: cities } = useListCitiesQuery();
     const { data: districts } = useListDistrictsQuery(id, { skip: !id });
     const [createAddress] = useCreateAddressMutation();
+    const [updateAddress] = useUpdateAddressMutation();
+    const { data: userAddress, isFetching } = useGetAddressQuery(addressID ? addressID : 0);
+
+    useEffect(() => {
+        setAddress(userAddress)
+        setId(userAddress?.city_id)
+    }, [isFetching])
+
 
     const handleCityChange = (e) => {
         setCity(e.target.value);
         setId(e.target.value)
-        setAddress((prev) => ({ ...prev, "city_id": e.target.value }))
+        setAddress((prev) => ({ ...prev, city_id: e.target.value }))
     };
 
     const handleDistrictChange = (e) => {
         setDistrict(e.target.value);
-        setAddress((prev) => ({ ...prev, "district_id": e.target.value }))
+        setAddress((prev) => ({ ...prev, district_id: e.target.value }))
     };
 
     const handleSubmit = () => {
-        const v = createAddress(address)
+        if (mode === "create") {
+            const v = createAddress(address)
+        } else {
+            const v = updateAddress({
+                id: addressID,
+                address: address.address,
+                district_id: address.district_id,
+                city_id: address.city_id
+            })
+        }
         handleClose()
     }
 
     return (
         <div>
-            <Button
-                type="submit"
-                variant="contained"
-                sx={{
-                    mt: 2,
-                    backgroundColor: "#DB4444",
-                    "&:hover": {
+            {mode === "create" ?
+                <Button
+                    type="submit"
+                    variant="contained"
+                    sx={{
+                        mt: 2,
                         backgroundColor: "#DB4444",
-                    },
-                }}
-                onClick={handleOpen}
-            >
-                Add Address
-            </Button>
+                        "&:hover": {
+                            backgroundColor: "#DB4444",
+                        },
+                    }}
+                    onClick={handleOpen}
+                >
+                    Add Address
+                </Button>
+                :
+                <Tooltip title="Update Address">
+                    <IconButton
+                        onClick={handleOpen}
+                    >
+                        <EditIcon />
+                    </IconButton>
+                </Tooltip>
+            }
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -88,7 +117,8 @@ export default function ModalAddress() {
                             label="Address"
                             placeholder="Enter your address"
                             type="text"
-                            onChange={(e, prev) => setAddress({ ...prev, "address": e.target.value })}
+                            value={address?.address && mode === "update" ? address?.address : ""}
+                            onChange={(e, prev) => setAddress({ ...prev, address: e.target.value })}
                             sx={{ width: "100%", my: 2 }}
                         />
                         <FormControl
@@ -98,8 +128,8 @@ export default function ModalAddress() {
                             <Select
                                 labelId="city-select-label"
                                 id="city-select"
-                                value={city}
                                 label="City"
+                                value={address?.city_id && mode === "update" ? address?.city_id : city}
                                 onChange={(e) => handleCityChange(e)}
                             >
                                 {cities?.map((item, index) => (
@@ -115,7 +145,7 @@ export default function ModalAddress() {
                             <Select
                                 labelId="districts-select-label"
                                 id="districts-select"
-                                value={district}
+                                value={address?.district_id && mode === "update" ? address?.district_id : district}
                                 label="District"
                                 onChange={(e) => handleDistrictChange(e)}
                             >

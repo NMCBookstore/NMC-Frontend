@@ -21,12 +21,26 @@ export default function DetailProductInfo({ data }) {
             Details product
           </Typography>
         </Box>
-        <div style={{ marginLeft: "8px"}}>
-          <Typography  fontWeight="600" color="black">Author: <Typography fontWeight="400">{data?.author}</Typography></Typography>
-          <Typography  fontWeight="600" color="black">Publisher: <Typography fontWeight="400">{data?.publisher}</Typography></Typography>
-          <Typography  fontWeight="600" color="black">Descriptions: </Typography>
-          <Typography fontWeight="400">{data?.description}</Typography>
-        </div>
+        <Stack sx={{ marginLeft: "8px" }} spacing={1}>
+          <Typography fontWeight="600" color="black">
+            Author:
+            <Typography fontWeight="400">
+              &nbsp;{data?.author}
+            </Typography>
+          </Typography>
+          <Typography fontWeight="600" color="black">
+            Publisher:
+            <Typography fontWeight="400">
+              &nbsp;{data?.publisher}
+            </Typography>
+          </Typography>
+          <Typography fontWeight="600" color="black">
+            Descriptions:
+          </Typography>
+          <Typography fontWeight="400" pl={1}>
+            <div dangerouslySetInnerHTML={{ __html: data?.description.replace(/\\n/g, "<br/>").replace(/\\/g, "") }} />
+          </Typography>
+        </Stack>
       </Stack>
     </Box>
   );

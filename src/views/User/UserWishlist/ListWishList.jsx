@@ -28,8 +28,8 @@ import { useDeleteProductWishlistMutation } from "../../../services/wishlistAPI"
 import { useAddCartMutation, useGetCartQuery } from "../../../services/cartAPI";
 import { toast } from "react-hot-toast";
 import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import NoProductInWishlist from "./NoProductInWishlist";
 import DialogConfirmDeleteAllWishlist from "./DialogConfirmDeleteAllWishlist";
+import NoData from "../../../components/NoData";
 
 const headCells = [
   {
@@ -365,6 +365,6 @@ export default function ListWishList({ title, data, isFetching }) {
       </Paper>
     </Box>
   ) : (
-    <NoProductInWishlist />
+    <NoData page="wishlist" />
   );
 }

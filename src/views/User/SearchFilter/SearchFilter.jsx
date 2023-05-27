@@ -81,17 +81,13 @@ const SearchFilter = () => {
             )}
           </Box>
           <BookList data={allProduct} />
-        </Grid>
-        <Grid
-          container
-          item
-          xs={12}
-          sm={12}
-          sx={{ flexDirection: { xs: "column", sm: "row" } }}
-        >
-
           <Box
-            sx={{ width: "100%", display: "flex", justifyContent: "center" }}
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
           >
             <PaginationBottom
               allProduct={allProduct}
@@ -99,7 +95,6 @@ const SearchFilter = () => {
               handlePageChange={handlePagination}
             />
           </Box>
-
         </Grid>
       </Grid>
     </Box>

@@ -8,8 +8,8 @@ export default function About() {
         <Stack pt={10}>
             <Stack direction="row" mt={10}>
                 <Stack direction="column" mr={2}>
-                    <Typography variant='h3'>Calling All Lemonade Makers!</Typography>
-                    <Typography variant='body1'>We’re looking for smart creatives, filled with positive energy, and a passion for building products people love</Typography>
+                    <Typography variant='h3'>19110016</Typography>
+                    <Typography variant='body1'>Nguyễn Minh Cương</Typography>
                 </Stack>
                 <img
                     src='https://wallpapers.com/images/featured/5q6xbfxwtbme5kaj.jpg'
@@ -22,7 +22,7 @@ export default function About() {
             </Stack>
             <Stack direction="row" mt={8}>
                 <img
-                    src='https://wallpapers.com/images/featured/5q6xbfxwtbme5kaj.jpg'
+                    src='https://media.istockphoto.com/id/1330198278/photo/graduation-cap-on-a-stack-of-books-with-empty-space-to-the-right-graduation-concept.jpg?s=612x612&w=0&k=20&c=5ylDPFelW32e53SqRgKKZZM_kdtwJaGRePuVjMePAlA%3D'
                     style={{
                         width: "60%",
                         height: "50%",
@@ -30,8 +30,8 @@ export default function About() {
                     }}
                 />
                 <Stack direction="column" ml={2}>
-                    <Typography variant='h3'>Calling All Lemonade Makers!</Typography>
-                    <Typography variant='body1'>We’re looking for smart creatives, filled with positive energy, and a passion for building products people love</Typography>
+                    <Typography variant='h3'>19110173</Typography>
+                    <Typography variant='body1'>Nguyễn Minh Chiến</Typography>
                 </Stack>
             </Stack>
         </Stack>

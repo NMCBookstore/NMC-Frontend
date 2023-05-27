@@ -39,7 +39,7 @@ export default function ImageGrid({ images, onSelectImage, onYtSrc, selectedImag
             key={image}
             style={
               {
-                filter: "brightness(0.5)",
+                // filter: "brightness(0.5)",
                 position: "relative",
                 cursor: "pointer",
               }
@@ -49,13 +49,19 @@ export default function ImageGrid({ images, onSelectImage, onYtSrc, selectedImag
             <img
               src={image.includes('youtube') ? images[0] : image}
               width="100%"
+              style={
+                {
+                  filter: "brightness(0.6)",
+                }
+              }
             />
             <Typography
               variant="h4"
               sx={{
                 position: "absolute",
-                top: "40%",
-                left: "35%",
+                top: "35%",
+                left: "30%",
+                color:"white"
               }}>
               +{images.length - 3}
             </Typography>

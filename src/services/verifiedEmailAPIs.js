@@ -7,12 +7,18 @@ const verifiedEmail = book.injectEndpoints({
         method: "GET",
         url: `verify_email?email_id=${email_id}&secret_code=${secret_code}`,
       }),
-      providesTags: ["AddressItems"],
+    }),
+    sendVerifiedEmail: builder.mutation({
+      query: () => ({
+        method: "POST",
+        url: `users/send_verify_email`,
+      }),
     }),
   }),
   overrideExisting: false,
 });
 
 export const {
-    useVerifiedEmailQuery
+    useVerifiedEmailQuery,
+    useSendVerifiedEmailMutation
 } = verifiedEmail;

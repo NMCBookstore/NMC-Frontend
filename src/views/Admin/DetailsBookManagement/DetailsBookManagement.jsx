@@ -55,12 +55,13 @@ export default function DetailsBookManageMent() {
     setSubgenres(subgenresFromGenreID.slice().
       sort((a, b) => a.genres_id - b.genres_id))
 
+    const des = data?.description.replace(/\\n/g,"<br/>").replace(/\\/g,"")
     setBookInfo(data)
     setSelectedImage(data?.image)
     setEditorState(
       EditorState.createWithContent(
         ContentState.createFromBlockArray(
-          convertFromHTML(`<p>${data?.description}</p>`)
+          convertFromHTML(`${des}`)
         )
       )
     )

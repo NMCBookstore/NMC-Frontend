@@ -22,8 +22,9 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useDeleteProductCartMutation, useUpdateCartMutation } from "../../../services/cartAPI";
 import DialogConfirmDeleteAll from "../UserCart/DialogConfirmDeleteAll";
-import NoProductInCart from "../UserCart/NoProductInCart";
 import ModalAddress from "./ModalAddress";
+import { useDeleteAddressMutation } from "../../../services/addressAPIs";
+import NoData from "../../../components/NoData";
 
 function EnhancedTableHead(props) {
     const { onSelectAllClick, numSelected, rowCount } = props;
@@ -102,7 +103,7 @@ export default function ListAddress({ title, data, isFetching }) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-    const [deleteProduct] = useDeleteProductCartMutation();
+    const [deleteAddress] = useDeleteAddressMutation();
 
     const [selectedID, setSelectedID] = useState([]);
 
@@ -112,7 +113,7 @@ export default function ListAddress({ title, data, isFetching }) {
     };
 
     const handleDeleteItem = async () => {
-        await deleteProduct([selectedID]);
+        await deleteAddress([selectedID]);
         if (selected.some((id) => selectedID == id)) {
             setSelected(selected.filter((id) => id !== selectedID));
         }
@@ -196,7 +197,7 @@ export default function ListAddress({ title, data, isFetching }) {
                             {datas?.map((item, index) => (
                                 <TableRow
                                     key={item}
-                                    sx={{ "&:last-child td, &:last-child th": { border: 0 }, mt:2 }}
+                                    sx={{ "&:last-child td, &:last-child th": { border: 0 }, mt: 2 }}
                                 >
                                     {/* check box */}
                                     <TableCell>
@@ -228,8 +229,9 @@ export default function ListAddress({ title, data, isFetching }) {
 
                                     {/* delete icon */}
                                     <TableCell>
-                                        <div>
-                                            <Tooltip title="Delete Book">
+                                        <Stack direction="row">
+                                            <ModalAddress mode={"update"} addressID={item?.id ? item.id : 0} />
+                                            <Tooltip title="Delete Address">
                                                 <IconButton
                                                     onClick={(e) =>
                                                         e.preventDefault && handleClickOpen(item?.id)
@@ -238,7 +240,7 @@ export default function ListAddress({ title, data, isFetching }) {
                                                     <DeleteIcon sx={{ color: "#E35454" }} />
                                                 </IconButton>
                                             </Tooltip>
-                                        </div>
+                                        </Stack>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -284,9 +286,11 @@ export default function ListAddress({ title, data, isFetching }) {
                     </Table>
                 </TableContainer>
             </Paper>
-            <Stack sx={{display:"flex", alignItems:"end"}}><ModalAddress/></Stack>
+            <Stack sx={{ display: "flex", alignItems: "end" }}>
+                <ModalAddress mode={"create"} />
+            </Stack>
         </Box>
     ) : (
-        <NoProductInCart />
+        <NoData page="address" />
     );
 }

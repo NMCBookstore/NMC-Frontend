@@ -26,7 +26,6 @@ import {
 } from "../../../services/cartAPI";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import NoProductInCart from "./NoProductInCart";
 import DialogConfirmDeleteAll from "./DialogConfirmDeleteAll";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -41,6 +40,7 @@ import PaymentIcon from "@mui/icons-material/Payment";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import CreditScoreIcon from "@mui/icons-material/CreditScore";
 import { toast } from "react-hot-toast";
+import NoData from "../../../components/NoData";
 
 const currencyExchange = (num) => {
   return parseFloat(num).toLocaleString("vi-VN", {
@@ -447,6 +447,6 @@ export default function ListProductCart({ title, data, isFetching }) {
       </Paper>
     </Box>
   ) : (
-    <NoProductInCart />
+    <NoData page="cart" />
   );
 }
