@@ -22,11 +22,14 @@ import {
 } from "../../services/wishlistAPI";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [ytSrc, setYtSrc] = useState("");
   const [value, setValue] = React.useState(2);
+  const [genresID, setGenresID] = useState([])
+  const [subgenresID, setSubgenresID] = useState([])
   let [count, setCount] = useState(1);
 
   function incrementCount() {
@@ -43,13 +46,18 @@ const ProductDetails = () => {
 
   const { id } = useParams();
 
-  const { data } = useGetProductQuery(id, { refetchOnMountOrArgChange: true });
+  const { data, isFetching } = useGetProductQuery(id, { refetchOnMountOrArgChange: true });
 
   const [addWishlist] = useAddWishListMutation(id);
 
   const [addCart] = useAddCartMutation(id);
 
   const { data: wishlist } = useGetWishListQuery();
+
+  useEffect(() => {
+    setGenresID(data?.genres.map(item => parseInt(item.id)))
+    setSubgenresID(data?.subgenres.map(item => parseInt(item.id)))
+  }, [isFetching])
 
 
   const handleAddToCart = (e) => {
@@ -195,7 +203,7 @@ const ProductDetails = () => {
 
         {/* Recommend for you  */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <Recommend />
+          <Recommend bookID={data?.id} genresID={genresID} subgenresID={subgenresID} />
         </Grid>
 
         {/* Comment  */}

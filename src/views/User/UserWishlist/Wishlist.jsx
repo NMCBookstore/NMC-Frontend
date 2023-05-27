@@ -5,9 +5,11 @@ import MiniCarousel from "../../../components/MiniCarousel/MiniCarousel";
 import ListProductCart from "../../User/UserCart/ListProductCart";
 import ListWishList from "./ListWishList";
 import { useGetWishListQuery } from "../../../services/wishlistAPI";
+import { useJustForYouQuery } from "../../../services/searchAPI";
 
 export default function Wishlist() {
   const { data, isFetching } = useGetWishListQuery('userWishlist',{refetchOnMountOrArgChange: true});
+  const {data: justForYou} = useJustForYouQuery()
 
   return (
     <Box marginTop={3}>
@@ -31,7 +33,7 @@ export default function Wishlist() {
             Just For You
           </Typography>
         </Box>
-        <MiniCarousel />
+        <MiniCarousel value={justForYou}/>
       </Box>
     </Box>
   );

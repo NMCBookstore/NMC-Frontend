@@ -20,18 +20,14 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import {
-    useDeleteProductCartMutation,
-    useUpdateCartMutation,
-} from "../../../services/cartAPI";
-import DialogConfirmDeleteAll from "../UserCart/DialogConfirmDeleteAll";
 import ModalAddress from "./ModalAddress";
 import { useDeleteAddressMutation } from "../../../services/addressAPIs";
 import NoData from "../../../components/NoData";
+import DialogConfirmDeleteAll from "./DialogConfirmDeleteAll";
 
 function EnhancedTableHead(props) {
-  const { onSelectAllClick, numSelected, rowCount } = props;
-  const { title } = props;
+    const { onSelectAllClick, numSelected, rowCount } = props;
+    const { title } = props;
 
     return (
         <TableHead>
@@ -61,9 +57,9 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  rowCount: PropTypes.number.isRequired,
+    numSelected: PropTypes.number.isRequired,
+    onSelectAllClick: PropTypes.func.isRequired,
+    rowCount: PropTypes.number.isRequired,
 };
 
 function EnhancedTableToolbar(props) {
@@ -71,48 +67,48 @@ function EnhancedTableToolbar(props) {
     const { numSelected, title, handleDelete, handleOpenDeleteDialog } = props;
 
 
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-      }}
-    >
-      {numSelected.length > 0 ? (
-        <>
-          <DialogConfirmDeleteAll
-            open={handleOpenDeleteDialog}
-            handleDelete={handleDelete}
-            sx={{ color: "#eb2f06", ml: "-16px" }}
-          />
-        </>
-      ) : null}
-    </Toolbar>
-  );
+    return (
+        <Toolbar
+            sx={{
+                pl: { sm: 2 },
+                pr: { xs: 1, sm: 1 },
+            }}
+        >
+            {numSelected.length > 0 ? (
+                <>
+                    <DialogConfirmDeleteAll
+                        open={handleOpenDeleteDialog}
+                        handleDelete={handleDelete}
+                        sx={{ color: "#eb2f06" }}
+                    />
+                </>
+            ) : null}
+        </Toolbar>
+    );
 }
 
 EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
+    numSelected: PropTypes.number.isRequired,
 };
 
 export default function ListAddress({ title, data, isFetching }) {
-  const [selected, setSelected] = useState([]);
-  const [datas, setDatas] = useState(data);
-  const [rows, setRows] = useState([]);
-  const [open, setOpen] = useState(false);
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
+    const [selected, setSelected] = useState([]);
+    const [datas, setDatas] = useState(data);
+    const [rows, setRows] = useState([]);
+    const [open, setOpen] = useState(false);
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
 
     const [deleteAddress] = useDeleteAddressMutation();
 
 
-  const [selectedID, setSelectedID] = useState([]);
+    const [selectedID, setSelectedID] = useState([]);
 
-  const handleDeleteListItem = async () => {
-    await deleteProduct(selected);
-    setSelected(selected.filter((id) => !selected.includes(id)));
-  };
+    const handleDeleteListItem = async () => {
+        await deleteAddress(selected);
+        setSelected(selected.filter((id) => !selected.includes(id)));
+    };
 
 
     const handleDeleteItem = async () => {
@@ -124,26 +120,26 @@ export default function ListAddress({ title, data, isFetching }) {
     };
 
 
-  const handleClickOpen = (id) => {
-    setOpen(true);
-    setSelectedID(id);
-  };
+    const handleClickOpen = (id) => {
+        setOpen(true);
+        setSelectedID(id);
+    };
 
-  const handleOpenDeleteDialog = () => {
-    setOpen(true);
-  };
+    const handleOpenDeleteDialog = () => {
+        setOpen(true);
+    };
 
-  const handleClose = () => {
-    setOpen(false);
-    setSelectedID(null);
-  };
+    const handleClose = () => {
+        setOpen(false);
+        setSelectedID(null);
+    };
 
-  useEffect(() => {
-    setRows(data);
-    setDatas(data);
-  }, [isFetching]);
+    useEffect(() => {
+        setRows(data);
+        setDatas(data);
+    }, [isFetching]);
 
-  const totalItemInCart = data?.length;
+    const totalItemInCart = data?.length;
 
     return totalItemInCart ? (
         <Box sx={{ width: "100%" }}>

@@ -5,8 +5,21 @@ import { Button, Card, Container, TextField } from "@mui/material";
 import { Stack } from "@mui/system";
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { Typography } from "@mui/joy";
+import { useRecommendQuery } from "../../services/searchAPI";
+import { useEffect } from "react";
 
-export default function Recommend() {
+export default function Recommend({ bookID, genresID, subgenresID }) {
+  const { data: recommend, isFetching } = useRecommendQuery({
+    book_id: bookID,
+    genres_id: genresID,
+    subgenres_id: subgenresID
+  })
+
+  useEffect(() => {
+    console.log(recommend)
+  }, [isFetching])
+
+
   return (
     <Stack direction="column" sx={{ width: "100%" }}>
       <Box mt="10px" sx={{ display: "flex", justifyContent: "start" }}>
@@ -48,21 +61,11 @@ export default function Recommend() {
           ]}
           mobileBreakpoint={464}
         >
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
-          <Carousel.Item>
-            <ProductCard />
-          </Carousel.Item>
+          {recommend?.map((item, index) => (
+            <Carousel.Item key={item?.id}>
+              <ProductCard productItem={item} />
+            </Carousel.Item>
+          ))}
         </Carousel>
       </Box>
     </Stack>

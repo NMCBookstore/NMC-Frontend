@@ -41,7 +41,7 @@ export default function ModalAddress({ mode, addressID }) {
     const { data: districts } = useListDistrictsQuery(id, { skip: !id });
     const [createAddress] = useCreateAddressMutation();
     const [updateAddress] = useUpdateAddressMutation();
-    const { data: userAddress, isFetching } = useGetAddressQuery(addressID ? addressID : 0);
+    const { data: userAddress, isFetching } = useGetAddressQuery(addressID);
 
     useEffect(() => {
         setAddress(userAddress)
@@ -71,6 +71,9 @@ export default function ModalAddress({ mode, addressID }) {
                 city_id: address.city_id
             })
         }
+        setCity(null)
+        setDistrict(null)
+        setAddress(null)
         handleClose()
     }
 
@@ -118,7 +121,7 @@ export default function ModalAddress({ mode, addressID }) {
                             label="Address"
                             placeholder="Enter your address"
                             type="text"
-                            value={address?.address && mode === "update" ? address?.address : ""}
+                            value={address?.address}
                             onChange={(e, prev) => setAddress({ ...prev, address: e.target.value })}
                             sx={{ width: "100%", my: 2 }}
                         />
@@ -163,7 +166,12 @@ export default function ModalAddress({ mode, addressID }) {
                                 mt: 2,
                                 marginLeft: "20%",
                             }}
-                            onClick={handleClose}
+                            onClick={() => {
+                                setCity(null)
+                                setDistrict(null)
+                                setAddress(null)
+                                handleClose()
+                            }}
                         >
                             Cancel
                         </Button>
