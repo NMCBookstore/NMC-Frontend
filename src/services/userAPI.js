@@ -18,8 +18,17 @@ const user = book.injectEndpoints({
       },
       invalidatesTags: ["UserInfo"],
     }),
+    listUser: builder.query({
+      query: () => {
+        return {
+          method: "GET",
+          url: `admin/users/`,
+        };
+      },
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetUserQuery, useUpdateUserMutation } = user;
+export const { useGetUserQuery, useUpdateUserMutation, useListUserQuery } =
+  user;

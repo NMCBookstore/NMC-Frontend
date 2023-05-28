@@ -32,6 +32,7 @@ const Error404 = lazy(() => import("./components/Error404"));
 /**** Admin Routes *****/
 const AdminDashboard = lazy(() => import("./views/Admin/AdminDashboard"));
 const BookManagement = lazy(() => import("./views/Admin/BookManagement"));
+const UserManagement = lazy(() => import("./views/Admin/UserManagement"));
 const GenresManagement = lazy(() => import("./views/Admin/GenresManagement"));
 const EditBook = lazy(() => import("./views/Admin/EditBook"));
 const DetailsBookManagement = lazy(() =>
@@ -144,6 +145,7 @@ const RouterCfg = [
         children: [
           { path: "dashboard", element: <AdminDashboard /> },
           { path: "manage-book", element: <BookManagement /> },
+          { path: "manage-user", element: <UserManagement /> },
           { path: "manage-genres", element: <GenresManagement /> },
           { path: "manage-order", element: <OrderManagement /> },
           { path: "edit-book", element: <EditBook /> },

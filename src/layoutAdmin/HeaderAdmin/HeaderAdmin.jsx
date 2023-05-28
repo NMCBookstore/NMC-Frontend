@@ -51,14 +51,16 @@ const HeaderAdmin = () => {
   };
 
   let currentPath = "/admin/dashboard";
-  if (!!matchPath("/admin/manage-book", location.pathname)) {
+  if (matchPath("/admin/manage-book", location.pathname)) {
     currentPath = "/admin/manage-book";
-  } else if (!!matchPath("/admin/dashboard", location.pathname)) {
+  } else if (matchPath("/admin/dashboard", location.pathname)) {
     currentPath = "/admin/dashboard";
-  } else if (!!matchPath("/admin/manage-genres", location.pathname)) {
+  } else if (matchPath("/admin/manage-genres", location.pathname)) {
     currentPath = "/admin/manage-genres";
-  } else if (!!matchPath("/admin/manage-order", location.pathname)) {
+  } else if (matchPath("/admin/manage-order", location.pathname)) {
     currentPath = "/admin/manage-order";
+  } else if (matchPath("/admin/manage-user", location.pathname)) {
+    currentPath = "/admin/manage-user";
   }
 
   return (
@@ -89,6 +91,12 @@ const HeaderAdmin = () => {
                   component={Link}
                   to="/admin/dashboard"
                   value="/admin/dashboard"
+                />
+                <Tab
+                  label={"User"}
+                  component={Link}
+                  to="/admin/manage-user"
+                  value="/admin/manage-user"
                 />
                 <Tab
                   label={"Book"}

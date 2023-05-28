@@ -38,7 +38,6 @@ export default function ProductCheckoutCard({ data }) {
   const totalItemArr = useSelector(selectCurrentProductArr);
 
   const shipping = useSelector(selectCurrentShipping);
-  console.log(shipping);
 
   const handleNaviCheckout = (e) => {
     e.preventDefault();
@@ -50,7 +49,7 @@ export default function ProductCheckoutCard({ data }) {
   for (let i = 0; i < totalItemArr?.length; i++) {
     total += parseInt(totalItemArr[i]?.amount * totalItemArr[i]?.price);
   }
-  //   console.log(total);
+
   return (
     <Card sx={{ minWidth: 400, border: "1px black solid" }}>
       <CardContent>
