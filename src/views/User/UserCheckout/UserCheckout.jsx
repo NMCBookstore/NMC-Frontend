@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -12,47 +12,46 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import PaymentForm from "./PaymentForm";
 import InfoCheckout from "./InfoCheckout";
 import ReviewOrder from "./ReviewOrder";
 import StripeContainer from "./StripeContainer";
-import { useCreateOrderMutation } from "../../../services/orderAPIs";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  clearCheckOutInfoArr,
-  clearCartIdArr,
-  selectCurrentCartOrder,
-  selectCurrentProductArr,
-  selectCurrentShipping,
-} from "../../../features/cart/cartSlice";
-import { toast } from "react-hot-toast";
 import { Grid } from "@mui/material";
+import { useState } from "react";
+import { useListAddressQuery } from "../../../services/addressAPIs";
+import { toast } from "react-hot-toast";
 
 const steps = ["Info & shipping", "Review order", "Payment"];
-
-function getStepContent(step) {
-  switch (step) {
-    case 0:
-      return <InfoCheckout />;
-    case 1:
-      return <ReviewOrder />;
-    case 2:
-      return <StripeContainer />;
-    default:
-      throw new Error("Unknown step");
-  }
-}
 
 const theme = createTheme();
 
 export default function UserCheckout() {
-  const [activeStep, setActiveStep] = React.useState(0);
-  const dispatch = useDispatch();
+  function getStepContent(step) {
+    switch (step) {
+      case 0:
+        return (
+          <InfoCheckout data={data} handleChangeAddress={handleChangeAddress} />
+        );
+      case 1:
+        return <ReviewOrder />;
+      case 2:
+        return (
+          <StripeContainer handleNext={handleNext} userAddress={userAddress} />
+        );
+      default:
+        throw new Error("Unknown step");
+    }
+  }
 
-  const cartIdsArr = useSelector(selectCurrentCartOrder);
-  const orderInfo = useSelector(selectCurrentProductArr);
+  const { data } = useListAddressQuery();
 
-  const shipping = useSelector(selectCurrentShipping);
+  const [activeStep, setActiveStep] = useState(0);
+
+  const [userAddress, setUserAddress] = useState("");
+
+  const handleChangeAddress = (address) => {
+    setUserAddress(address);
+  };
+  console.log("this is main checkout", userAddress);
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -60,30 +59,6 @@ export default function UserCheckout() {
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
-  };
-
-  const [createOrder] = useCreateOrderMutation();
-
-  const handleCreateOder = async (e) => {
-    e.preventDefault();
-
-    try {
-      const v = await createOrder({
-        cart_ids: cartIdsArr,
-        to_address: "123 le van chi",
-        total_shipping: shipping,
-        status: "success"
-      });
-      dispatch(clearCheckOutInfoArr(cartIdsArr));
-      dispatch(clearCartIdArr(orderInfo));
-
-      if (v.error && v.error.status === 400) {
-        toast.error("Failed to create order");
-      } else toast.success("Your order has successfully created");
-    } catch (err) {
-      console.log(err.message);
-    }
-    handleNext();
   };
 
   return (
@@ -119,9 +94,7 @@ export default function UserCheckout() {
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <Typography variant="subtitle1">
-                    Your order number is #2001539. We have emailed your order
-                    confirmation, and will send you an update when your order
-                    has shipped.
+                    We will send you an update when your order has shipped.
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -153,17 +126,19 @@ export default function UserCheckout() {
                   </Button>
                 )}
                 {activeStep === steps.length - 1 ? (
+                  <></>
+                ) : userAddress ? (
                   <Button
                     variant="contained"
-                    onClick={handleCreateOder}
+                    onClick={handleNext}
                     sx={{ mt: 3, ml: 1 }}
                   >
-                    Place order
+                    Next
                   </Button>
                 ) : (
                   <Button
                     variant="contained"
-                    onClick={handleNext}
+                    onClick={() => toast.error("Please select your address")}
                     sx={{ mt: 3, ml: 1 }}
                   >
                     Next

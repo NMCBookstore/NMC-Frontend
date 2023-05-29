@@ -4,20 +4,32 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+} from "@mui/material";
 
-export default function InfoCheckout() {
+export default function InfoCheckout({ data, handleChangeAddress }) {
   const user = useSelector((state) => state.auth.login.user);
 
-  // console.log(user);
+  const [userAddress, setUserAddress] = useState([]);
 
-  const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
-  const payments = [
-    { name: "Card type", detail: "Visa" },
-    { name: "Card holder", detail: "Mr John Smith" },
-    { name: "Card number", detail: "xxxx-xxxx-xxxx-1234" },
-    { name: "Expiry date", detail: "04/2024" },
-  ];
+  // console.log(data);
+  let combinedString = "";
+
+  const handleAddress = ({ address, city, district }) => {
+    combinedString = address + "/" + city + "/" + district;
+    handleChangeAddress(combinedString);
+    setUserAddress(combinedString);
+  };
+  console.log(userAddress);
+
+  // console.log(user);
 
   //   console.log(user)
 
@@ -46,16 +58,30 @@ export default function InfoCheckout() {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-
             <Typography gutterBottom>
               <Typography fontWeight={500}>Phone number:</Typography>{" "}
               {user.phone_number}
             </Typography>
-
-            <Typography gutterBottom>
-              <Typography fontWeight={500}>Address:</Typography>{" "}
-              {addresses.join(", ")}
-            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <Box sx={{ marginTop: 3 }}>
+              <FormControl sx={{ width: "100%" }}>
+                <InputLabel id="address-label">Select your address</InputLabel>
+                <Select
+                  labelId="address-label"
+                  id="address-label"
+                  label="Address"
+                  defaultValue={""}
+                  onChange={(event) => handleAddress(event.target.value)}
+                >
+                  {data?.map((item, index) => (
+                    <MenuItem key={item?.id} value={item}>
+                      {item?.address}, {item?.district}, {item?.city}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Box>
           </Grid>
         </Grid>
       </React.Fragment>

@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  Avatar,
-  Container,
-  Stack,
-  TextField,
-  Tooltip
-} from "@mui/material";
+import { Avatar, Container, Stack, TextField, Tooltip } from "@mui/material";
 import Button from "@mui/material/Button";
-import { useGetUserQuery, useUpdateUserMutation } from "../../../services/userAPI";
+import {
+  useGetUserQuery,
+  useUpdateUserMutation,
+} from "../../../services/userAPI";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { setCredentials } from "../../../features/auth/authSlice";
@@ -18,22 +15,22 @@ import {
   validFullName,
 } from "../../../utils/helper";
 import { PhotoCamera } from "@mui/icons-material";
-import CheckIcon from '@mui/icons-material/Check';
-import PriorityHighIcon from '@mui/icons-material/PriorityHigh';
-import {
-  useSendVerifiedEmailMutation
-} from "../../../services/verifiedEmailAPIs";
+import CheckIcon from "@mui/icons-material/Check";
+import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
+import { useSendVerifiedEmailMutation } from "../../../services/verifiedEmailAPIs";
 
 export default function UserContentProfile({ data }) {
   const user = useSelector((state) => state.auth.login.user);
-  const {data: getUser} = useGetUserQuery()
+  const { data: getUser } = useGetUserQuery("userInfo", {
+    refetchOnMountOrArgChange: true,
+  });
 
   const [userInfo, setUserInfo] = useState(user);
   const [errors, setErrors] = useState(user);
 
   const dispatch = useDispatch();
 
-  const [sendVerifiedEmail ] = useSendVerifiedEmailMutation()
+  const [sendVerifiedEmail] = useSendVerifiedEmailMutation();
 
   // Set avatar
   const [avatar, setAvatar] = useState();
@@ -61,36 +58,40 @@ export default function UserContentProfile({ data }) {
 
   const handleUpdateInfo = async (e) => {
     e.preventDefault();
-    const { full_Name, age, phone_number } = user;
 
-    const full_NameError = validFullName(full_Name);
-    setErrors((prevErrors) => ({ ...prevErrors, full_NameError }));
+    const formData = new FormData();
 
-    const ageError = validAge(age);
-    setErrors((prevErrors) => ({ ...prevErrors, ageError }));
-
-    const phone_numberError = validPhoneNumber(phone_number);
-    setErrors((prevErrors) => ({ ...prevErrors, phone_numberError }));
-
-    if (!full_NameError && !ageError && !phone_numberError) {
-      const formData = new FormData();
-
+    if (userInfo.full_name.length > 2) {
       formData.append("full_name", userInfo.full_name);
+    } else {
+    }
+    if (userInfo.phone_number.length == 10) {
       formData.append("phone_number", userInfo.phone_number);
+    } else {
+    }
+    if (userInfo.age >= 10 && userInfo.age <= 90) {
       formData.append("age", userInfo.age);
-      formData.append("email", userInfo.email);
-
-      if (avatar) {
-        formData.append("image", avatar);
-      }
-
+    } else {
+    }
+    if (avatar) {
+      formData.append("image", avatar);
+    }
+    if (
+      !validFullName(userInfo.full_name) &&
+      !validPhoneNumber(userInfo.phone_number) &&
+      !validAge(userInfo.age)
+    ) {
       const v = await updateUser(formData);
       if (v.error && v.error.status === 500) {
         toast.error("Username existed");
-      } else {
+      } else if (v.data) {
         toast.success("Updated your profile");
       }
       dispatch(setCredentials({ user: v.data }));
+      console.log(v);
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
     }
   };
 
@@ -101,8 +102,8 @@ export default function UserContentProfile({ data }) {
   }, [data]);
 
   const handleVerify = () => {
-    sendVerifiedEmail()
-  }
+    sendVerifiedEmail();
+  };
 
   return (
     info && (
@@ -141,30 +142,24 @@ export default function UserContentProfile({ data }) {
               InputLabelProps={{ shrink: true }}
               label="Email"
               name="email"
+              disabled
               defaultValue={user?.email}
-              onChange={(e) =>
-                setUserInfo({ ...userInfo, email: e.target.value })
-              }
             />
-            {getUser?.is_email_verified ?
+            {getUser?.is_email_verified ? (
               <Tooltip title="email verified">
-                <CheckIcon
-                  fontSize="small"
-                  color="success" />
+                <CheckIcon fontSize="small" color="success" />
               </Tooltip>
-              :
+            ) : (
               <Stack direction="row" sx={{ alignItems: "center" }}>
                 <Tooltip
                   title="email not verify (click here to verify)"
                   onClick={handleVerify}
                 >
-                  <PriorityHighIcon
-                    fontSize="small"
-                    color="warning" />
+                  <PriorityHighIcon fontSize="small" color="warning" />
                 </Tooltip>
-              </Stack>}
+              </Stack>
+            )}
           </Stack>
-
 
           <TextField
             sx={{ width: "85%" }}
@@ -203,11 +198,7 @@ export default function UserContentProfile({ data }) {
               },
             }}
           >
-            <input
-              hidden
-              type="file"
-              onChange={handlePreviewAvatar}
-            />
+            <input hidden type="file" onChange={handlePreviewAvatar} />
             <PhotoCamera />
           </Button>
 

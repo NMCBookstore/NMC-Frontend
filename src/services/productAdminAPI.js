@@ -17,11 +17,12 @@ const productAdmin = book.injectEndpoints({
       invalidatesTags: ["books"],
     }),
     UpdateBook: builder.mutation({
-      query: (formData ) => ({
+      query: (formData) => ({
         method: "PUT",
         url: `admin/books/${formData.get("id")}`,
         body: formData,
       }),
+      invalidatesTags: ["books"],
     }),
   }),
   overrideExisting: false,

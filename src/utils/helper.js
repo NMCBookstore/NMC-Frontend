@@ -64,13 +64,10 @@ const validateRegisterEmail = (value) => {
 };
 
 const validateRegisterUsername = (value) => {
-  // const useName = /^[andi]&/;
   const userNameRegex = /^[a-zA-Z0-9_]{1,10}$/;
   if (!userNameRegex.test(value)) {
     toast.error("Username only accepted from 1 to 10 in length");
   }
-  // else useName.test(value);
-  // toast.error("This username already exist !");
 
   return "";
 };

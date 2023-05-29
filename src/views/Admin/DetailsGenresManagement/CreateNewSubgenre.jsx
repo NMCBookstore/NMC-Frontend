@@ -1,11 +1,21 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Stack, TextField } from '@mui/material'
-import React, { useState } from 'react'
-import { useCreateSubGenresMutation } from '../../../services/subGenresAPIs';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Stack,
+  TextField,
+} from "@mui/material";
+import React, { useState } from "react";
+import { useCreateSubGenresMutation } from "../../../services/subGenresAPIs";
+import { toast } from "react-hot-toast";
 
 export default function CreateNewSubgenre({ id }) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState();
-  const [createSubgenre] = useCreateSubGenresMutation()
+  const [createSubgenre, { isLoading }] = useCreateSubGenresMutation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -16,7 +26,14 @@ export default function CreateNewSubgenre({ id }) {
   };
 
   const handleCreateGenres = async () => {
-    const v = await createSubgenre({ genre_id: parseInt(id), name })
+    const v = await createSubgenre({ genre_id: parseInt(id), name });
+    if (v.data) {
+      toast.success("New genre created");
+    } else if (v.error && v.error.status === 500) {
+      toast.error("Can't create genre 500");
+    } else if (v.error && v.error.status === 400) {
+      toast.error("Can't create genre");
+    }
     handleClose();
   };
 
@@ -88,6 +105,7 @@ export default function CreateNewSubgenre({ id }) {
                   backgroundColor: "#95a5a6",
                 },
               }}
+              disabled={isLoading}
               onClick={handleClose}
             >
               Cancel
@@ -100,6 +118,7 @@ export default function CreateNewSubgenre({ id }) {
                   backgroundColor: "#DB4444",
                 },
               }}
+              disabled={isLoading}
               onClick={handleCreateGenres}
             >
               Create
@@ -108,6 +127,5 @@ export default function CreateNewSubgenre({ id }) {
         </DialogActions>
       </Dialog>
     </>
-
-  )
+  );
 }

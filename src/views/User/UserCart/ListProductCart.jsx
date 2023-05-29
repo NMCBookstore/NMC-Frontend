@@ -178,6 +178,7 @@ export default function ListProductCart({ title, data, isFetching }) {
       setBookInfo(updateAmount);
       dispatch(setCheckOutInfoArr(updateAmount));
     }
+
   }
 
   const [deleteProduct] = useDeleteProductCartMutation();
@@ -355,22 +356,27 @@ export default function ListProductCart({ title, data, isFetching }) {
                   {/* amount */}
                   <TableCell align="center">
                     <Stack direction="row" spacing={2}>
-                      <Tooltip title="Minus">
-                        <RemoveIcon
-                          onClick={() =>
-                            decrementCount(item?.cart_id, item?.amount)
-                          }
-                          sx={{ marginRight: 2 }}
-                        />
-                      </Tooltip>
-                      {item?.amount}
-                      <Tooltip title="Add more">
-                        <AddIcon
-                          onClick={() =>
-                            incrementCount(item?.cart_id, item?.amount)
-                          }
-                        />
-                      </Tooltip>
+                      {!selected.includes(item.cart_id) && (
+                        <Tooltip title="Minus">
+                          <RemoveIcon
+                            onClick={() =>
+                              decrementCount(item?.cart_id, item?.amount)
+                            }
+                            sx={{ marginRight: 2 }}
+                          />
+                        </Tooltip>
+                      )}
+                      <p style={{ marginLeft: "2px" }}>{item?.amount}</p>
+
+                      {!selected.includes(item.cart_id) && (
+                        <Tooltip title="Add more">
+                          <AddIcon
+                            onClick={() =>
+                              incrementCount(item?.cart_id, item?.amount)
+                            }
+                          />
+                        </Tooltip>
+                      )}
                     </Stack>
                   </TableCell>
 

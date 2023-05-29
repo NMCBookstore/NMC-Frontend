@@ -61,15 +61,6 @@ const UserRegister = () => {
     showPass: false,
   });
 
-  const [errors, setErrors] = useState({
-    usernameError: "",
-    passwordError: "",
-    full_NameError: "",
-    emailError: "",
-    ageError: "",
-    phone_numberError: "",
-  });
-
   const handlePassVisibilty = () => {
     setValues({
       ...values,
@@ -84,64 +75,62 @@ const UserRegister = () => {
     e.preventDefault();
 
     //validate
-    const { username, password, full_Name, email, age, phone_number } = values;
 
-    const usernameError = validateRegisterUsername(username);
-    setErrors((prevErrors) => ({ ...prevErrors, usernameError }));
+    const usernameError = validateRegisterUsername(values.username);
 
-    const passwordError = validatePasswordLogin(password);
-    setErrors((prevErrors) => ({ ...prevErrors, passwordError }));
+    const passwordError = validatePasswordLogin(values.password);
 
-    const full_NameError = validFullName(full_Name);
-    setErrors((prevErrors) => ({ ...prevErrors, full_NameError }));
+    const full_NameError = validFullName(values.full_Name);
 
-    const emailError = validateRegisterEmail(email);
-    setErrors((prevErrors) => ({ ...prevErrors, emailError }));
+    const emailError = validateRegisterEmail(values.emailError);
 
-    const ageError = validAge(age);
-    setErrors((prevErrors) => ({ ...prevErrors, ageError }));
+    const ageError = validAge(values.age);
 
-    const phone_numberError = validPhoneNumber(phone_number);
-    setErrors((prevErrors) => ({ ...prevErrors, phone_numberError }));
+    const phone_numberError = validPhoneNumber(values.phone_number);
+    
     //
+    const formData = new FormData();
 
-    if (
-      !usernameError &&
-      !passwordError &&
-      !full_NameError &&
-      !emailError &&
-      !ageError &&
-      !phone_numberError
-    ) {
-      const formData = new FormData();
-      formData.append("username", values.username);
-      formData.append("password", values.password);
-      formData.append("full_name", values.full_Name);
-      formData.append("email", values.email);
-      formData.append("age", values.age);
-      formData.append("sex", values.sex);
-      formData.append("phone_number", values.phone_number);
-
+    try {
+      
+      if (
+        !usernameError &&
+        !passwordError &&
+        !full_NameError &&
+        // !emailError &&
+        !ageError &&
+        !phone_numberError
+      ) {
+        // if (values.username.length < 11) {
+        formData.append("username", values.username);
+        // } else {
+        //   toast.error("Username only accepted from 1 to 10 in length");
+        // }
+        formData.append("password", values.password);
+        formData.append("full_name", values.full_Name);
+        formData.append("email", values.email);
+        formData.append("age", values.age);
+        formData.append("sex", values.sex);
+        formData.append("phone_number", values.phone_number);
+      }
       const v = await signup(formData);
-      try {
-        if (v.error && v.error.status === 500) {
-          toast.error("Username or email existed");
-        }
-        if (v.error && v.error.status === 400) {
-          toast.error("Register failed");
-        } else if (v.data) {
-          toast.success("Welcome to NMC Book store");
-          navigate("/login");
-        }
-      } catch (err) {
+      if (v.error && v.error.status === 500) {
+        toast.error("Username or email existed");
+      }
+      if (v.error && v.error.status === 400) {
         toast.error("Register failed");
+      } else if (v.data) {
+        toast.success("Welcome to NMC Book store");
+        navigate("/login");
       }
+    } catch (err) {
+      toast.error("Register failed");
+    }
 
-      // console.log(v);
+    // console.log(v);
 
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
     }
   };
 

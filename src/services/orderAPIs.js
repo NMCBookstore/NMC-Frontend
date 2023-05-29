@@ -10,6 +10,7 @@ const order = book.injectEndpoints({
           body: { cart_ids, to_address, total_shipping, status, payment_id },
         };
       },
+      invalidatesTags: ["CartItems"],
     }),
     getAllOrder: builder.query({
       query: () => {

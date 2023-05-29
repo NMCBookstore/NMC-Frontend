@@ -8,10 +8,10 @@ const PUBLIC_KEY =
 
 const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
-export default function StripeContainer() {
+export default function StripeContainer({ handleNext, userAddress }) {
   return (
     <Elements stripe={stripeTestPromise}>
-      <PaymentForm />
+      <PaymentForm handleNext={handleNext} userAddress={userAddress} />
     </Elements>
   );
 }
