@@ -55,7 +55,7 @@ export default function ProductCheckoutCard() {
   for (let i = 0; i < totalItemArr?.length; i++) {
     total += parseInt(totalItemArr[i]?.amount * totalItemArr[i]?.price);
   }
-  //   console.log(total);
+
   return (
     <Card sx={{ minWidth: 400, border: "1px black solid" }}>
       <CardContent>

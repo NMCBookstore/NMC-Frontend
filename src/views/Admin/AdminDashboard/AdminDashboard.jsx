@@ -3,6 +3,7 @@ import ChartDashboard from "./ChartDashboard";
 import Grid from "@mui/material/Unstable_Grid2";
 import CardInfo from "./CardInfo";
 import { useGetRevenueDaysQuery } from "../../../services/revenueAPis";
+import Static from "./Static";
 
 export default function AdminDashboard() {
   const { data, isFetching } = useGetRevenueDaysQuery()
@@ -13,37 +14,41 @@ export default function AdminDashboard() {
   const [revenueInfo, setRevenueInfo] = useState(null)
 
   useEffect(() => {
-    setRevenueInfo({name: "days",revenue: data})
+    setRevenueInfo({ name: "days", revenue: data })
   }, [isFetching])
 
 
   return (
     <>
-    {revenueInfo?.revenue && revenueInfo?.revenue.length > 0  ? 
-    // (<Grid container my={2} spacing={2}>
-    //   <Grid spacing={2} xs={12} sm={8}>
-    //     <ChartDashboard
-    //       revenueInfo={revenueInfo}
-    //     />
-    //   </Grid>
-    //   <Grid spacing={2} xs={12} sm={4}>
-    //     <CardInfo
-    //       revenueDaysInfo={revenueDaysInfo}
-    //       revenueMonthsInfo={revenueMonthsInfo}
-    //       revenueQuartersInfo={revenueQuartersInfo}
-    //       revenueYearsInfo={revenueYearsInfo}
-    //       setRevenueDaysInfo={setRevenueDaysInfo}
-    //       setRevenueMonthsInfo={setRevenueMonthsInfo}
-    //       setRevenueQuartersInfo={setRevenueQuartersInfo}
-    //       setRevenueYearsInfo={setRevenueYearsInfo}
-    //       setRevenueInfo={setRevenueInfo}
-    //     />
-    //   </Grid>
-    // </Grid>)
-    (console.log(revenueInfo))
-    :(
-      <>No payment</>
-    )}
+      {revenueInfo?.revenue && revenueInfo?.revenue.length > 0 ?
+        (<Grid container my={2} spacing={2}>
+          <Grid item spacing={2} xs={12} sm={12}>
+            <Static />
+          </Grid>
+          <Grid container item mt={5}>
+            <Grid item spacing={2} xs={12} sm={8}>
+              <ChartDashboard
+                revenueInfo={revenueInfo}
+              />
+            </Grid>
+            <Grid item mt={8} spacing={2} xs={12} sm={4}>
+              <CardInfo
+                revenueDaysInfo={revenueDaysInfo}
+                revenueMonthsInfo={revenueMonthsInfo}
+                revenueQuartersInfo={revenueQuartersInfo}
+                revenueYearsInfo={revenueYearsInfo}
+                setRevenueDaysInfo={setRevenueDaysInfo}
+                setRevenueMonthsInfo={setRevenueMonthsInfo}
+                setRevenueQuartersInfo={setRevenueQuartersInfo}
+                setRevenueYearsInfo={setRevenueYearsInfo}
+                setRevenueInfo={setRevenueInfo}
+              />
+            </Grid>
+          </Grid>
+        </Grid>)
+        : (
+          <>No payment</>
+        )}
     </>
   );
 }

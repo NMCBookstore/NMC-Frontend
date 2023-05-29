@@ -68,8 +68,8 @@ function EnhancedTableHead(props) {
         </TableCell>
         {headCells.map((headCell) =>
           title === "Wishlist" &&
-          (headCell.label === "Quantity" ||
-            headCell.label === "Subtotal") ? null : (
+            (headCell.label === "Quantity" ||
+              headCell.label === "Subtotal") ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}
@@ -156,24 +156,29 @@ export default function ListProductCart({ title, data, isFetching }) {
 
   const dispatch = useDispatch();
   //set amount of product
-  function incrementCount(id, amount) {
-    updateCart({ id: id, amount: amount + 1 });
+  async function incrementCount(id, amount) {
+    await updateCart({ id: id, amount: amount + 1 });
+    if (bookInfo.some((item) => item.cart_id !== selected)) {
+      const updatedBookInfo = bookInfo.filter(
+        (item) => item.cart_id !== selected
+      );
+      const updateAmount = updatedBookInfo.map(item => ({ ...item, amount: amount + 1 }))
+      setBookInfo(updateAmount);
+      dispatch(setCheckOutInfoArr(updateAmount));
+    }
   }
-  function decrementCount(id, amount) {
-    updateCart({ id: id, amount: amount > 1 ? amount - 1 : 1 });
-    let testdvt = {};
+  async function decrementCount(id, amount) {
+    const amountDec = amount > 1 ? amount - 1 : 1
+    await updateCart({ id: id, amount: amountDec });
+    if (bookInfo.some((item) => item.cart_id !== selected)) {
+      const updatedBookInfo = bookInfo.filter(
+        (item) => item.cart_id !== selected
+      );
+      const updateAmount = updatedBookInfo.map(item => ({ ...item, amount: amountDec }))
+      setBookInfo(updateAmount);
+      dispatch(setCheckOutInfoArr(updateAmount));
+    }
 
-    setBookInfo((prevBookInfo) => {
-      prevBookInfo.forEach((item) => {
-        testdvt[item.cart_id] = item;
-        if (item.cart_id == id) {
-          item = { ...item, amount: item.amount + 1 };
-        }
-      });
-      console.log(prevBookInfo);
-      return prevBookInfo;
-    });
-    dispatch(setCheckOutInfoArr(bookInfo));
   }
 
   const [deleteProduct] = useDeleteProductCartMutation();
@@ -182,7 +187,6 @@ export default function ListProductCart({ title, data, isFetching }) {
 
   const handleDeleteListItem = async () => {
     await deleteProduct(selected);
-    // setSelected(selected.filter((cart_id) => !selected.includes(cart_id)));
     setSelected([]);
     dispatch(setCartIdArr([]));
     setBookInfo([]);
@@ -236,8 +240,6 @@ export default function ListProductCart({ title, data, isFetching }) {
   const cartIdsArr = useSelector(selectCurrentCartOrder);
   const orderInfo = useSelector(selectCurrentProductArr);
 
-  // console.log(orderInfo);
-
   const totalItemInCart = data?.length;
 
   const isSelected = (cart_id) => selected.indexOf(cart_id) !== -1;
@@ -289,7 +291,7 @@ export default function ListProductCart({ title, data, isFetching }) {
             <TableBody>
               {datas?.map((item, index) => (
                 <TableRow
-                  key={index}
+                  key={item?.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   {/* check box */}
