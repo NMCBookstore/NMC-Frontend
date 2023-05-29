@@ -68,8 +68,8 @@ function EnhancedTableHead(props) {
         </TableCell>
         {headCells.map((headCell) =>
           title === "Wishlist" &&
-            (headCell.label === "Quantity" ||
-              headCell.label === "Subtotal") ? null : (
+          (headCell.label === "Quantity" ||
+            headCell.label === "Subtotal") ? null : (
             <TableCell
               key={headCell.id}
               align={headCell.numeric ? "right" : "left"}
@@ -162,23 +162,28 @@ export default function ListProductCart({ title, data, isFetching }) {
       const updatedBookInfo = bookInfo.filter(
         (item) => item.cart_id !== selected
       );
-      const updateAmount = updatedBookInfo.map(item => ({ ...item, amount: amount + 1 }))
+      const updateAmount = updatedBookInfo.map((item) => ({
+        ...item,
+        amount: amount + 1,
+      }));
       setBookInfo(updateAmount);
       dispatch(setCheckOutInfoArr(updateAmount));
     }
   }
   async function decrementCount(id, amount) {
-    const amountDec = amount > 1 ? amount - 1 : 1
+    const amountDec = amount > 1 ? amount - 1 : 1;
     await updateCart({ id: id, amount: amountDec });
     if (bookInfo.some((item) => item.cart_id !== selected)) {
       const updatedBookInfo = bookInfo.filter(
         (item) => item.cart_id !== selected
       );
-      const updateAmount = updatedBookInfo.map(item => ({ ...item, amount: amountDec }))
+      const updateAmount = updatedBookInfo.map((item) => ({
+        ...item,
+        amount: amountDec,
+      }));
       setBookInfo(updateAmount);
       dispatch(setCheckOutInfoArr(updateAmount));
     }
-
   }
 
   const [deleteProduct] = useDeleteProductCartMutation();
@@ -356,27 +361,23 @@ export default function ListProductCart({ title, data, isFetching }) {
                   {/* amount */}
                   <TableCell align="center">
                     <Stack direction="row" spacing={2}>
-                      {!selected.includes(item.cart_id) && (
-                        <Tooltip title="Minus">
-                          <RemoveIcon
-                            onClick={() =>
-                              decrementCount(item?.cart_id, item?.amount)
-                            }
-                            sx={{ marginRight: 2 }}
-                          />
-                        </Tooltip>
-                      )}
-                      <p style={{ marginLeft: "2px" }}>{item?.amount}</p>
+                      <Tooltip title="Minus">
+                        <RemoveIcon
+                          onClick={() =>
+                            decrementCount(item?.cart_id, item?.amount)
+                          }
+                          sx={{ marginRight: 2 }}
+                        />
+                      </Tooltip>
+                      {item?.amount}
 
-                      {!selected.includes(item.cart_id) && (
-                        <Tooltip title="Add more">
-                          <AddIcon
-                            onClick={() =>
-                              incrementCount(item?.cart_id, item?.amount)
-                            }
-                          />
-                        </Tooltip>
-                      )}
+                      <Tooltip title="Add more">
+                        <AddIcon
+                          onClick={() =>
+                            incrementCount(item?.cart_id, item?.amount)
+                          }
+                        />
+                      </Tooltip>
                     </Stack>
                   </TableCell>
 
