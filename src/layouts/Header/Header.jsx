@@ -18,7 +18,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import ReviewsIcon from "@mui/icons-material/Reviews";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import HowToRegIcon from '@mui/icons-material/HowToReg';
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 import SideBar from "../SideBar/SideBar";
 import useStyles from "./styles";
 import {
@@ -32,7 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deepOrange } from "@mui/material/colors";
 import { useGetCartQuery } from "../../services/cartAPI";
 import { useGetWishListQuery } from "../../services/wishlistAPI";
-import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
+import PopupState, { bindTrigger, bindMenu } from "material-ui-popup-state";
 
 const Header = () => {
   const classes = useStyles();
@@ -124,8 +124,7 @@ const Header = () => {
                     )}
                   </IconButton>
                   <Menu {...bindMenu(popupState)}>
-                    {token
-                      ?
+                    {token ? (
                       <div>
                         <div key={0} className={classes.profileMenuUser}>
                           <Typography variant="h6" weight="medium">
@@ -134,18 +133,20 @@ const Header = () => {
                         </div>
                         <MenuItem
                           onClick={() => {
-                            popupState.close()
-                            navigate("/user/profile")
-                          }}>
+                            popupState.close();
+                            navigate("/user/profile");
+                          }}
+                        >
                           <PersonIcon />
                           My profile
                         </MenuItem>
 
                         <MenuItem
                           onClick={() => {
-                            popupState.close()
-                            navigate("/user/profile/my-order")
-                          }}>
+                            popupState.close();
+                            navigate("/user/profile/my-order");
+                          }}
+                        >
                           <LocalMallIcon />
                           &nbsp; My Order
                         </MenuItem>
@@ -164,22 +165,16 @@ const Header = () => {
                           &nbsp; Logout
                         </MenuItem>
                       </div>
-                      :
+                    ) : (
                       <div>
                         <Link className={classes.link} to="/login">
                           <MenuItem onClick={popupState.close}>
                             <LoginIcon />
-                            &nbsp; Login
-                          </MenuItem>
-                        </Link>
-                        <Link className={classes.link} to="/register">
-                          <MenuItem onClick={popupState.close}>
-                            <HowToRegIcon />
-                            &nbsp; Register
+                            &nbsp; Login / Register
                           </MenuItem>
                         </Link>
                       </div>
-                    }
+                    )}
                   </Menu>
                 </Fragment>
               )}

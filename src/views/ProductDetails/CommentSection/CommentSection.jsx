@@ -1,14 +1,26 @@
 import React, { useContext, useRef, useState } from "react";
 import Rating from "@mui/material/Rating";
 import TextareaAutosize from "@mui/base/TextareaAutosize";
-import { Divider, Avatar, Grid, Paper, Button, Stack, Box, Typography } from "@mui/material";
+import {
+  Divider,
+  Avatar,
+  Grid,
+  Paper,
+  Button,
+  Stack,
+  Box,
+  Typography,
+} from "@mui/material";
 import { useSelector } from "react-redux";
 import {
   selectCurrentAccessToken,
   selectCurrentUserImage,
   selectCurrentUserName,
 } from "../../../features/auth/authSlice";
-import { useGetReviewQuery, useAddReviewMutation } from "../../../services/reviewAPI";
+import {
+  useGetReviewQuery,
+  useAddReviewMutation,
+} from "../../../services/reviewAPI";
 import { toast } from "react-hot-toast";
 import CommentPagination from "./CommentPagination";
 import { Editor } from "react-draft-wysiwyg";
@@ -19,8 +31,8 @@ import { useGetUserQuery } from "../../../services/userAPI";
 const imgLink =
   "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
 
-export default function Comment({ id }) {
-  const { data: user } = useGetUserQuery()
+export default function Comment({ id, wishlist }) {
+  const { data: user } = useGetUserQuery();
   const token = useSelector(selectCurrentAccessToken);
 
   const [page, setPage] = useState({ id: 1, size: 5 });
@@ -76,17 +88,10 @@ export default function Comment({ id }) {
       {/* The add comment section */}
       <Paper component="form" style={{ padding: "40px 20px", width: "100%" }}>
         <Stack direction="column">
-          <Stack direction="row"
-            display="flex"
-            alignItems="center"
-            my={1}
-          >
+          <Stack direction="row" display="flex" alignItems="center" my={1}>
             <Avatar alt="Remy Sharp" src={token ? user?.image : imgLink} />
 
-            <Typography
-              variant="h6"
-              sx={{ px: 2, textAlign: "left" }}
-            >
+            <Typography variant="h6" sx={{ px: 2, textAlign: "left" }}>
               {token && user?.username && user?.username}
             </Typography>
           </Stack>
@@ -117,7 +122,7 @@ export default function Comment({ id }) {
       {/* The view other's comment section */}
       {!isFetching &&
         listReview?.reviews?.map((rev, index) => (
-          <Paper key={rev?.id} style={{ padding: "40px 20px", width: "90rem" }}>
+          <Paper key={rev?.id} style={{ padding: "40px 20px", width: "71rem" }}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
                 <Avatar alt="Remy Sharp" src={rev?.image} />
@@ -129,7 +134,7 @@ export default function Comment({ id }) {
                 <Rating readOnly value={rev?.rating} />
                 <p
                   style={{ textAlign: "left" }}
-                  dangerouslySetInnerHTML={{ __html: rev?.comments}}
+                  dangerouslySetInnerHTML={{ __html: rev?.comments }}
                 />
                 <p style={{ textAlign: "left", color: "gray" }}>
                   posted on {rev?.created_at}
@@ -153,7 +158,7 @@ export default function Comment({ id }) {
       {/* The view other's comment section */}
       {!isFetching &&
         listReview?.reviews?.map((rev, index) => (
-          <Paper key={rev?.id} style={{ padding: "40px 20px", width: "90rem" }}>
+          <Paper key={rev?.id} style={{ padding: "40px 20px", width: "71rem" }}>
             <Grid container wrap="nowrap" spacing={2}>
               <Grid item>
                 <Avatar alt="Remy Sharp" src={token ? userImg : imgLink} />
@@ -165,7 +170,7 @@ export default function Comment({ id }) {
                 <Rating readOnly value={rev?.rating} />
                 <p
                   style={{ textAlign: "left" }}
-                  dangerouslySetInnerHTML={{ __html: rev?.comments}}
+                  dangerouslySetInnerHTML={{ __html: rev?.comments }}
                 />
                 <p style={{ textAlign: "left", color: "gray" }}>
                   posted on {rev?.created_at}

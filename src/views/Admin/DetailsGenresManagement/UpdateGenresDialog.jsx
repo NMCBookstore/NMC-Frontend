@@ -10,18 +10,20 @@ import { Box, Card, Typography } from "@mui/joy";
 import { IconButton, Stack, TextField, Tooltip } from "@mui/material";
 import { Edit } from "@mui/icons-material";
 import { toast } from "react-hot-toast";
-import { useGetOneSubGenresQuery, useUpdateSubgenresMutation } from "../../../services/subGenresAPIs";
+import {
+  useGetOneSubGenresQuery,
+  useUpdateSubgenresMutation,
+} from "../../../services/subGenresAPIs";
 
 export default function UpdateGenresDialog({ id, genre_id }) {
-  const { data, isFetching } = useGetOneSubGenresQuery(id)
+  const { data, isFetching } = useGetOneSubGenresQuery(id);
   const [subgenresInfo, setSubgenresInfo] = useState();
   const [open, setOpen] = useState(false);
-  const [updateSubgenres] = useUpdateSubgenresMutation()
+  const [updateSubgenres, { isLoading }] = useUpdateSubgenresMutation();
 
   useEffect(() => {
-    setSubgenresInfo(data)
-  }, [isFetching])
-
+    setSubgenresInfo(data);
+  }, [isFetching]);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -32,8 +34,19 @@ export default function UpdateGenresDialog({ id, genre_id }) {
   };
 
   const handleUpdateSubgenres = async () => {
-    const v = await updateSubgenres({ id, genre_id: parseInt(genre_id), name: subgenresInfo?.name })
-    handleClose()
+    const v = await updateSubgenres({
+      id,
+      genre_id: parseInt(genre_id),
+      name: subgenresInfo?.name,
+    });
+    if (v.data) {
+      toast.success("Subgenre updated");
+      handleClose();
+    } else if (v.error && v.error.status === 400) {
+      toast.error("Can't update genre");
+    } else if (v.error && v.error.status === 500) {
+      toast.error("Error 500");
+    }
   };
 
   return (
@@ -99,6 +112,7 @@ export default function UpdateGenresDialog({ id, genre_id }) {
                   backgroundColor: "#95a5a6",
                 },
               }}
+              disabled={isLoading}
               onClick={handleClose}
             >
               Cancel
@@ -111,6 +125,7 @@ export default function UpdateGenresDialog({ id, genre_id }) {
                   backgroundColor: "#DB4444",
                 },
               }}
+              disabled={isLoading}
               onClick={handleUpdateSubgenres}
             >
               Update

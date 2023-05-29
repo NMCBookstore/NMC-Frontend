@@ -3,22 +3,19 @@ import {
   Box,
   Button,
   CardActionArea,
-  FormControl,
   Grid,
   IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
-  InputLabel,
-  MenuItem,
-  Select,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { isValidImageList } from "../../../utils/helper";
 import { Editor } from "react-draft-wysiwyg";
+import { EditorState } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { toast } from "react-hot-toast";
@@ -26,20 +23,24 @@ import { useGetGenresQuery } from "../../../services/genresAPIs";
 import { useListSubGenresQuery } from "../../../services/subGenresAPIs";
 import { useCreateNewBookMutation } from "../../../services/productAdminAPI";
 import { useNavigate } from "react-router-dom";
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete from "@mui/material/Autocomplete";
 import getSubgenreGroup from "./getSubgenreGroup";
 
 export default function CreateNewBook() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { data: listSubgenre } = useListSubGenresQuery();
   const [selectedImage, setSelectedImage] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const { data: genres } = useGetGenresQuery();
   const [genreID, setGenreID] = useState([]);
   const [subgenreID, setSubgenreID] = useState([]);
-  const [createNewBook] = useCreateNewBookMutation();
-  const [editorState, setEditorState] = useState("");
+  const [createNewBook, { isLoading }] = useCreateNewBookMutation();
   const [subgenres, setSubgenres] = useState([]);
+
+  const editorRef = useRef();
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
 
   const [bookInfo, setBookInfo] = useState({
     name: "",
@@ -51,29 +52,33 @@ export default function CreateNewBook() {
 
   const handleGenreChange = (event, option) => {
     if (option.length > 0) {
-      setGenreID(option.map(item => item.id));
+      setGenreID(option.map((item) => item.id));
 
-      let subGenre = getSubgenreGroup(option, bookInfo?.subgenres ? bookInfo?.subgenres : [])
-      setBookInfo({ ...bookInfo, genres: option, subgenres: subGenre })
+      let subGenre = getSubgenreGroup(
+        option,
+        bookInfo?.subgenres ? bookInfo?.subgenres : []
+      );
+      setBookInfo({ ...bookInfo, genres: option, subgenres: subGenre });
 
-      let subgenresFromGenreID = getSubgenreGroup(option, listSubgenre)
-      setSubgenres(subgenresFromGenreID.slice().
-        sort((a, b) => a.genres_id - b.genres_id))
+      let subgenresFromGenreID = getSubgenreGroup(option, listSubgenre);
+      setSubgenres(
+        subgenresFromGenreID.slice().sort((a, b) => a.genres_id - b.genres_id)
+      );
     } else {
       setGenreID([]);
-      setSubgenreID([])
-      setBookInfo({ ...bookInfo, genres: option, subgenres: option })
-      setSubgenres([])
+      setSubgenreID([]);
+      setBookInfo({ ...bookInfo, genres: option, subgenres: option });
+      setSubgenres([]);
     }
   };
 
   const handleSubgenreChange = (event, option) => {
     if (option.length > 0) {
-      setSubgenreID(option.map(item => item.id));
+      setSubgenreID(option.map((item) => item.id));
     } else {
       setSubgenreID([]);
     }
-    setBookInfo({ ...bookInfo, subgenres: option })
+    setBookInfo({ ...bookInfo, subgenres: option });
   };
 
   const handleEditorChange = (newEditorState) => {
@@ -83,7 +88,7 @@ export default function CreateNewBook() {
   const onSelectFile = (e) => {
     if (isValidImageList(selectedFiles)) {
       const selectedFilesArr = Array.from(e.target.files);
-      setSelectedFiles(selectedFilesArr)
+      setSelectedFiles(selectedFilesArr);
 
       const imagesArr = selectedFilesArr.map((file) => {
         return URL.createObjectURL(file);
@@ -93,31 +98,72 @@ export default function CreateNewBook() {
     }
   };
 
+  console.log(selectedFiles.length);
+
   const handleCreateBook = async () => {
     const contentState = editorState.getCurrentContent();
     const html = stateToHTML(contentState);
-
     const formData = new FormData();
 
-    formData.append("name", bookInfo.name);
-    formData.append("price", parseFloat(bookInfo.price));
-    formData.append("author", bookInfo.author);
-    formData.append("publisher", bookInfo.publisher);
-    formData.append("quantity", bookInfo.quantity);
+    if (html === "<p><br></p>" && html.length < 20) {
+      toast.error("Please enter a longer description");
+    } else {
+      formData.append("description", html);
+    }
+    if (bookInfo.name.length < 6) {
+      toast.error("Book name must be in 5 in length");
+    } else {
+      formData.append("name", bookInfo.name);
+    }
+    if (bookInfo.author.length < 5) {
+      toast.error("Author name have at least 5 character in length");
+    } else {
+      formData.append("author", bookInfo.author);
+    }
+    if (parseFloat(bookInfo.price) < 1000) {
+      toast.error("Book price must be larger than 1000");
+    } else {
+      formData.append("price", parseFloat(bookInfo.price));
+    }
+    if (bookInfo.publisher.length < 5) {
+      toast.error("Publisher name must have at least 5 in length ");
+    } else {
+      formData.append("publisher", bookInfo.publisher);
+    }
+    if (bookInfo.quantity === 0) {
+      toast.error("Quantity must be larger than 0");
+    } else {
+      formData.append("quantity", bookInfo.quantity);
+    }
+    if (genreID.length < 1) {
+      toast.error("Book must have at least 1 genre");
+    } else {
+      genreID.forEach((file) => {
+        formData.append("genres_id", file);
+      });
+    }
+    if (subgenreID.length < 1) {
+      toast.error("Book must have at least 1 subgenre");
+    } else {
+      subgenreID.forEach((file) => {
+        formData.append("subgenres_id", file);
+      });
+    }
+    // if (selectedFiles.length < 4) {
+    //   toast.error("Must have 5 image at least");
+    // } else {
     selectedFiles.forEach((file) => {
       formData.append("image", file);
     });
-    genreID.forEach((file) => {
-      formData.append("genres_id", file);
-    });
-    subgenreID.forEach((file) => {
-      formData.append("subgenres_id", file);
-    });
-    formData.append("description", html);
+    // }
 
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
 
-    const v = await createNewBook(formData)
-    navigate("/admin/manage-book")
+    // const v = await createNewBook(formData);
+    // console.log(v);
+    // navigate("/admin/manage-book");
   };
 
   return (
@@ -208,21 +254,25 @@ export default function CreateNewBook() {
                       <TextField {...params} label="Subgenres" />
                     )}
                     onChange={(e, option) => {
-                      handleSubgenreChange(e, option)
+                      handleSubgenreChange(e, option);
                     }}
-                    value={bookInfo?.subgenres && listSubgenre ?
-                      bookInfo.subgenres.map(item =>
-                        listSubgenre[item.id - 1]) : []
+                    value={
+                      bookInfo?.subgenres && listSubgenre
+                        ? bookInfo.subgenres.map(
+                            (item) => listSubgenre[item.id - 1]
+                          )
+                        : []
                     }
-                    groupBy={(genre) =>
-                      genres[genre.genres_id - 1].name
-                    }
+                    groupBy={(genre) => genres[genre.genres_id - 1].name}
                     renderGroup={(params) => (
                       <Typography sx={{ px: 2 }}>
-                        <Typography variant="body2" sx={{pt:2, color:"#7599cc"}}>
+                        <Typography
+                          variant="body2"
+                          sx={{ pt: 2, color: "#7599cc" }}
+                        >
                           {params.group}
                         </Typography>
-                        <Typography variant="body1" sx={{pt:1}}>
+                        <Typography variant="body1" sx={{ pt: 1 }}>
                           {params.children}
                         </Typography>
                       </Typography>
@@ -259,11 +309,7 @@ export default function CreateNewBook() {
                 </Button>
               </Stack>
             </Box>
-            <ImageList
-              sx={{ height: 450, border: 1 }}
-              cols={3}
-              rowHeight={350}
-            >
+            <ImageList sx={{ height: 450, border: 1 }} cols={3} rowHeight={350}>
               {selectedImage &&
                 selectedImage.map((image, index) => {
                   return (
@@ -282,6 +328,9 @@ export default function CreateNewBook() {
                                 setSelectedImage(
                                   selectedImage.filter((e) => e !== image)
                                 );
+                                const updatedSelectedFiles = [...selectedFiles];
+                                updatedSelectedFiles.splice(index, 1);
+                                setSelectedFiles(updatedSelectedFiles);
                               }}
                             >
                               <Delete sx={{ color: "#e55039" }} />
@@ -300,9 +349,10 @@ export default function CreateNewBook() {
           <Grid xs={12} md={12}>
             <Box sx={{ border: 1 }}>
               <Editor
+                ref={editorRef}
                 editorStyle={{ height: 200 }}
                 editorState={editorState}
-                onEditorStateChange={handleEditorChange}
+                onEditorStateChange={setEditorState}
               />
             </Box>
           </Grid>
@@ -310,6 +360,7 @@ export default function CreateNewBook() {
         <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
           <Button
             variant="contained"
+            disabled={isLoading}
             sx={{ width: "10%", marginTop: "10px", mr: 3 }}
             onClick={() => navigate("/admin/manage-book")}
           >
@@ -318,6 +369,7 @@ export default function CreateNewBook() {
           <Button
             variant="contained"
             onClick={handleCreateBook}
+            disabled={isLoading}
             sx={{ width: "10%", marginTop: "10px" }}
           >
             Submit

@@ -5,24 +5,32 @@ import TextField from "@mui/material/TextField";
 import { Box, Button, Stack } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import SubgenresTable from "./SubgenresTable";
-import { useGetOneGenresQuery, useUpdateGenresMutation } from "../../../services/genresAPIs";
+import {
+  useGetOneGenresQuery,
+  useUpdateGenresMutation,
+} from "../../../services/genresAPIs";
 import CreateNewSubgenre from "./CreateNewSubgenre";
+import { toast } from "react-hot-toast";
 
 export default function DetailsGenresManagement() {
   const { id } = useParams();
   const { data: genres, isFetching } = useGetOneGenresQuery(id, { skip: !id });
-  const [genreInfo, setGenreInfo] = useState()
-  const [updateGenre] = useUpdateGenresMutation()
+  const [genreInfo, setGenreInfo] = useState();
+  const [updateGenre, { isLoading }] = useUpdateGenresMutation();
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    setGenreInfo(genres)
-  }, [isFetching])
+    setGenreInfo(genres);
+  }, [isFetching]);
 
   const handldeSubmit = async () => {
-    const v = await updateGenre({ id, name: genreInfo?.name })
-  }
+    const v = await updateGenre({ id, name: genreInfo?.name });
+    if (v.data) {
+      toast.success("Genre name updated");
+    }
+    console.log(v);
+  };
 
   return (
     <React.Fragment>
@@ -58,14 +66,18 @@ export default function DetailsGenresManagement() {
         </Grid>
         <Grid item xs={12} sm={12}>
           <Button
-            variant="outlined"
             onClick={() => navigate("/admin/manage-genres")}
+            disabled={isLoading}
           >
             Cancel
           </Button>
           &nbsp;
-          <Button onClick={handldeSubmit}>
-            Submit
+          <Button
+            variant="outlined"
+            disabled={isLoading}
+            onClick={handldeSubmit}
+          >
+            Update
           </Button>
         </Grid>
         <Grid item xs={12} sm={12}>

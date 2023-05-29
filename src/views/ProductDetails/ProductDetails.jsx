@@ -28,8 +28,8 @@ const ProductDetails = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [ytSrc, setYtSrc] = useState("");
   const [value, setValue] = React.useState(2);
-  const [genresID, setGenresID] = useState([])
-  const [subgenresID, setSubgenresID] = useState([])
+  const [genresID, setGenresID] = useState([]);
+  const [subgenresID, setSubgenresID] = useState([]);
   let [count, setCount] = useState(1);
 
   function incrementCount() {
@@ -46,7 +46,9 @@ const ProductDetails = () => {
 
   const { id } = useParams();
 
-  const { data, isFetching } = useGetProductQuery(id, { refetchOnMountOrArgChange: true });
+  const { data, isFetching } = useGetProductQuery(id, {
+    refetchOnMountOrArgChange: true,
+  });
 
   const [addWishlist] = useAddWishListMutation(id);
 
@@ -54,11 +56,12 @@ const ProductDetails = () => {
 
   const { data: wishlist } = useGetWishListQuery();
 
-  useEffect(() => {
-    setGenresID(data?.genres.map(item => parseInt(item.id)))
-    setSubgenresID(data?.subgenres.map(item => parseInt(item.id)))
-  }, [isFetching])
+  console.log("wishlist", wishlist);
 
+  useEffect(() => {
+    setGenresID(data?.genres.map((item) => parseInt(item.id)));
+    setSubgenresID(data?.subgenres.map((item) => parseInt(item.id)));
+  }, [isFetching]);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -114,7 +117,8 @@ const ProductDetails = () => {
                 <Rating
                   precision={0.5}
                   readOnly
-                  value={data ? (data?.rating) : (0)} size="small"
+                  value={data ? data?.rating : 0}
+                  size="small"
                 />
                 <Typography
                   variant="h5"
@@ -156,10 +160,7 @@ const ProductDetails = () => {
               {/* Add to wishlist  */}
               <Stack direction="row" alignItems="center" mt={5} spacing={2}>
                 {wishlist?.some((item) => item?.book.id == id) ? (
-                  <Button
-                    variant="contained"
-                    disabled
-                  >
+                  <Button variant="contained" disabled>
                     <Typography variant="body1">
                       Already in your wishlist
                     </Typography>
@@ -203,12 +204,16 @@ const ProductDetails = () => {
 
         {/* Recommend for you  */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <Recommend bookID={data?.id} genresID={genresID} subgenresID={subgenresID} />
+          <Recommend
+            bookID={data?.id}
+            genresID={genresID}
+            subgenresID={subgenresID}
+          />
         </Grid>
 
         {/* Comment  */}
         <Grid item container spacing={2} xs={12} sm={12}>
-          <Comment id={parseInt(id)} />
+          <Comment id={parseInt(id)} wishlist={wishlist}/>
         </Grid>
       </Grid>
     </Box>

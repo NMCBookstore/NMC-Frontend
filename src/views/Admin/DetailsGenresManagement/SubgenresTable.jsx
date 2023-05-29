@@ -46,13 +46,13 @@ export default function SubgenresTable({ id }) {
                   <TableCell align="center">
                     <Typography>{item?.name}</Typography>
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     <Tooltip title="Delete Subgenres">
                       <IconButton>
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>
                     <UpdateGenresDialog id={item?.id} genre_id={id} />
                   </TableCell>

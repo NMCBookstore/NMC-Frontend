@@ -13,6 +13,7 @@ import {
   selectCurrentProductArr,
   selectCurrentShipping,
 } from "../../../features/cart/cartSlice";
+import { useListAddressQuery } from "../../../services/addressAPIs";
 
 const currencyExchange = (num) => {
   return parseFloat(num).toLocaleString("vi-VN", {
@@ -32,13 +33,17 @@ const currencyExchange = (num) => {
 //   return formatter.format(parseFloat(num * 0.000043));
 // };
 
-export default function ProductCheckoutCard({ data }) {
+export default function ProductCheckoutCard() {
   const navigate = useNavigate();
 
   const totalItemArr = useSelector(selectCurrentProductArr);
 
   const shipping = useSelector(selectCurrentShipping);
-  console.log(shipping);
+
+  const { data, isFetching } = useListAddressQuery("listAddress");
+
+  const totalAddress = data?.length;
+  console.log(totalAddress);
 
   const handleNaviCheckout = (e) => {
     e.preventDefault();
@@ -91,7 +96,7 @@ export default function ProductCheckoutCard({ data }) {
         </Stack>
       </CardContent>
       <CardActions>
-        {totalItemArr.length ? (
+        {totalItemArr.length && totalAddress ? (
           <Button
             type="submit"
             variant="contained"
@@ -107,10 +112,10 @@ export default function ProductCheckoutCard({ data }) {
           >
             Proceed to checkout
           </Button>
-        ) : (
+        ) : totalAddress ? (
           <Button
             variant="contained"
-            disabled
+            onClick={() => toast.error("Please set your order")}
             sx={{
               width: "100%",
               mt: 2,
@@ -120,7 +125,24 @@ export default function ProductCheckoutCard({ data }) {
               },
             }}
           >
-            Please set your order
+            Set my order
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            onClick={() =>
+              toast.error("Please create an address in your profile")
+            }
+            sx={{
+              width: "100%",
+              mt: 2,
+              backgroundColor: "#DB4444",
+              "&:hover": {
+                backgroundColor: "#DB4444",
+              },
+            }}
+          >
+            Set my order
           </Button>
         )}
       </CardActions>

@@ -37,7 +37,7 @@ const CARD_OPTIONS = {
   },
 };
 
-export default function PaymentForm() {
+export default function PaymentForm({ handleNext, userAddress }) {
   const [success, setSuccess] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
@@ -62,32 +62,25 @@ export default function PaymentForm() {
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
       card: elements.getElement(CardElement),
-      billing_details: {
-        address: {
-          line1: "113/8/8, Le Van chi",
-        },
-        email: user.email,
-        name: user.full_name,
-        phone: user.phone_number,
-      },
     });
 
     if (!error) {
       try {
         const { id } = paymentMethod;
-        const { response } = await createPayment({
+        const response = await createPayment({
           payment_id: id,
           cart_ids: totalCartIdArr,
-          to_address: "113/8/8, Le Van chi",
+          to_address: userAddress,
           total_shipping: shipping,
           status: "success",
         });
 
-        if (response.data.success) {
+        if (response) {
           toast.success("Payment success");
+          handleNext();
         }
       } catch (error) {
-        toast.error("Failed to create ")
+        toast.error("Failed to create ");
         console.log("Erroe", error);
       }
     } else {

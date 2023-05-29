@@ -3,10 +3,17 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import MUIDataTable from "mui-datatables";
 import makeStyles from "@mui/styles/makeStyles";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
-import { Box, Button, IconButton, Stack, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import CreateNewGenre from "./CreateNewGenre";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const useStyles = makeStyles((theme) => ({
   tableOverflow: {
@@ -15,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function GenresManagement() {
-
   const { data } = useGetGenresQuery();
   const navigate = useNavigate();
 
@@ -24,7 +30,7 @@ export default function GenresManagement() {
       name: "id",
       label: " ID",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       },
     },
@@ -40,18 +46,18 @@ export default function GenresManagement() {
       name: "",
       label: " ",
       options: {
+        filter: false,
+        sort: false,
         customBodyRender: () => (
-          <Stack alignItems="end" sx={{pr:2}}>
-            <Tooltip
-            title="Edit genre and subgenres of it"
-          >
-            <ArrowForwardIosIcon />
-          </Tooltip>
+          <Stack alignItems="end" sx={{ pr: 2 }}>
+            <Tooltip title="Edit genre and subgenres of it">
+              <ArrowForwardIosIcon />
+            </Tooltip>
           </Stack>
-        )
+        ),
       },
     },
-  ]
+  ];
 
   const classes = useStyles();
   const options = {
@@ -63,9 +69,7 @@ export default function GenresManagement() {
   return (
     <Box sx={{ my: 5 }}>
       <Stack direction="row" display="flex" justifyContent="space-between">
-        <Typography variant="h4">
-          List of Genres
-        </Typography>
+        <Typography variant="h4">List of Genres</Typography>
         <CreateNewGenre />
       </Stack>
       <Grid container spacing={4}>

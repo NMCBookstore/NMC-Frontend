@@ -1,11 +1,21 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Stack, TextField } from '@mui/material'
-import React, { useState } from 'react'
-import { useCreateGenresMutation } from '../../../services/genresAPIs';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  Stack,
+  TextField,
+} from "@mui/material";
+import React, { useState } from "react";
+import { useCreateGenresMutation } from "../../../services/genresAPIs";
+import { toast } from "react-hot-toast";
 
 export default function CreateNewGenre() {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState();
-  const [createGenre] = useCreateGenresMutation()
+  const [name, setName] = useState("");
+  const [createGenre, { isLoading }] = useCreateGenresMutation();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -16,8 +26,19 @@ export default function CreateNewGenre() {
   };
 
   const handleCreateGenres = async () => {
-    const v = await createGenre(name)
-    handleClose();
+    if (name !== "" && name.length > 5 ) {
+      const v = await createGenre(name);
+      if (v.data) {
+        toast.success("New genre created");
+        handleClose();
+      } else if (v.error && v.error.status === 500) {
+        toast.error("Error");
+      } else if (v.error && v.error.status === 400) {
+        toast.error("Can't create new genre");
+      }
+    } else {
+      toast.error("Genre name can't be that short");
+    }
   };
   return (
     <>
@@ -87,6 +108,7 @@ export default function CreateNewGenre() {
                   backgroundColor: "#95a5a6",
                 },
               }}
+              disabled={isLoading}
               onClick={handleClose}
             >
               Cancel
@@ -99,6 +121,7 @@ export default function CreateNewGenre() {
                   backgroundColor: "#DB4444",
                 },
               }}
+              disabled={isLoading}
               onClick={handleCreateGenres}
             >
               Create
@@ -107,6 +130,5 @@ export default function CreateNewGenre() {
         </DialogActions>
       </Dialog>
     </>
-
-  )
+  );
 }

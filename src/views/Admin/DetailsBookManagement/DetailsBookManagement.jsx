@@ -17,30 +17,35 @@ import {
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { isValidImageList } from "../../../utils/helper";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetProductQuery } from "../../../services/productAPIs";
 import { useUpdateBookMutation } from "../../../services/productAdminAPI";
 import { Editor } from "react-draft-wysiwyg";
 import { stateToHTML } from "draft-js-export-html";
-import { EditorState, ContentState, convertFromHTML } from 'draft-js'
+import { EditorState, ContentState, convertFromHTML } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete from "@mui/material/Autocomplete";
 import { useGetGenresQuery } from "../../../services/genresAPIs";
 import { useListSubGenresQuery } from "../../../services/subGenresAPIs";
 import getSubgenreGroup from "./getSubgenreGroup";
+import { toast } from "react-hot-toast";
 
 export default function DetailsBookManageMent() {
+  const navigate = useNavigate();
   const { id } = useParams();
 
-  const { data, isFetching } = useGetProductQuery(id);
-  const { data: listSubgenre, isFetching: isFetchingSub } = useListSubGenresQuery();
+  const { data, isFetching } = useGetProductQuery(id, {
+    refetchOnMountOrArgChange: true,
+  });
+  const { data: listSubgenre, isFetching: isFetchingSub } =
+    useListSubGenresQuery();
 
   const [bookInfo, setBookInfo] = useState(data);
 
   const [selectedImage, setSelectedImage] = useState([]);
   const [selectedFiles, setSelectedFiles] = useState([]);
 
-  const [updateBook] = useUpdateBookMutation()
+  const [updateBook, { isLoading }] = useUpdateBookMutation();
   const [editorState, setEditorState] = useState("");
 
   const { data: genres } = useGetGenresQuery();
@@ -49,49 +54,49 @@ export default function DetailsBookManageMent() {
   const [subgenres, setSubgenres] = useState([]);
 
   useEffect(() => {
-    setGenreID(data?.genres.map(item => item.id))
-    setSubgenreID(data?.subgenres.map(item => item.id))
-    let subgenresFromGenreID = getSubgenreGroup(data?.genres, listSubgenre)
-    setSubgenres(subgenresFromGenreID.slice().
-      sort((a, b) => a.genres_id - b.genres_id))
+    setGenreID(data?.genres.map((item) => item.id));
+    setSubgenreID(data?.subgenres.map((item) => item.id));
+    let subgenresFromGenreID = getSubgenreGroup(data?.genres, listSubgenre);
+    setSubgenres(
+      subgenresFromGenreID.slice().sort((a, b) => a.genres_id - b.genres_id)
+    );
 
-    const des = data?.description.replace(/\\n/g,"<br/>").replace(/\\/g,"")
-    setBookInfo(data)
-    setSelectedImage(data?.image)
+    const des = data?.description.replace(/\\n/g, "<br/>").replace(/\\/g, "");
+    setBookInfo(data);
+    setSelectedImage(data?.image);
     setEditorState(
       EditorState.createWithContent(
-        ContentState.createFromBlockArray(
-          convertFromHTML(`${des}`)
-        )
+        ContentState.createFromBlockArray(convertFromHTML(`${des}`))
       )
-    )
-  }, [isFetching, isFetchingSub])
+    );
+  }, [isFetching, isFetchingSub]);
 
   const handleGenreChange = (event, option) => {
     if (option.length > 0) {
-      setGenreID(option.map(item => item.id));
+      setGenreID(option.map((item) => item.id));
 
-      let subGenre = getSubgenreGroup(option, bookInfo?.subgenres)
-      setBookInfo({ ...bookInfo, genres: option, subgenres: subGenre })
+      let subGenre = getSubgenreGroup(option, bookInfo?.subgenres);
+      setBookInfo({ ...bookInfo, genres: option, subgenres: subGenre });
 
-      let subgenresFromGenreID = getSubgenreGroup(option, listSubgenre)
-      setSubgenres(subgenresFromGenreID.slice().
-        sort((a, b) => a.genres_id - b.genres_id))
+      let subgenresFromGenreID = getSubgenreGroup(option, listSubgenre);
+      setSubgenres(
+        subgenresFromGenreID.slice().sort((a, b) => a.genres_id - b.genres_id)
+      );
     } else {
       setGenreID([]);
-      setSubgenreID([])
-      setBookInfo({ ...bookInfo, genres: option, subgenres: option })
-      setSubgenres([])
+      setSubgenreID([]);
+      setBookInfo({ ...bookInfo, genres: option, subgenres: option });
+      setSubgenres([]);
     }
   };
 
   const handleSubgenreChange = (event, option) => {
     if (option.length > 0) {
-      setSubgenreID(option.map(item => item.id));
+      setSubgenreID(option.map((item) => item.id));
     } else {
-      setSubgenreID([])
+      setSubgenreID([]);
     }
-    setBookInfo({ ...bookInfo, subgenres: option })
+    setBookInfo({ ...bookInfo, subgenres: option });
   };
 
   const handleEditorChange = (newEditorState) => {
@@ -100,10 +105,10 @@ export default function DetailsBookManageMent() {
 
   const onSelectFile = (e) => {
     if (isValidImageList(selectedFiles)) {
-      const previewImage = Array.from(e.target.files);
-      setSelectedFiles(Array.from(e.target.files));
+      const selectedFilesArr = Array.from(e.target.files);
+      setSelectedFiles(selectedFilesArr);
 
-      const imagesArr = previewImage.map((file) => {
+      const imagesArr = selectedFilesArr.map((file) => {
         return URL.createObjectURL(file);
       });
 
@@ -113,6 +118,8 @@ export default function DetailsBookManageMent() {
     }
   };
 
+  console.log("the original", selectedFiles.length);
+
   const handleUpdateBook = async () => {
     const contentState = editorState.getCurrentContent();
     const html = stateToHTML(contentState);
@@ -120,27 +127,42 @@ export default function DetailsBookManageMent() {
     const formData = new FormData();
 
     formData.append("id", parseInt(id));
+
     formData.append("name", bookInfo?.name);
     formData.append("price", parseFloat(bookInfo?.price));
-    bookInfo?.image.forEach(element => {
+
+    bookInfo?.image.forEach((element) => {
       formData.append("image", element);
     });
-    selectedFiles.forEach(element => {
+
+    selectedFiles.forEach((element) => {
       formData.append("files", element);
     });
+
     formData.append("description", html);
     formData.append("author", bookInfo?.author);
     formData.append("publisher", bookInfo?.publisher);
     formData.append("quantity", parseInt(bookInfo?.quantity));
-    genreID?.forEach(element => {
+    genreID?.forEach((element) => {
       formData.append("genres_id", element);
     });
-    subgenreID?.forEach(element => {
+    subgenreID?.forEach((element) => {
       formData.append("subgenres_id", element);
     });
 
-    const v = await updateBook(formData)
-    navigate("/admin/manage-book")
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    // const v = await updateBook(formData);
+    // if (v.data) {
+    //   toast.success("Book updated");
+    //   navigate("/admin/manage-book");
+    // } else if (v.error && v.error.status === 400) {
+    //   toast.error("Can't not update");
+    // } else if (v.error && v.error.status === 500) {
+    //   toast.error("Please check your information again");
+    // }
   };
 
   return (
@@ -226,11 +248,12 @@ export default function DetailsBookManageMent() {
                     <TextField {...params} label="Genres" />
                   )}
                   onChange={(e, option) => {
-                    handleGenreChange(e, option)
+                    handleGenreChange(e, option);
                   }}
-                  value={bookInfo?.genres && genres ?
-                    bookInfo.genres.
-                      map(item => genres[item.id - 1]) : []
+                  value={
+                    bookInfo?.genres && genres
+                      ? bookInfo.genres.map((item) => genres[item.id - 1])
+                      : []
                   }
                 />
               </Grid>
@@ -246,19 +269,25 @@ export default function DetailsBookManageMent() {
                     <TextField {...params} label="Subgenres" />
                   )}
                   onChange={(e, option) => {
-                    handleSubgenreChange(e, option)
+                    handleSubgenreChange(e, option);
                   }}
-                  value={bookInfo?.subgenres && listSubgenre ?
-                    bookInfo.subgenres.map(item =>
-                      listSubgenre[item.id - 1]) : []
+                  value={
+                    bookInfo?.subgenres && listSubgenre
+                      ? bookInfo.subgenres.map(
+                          (item) => listSubgenre[item.id - 1]
+                        )
+                      : []
                   }
                   groupBy={(genre) => genres[genre.genres_id - 1].name}
                   renderGroup={(params) => (
                     <Typography sx={{ px: 2 }}>
-                      <Typography variant="body2" sx={{pt:2, color:"#7599cc"}}>
+                      <Typography
+                        variant="body2"
+                        sx={{ pt: 2, color: "#7599cc" }}
+                      >
                         {params.group}
                       </Typography>
-                      <Typography variant="body1" sx={{pt:1}}>
+                      <Typography variant="body1" sx={{ pt: 1 }}>
                         {params.children}
                       </Typography>
                     </Typography>
@@ -300,6 +329,7 @@ export default function DetailsBookManageMent() {
               rowHeight={350}
             >
               {bookInfo?.image &&
+                selectedImage &&
                 selectedImage.map((image, index) => {
                   return (
                     <CardActionArea key={image}>
@@ -317,7 +347,13 @@ export default function DetailsBookManageMent() {
                                 setSelectedImage(
                                   selectedImage.filter((e) => e !== image)
                                 );
-                                setBookInfo({ ...bookInfo, image: bookInfo?.image.filter((e) => e !== image) })
+
+                                setBookInfo({
+                                  ...bookInfo,
+                                  image: bookInfo?.image.filter(
+                                    (e) => e !== image
+                                  ),
+                                });
                               }}
                             >
                               <Delete sx={{ color: "#e55039" }} />
@@ -346,6 +382,7 @@ export default function DetailsBookManageMent() {
           <Button
             variant="contained"
             sx={{ width: "10%", marginTop: "10px", mr: 3 }}
+            disabled={isLoading}
             onClick={() => navigate("/admin/manage-book")}
           >
             Cancel
@@ -353,11 +390,13 @@ export default function DetailsBookManageMent() {
           <Button
             variant="contained"
             sx={{ width: "10%", marginTop: "10px" }}
-            onClick={handleUpdateBook}>
+            disabled={isLoading}
+            onClick={handleUpdateBook}
+          >
             Submit
           </Button>
         </Box>
-      </Box >
+      </Box>
     </>
   );
 }
