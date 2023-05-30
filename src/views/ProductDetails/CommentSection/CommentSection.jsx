@@ -24,6 +24,7 @@ import {
 import { toast } from "react-hot-toast";
 import CommentPagination from "./CommentPagination";
 import { Editor } from "react-draft-wysiwyg";
+import { EditorState } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useGetUserQuery } from "../../../services/userAPI";
@@ -37,7 +38,10 @@ export default function Comment({ id, wishlist }) {
 
   const [page, setPage] = useState({ id: 1, size: 5 });
 
-  const [editorState, setEditorState] = useState("");
+  const editorRef = useRef();
+  const [editorState, setEditorState] = useState(() =>
+    EditorState.createEmpty()
+  );
 
   const { data: listReview, isFetching } = useGetReviewQuery({
     book_id: id,
@@ -102,18 +106,21 @@ export default function Comment({ id, wishlist }) {
           />
           <Box sx={{ border: 1, my: 1 }}>
             <Editor
+              ref={editorRef}
               editorStyle={{ height: 200 }}
               editorState={editorState}
-              onEditorStateChange={handleEditorChange}
+              onEditorStateChange={setEditorState}
             />
           </Box>
-          <Button
-            variant="contained"
-            onClick={handleSubmit}
-            sx={{ width: "10%", marginTop: "10px" }}
-          >
-            Submit
-          </Button>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              variant="contained"
+              onClick={handleSubmit}
+              sx={{ width: "1%", marginTop: "10px" }}
+            >
+              Post
+            </Button>
+          </Box>
         </Stack>
       </Paper>
 

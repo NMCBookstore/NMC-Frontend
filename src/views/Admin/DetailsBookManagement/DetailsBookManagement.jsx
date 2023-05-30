@@ -106,7 +106,7 @@ export default function DetailsBookManageMent() {
   const onSelectFile = (e) => {
     if (isValidImageList(selectedFiles)) {
       const selectedFilesArr = Array.from(e.target.files);
-      setSelectedFiles(selectedFilesArr);
+      setSelectedFiles(selectedFiles.concat(selectedFilesArr));
 
       const imagesArr = selectedFilesArr.map((file) => {
         return URL.createObjectURL(file);
@@ -115,6 +115,25 @@ export default function DetailsBookManageMent() {
       setSelectedImage((prevImage) => prevImage.concat(imagesArr));
     } else {
       toast.error("Only png, jpeg, jpg files accepted");
+    }
+  };
+  const hanldeLocalImage = (e, image, index) => {
+    setSelectedImage(selectedImage.filter((e) => e !== image));
+
+    const imageCloud = bookInfo?.image.filter((e) => e !== image);
+
+    setBookInfo({
+      ...bookInfo,
+      image: imageCloud,
+    });
+
+    if (JSON.stringify(bookInfo?.image) == JSON.stringify(imageCloud)) {
+      setSelectedFiles(
+        selectedFiles &&
+          selectedFiles.filter(
+            (item) => item !== selectedFiles[index - imageCloud.length - 1]
+          )
+      );
     }
   };
 
@@ -343,17 +362,8 @@ export default function DetailsBookManageMent() {
                           }}
                           actionIcon={
                             <IconButton
-                              onClick={() => {
-                                setSelectedImage(
-                                  selectedImage.filter((e) => e !== image)
-                                );
-
-                                setBookInfo({
-                                  ...bookInfo,
-                                  image: bookInfo?.image.filter(
-                                    (e) => e !== image
-                                  ),
-                                });
+                              onClick={(e) => {
+                                hanldeLocalImage(e, image, index);
                               }}
                             >
                               <Delete sx={{ color: "#e55039" }} />
