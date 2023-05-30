@@ -11,10 +11,13 @@ import {
 import Button from "@mui/material/Button";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import { useUpdateUserMutation } from "../../../services/userAPI";
+import { toast } from "react-hot-toast";
+import { validateRegisterPassword } from "../../../utils/helper";
+import { useNavigate } from "react-router-dom";
 
 export default function UserContentChangePassword() {
   const [pass, setPassword] = useState({
-    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
     showPass: false,
@@ -27,8 +30,32 @@ export default function UserContentChangePassword() {
     });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const navigate = useNavigate();
+
+  const naviProfile = () => {
+    navigate("/user/profile/");
+  };
+
+  const [updatePassword, { isLoading }] = useUpdateUserMutation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+
+    if (
+      pass.newPassword === pass.confirmPassword &&
+      validateRegisterPassword(pass.newPassword)
+    ) {
+      formData.append("password", pass.newPassword);
+      const v = await updatePassword(formData);
+      if (v.data) {
+        toast.success("Your password updated");
+      } else {
+        toast.error("Can't update your password");
+      }
+    } else {
+      toast.error("Your password doesn't match or too short");
+    }
   };
 
   return (
@@ -40,7 +67,7 @@ export default function UserContentChangePassword() {
         sx={{ width: "60%", display: "flex", flexWrap: "wrap" }}
       >
         {/* <Box  sx={{ mt: 1 }}> */}
-        <TextField
+        {/* <TextField
           margin="normal"
           required
           name="currentPassword"
@@ -60,7 +87,7 @@ export default function UserContentChangePassword() {
               </InputAdornment>
             ),
           }}
-        />
+        /> */}
 
         <TextField
           margin="normal"
@@ -77,11 +104,14 @@ export default function UserContentChangePassword() {
                   aria-label="toggle password"
                   edge="end"
                 >
-                  {pass.showPass}
+                  {pass.showPass ? <VisibilityIcon /> : <VisibilityOffIcon />}
                 </IconButton>
               </InputAdornment>
             ),
           }}
+          onChange={(e) =>
+            setPassword({ ...pass, newPassword: e.target.value })
+          }
         />
 
         <TextField
@@ -89,21 +119,11 @@ export default function UserContentChangePassword() {
           required
           name="confirmPassword"
           label="Confirm New Password"
+          type="password"
           placeholder="Confirm your new password"
-          type={pass.showPass ? "text" : "password"}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handlePassVisibilty}
-                  aria-label="toggle password"
-                  edge="end"
-                >
-                  {pass.showPass}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
+          onChange={(e) =>
+            setPassword({ ...pass, confirmPassword: e.target.value })
+          }
         />
         <Stack direction="row">
           <Button
@@ -114,6 +134,8 @@ export default function UserContentChangePassword() {
               height: "50%",
               marginLeft: "25%",
             }}
+            disabled={isLoading}
+            onClick={naviProfile}
           >
             Cancel
           </Button>
@@ -130,6 +152,8 @@ export default function UserContentChangePassword() {
                 backgroundColor: "#DB4444",
               },
             }}
+            disabled={isLoading}
+            onClick={handleSubmit}
           >
             Save changes
           </Button>

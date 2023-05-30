@@ -1,22 +1,20 @@
 import React, { useState } from "react";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 import { useCreateOrderMutation } from "../../../services/orderAPIs";
 import { Box, Button, FormControl } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import paymenticon from "./paymenticon.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../features/auth/authSlice";
 import {
   selectCurrentProductArr,
   selectCurrentShipping,
+  selectCurrentCartOrder,
+  clearCheckOutInfoArr,
+  clearCartIdArr,
 } from "../../../features/cart/cartSlice";
-import { selectCurrentCartOrder } from "../../../features/cart/cartSlice";
 
 const CARD_OPTIONS = {
   iconStyle: "solid",
@@ -42,6 +40,8 @@ export default function PaymentForm({ handleNext, userAddress }) {
   const stripe = useStripe();
   const elements = useElements();
 
+  const dispatch = useDispatch();
+
   const user = useSelector(selectCurrentUser);
 
   const totalItemArr = useSelector(selectCurrentProductArr);
@@ -53,9 +53,14 @@ export default function PaymentForm({ handleNext, userAddress }) {
     total += parseInt(totalItemArr[i]?.amount * totalItemArr[i]?.price);
   }
 
-  const [createPayment] = useCreateOrderMutation();
+  const [createPayment, { isLoading }] = useCreateOrderMutation();
 
   const shipping = useSelector(selectCurrentShipping);
+
+  const hanldeClearCart = () => {
+    dispatch(clearCheckOutInfoArr());
+    dispatch(clearCartIdArr());
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -77,11 +82,12 @@ export default function PaymentForm({ handleNext, userAddress }) {
 
         if (response) {
           toast.success("Payment success");
+          hanldeClearCart();
           handleNext();
         }
       } catch (error) {
         toast.error("Failed to create ");
-        console.log("Erroe", error);
+        console.log("Error", error);
       }
     } else {
       toast.error(error.message);
@@ -121,6 +127,7 @@ export default function PaymentForm({ handleNext, userAddress }) {
                           background: "#db4444",
                         },
                       }}
+                      disabled={isLoading}
                       onClick={handleSubmit}
                     >
                       Pay Order
@@ -137,57 +144,5 @@ export default function PaymentForm({ handleNext, userAddress }) {
         </Grid>
       </Grid>
     </>
-    // <Typography variant="h6" gutterBottom>
-    //   Payment method
-    // </Typography>
-    // <Grid container spacing={3}>
-    //   <Grid item xs={12} md={6}>
-    //     <TextField
-    //       required
-    //       id="cardName"
-    //       label="Name on card"
-    //       fullWidth
-    //       autoComplete="cc-name"
-    //       variant="standard"
-    //     />
-    //   </Grid>
-    //   <Grid item xs={12} md={6}>
-    //     <TextField
-    //       required
-    //       id="cardNumber"
-    //       label="Card number"
-    //       fullWidth
-    //       autoComplete="cc-number"
-    //       variant="standard"
-    //     />
-    //   </Grid>
-    //   <Grid item xs={12} md={6}>
-    //     <TextField
-    //       required
-    //       id="expDate"
-    //       label="Expiry date"
-    //       fullWidth
-    //       autoComplete="cc-exp"
-    //       variant="standard"
-    //     />
-    //   </Grid>
-    //   <Grid item xs={12} md={6}>
-    //     <TextField
-    //       required
-    //       id="cvv"
-    //       label="CVV"
-    //       helperText="Last three digits on signature strip"
-    //       fullWidth
-    //       autoComplete="cc-csc"
-    //       variant="standard"
-    //     />
-    //   </Grid>
-    //   {/* <Grid item xs={12}>
-    //     <FormControlLabel
-    //       control={<Checkbox color="secondary" name="saveCard" value="yes" />}
-    //       label="Remember credit card details for next time"
-    //     />
-    //   </Grid> */}
-    // </Grid>
   );
 }

@@ -56,8 +56,6 @@ const ProductDetails = () => {
 
   const { data: wishlist } = useGetWishListQuery();
 
-  console.log("wishlist", wishlist);
-
   useEffect(() => {
     setGenresID(data?.genres.map((item) => parseInt(item.id)));
     setSubgenresID(data?.subgenres.map((item) => parseInt(item.id)));

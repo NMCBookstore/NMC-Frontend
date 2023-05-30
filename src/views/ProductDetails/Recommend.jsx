@@ -16,7 +16,7 @@ export default function Recommend({ bookID, genresID, subgenresID }) {
   })
 
   useEffect(() => {
-    console.log(recommend)
+    // console.log(recommend)
   }, [isFetching])
 
 

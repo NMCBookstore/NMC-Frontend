@@ -128,8 +128,8 @@ export default function CreateNewBook() {
     } else {
       formData.append("publisher", bookInfo.publisher);
     }
-    if (bookInfo.quantity === 0) {
-      toast.error("Quantity must be larger than 0");
+    if (bookInfo.quantity === 0 && bookInfo.quantity > 1000) {
+      toast.error("Quantity is not valid");
     } else {
       formData.append("quantity", bookInfo.quantity);
     }
@@ -147,23 +147,32 @@ export default function CreateNewBook() {
         formData.append("subgenres_id", file);
       });
     }
-    if (selectedFiles.length < 4) {
+    if (selectedFiles.length < 5) {
       toast.error("Must have 5 image at least");
     } else {
       selectedFiles.forEach((file) => {
         formData.append("image", file);
       });
-      // }
+    }
 
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+    const uniqueKeys = new Set();
+    for (let pair of formData.entries()) {
+      const [key] = pair;
+      uniqueKeys.add(key);
+    }
 
+    const numFields = uniqueKeys.size;
+
+    if (numFields == 9) {
       const v = await createNewBook(formData);
       if (v.data) {
         toast.success("New book created");
         navigate("/admin/manage-book");
+      } else if (v.error && v.error.status === 400) {
+        toast.error("Can't not create new book");
       }
+    } else {
+      toast.error("Please fill all the field");
     }
   };
 
