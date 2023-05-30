@@ -83,40 +83,40 @@ export default function BookManagement() {
   };
 
   return (
-      <Box sx={{ my: 5 }}>
-        <Stack direction="row" spacing={100}>
-          <Typography variant="h4">List of book</Typography>
-          <Link to="/admin/create-book" style={{ textDecoration: "none" }}>
-            <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-              <Button
-                variant="contained"
-                sx={{
-                  my: 1,
+    <Box sx={{ my: 5 }}>
+      <Stack direction="row" spacing={100}>
+        <Typography variant="h4">List of book</Typography>
+        <Link to="/admin/create-book" style={{ textDecoration: "none" }}>
+          <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+            <Button
+              variant="contained"
+              sx={{
+                my: 1,
+                backgroundColor: "#db4444",
+                "&:hover": {
                   backgroundColor: "#db4444",
-                  "&:hover": {
-                    backgroundColor: "#db4444",
-                  },
-                }}
-              >
-                Create new book
-              </Button>
-            </Box>
-          </Link>
-        </Stack>
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <MUIDataTable
-              title="Book Data List"
-              data={allProduct}
-              onRowClick={() => console.log("this clicked")}
-              columns={columns}
-              options={
-                //   filterType: "checkbox",
-                options
-              }
-            />
-          </Grid>
+                },
+              }}
+            >
+              Create new book
+            </Button>
+          </Box>
+        </Link>
+      </Stack>
+      <Grid container spacing={4}>
+        <Grid item xs={12}>
+          <MUIDataTable
+            title="Book Data List"
+            data={allProduct}
+            onRowClick={() => console.log("this clicked")}
+            columns={columns}
+            options={
+              //   filterType: "checkbox",
+              options
+            }
+          />
         </Grid>
-      </Box>
+      </Grid>
+    </Box>
   );
 }

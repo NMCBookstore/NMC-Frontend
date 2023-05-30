@@ -22,7 +22,7 @@ export default function ListOrder({ data }) {
                     variant="h5"
                     sx={{ px: 2, borderBottom: "1px #d8d8d8 solid" }}
                   >
-                    OrderID: {item?.ID}
+                    Order Number: {item?.id}
                   </Typography>
                 </TableHead>
                 <TableBody>

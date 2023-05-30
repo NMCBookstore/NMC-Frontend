@@ -51,7 +51,7 @@ export default function UserCheckout() {
   const handleChangeAddress = (address) => {
     setUserAddress(address);
   };
-  console.log("this is main checkout", userAddress);
+  // console.log("this is main checkout", userAddress);
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);

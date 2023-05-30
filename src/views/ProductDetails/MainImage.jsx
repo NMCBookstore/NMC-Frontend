@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import lightGallery from "lightgallery";
-import PlayCircleFilledWhiteOutlinedIcon from '@mui/icons-material/PlayCircleFilledWhiteOutlined';
+import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
 
-import 'lightgallery/css/lightgallery.css';
-import 'lightgallery/css/lg-zoom.css';
-import 'lightgallery/css/lg-thumbnail.css';
+import "lightgallery/css/lightgallery.css";
+import "lightgallery/css/lg-zoom.css";
+import "lightgallery/css/lg-thumbnail.css";
 import "lightgallery/css/lg-video.css";
 
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
@@ -13,9 +13,9 @@ import { convertData } from "./ConvertData";
 import { Typography } from "@mui/material";
 
 export default function MainImage({ src, images, ytSrc }) {
-  const gallery = convertData(images)
-  const dynamicGallery = useRef(null)
-  const [dynamicGalleryOpt, setDynamicGalleryOpt] = useState(null)
+  const gallery = convertData(images);
+  const dynamicGallery = useRef(null);
+  const [dynamicGalleryOpt, setDynamicGalleryOpt] = useState(null);
 
   useEffect(() => {
     let plug = [lgThumbnail]
@@ -29,10 +29,10 @@ export default function MainImage({ src, images, ytSrc }) {
     }))
   }, [images])
 
+
   const openGallery = (id) => {
     dynamicGalleryOpt.openGallery(id);
   };
-
 
   return (
     <div
@@ -49,7 +49,7 @@ export default function MainImage({ src, images, ytSrc }) {
         src={src}
         style={{
           width: "100%",
-          cursor: "pointer"
+          cursor: "pointer",
         }}
       />
       {
@@ -60,7 +60,8 @@ export default function MainImage({ src, images, ytSrc }) {
             position: "absolute",
             top: "40%",
             left: "35%",
-          }}>
+          }}
+        >
           <PlayCircleFilledWhiteOutlinedIcon
             sx={{
               color: "white",

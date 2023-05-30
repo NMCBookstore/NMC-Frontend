@@ -70,7 +70,7 @@ const validPhoneNumber = (value) => {
 };
 
 const validFullName = (value) => {
-  const fullNameRegex = /^[a-zA-Z\s]+$/;
+  const fullNameRegex = /^[\p{L}\s]{1,40}$/u;
   return fullNameRegex.test(value);
 };
 

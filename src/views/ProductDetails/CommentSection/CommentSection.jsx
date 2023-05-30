@@ -32,7 +32,7 @@ import { useGetUserQuery } from "../../../services/userAPI";
 const imgLink =
   "https://images.pexels.com/photos/1681010/pexels-photo-1681010.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260";
 
-export default function Comment({ id, wishlist }) {
+export default function Comment({ id }) {
   const { data: user } = useGetUserQuery();
   const token = useSelector(selectCurrentAccessToken);
 
@@ -62,7 +62,7 @@ export default function Comment({ id, wishlist }) {
     rating: 0,
   });
 
-  const [addReview] = useAddReviewMutation(id);
+  const [addReview, { isLoading }] = useAddReviewMutation(id);
 
   const handleSubmit = async (event) => {
     const contentState = editorState.getCurrentContent();
@@ -70,19 +70,23 @@ export default function Comment({ id, wishlist }) {
 
     event.preventDefault();
     try {
-      await addReview({
-        book_id: id,
-        comments: html,
-        rating: parseInt(values.rating),
-      });
-      toast.success("Your comment has been posted");
+      if (html !== "<p><br></p>" && values.rating !== 0) {
+        const v = await addReview({
+          book_id: id,
+          comments: html,
+          rating: parseInt(values.rating),
+        });
+        if (v.data) {
+          toast.success("Your comment has been posted");
+        } else {
+          toast.error("Can't post your comment");
+        }
+      } else {
+        toast.error("Both comment and stars are required");
+      }
     } catch (err) {
       toast.error("Couldn't posted your comment");
     }
-  };
-
-  const handleEditorChange = (newEditorState) => {
-    setEditorState(newEditorState);
   };
 
   return token ? (
@@ -101,7 +105,6 @@ export default function Comment({ id, wishlist }) {
           </Stack>
           <Rating
             name="rating"
-            defaultValue={1}
             onChange={(e) => setValues({ ...values, rating: e.target.value })}
           />
           <Box sx={{ border: 1, my: 1 }}>
@@ -116,6 +119,7 @@ export default function Comment({ id, wishlist }) {
             <Button
               variant="contained"
               onClick={handleSubmit}
+              disabled={isLoading}
               sx={{ width: "1%", marginTop: "10px" }}
             >
               Post
@@ -144,7 +148,12 @@ export default function Comment({ id, wishlist }) {
                   dangerouslySetInnerHTML={{ __html: rev?.comments }}
                 />
                 <p style={{ textAlign: "left", color: "gray" }}>
-                  posted on {rev?.created_at}
+                  posted on{" "}
+                  {rev?.created_at
+                    .substring(0, 10)
+                    .split("-")
+                    .reverse()
+                    .join("-")}
                 </p>
               </Grid>
             </Grid>

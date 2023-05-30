@@ -137,8 +137,6 @@ export default function DetailsBookManageMent() {
     }
   };
 
-  console.log("the original", selectedFiles.length);
-
   const handleUpdateBook = async () => {
     const contentState = editorState.getCurrentContent();
     const html = stateToHTML(contentState);
@@ -146,9 +144,16 @@ export default function DetailsBookManageMent() {
     const formData = new FormData();
 
     formData.append("id", parseInt(id));
-
-    formData.append("name", bookInfo?.name);
-    formData.append("price", parseFloat(bookInfo?.price));
+    if (bookInfo.name.length < 6) {
+      toast.error("Book name must be in 5 in length");
+    } else {
+      formData.append("name", bookInfo?.name);
+    }
+    if (parseFloat(bookInfo.price) < 1000) {
+      toast.error("Book price must be larger than 1000");
+    } else {
+      formData.append("price", parseFloat(bookInfo?.price));
+    }
 
     bookInfo?.image.forEach((element) => {
       formData.append("image", element);
@@ -158,30 +163,65 @@ export default function DetailsBookManageMent() {
       formData.append("files", element);
     });
 
-    formData.append("description", html);
-    formData.append("author", bookInfo?.author);
-    formData.append("publisher", bookInfo?.publisher);
-    formData.append("quantity", parseInt(bookInfo?.quantity));
-    genreID?.forEach((element) => {
-      formData.append("genres_id", element);
-    });
-    subgenreID?.forEach((element) => {
-      formData.append("subgenres_id", element);
-    });
-
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
+    if (html === "<p><br></p>" && html.length < 20) {
+      toast.error("Please enter a longer description");
+    } else {
+      formData.append("description", html);
     }
 
-    // const v = await updateBook(formData);
-    // if (v.data) {
-    //   toast.success("Book updated");
-    //   navigate("/admin/manage-book");
-    // } else if (v.error && v.error.status === 400) {
-    //   toast.error("Can't not update");
-    // } else if (v.error && v.error.status === 500) {
-    //   toast.error("Please check your information again");
-    // }
+    if (bookInfo.author.length < 5) {
+      toast.error("Author name have at least 5 character in length");
+    } else {
+      formData.append("author", bookInfo?.author);
+    }
+    if (bookInfo.publisher.length < 5) {
+      toast.error("Publisher name must have at least 5 in length ");
+    } else {
+      formData.append("publisher", bookInfo?.publisher);
+    }
+    if (bookInfo.quantity === 0 && bookInfo.quantity > 1000) {
+      toast.error("Quantity is not valid");
+    } else {
+      formData.append("quantity", parseInt(bookInfo?.quantity));
+    }
+    if (genreID.length < 1) {
+      toast.error("Book must have at least 1 genre");
+    } else {
+      genreID?.forEach((element) => {
+        formData.append("genres_id", element);
+      });
+    }
+    if (subgenreID.length < 1) {
+      toast.error("Book must have at least 1 subgenre");
+    } else {
+      subgenreID?.forEach((element) => {
+        formData.append("subgenres_id", element);
+      });
+    }
+
+    const uniqueKeys = new Set();
+    for (let pair of formData.entries()) {
+      const [key] = pair;
+      uniqueKeys.add(key);
+    }
+
+    const numFields = uniqueKeys.size;
+
+    // console.log(numFields);
+
+    if (numFields == 10) {
+      const v = await updateBook(formData);
+      if (v.data) {
+        toast.success("Book updated");
+        navigate("/admin/manage-book");
+      } else if (v.error && v.error.status === 400) {
+        toast.error("Can't not update");
+      } else if (v.error && v.error.status === 500) {
+        toast.error("Please check your information again");
+      }
+    } else {
+      toast.error("Please check your information again");
+    }
   };
 
   return (

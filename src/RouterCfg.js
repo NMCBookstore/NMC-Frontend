@@ -11,6 +11,9 @@ const AdminLayout = lazy(() => import("./layoutAdmin/AdminLayout"));
 /**** Protected User Routes *****/
 const RequireAuth = lazy(() => import("./features/auth/requireAuth"));
 
+/**** Protected Checkout *****/
+const RequireCart = lazy(() => import("./features/cart/requireCart"));
+
 /**** User Routes *****/
 const UserLogin = lazy(() => import("./views/User/UserLogin"));
 const UserRegister = lazy(() => import("./views/User/UserRegister"));
@@ -128,7 +131,11 @@ const RouterCfg = [
             ],
           },
           { path: "wishlist", element: <UserWishlist /> },
-          { path: "checkout", element: <UserCheckout /> },
+          {
+            element: <RequireCart />,
+            children: [{ path: "checkout", element: <UserCheckout /> }],
+          },
+
           ErrorNotFound404,
         ],
       },

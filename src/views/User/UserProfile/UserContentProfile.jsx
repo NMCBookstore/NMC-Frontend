@@ -63,7 +63,7 @@ export default function UserContentProfile({ data }) {
 
     const formData = new FormData();
 
-    if (validateUsername(userInfo.full_name)) {
+    if (validFullName(userInfo.full_name)) {
       formData.append("full_name", userInfo.full_name);
     } else {
       toast.error("Your name is not legit");
