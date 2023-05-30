@@ -88,17 +88,15 @@ export default function CreateNewBook() {
   const onSelectFile = (e) => {
     if (isValidImageList(selectedFiles)) {
       const selectedFilesArr = Array.from(e.target.files);
-      setSelectedFiles(selectedFilesArr);
+      setSelectedFiles(selectedFiles.concat(selectedFilesArr));
 
       const imagesArr = selectedFilesArr.map((file) => {
         return URL.createObjectURL(file);
       });
 
-      setSelectedImage((prevImage) => prevImage.concat(imagesArr));
+      setSelectedImage(selectedImage.concat(imagesArr));
     }
   };
-
-  console.log(selectedFiles.length);
 
   const handleCreateBook = async () => {
     const contentState = editorState.getCurrentContent();
@@ -149,21 +147,24 @@ export default function CreateNewBook() {
         formData.append("subgenres_id", file);
       });
     }
-    // if (selectedFiles.length < 4) {
-    //   toast.error("Must have 5 image at least");
-    // } else {
-    selectedFiles.forEach((file) => {
-      formData.append("image", file);
-    });
-    // }
+    if (selectedFiles.length < 4) {
+      toast.error("Must have 5 image at least");
+    } else {
+      selectedFiles.forEach((file) => {
+        formData.append("image", file);
+      });
+      // }
 
-    for (let [key, value] of formData.entries()) {
-      console.log(key, value);
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const v = await createNewBook(formData);
+      if (v.data) {
+        toast.success("New book created");
+        navigate("/admin/manage-book");
+      }
     }
-
-    // const v = await createNewBook(formData);
-    // console.log(v);
-    // navigate("/admin/manage-book");
   };
 
   return (

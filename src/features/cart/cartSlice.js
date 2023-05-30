@@ -11,11 +11,6 @@ const cartSlice = createSlice({
       checkout: [],
       shipping: 0,
     },
-    orderAddress: {
-      address: "",
-      city: "",
-      district: "",
-    },
   },
 
   reducers: {
@@ -40,19 +35,12 @@ const cartSlice = createSlice({
       state.checkOutInfo.checkout = [];
       state.checkOutInfo.shipping = 0;
     },
-
-    setOrderAddress: (state, action) => {
-      state.orderAddress.address = action.payload;
-      state.orderAddress.city = action.payload;
-      state.orderAddress.district = action.payload;
-    },
   },
 });
 
 export const {
   setCartIdArr,
   setCheckOutInfoArr,
-  setOrderAddress,
   clearCheckOutInfoArr,
   clearCartIdArr,
 } = cartSlice.actions;

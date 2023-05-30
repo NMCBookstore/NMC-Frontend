@@ -18,11 +18,12 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   validateRegisterUsername,
-  validatePasswordLogin,
   validAge,
   validPhoneNumber,
   validateRegisterEmail,
   validFullName,
+  validateUsername,
+  validateRegisterPassword,
 } from "../../../utils/helper";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -74,45 +75,46 @@ const UserRegister = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    //validate
-
-    const usernameError = validateRegisterUsername(values.username);
-
-    const passwordError = validatePasswordLogin(values.password);
-
-    const full_NameError = validFullName(values.full_Name);
-
-    const emailError = validateRegisterEmail(values.emailError);
-
-    const ageError = validAge(values.age);
-
-    const phone_numberError = validPhoneNumber(values.phone_number);
-    
-    //
     const formData = new FormData();
+    if (validateRegisterUsername(values.username)) {
+      formData.append("username", values.username);
+    } else {
+      toast.error("Username must be from 1 to 20 in length");
+    }
+    if (validateRegisterPassword(values.password)) {
+      formData.append("password", values.password);
+    } else {
+      toast.error("Password must be 6 in length at least");
+    }
+    if (validFullName(values.full_Name)) {
+      formData.append("full_name", values.full_Name);
+    } else {
+      toast.error("Your full name can't be empty");
+    }
 
-    try {
-      
-      if (
-        !usernameError &&
-        !passwordError &&
-        !full_NameError &&
-        // !emailError &&
-        !ageError &&
-        !phone_numberError
-      ) {
-        // if (values.username.length < 11) {
-        formData.append("username", values.username);
-        // } else {
-        //   toast.error("Username only accepted from 1 to 10 in length");
-        // }
-        formData.append("password", values.password);
-        formData.append("full_name", values.full_Name);
-        formData.append("email", values.email);
-        formData.append("age", values.age);
-        formData.append("sex", values.sex);
-        formData.append("phone_number", values.phone_number);
-      }
+    if (validateRegisterEmail(values.email)) {
+      formData.append("email", values.email);
+    } else {
+      toast.error("Your email is invalid");
+    }
+    if (validAge(values.age)) {
+      formData.append("age", values.age);
+    } else {
+      toast.error("Your age must be between 10 to 90");
+    }
+    formData.append("sex", values.sex);
+    if (validPhoneNumber(values.phone_number)) {
+      formData.append("phone_number", values.phone_number);
+    } else {
+      toast.error("Your phone is not valid");
+    }
+
+    const field = formData.keys();
+    const count = Array.from(field).length;
+
+    console.log("this is key length", count);
+
+    if (count == 7) {
       const v = await signup(formData);
       if (v.error && v.error.status === 500) {
         toast.error("Username or email existed");
@@ -123,8 +125,7 @@ const UserRegister = () => {
         toast.success("Welcome to NMC Book store");
         navigate("/login");
       }
-    } catch (err) {
-      toast.error("Register failed");
+    } else {
     }
 
     // console.log(v);

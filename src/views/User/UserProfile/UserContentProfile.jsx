@@ -13,6 +13,8 @@ import {
   validAge,
   validPhoneNumber,
   validFullName,
+  validateRegisterUsername,
+  validateUsername,
 } from "../../../utils/helper";
 import { PhotoCamera } from "@mui/icons-material";
 import CheckIcon from "@mui/icons-material/Check";
@@ -61,38 +63,38 @@ export default function UserContentProfile({ data }) {
 
     const formData = new FormData();
 
-    if (userInfo.full_name.length > 2) {
+    if (validateUsername(userInfo.full_name)) {
       formData.append("full_name", userInfo.full_name);
     } else {
+      toast.error("Your name is not legit");
     }
-    if (userInfo.phone_number.length == 10) {
+    if (validPhoneNumber(userInfo.phone_number)) {
       formData.append("phone_number", userInfo.phone_number);
     } else {
     }
-    if (userInfo.age >= 10 && userInfo.age <= 90) {
+    if (validAge(userInfo.age)) {
       formData.append("age", userInfo.age);
     } else {
+      toast.error("Your age must be between 10 to 90");
     }
     if (avatar) {
       formData.append("image", avatar);
     }
-    if (
-      !validFullName(userInfo.full_name) &&
-      !validPhoneNumber(userInfo.phone_number) &&
-      !validAge(userInfo.age)
-    ) {
-      const v = await updateUser(formData);
-      if (v.error && v.error.status === 500) {
-        toast.error("Username existed");
-      } else if (v.data) {
-        toast.success("Updated your profile");
-      }
-      dispatch(setCredentials({ user: v.data }));
-      console.log(v);
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-      }
+
+    const field = formData.keys();
+    const count = Array.from(field).length;
+
+    console.log("this is key length", count);
+
+    // if (!validPhoneNumber(userInfo.phone_number) && !validAge(userInfo.age)) {
+    const v = await updateUser(formData);
+    if (v.error && v.error.status === 500) {
+      toast.error("Username existed");
+    } else if (count == 3 || count == 4) {
+      toast.success("Updated your profile");
     }
+    dispatch(setCredentials({ user: v.data }));
+    // }
   };
 
   //Get user info

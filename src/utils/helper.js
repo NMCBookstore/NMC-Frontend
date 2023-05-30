@@ -40,67 +40,45 @@ const isValidImageList = (images) => {
 };
 
 const validateUsername = (value) => {
-  const userNameRegex = /^[a-zA-Z0-9_]{1,10}$/;
-  if (!userNameRegex.test(value)) {
-    toast.error("Username only accepted from 1 to 10 in length");
-  }
-  return "";
+  const userNameRegex = /^[a-zA-Z\s]+$/;
+  return userNameRegex.test(value);
 };
 
-const validatePasswordLogin = (value) => {
+const validateRegisterPassword = (value) => {
   const passwordRegex = /^.{6,}$/;
-  if (!passwordRegex.test(value)) {
-    toast.error("Password required at least 6 in length");
-  }
-  return "";
+  return passwordRegex.test(value);
 };
 
 const validateRegisterEmail = (value) => {
-  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-  if (!emailRegex.test(value)) {
-    toast.error("Your email is not valid");
-  }
-  return "";
+  const emailRegex = /^\S+@\S+\.\S+$/;
+  return emailRegex.test(value);
 };
 
 const validateRegisterUsername = (value) => {
-  const userNameRegex = /^[a-zA-Z0-9_]{1,10}$/;
-  if (!userNameRegex.test(value)) {
-    toast.error("Username only accepted from 1 to 10 in length");
-  }
-
-  return "";
+  const userNameRegex = /^[a-zA-Z0-9_]{1,20}$/;
+  return userNameRegex.test(value);
 };
 
 const validAge = (value) => {
   const ageRegex = /^(1[0-9]|[2-8][0-9]|90)$/;
-  if (!ageRegex.test(value)) {
-    toast.error("Your age must between 10 to 90");
-  }
-  return "";
+  return ageRegex.test(value);
 };
 
 const validPhoneNumber = (value) => {
   const phoneRegex = /^[0-9]{10,}$/;
-  if (!phoneRegex.test(value)) {
-    toast.error("Your phone number is not valid");
-  }
-  return "";
+  return phoneRegex.test(value);
 };
 
 const validFullName = (value) => {
   const fullNameRegex = /^[a-zA-Z\s]+$/;
-  if (!fullNameRegex.test(value)) {
-    toast.error("Your full name only contain space and no number in it");
-  }
-  return "";
+  return fullNameRegex.test(value);
 };
 
 export {
   isValidImage,
   isValidImageList,
   validateUsername,
-  validatePasswordLogin,
+  validateRegisterPassword,
   validAge,
   validPhoneNumber,
   validateRegisterEmail,

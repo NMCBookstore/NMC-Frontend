@@ -12,18 +12,16 @@ import ModalAddress from "../views/User/UserProfile/ModalAddress";
 export default function NoData({ page }) {
   return (
     <Card sx={{ minWidth: 300, border: 1 }}>
-      <Stack
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
+      <Stack display="flex" justifyContent="center" alignItems="center">
         <CardContent>
-          <Typography variant="subtitle1">
-            Oops, looks like you don't have any product in your {
-              page === "cart"
-                ? "cart"
-                : "wishlist"
-            }.
+          <Typography variant="h6">
+            Oops, looks like it's empty here{" "}
+            {
+              // page === "cart"
+              //   ? "cart"
+              //   : "wishlist"
+            }
+            .
             <br />
           </Typography>
         </CardContent>

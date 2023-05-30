@@ -29,12 +29,12 @@ export default function CreateNewSubgenre({ id }) {
     const v = await createSubgenre({ genre_id: parseInt(id), name });
     if (v.data) {
       toast.success("New genre created");
+      handleClose();
     } else if (v.error && v.error.status === 500) {
-      toast.error("Can't create genre 500");
+      toast.error(v.error.status);
     } else if (v.error && v.error.status === 400) {
       toast.error("Can't create genre");
     }
-    handleClose();
   };
 
   return (
