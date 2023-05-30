@@ -9,7 +9,6 @@ import 'lightgallery/css/lg-thumbnail.css';
 import "lightgallery/css/lg-video.css";
 
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
-import lgZoom from 'lightgallery/plugins/zoom';
 import lgVideo from "lightgallery/plugins/video";
 import { convertData } from "./ConvertData";
 
@@ -21,7 +20,7 @@ export default function ImageGrid({ images, onSelectImage, onYtSrc, selectedImag
   useEffect(() => {
     setDynamicGalleryOpt(new lightGallery(dynamicGallery?.current, {
       dynamic: true,
-      plugins: [lgZoom, lgVideo, lgThumbnail],
+      plugins: [lgVideo, lgThumbnail],
       dynamicEl: gallery
     }))
   }, [images])
@@ -39,7 +38,6 @@ export default function ImageGrid({ images, onSelectImage, onYtSrc, selectedImag
             key={image}
             style={
               {
-                // filter: "brightness(0.5)",
                 position: "relative",
                 cursor: "pointer",
               }
