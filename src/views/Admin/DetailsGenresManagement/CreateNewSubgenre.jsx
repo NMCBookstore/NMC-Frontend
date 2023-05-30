@@ -26,7 +26,7 @@ export default function CreateNewSubgenre({ id }) {
   };
 
   const handleCreateGenres = async () => {
-    const v = await createSubgenre({ genre_id: parseInt(id), name });
+    const v = await createSubgenre({ genres_id: parseInt(id), name: name });
     if (v.data) {
       toast.success("New genre created");
       handleClose();

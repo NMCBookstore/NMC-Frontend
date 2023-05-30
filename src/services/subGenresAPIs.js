@@ -3,10 +3,10 @@ import { book } from "./baseAPI";
 const subGenres = book.injectEndpoints({
   endpoints: (builder) => ({
     createSubGenres: builder.mutation({
-      query: ({ genre_id, name }) => ({
+      query: ({ genres_id, name }) => ({
         url: `admin/subgenres/`,
         method: "POST",
-        body: { genre_id, name },
+        body: { genres_id, name },
       }),
       invalidatesTags: ["subgenres"],
     }),

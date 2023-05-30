@@ -29,7 +29,6 @@ export default function DetailsGenresManagement() {
     if (v.data) {
       toast.success("Genre name updated");
     }
-    console.log(v);
   };
 
   return (
