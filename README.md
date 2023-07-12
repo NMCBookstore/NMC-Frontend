@@ -1,8 +1,8 @@
 # NMC-Frontend - This is a project for our thesis.
 
 ## Member
- Nguyễn Minh Chiến
- Nguyễn Minh Cương
+ Nguyễn Minh Chiến.
+ Nguyễn Minh Cương.
  
 ## Installation
 Use the Node Package Manager [npm] to install
