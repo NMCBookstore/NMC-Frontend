@@ -17,7 +17,7 @@ npm start
 ```
 
 ## Backend
-[Backend]([https://pip.pypa.io/en/stable/](https://github.com/Chien179/NMCBookstoreBE.git)https://github.com/Chien179/NMCBookstoreBE.git)
+[Backend](https://github.com/Chien179/NMCBookstoreBE.git)
 
 ## Contributing
 
