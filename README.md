@@ -1,11 +1,17 @@
-# NMC-Frontend - This is a project for our thesis.
+# NMC-Frontend
+
+## Description
+
+This is a project for our thesis
 
 ## Member
- Nguyễn Minh Chiến.
+
+ Nguyễn Minh Chiến - 19110173
  
- Nguyễn Minh Cương.
+ Nguyễn Minh Cương - 19110016
  
 ## Installation
+
 Use the Node Package Manager [npm] to install
 
 ```bash
@@ -13,11 +19,13 @@ npm i
 ```
 
 ## Usage
+
 ```bash
 npm start
 ```
 
 ## Backend
+
 [Backend](https://github.com/Chien179/NMCBookstoreBE.git)
 
 ## Contributing
