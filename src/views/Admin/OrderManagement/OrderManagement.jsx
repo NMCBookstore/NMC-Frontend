@@ -71,7 +71,7 @@ export default function OrderManagement() {
       label: "Book Price",
       options: {
         filter: false,
-        sort: true,
+        sort: false,
         customBodyRender: (value) => (
           value?.map((transaction, index) => (
             <Typography mt={1}
@@ -95,7 +95,7 @@ export default function OrderManagement() {
       name: "sub_total",
       label: "Total",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         customBodyRenderLite: (dataIndex) => {
           let val = currencyExchange(data[dataIndex].sub_total);

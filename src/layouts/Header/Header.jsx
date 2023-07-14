@@ -27,6 +27,7 @@ import {
   selectCurrentUserImage,
   selectCurrentUser,
   selectCurrentAccessToken,
+  selectCurrentUserRole,
 } from "../../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { deepOrange } from "@mui/material/colors";
@@ -44,6 +45,7 @@ const Header = () => {
   const userName = user ? useSelector(selectCurrentUserName) : "";
   const userImage = user ? useSelector(selectCurrentUserImage) : "";
   const hello = user ? `Hello ${userName}!` : `Hello ! Sign in to explore`;
+  const role = useSelector(selectCurrentUserRole);
 
   const { data: cartBadge } = useGetCartQuery("userCart", {
     refetchOnMountOrArgChange: true,
@@ -140,6 +142,20 @@ const Header = () => {
                           <PersonIcon />
                           My profile
                         </MenuItem>
+
+                        {role === "admin" ? (
+                          <MenuItem
+                            onClick={() => {
+                              popupState.close();
+                              navigate("/admin/dashboard");
+                            }}
+                          >
+                            <PersonIcon />
+                            Manage page
+                          </MenuItem>
+                        ) : (
+                          <></>
+                        )}
 
                         <MenuItem
                           onClick={() => {

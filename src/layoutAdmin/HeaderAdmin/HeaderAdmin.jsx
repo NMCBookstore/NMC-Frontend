@@ -12,7 +12,7 @@ import {
   Menu,
   MenuItem,
 } from "@mui/material";
-import { Link, matchPath, useLocation } from "react-router-dom";
+import { Link, matchPath, useLocation, useNavigate } from "react-router-dom";
 import logo from "./logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -22,6 +22,7 @@ import {
   selectCurrentUser,
 } from "../../features/auth/authSlice";
 import { LogoutOutlined } from "@mui/icons-material";
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import useStyles from "./styles";
 
 const HeaderAdmin = () => {
@@ -31,6 +32,8 @@ const HeaderAdmin = () => {
 
   const location = useLocation();
   const classes = useStyles();
+
+  const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -168,6 +171,12 @@ const HeaderAdmin = () => {
                   </MenuItem>
                 </Link>
               )}
+              <Link className={classes.link} to="/">
+                <MenuItem onClick={() => navigate("/")}>
+                  <StorefrontIcon />
+                  &nbsp; To store
+                </MenuItem>
+              </Link>
               <Link className={classes.link}>
                 <MenuItem onClick={handleLogout}>
                   <LogoutOutlined />

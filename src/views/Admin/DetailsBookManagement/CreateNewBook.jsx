@@ -219,18 +219,6 @@ export default function CreateNewBook() {
                       setBookInfo({ ...bookInfo, quantity: e.target.value })
                     }
                   />
-                  <Autocomplete
-                    multiple
-                    disablePortal
-                    limitTags={3}
-                    id="multiple-limit-tags"
-                    options={genres ? genres : []}
-                    getOptionLabel={(option) => option?.name}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Genres" />
-                    )}
-                    onChange={(e, option) => handleGenreChange(e, option)}
-                  />
                 </Stack>
               </Grid>
               <Grid item xs={12} md={6}>
@@ -253,42 +241,58 @@ export default function CreateNewBook() {
                       setBookInfo({ ...bookInfo, publisher: e.target.value })
                     }
                   />
-                  <Autocomplete
-                    multiple
-                    disablePortal
-                    limitTags={3}
-                    id="multiple-limit-tags"
-                    options={subgenres ? subgenres : []}
-                    getOptionLabel={(option) => option?.name}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Subgenres" />
-                    )}
-                    onChange={(e, option) => {
-                      handleSubgenreChange(e, option);
-                    }}
-                    value={
-                      bookInfo?.subgenres && listSubgenre
-                        ? bookInfo.subgenres.map(
-                            (item) => listSubgenre[item.id - 1]
-                          )
-                        : []
-                    }
-                    groupBy={(genre) => genres[genre.genres_id - 1].name}
-                    renderGroup={(params) => (
-                      <Typography sx={{ px: 2 }}>
-                        <Typography
-                          variant="body2"
-                          sx={{ pt: 2, color: "#7599cc" }}
-                        >
-                          {params.group}
-                        </Typography>
-                        <Typography variant="body1" sx={{ pt: 1 }}>
-                          {params.children}
-                        </Typography>
-                      </Typography>
-                    )}
-                  />
                 </Stack>
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Autocomplete
+                  multiple
+                  disablePortal
+                  limitTags={3}
+                  id="multiple-limit-tags"
+                  options={genres ? genres : []}
+                  getOptionLabel={(option) => option?.name}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Genres" />
+                  )}
+                  onChange={(e, option) => handleGenreChange(e, option)}
+                />
+              </Grid>
+              <Grid item xs={12} md={12}>
+                <Autocomplete
+                  multiple
+                  disablePortal
+                  limitTags={3}
+                  id="multiple-limit-tags"
+                  options={subgenres ? subgenres : []}
+                  getOptionLabel={(option) => option?.name}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Subgenres" />
+                  )}
+                  onChange={(e, option) => {
+                    handleSubgenreChange(e, option);
+                  }}
+                  value={
+                    bookInfo?.subgenres && listSubgenre
+                      ? bookInfo.subgenres.map(
+                          (item) => listSubgenre[item.id - 1]
+                        )
+                      : []
+                  }
+                  groupBy={(genre) => genres[genre.genres_id - 1].name}
+                  renderGroup={(params) => (
+                    <Typography sx={{ px: 2 }}>
+                      <Typography
+                        variant="body2"
+                        sx={{ pt: 2, color: "#7599cc" }}
+                      >
+                        {params.group}
+                      </Typography>
+                      <Typography variant="body1" sx={{ pt: 1 }}>
+                        {params.children}
+                      </Typography>
+                    </Typography>
+                  )}
+                />
               </Grid>
             </Grid>
           </Grid>

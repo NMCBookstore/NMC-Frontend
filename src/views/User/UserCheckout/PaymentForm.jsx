@@ -57,11 +57,6 @@ export default function PaymentForm({ handleNext, userAddress }) {
 
   const shipping = useSelector(selectCurrentShipping);
 
-  const hanldeClearCart = () => {
-    dispatch(clearCheckOutInfoArr());
-    dispatch(clearCartIdArr());
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { error, paymentMethod } = await stripe.createPaymentMethod({
@@ -82,7 +77,6 @@ export default function PaymentForm({ handleNext, userAddress }) {
 
         if (response) {
           toast.success("Payment success");
-          hanldeClearCart();
           handleNext();
         }
       } catch (error) {
