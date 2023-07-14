@@ -34,7 +34,7 @@ export default function ListOrder({ data }) {
                             <img
                               src={book?.image[0]}
                               alt={book?.name}
-                              style={{ width: "15%", height: "30%" }}
+                              style={{ width: "120px", height: "128px" }}
                             />
                             <Typography
                               gutterBottom

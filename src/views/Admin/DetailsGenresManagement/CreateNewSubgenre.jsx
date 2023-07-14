@@ -83,7 +83,7 @@ export default function CreateNewSubgenre({ id }) {
                   backgroundColor: "#fff",
                   borderRadius: 5,
                 }}
-                placeholder="Name of the genre"
+                placeholder="Name of the subgenre"
                 fullWidth
                 name="name"
                 onChange={(e) => setName(e.target.value)}

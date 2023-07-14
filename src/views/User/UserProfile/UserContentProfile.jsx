@@ -105,6 +105,14 @@ export default function UserContentProfile({ data }) {
 
   const handleVerify = () => {
     sendVerifiedEmail();
+    toast("Please check your email", {
+      icon: "📬",
+      style: {
+        borderRadius: "10px",
+        background: "#fff",
+        color: "#333",
+      },
+    });
   };
 
   return (

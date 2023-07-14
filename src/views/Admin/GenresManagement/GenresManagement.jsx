@@ -14,14 +14,15 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import CreateNewGenre from "./CreateNewGenre";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-
-const useStyles = makeStyles((theme) => ({
-  tableOverflow: {
-    overflow: "auto",
-  },
-}));
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 export default function GenresManagement() {
+  const theme = createTheme({
+    typography: {
+      fontSize: 16,
+    },
+  });
+
   const { data } = useGetGenresQuery();
   const navigate = useNavigate();
 
@@ -46,8 +47,6 @@ export default function GenresManagement() {
       name: "",
       label: " ",
       options: {
-        filter: false,
-        sort: false,
         customBodyRender: () => (
           <Stack alignItems="end" sx={{ pr: 2 }}>
             <Tooltip title="Edit genre and subgenres of it">
@@ -55,11 +54,11 @@ export default function GenresManagement() {
             </Tooltip>
           </Stack>
         ),
+        filter: false,
+        sort: false,
       },
     },
   ];
-
-  const classes = useStyles();
   const options = {
     selectableRows: "none",
     onRowClick: (rowData) => {
@@ -74,12 +73,14 @@ export default function GenresManagement() {
       </Stack>
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <MUIDataTable
-            title="Genres Data List"
-            data={data}
-            columns={columns}
-            options={options}
-          />
+          <ThemeProvider theme={theme}>
+            <MUIDataTable
+              title="Genres Data List"
+              data={data}
+              columns={columns}
+              options={options}
+            />
+          </ThemeProvider>
         </Grid>
       </Grid>
     </Box>

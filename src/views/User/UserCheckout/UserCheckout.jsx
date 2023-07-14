@@ -9,7 +9,7 @@ import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import InfoCheckout from "./InfoCheckout";
@@ -19,6 +19,11 @@ import { Grid } from "@mui/material";
 import { useState } from "react";
 import { useListAddressQuery } from "../../../services/addressAPIs";
 import { toast } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import {
+  clearCartIdArr,
+  clearCheckOutInfoArr,
+} from "../../../features/cart/cartSlice";
 
 const steps = ["Info & shipping", "Review order", "Payment"];
 
@@ -61,6 +66,14 @@ export default function UserCheckout() {
     setActiveStep(activeStep - 1);
   };
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const hanldeClearCart = () => {
+    dispatch(clearCheckOutInfoArr());
+    dispatch(clearCartIdArr());
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -94,7 +107,8 @@ export default function UserCheckout() {
                 </Grid>
                 <Grid item xs={12} sm={12}>
                   <Typography variant="subtitle1">
-                    We will send you an update when your order has shipped.
+                    We will send you an update when your order has shipped. You
+                    can view order in your profile.
                   </Typography>
                 </Grid>
                 <Grid item xs={12} sm={12}>
@@ -108,6 +122,7 @@ export default function UserCheckout() {
                             background: "#ffa071",
                           },
                         }}
+                        onClick={hanldeClearCart}
                       >
                         Continue to view product
                       </Button>

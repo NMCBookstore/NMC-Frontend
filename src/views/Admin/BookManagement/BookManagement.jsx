@@ -5,9 +5,14 @@ import useStyles from "./styles";
 import { Box, Button, Stack, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetAllBookQuery } from "../../../services/productAdminAPI";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 export default function BookManagement() {
-  const classes = useStyles();
+  const theme = createTheme({
+    typography: {
+      fontSize: 16,
+    },
+  });
 
   const navigate = useNavigate();
 
@@ -18,7 +23,7 @@ export default function BookManagement() {
       name: "id",
       label: " ID",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       },
     },
@@ -26,7 +31,7 @@ export default function BookManagement() {
       name: "name",
       label: " Book name",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       },
     },
@@ -34,7 +39,7 @@ export default function BookManagement() {
       name: "price",
       label: "Price",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       },
     },
@@ -42,7 +47,7 @@ export default function BookManagement() {
       name: "author",
       label: "Author",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       },
     },
@@ -58,7 +63,7 @@ export default function BookManagement() {
       name: "quantity",
       label: "Quantity",
       options: {
-        filter: true,
+        filter: false,
         sort: true,
       },
     },
@@ -105,16 +110,18 @@ export default function BookManagement() {
       </Stack>
       <Grid container spacing={4}>
         <Grid item xs={12}>
-          <MUIDataTable
-            title="Book Data List"
-            data={allProduct}
-            onRowClick={() => console.log("this clicked")}
-            columns={columns}
-            options={
-              //   filterType: "checkbox",
-              options
-            }
-          />
+          <ThemeProvider theme={theme}>
+            <MUIDataTable
+              title="Book Data List"
+              data={allProduct}
+              onRowClick={() => console.log("this clicked")}
+              columns={columns}
+              options={
+                //   filterType: "checkbox",
+                options
+              }
+            />
+          </ThemeProvider>
         </Grid>
       </Grid>
     </Box>
