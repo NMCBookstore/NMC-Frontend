@@ -9,7 +9,7 @@ const product = book.injectEndpoints({
 
     getAllProduct: builder.query({
       query: ({ page_id, page_size }) =>
-        `books?page_id=${page_id}&page_size=${page_size}`,
+        `books/?page_id=${page_id}&page_size=${page_size}`,
     }),
     providesTags: ["books"],
 

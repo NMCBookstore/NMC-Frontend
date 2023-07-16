@@ -20,7 +20,7 @@ const genres = book.injectEndpoints({
     }),
     getGenres: builder.query({
       query: () => ({
-        url: `genres`,
+        url: `genres/`,
       }),
       providesTags:["genres"]
     }),

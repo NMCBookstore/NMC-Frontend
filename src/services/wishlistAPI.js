@@ -11,7 +11,7 @@ const wishlist = book.injectEndpoints({
     }),
     getWishList: builder.query({
       query: () => ({
-        url: `users/wishlists`,
+        url: `users/wishlists/`,
       }),
       providesTags: ["WishlistItems"],
     }),
