@@ -1,0 +1,39 @@
+import React, {Suspense} from 'react';
+import { createRoot } from 'react-dom/client';
+import App from "./App";
+import { BrowserRouter } from 'react-router-dom';
+import { ThemeProvider } from '@mui/styles';
+import { theme } from './theme';
+import { CssBaseline } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import { Provider } from 'react-redux'
+import { Toaster } from 'react-hot-toast';
+import { persistor} from './app/store'
+import store from './app/store';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import ScrollToTop from './components/ScrollToTop';
+
+
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+
+
+root.render(
+  <React.StrictMode>
+    <Provider store={store}>
+    <BrowserRouter>
+    <Suspense fallback={<div style={{display:"flex", justifyContent:"center"  }}><CircularProgress /></div>}>
+    <ThemeProvider theme = {theme}>
+      <CssBaseline />
+      <Toaster />
+      <PersistGate loading = {null} persistor={persistor}>
+      <ScrollToTop />
+        <App />
+      </PersistGate>
+    </ThemeProvider>
+    </Suspense>
+  </BrowserRouter>
+  </Provider>
+  </React.StrictMode>
+);
