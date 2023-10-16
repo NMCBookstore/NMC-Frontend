@@ -77,36 +77,39 @@
 .bdx-menu:before {
   content: "\6d";
 }
-.bdx-pinterest:before {
+.bdx-phone:before {
   content: "\6e";
 }
-.bdx-price-sale:before {
+.bdx-pinterest:before {
   content: "\6f";
 }
-.bdx-sale:before {
+.bdx-price-sale:before {
   content: "\70";
 }
-.bdx-search:before {
+.bdx-sale:before {
   content: "\71";
 }
-.bdx-search-2:before {
+.bdx-search:before {
   content: "\72";
 }
-.bdx-star:before {
+.bdx-search-2:before {
   content: "\73";
 }
-.bdx-truck-free:before {
+.bdx-star:before {
   content: "\74";
 }
-.bdx-truck-transporation:before {
+.bdx-truck-free:before {
   content: "\75";
 }
-.bdx-twitter:before {
+.bdx-truck-transporation:before {
   content: "\76";
 }
-.bdx-user:before {
+.bdx-twitter:before {
   content: "\77";
 }
-.bdx-youtube:before {
+.bdx-user:before {
   content: "\78";
+}
+.bdx-youtube:before {
+  content: "\79";
 }
