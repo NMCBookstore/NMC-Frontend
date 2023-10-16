@@ -1,0 +1,11 @@
+.lg\:container{
+    @include min-width-1536{
+        max-width: 1440px !important;
+    }
+}
+body {
+    font-family: 'Inter';
+    &:has(.bg-backdrop) {
+        overflow: hidden;
+    }
+}
