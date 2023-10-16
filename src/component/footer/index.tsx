@@ -98,14 +98,14 @@ const Footer: React.FunctionComponent = () => {
             <div className="bg-[#F0F0F0] border-t border-[#BFBFBF] border-solid">
                 <p className="lg:container mx-auto text-center py-4">© 2023 NMC All Rights Reserved</p>
             </div>
-
-            {/* <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+{/* 
+            <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
                 <div className="fixed inset-0 bg-backdrop bg-opacity-75 transition-opacity"></div>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                    <div className="flex min-h-full items-end justify-center p-4 text-center items-center sm:p-0">
-                        <form className="relative transform overflow-hidden rounded-[48px] bg-[#fff] text-left shadow-xl transition-all sm:my-8 w-full max-w-[440px] px-5 py-10 sm:px-10">
+                    <div className="flex min-h-full items-end justify-center p-4 text-center items-center sm:px-3 p-0">
+                        <form className="relative transform overflow-hidden rounded-[48px] bg-[#fff] text-left shadow-xl transition-all sm:my-0 my-8 w-full max-w-[440px] sm:px-5 py-10 px-10">
                             <div className=" mb-4">
-                                <div className="sm:flex sm:items-start">
+                                <div>
                                     <div className="text-center w-full">
                                         <h3 className="mb-4 font-semibold leading-normal capitalize text-[40px] text-[#0F3BB0]" id="modal-title">Login</h3>
                                         <p className="text-[#595959] text-[20px] leading-normal mb-6" >Welcome to NMC Bookstore!</p>
