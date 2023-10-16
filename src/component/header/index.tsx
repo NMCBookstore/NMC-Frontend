@@ -9,16 +9,16 @@ const Header: React.FunctionComponent = () => {
     const numberCount2: number = 2;
     return (
         <header className="bg-primary header">
-            <div className="lg:container mx-auto py-[12px] flex flex-row">
+            <div className="container-nmc mx-auto py-[12px] flex flex-row">
                 <Link to="/" className="w-[80px] flex justify-center px-[12px]">
                     <img className="" src={logo} alt="logo" />
                 </Link>
-                <div className="xl:basis-3/4 basis-2/3 sm:flex hidden items-center px-[12px] relative">
+                <div className="xl:w-3/4 w-2/3 flex sm:hidden items-center px-[12px] relative">
                     <input className="w-full px-[24px] h-4/5 rounded-full" type="text" placeholder="Search by Title, Author, ISBN or Keywords" />
                     <i className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"></i>
                 </div>
-                <div className='header__content flex flex-row justify-end sm:px-[12px] px-[24px] gap-[24px]'>
-                    <div className='sm:hidden flex'>
+                <div className='header__content flex flex-row justify-end px-[12px] sm:px-[24px] gap-[24px] grow'>
+                    <div className='hidden sm:flex'>
                         <i className="bdx-search-2 text-[20px] text-[#fff] flex items-center"></i>
                     </div>
                     <div className="flex">
@@ -27,7 +27,7 @@ const Header: React.FunctionComponent = () => {
                                 <i className="bdx-heart text-[20px] text-[#fff] flex items-center"></i>
                                 <NoteNotify numberCount={numberCount1} />
                             </div>
-                            <p className="text-[#fff] text-[14px] uppercase sm:block hidden">Wishlist</p>
+                            <p className="text-[#fff] text-[14px] uppercase block sm:hidden">Wishlist</p>
                         </Link>
                     </div>
                     <div className="flex relative subMenu-btn">
@@ -36,7 +36,7 @@ const Header: React.FunctionComponent = () => {
                                 <i className="bdx-user text-[20px] text-[#fff] flex items-center"></i>
                                 <NoteNotify numberCount={numberCount2} />
                             </div>
-                            <p className="text-[#fff] text-[14px] uppercase sm:block hidden">Account</p>
+                            <p className="text-[#fff] text-[14px] uppercase block sm:hidden">Account</p>
                         </Link>
                         <div className="absolute top-full subMenu">
                             <ul>
@@ -52,7 +52,7 @@ const Header: React.FunctionComponent = () => {
                                 <i className="bdx-cart-fill text-[20px] text-[#fff] flex items-center"></i>
                                 <NoteNotify numberCount={numberCount3} />
                             </div>
-                            <p className="text-[#fff] text-[14px] uppercase sm:block hidden">Cart</p>
+                            <p className="text-[#fff] text-[14px] uppercase block sm:hidden">Cart</p>
                         </Link>
                     </div>
                 </div>

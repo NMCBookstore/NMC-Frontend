@@ -5,9 +5,9 @@ const Footer: React.FunctionComponent = () => {
     return (
         <div>
             <div className="footer bg-[#fcfcfc]">
-                <div className="lg:container mx-auto pt-10 pb-14">
-                    <div className="flex flex-row">
-                        <div className="px-3 basis-1/3">
+                <div className="container-nmc mx-auto pt-10 pb-14">
+                    <div className="flex flex-row lg:gap-y-8 lg:flex-wrap flex-nowrap">
+                        <div className="px-3 w-1/3 lg:w-1/2 sm:w-full">
                             <h3 className="text-[20px] text-primary font-semibold leading-normal mb-6" >NMC Bookstore</h3>
                             <ul className="flex flex-col gap-4">
                                 <li className="flex items-center"  >
@@ -31,7 +31,7 @@ const Footer: React.FunctionComponent = () => {
                                 </ul>
                             </div>
                         </div>
-                        <div className="px-3 basis-1/4">
+                        <div className="px-3 w-1/4 lg:w-1/2 sm:w-full">
                             <h3 className="text-[20px] text-primary font-semibold leading-normal mb-6" >Popular categories</h3>
                             <ul className="flex flex-col gap-4">
                                 <li>
@@ -52,7 +52,7 @@ const Footer: React.FunctionComponent = () => {
                                 </li>
                             </ul>
                         </div>
-                        <div className="px-3 basis-1/6">
+                        <div className="px-3 w-1/6 lg:w-1/2 sm:w-full">
                             <h3 className="text-[20px] text-primary font-semibold leading-normal mb-6" >About us</h3>
                             <ul className="flex flex-col gap-4">
                                 <li>
@@ -72,7 +72,7 @@ const Footer: React.FunctionComponent = () => {
                                 </li>
                             </ul>
                         </div>
-                        <div className="px-3 basis-1/4">
+                        <div className="px-3 w-1/4 lg:w-1/2 sm:w-full">
                             <h3 className="text-[20px] text-primary font-semibold leading-normal mb-6" >Support</h3>
                             <ul className="flex flex-col gap-4">
                                 <li>

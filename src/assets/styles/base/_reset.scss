@@ -1,4 +1,16 @@
-.lg\:container{
+.container-nmc{
+    @include max-width-992{
+        width: 100%;
+    }
+    @include min-width-992{
+        max-width: 876px !important;
+    }
+    @include min-width-1280{
+        max-width: 1140px !important;
+    }
+    @include min-width-1440{
+        max-width: 1200px !important;
+    }
     @include min-width-1536{
         max-width: 1440px !important;
     }

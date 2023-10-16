@@ -10,6 +10,19 @@ module.exports = {
             'accent':'#D41A1A',
             'backdrop':'rgba(38, 38, 38, 0.90)'
         },
+        screens: {
+            '3xl': {'max': '1535px'},
+
+            '2xl': {'max': '1440px'},
+      
+            'xl': {'max': '1200px'},
+      
+            'lg': {'max': '920px'},
+      
+            'md': {'max': '768px'},
+      
+            'sm': {'max': '425px'},
+          }
     },
     plugins: [],
 }
