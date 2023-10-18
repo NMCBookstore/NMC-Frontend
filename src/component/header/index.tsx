@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from 'react-router-dom';
 import NoteNotify from "../note-notify";
-import logo from "../../assets/img/logo.svg";
+import {logo} from "../../assets/img";
 
 const Header: React.FunctionComponent = () => {
     const numberCount1: number = 10;
