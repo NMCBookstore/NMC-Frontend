@@ -3,13 +3,19 @@ import { Link } from 'react-router-dom';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { bannerImg } from "../assets/img"
-import { cate1, cate2, cate3, cate4, cate5, cate6 } from "../assets/img"
+import { cate1, cate2, cate3, cate4, cate5, cate6, productItem, bannerImg } from "../assets/img"
 
 const HomePage: React.FunctionComponent = () => {
     const banner = ["img", "img", "igm"];
-    const cate = [{ name: "Shop all", img: cate1 }, { name: "Fiction", img: cate2 }, { name: "Non-Fiction", img: cate3 }, { name: "Children's", img: cate4 }, { name: "Stationery & Gifts", img: cate5 }, { name: "Gift cards & Vouchers", img: cate1 }];
+    const cate = [{ name: "Shop all", img: cate1, color: 1 }, { name: "Fiction", img: cate2, color: 2 }, { name: "Non-Fiction", img: cate3, color: 2 }, { name: "Children's", img: cate4, color: 1 }, { name: "Stationery & Gifts", img: cate5, color: 1 }, { name: "Gift cards & Vouchers", img: cate6, color: 2 }];
+    const productList = [{ name: "Build the life you want", des: "Arthur c. brooks oprah winfrey", price: "300", rate: 3, img: productItem },
+    { name: "Build the life you want 2", des: "Arthur c. brooks oprah winfrey", price: "300.00", rate: 4, img: productItem },
+    { name: "Build the life you want 3", des: "Arthur c. brooks oprah winfrey", price: "200.10", rate: 4, img: productItem },
+    { name: "Build the life you want 4", des: "Arthur c. brooks oprah winfrey", price: "100", rate: 5, img: productItem },
+    { name: "Build the life you want 5", des: "Arthur c. brooks oprah winfrey", price: "50.50", rate: 2, img: productItem },
+    { name: "Build the life you want 6", des: "Arthur c. brooks oprah winfrey", price: "300", rate: 4, img: productItem }];
     const bannerSettings = {
+        autoplay:true,
         dots: true,
         infinite: false,
         speed: 500,
@@ -18,6 +24,7 @@ const HomePage: React.FunctionComponent = () => {
         arrows: false
     };
     const cateSettings = {
+        autoplay:true,
         dots: true,
         infinite: false,
         speed: 500,
@@ -27,19 +34,51 @@ const HomePage: React.FunctionComponent = () => {
         rows: 2,
         responsive: [
             {
-              breakpoint: 768,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1,
-              }
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                }
             },
             {
                 breakpoint: 425,
                 settings: {
-                  slidesToShow: 1,
-                  slidesToScroll: 1,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
                 }
-              }
+            }
+        ]
+    };
+    const productListSettings = {
+        autoplay:true,
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        arrows: false,
+        responsive: [
+            {
+                breakpoint: 1440,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 425,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                }
+            }
         ]
     };
     return (
@@ -86,13 +125,48 @@ const HomePage: React.FunctionComponent = () => {
                                     <p className="mb-2 text-[20px] font-semibold" >{item.name}</p>
                                     <div className="relative">
                                         <svg className="absolute top-[-40px] left-[-40px] z-0" width="280" height="243" viewBox="0 0 280 243" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M169.554 1.14663C204.611 2.11203 246.112 -4.73555 268.539 22.2427C290.475 48.6302 275.214 87.4579 269.431 121.29C264.982 147.315 258.351 172.803 239.623 191.403C220.967 209.933 195.119 214.367 169.554 220.488C130.755 229.777 89.8417 255.668 55.4085 235.508C17.4768 213.299 -1.78808 165.224 0.130567 121.29C1.99214 78.6629 30.1766 41.3075 64.9669 16.6367C94.8584 -4.56027 132.931 0.138099 169.554 1.14663Z" fill={`${index % 2 != 0 ? '#63A19A' : '#E79797'}`}/>
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M169.554 1.14663C204.611 2.11203 246.112 -4.73555 268.539 22.2427C290.475 48.6302 275.214 87.4579 269.431 121.29C264.982 147.315 258.351 172.803 239.623 191.403C220.967 209.933 195.119 214.367 169.554 220.488C130.755 229.777 89.8417 255.668 55.4085 235.508C17.4768 213.299 -1.78808 165.224 0.130567 121.29C1.99214 78.6629 30.1766 41.3075 64.9669 16.6367C94.8584 -4.56027 132.931 0.138099 169.554 1.14663Z" fill={`${item.color == 1 ? '#63A19A' : '#E79797'}`} />
                                         </svg>
                                         <img className="relative z-[1]" src={item.img} alt={item.name} />
                                     </div>
                                 </div>
                             ))}
                         </Slider>
+                    </div>
+                </div>
+            </div>
+            <div className="bg-primary">
+                <div className="bg-[#FFE8AD] py-[60px] rounded-t-[120px]">
+                    <div className="mx-auto px-3 container-nmc">
+                        <h2 className=" mb-8 text-center font-bold text-primary text-center text-[32px]">New arrivals</h2>
+                        <div className="productList-carousel">
+                            <Slider {...productListSettings}>
+                                {productList.map((item, index) => (
+                                    <div className="bg-white product-item">
+                                        <div className="product-item__img">
+                                            <img src={item.img} alt={item.img} />
+                                        </div>
+                                        <h3 className="product-item__title" >{item.name}</h3>
+                                        <p className="product-item__des">{item.des}</p>
+                                        <div className="product-item__rate" data-rate={item.rate}>
+                                            {[...Array(5)].map((_, index) => (
+                                                <i
+                                                    key={index}
+                                                    className={index < item.rate ? "bdx-heart" : "bdx-heart-1"}
+                                                ></i>
+                                            ))}
+                                        </div>
+                                        <div className="product-item__control">
+                                            <p>${item.price}</p>
+                                            <div>
+                                                <i className="bdx-cart"></i>
+                                                <i className="bdx-heart-1"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </Slider>
+                        </div>
                     </div>
                 </div>
             </div>

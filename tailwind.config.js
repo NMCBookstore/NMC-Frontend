@@ -8,6 +8,7 @@ module.exports = {
             'orange-orange-4':'#FFDE87',
             'orange-orange-6':'#FFCA41',
             'accent':'#D41A1A',
+            'white':'#fff',
             'backdrop':'rgba(38, 38, 38, 0.90)'
         },
         screens: {
@@ -22,7 +23,7 @@ module.exports = {
             'md': {'max': '768px'},
       
             'sm': {'max': '425px'},
-          }
+        }
     },
     plugins: [],
 }

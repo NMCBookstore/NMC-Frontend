@@ -147,3 +147,86 @@
     
     }
 }
+.productList-carousel{
+    .slick-list {
+        margin: 0 -12px;
+    }
+    .slick-track{
+        display: flex;
+    }
+    .slick-slide{
+        height: auto;
+        padding: 0 12px;
+        &>div{
+            height: 100%;
+            .product-item{
+                display: flex !important;
+                flex-direction: column;
+                align-items: center;
+                height: 100%;
+                padding: 10px 20px 20px;
+                border-radius: 12px;
+                &__img{
+                    margin-bottom: 18px;
+                    aspect-ratio: 396/595;
+                    max-height: 286px;
+                }
+                &__title{
+                    margin-bottom: 8px;
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 150%;
+                    color: #0F3BB0;
+                    text-align: center;
+                }
+                &__des{
+                    text-align: center;
+                    margin-bottom: 8px;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 150%;
+                    text-transform: uppercase;
+                    color: #595959;
+                }
+                &__rate{
+                    position: relative;
+                    margin-bottom: 24px;
+                    color: #FFCA41;
+                    cursor: pointer;
+                    i{
+                        z-index: 1;
+                        margin: 0px 4px;
+                    }
+                }
+                &__control{
+                    display: flex;
+                    width: 100%;
+                    justify-content: space-between;
+                    &>p{
+                        font-size: 18px;
+                        font-weight: 600;
+                        line-height: 150%;
+                        color: #0F3BB0;
+                    }
+                    &>div{
+                        i{
+                            cursor: pointer;
+                            font-size: 20px;
+                            &:first-child{
+                                margin-right: 12px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .slick-dots{
+        bottom: -40px;
+        li{
+            width: 40px !important;
+        }
+    }
+}
