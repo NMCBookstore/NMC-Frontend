@@ -1,3 +1,91 @@
+.slick-dots {
+    top: 50%;
+    left: 50%;
+    transform: translateX(-2%) rotate(90deg);
+    bottom: unset !important;
+    // transform: rotate(90deg);
+    li,
+    button {
+        width: 64px !important;
+        height: 4px !important;
+        @include max-width-576 {
+            width: 14px !important;
+        }
+    }
+
+    li {
+        transition: all 0.75s;
+        @include max-width-576 {
+            margin: 0 3px !important;
+        }
+
+        button:before {
+            position: absolute;
+            font-size: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 50px;
+            background-color: #BFBFBF;
+            opacity: 1 !important;
+        }
+
+        &.slick-active {
+            color: #0F3BB0 !important;
+
+            button:before {
+                background-color: #0F3BB0;
+            }
+        }
+    }
+
+}
+// .slick {
+//     &-prev, &-next {
+//         z-index: 1;
+//         position: absolute;
+//         top: 90%;
+//         transform: translateY(-50%);
+//         background-color: transparent !important;
+//         border-radius: 5%;
+//         transition: all 0.35s;
+//         width: 80px;
+//         height: 40px;
+//         &:hover{
+//             opacity: 1 !important;
+//         }
+//         &:before {
+//             content: "\61";
+//             font-family: "datn" !important;
+//             font-style: normal !important;
+//             font-weight: normal !important;
+//             font-variant: normal !important;
+//             text-transform: none !important;
+//             speak: none;
+//             line-height: 1;
+//             -webkit-font-smoothing: antialiased;
+//             -moz-osx-font-smoothing: grayscale;
+//             display: block;
+//             font-size: 80px;
+//             color: #0F3BB0;
+//             transition: all 0.35s;
+//         }
+//     }
+//     &-prev {
+//         left: calc(50% - 90px);
+//         &:before {
+//             transform: rotate(180deg);
+//         }
+//     }
+
+//     &-next {
+//         right: calc(50% - 90px);
+//     }
+
+//     &-disabled{
+//         opacity: 0.6;
+//     }
+// }
+
 .banner{
     &>*{
         display: flex !important;
