@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from 'react-router-dom';
-import NoteNotify from "../note-notify";
+import NoteNotify from "../NoteNotify";
 import {logo} from "../../assets/img";
 
 const Header: React.FunctionComponent = () => {
@@ -38,7 +38,7 @@ const Header: React.FunctionComponent = () => {
                             </div>
                             <p className="text-[#fff] text-[14px] uppercase block sm:hidden">Account</p>
                         </Link>
-                        <div className="absolute top-full subMenu">
+                        <div className="absolute top-full subMenu z-[100]">
                             <ul>
                                 <li><Link to="/profile"><span>Profile</span></Link></li>
                                 <li><Link to="/profile"><span>Edit Profile</span></Link></li>

@@ -4,10 +4,12 @@ import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import './App.css';
-import HomePage from "./page/home"
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import HomePage from "./page/HomePage/home"
 import NotFound from "./page/error"
-import Header from './component/header';
-import Footer from './component/footer';
+import Header from './component/Header';
+import Footer from './component/Footer';
 import { setupListeners } from '@reduxjs/toolkit/query';
 
 const store = configureStore({
