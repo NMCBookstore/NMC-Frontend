@@ -7,7 +7,7 @@ import ProductItem from "../../component/ProductItem";
 import { productDetail, categoryItem, articleItem } from "../../interface";
 import { productListSettings, bannerSettings, cateSettings, productTabsListSettings, servicesCarousel } from "../../common/CarouselSetting";
 
-import { logo, cate1, cate2, cate3, cate4, cate5, cate6, productItem, bannerImg, midleBanner, articleImg } from "../../assets/img"
+import { logo, cate1, cate2, cate3, cate4, cate5, cate6, productItem, bannerImg, midleBanner, articleImg } from "../../assets/img";
 
 const HomePage: React.FunctionComponent = () => {
     const banner = ["img", "img", "igm"];
@@ -40,6 +40,7 @@ const HomePage: React.FunctionComponent = () => {
     { name: "Hanoi Book Festival returns to capital city", img: articleImg, des: "The Hanoi Book Festival has returned for the bookworms in the pedestrian zone by Hoan Kiem (Sword) Lake in the capital city on October 6-8th" },
     { name: "5 New Books You Should Read That You Won't Find in Business School", img: articleImg, des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids." },
     { name: "Kids share their thoughts about banned books with NPR", img: articleImg, des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids." }];
+    
     return (
         <div className='bg-[#FBF4EA]'>
             <div className="marquee-container">
@@ -108,7 +109,7 @@ const HomePage: React.FunctionComponent = () => {
                     </div>
                 </div>
             </div>
-            <div className="bg-[#FFE8AD] pt-[60px] pb-[180px] md:pb-[120px] sm:rounded-b-[60px] rounded-b-[120px]">
+            <div className="bg-[#FFE8AD] md:pt-[20px] pt-[60px] pb-[180px] md:pb-[120px] sm:rounded-b-[60px] rounded-b-[120px]">
                 <div className="mx-auto px-3 container-nmc">
                     <div className="flex justify-between">
                         <h2 className="mb-8 font-bold text-primary text-[32px]">Bestsellers <i className="bdx-like ml-2 text-accent inline-flex items-center"></i> </h2>
@@ -131,7 +132,7 @@ const HomePage: React.FunctionComponent = () => {
             <div className="mindle-banner-carousel md:pb-[40px] pb-[120px] md:mt-6 mt-[-125px] mx-auto px-3 container-nmc">
                 <Slider {...bannerSettings}>
                     {midlebanner.map((item, index) => (
-                        <div className="aspect-[1296/250] w-full mindle-banner-carousel__block">
+                        <div key={index} className="aspect-[1296/250] w-full mindle-banner-carousel__block">
                             <img className="object-cover w-full h-full" src={item} alt="banner" />
                         </div>
                     ))}
@@ -159,7 +160,7 @@ const HomePage: React.FunctionComponent = () => {
                     ))}
                 </Slider>
             </div>
-            <div className="mx-auto px-3 container-nmc productList-carousel md:mb-[24px] mb-[60px]">
+            <div className="mx-auto px-3 container-nmc productList-carousel dots-bottom md:mb-[40px] mb-[60px]">
                 <div className="flex mb-6 justify-between" >
                     <h2 className="font-bold text-primary text-[32px]">Children’s</h2>
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>

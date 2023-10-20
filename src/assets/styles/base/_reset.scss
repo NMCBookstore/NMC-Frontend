@@ -21,3 +21,12 @@ body {
         overflow: hidden;
     }
 }
+.webkitbox-1{
+    @include webkit-box(1)
+}
+.webkitbox-2{
+    @include webkit-box(2)
+}
+.webkitbox-3{
+    @include webkit-box(3)
+}

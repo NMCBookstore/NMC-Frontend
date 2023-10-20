@@ -12,8 +12,8 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (ProductItemitem)
                     <div className="product-item__img">
                         <img src={ProductItemitem.itemDetail.img} alt={ProductItemitem.itemDetail.img} />
                     </div>
-                    <h3 className="product-item__title" >{ProductItemitem.itemDetail.name}</h3>
-                    <p className="product-item__des">{ProductItemitem.itemDetail.des}</p>
+                    <h3 className="product-item__title webkitbox-2" >{ProductItemitem.itemDetail.name}</h3>
+                    <p className="product-item__des webkitbox-2">{ProductItemitem.itemDetail.des}</p>
                     <div className="product-item__rate" data-rate={ProductItemitem.itemDetail.rate}>
                         {[...Array(5)].map((_, index) => (
                             <i
