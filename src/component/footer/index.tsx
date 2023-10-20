@@ -9,7 +9,7 @@ const Footer: React.FunctionComponent = () => {
                     <div className="flex flex-row lg:gap-y-8 lg:flex-wrap flex-nowrap">
                         <div className="px-3 w-1/3 lg:w-1/2 sm:w-full">
                             <h3 className="text-[20px] text-primary font-semibold leading-normal mb-6" >NMC Bookstore</h3>
-                            <ul className="flex flex-col gap-4">
+                            <ul className="flex flex-col gap-4 text-[#595959]">
                                 <li className="flex items-center"  >
                                     <i className=" mr-2 text-primary text-[26px] inline-flex items-center bdx-location"></i> <p className="inline text-[16px] leading-[24px]">1 Vo Van Ngan, TP. Thu Duc</p>
                                 </li>
@@ -33,7 +33,7 @@ const Footer: React.FunctionComponent = () => {
                         </div>
                         <div className="px-3 w-1/4 lg:w-1/2 sm:w-full">
                             <h3 className="text-[20px] text-primary font-semibold leading-normal mb-6" >Popular categories</h3>
-                            <ul className="flex flex-col gap-4">
+                            <ul className="flex flex-col gap-4 text-[#595959]">
                                 <li>
                                     <Link to="Fiction">Fiction</Link>
                                 </li>
@@ -54,7 +54,7 @@ const Footer: React.FunctionComponent = () => {
                         </div>
                         <div className="px-3 w-1/6 lg:w-1/2 sm:w-full">
                             <h3 className="text-[20px] text-primary font-semibold leading-normal mb-6" >About us</h3>
-                            <ul className="flex flex-col gap-4">
+                            <ul className="flex flex-col gap-4 text-[#595959]">
                                 <li>
                                     <Link to="Our-story">Our story</Link>
                                 </li>
@@ -74,7 +74,7 @@ const Footer: React.FunctionComponent = () => {
                         </div>
                         <div className="px-3 w-1/4 lg:w-1/2 sm:w-full">
                             <h3 className="text-[20px] text-primary font-semibold leading-normal mb-6" >Support</h3>
-                            <ul className="flex flex-col gap-4">
+                            <ul className="flex flex-col gap-4 text-[#595959]">
                                 <li>
                                     <Link to="track-order">Track order</Link>
                                 </li>

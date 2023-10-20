@@ -7,10 +7,10 @@ import ProductItem from "../../component/ProductItem";
 import { productDetail, categoryItem, articleItem } from "../../interface";
 import { productListSettings, bannerSettings, cateSettings, productTabsListSettings, servicesCarousel } from "../../common/CarouselSetting";
 
-import { logo, cate1, cate2, cate3, cate4, cate5, cate6, productItem, bannerImg, midleBanner, articleImg } from "../../assets/img";
+import { logo, cate1, cate2, cate3, cate4, cate5, cate6, productItem, bannerImg, midleBanner, articleImg, logospkt,logoclcspkt } from "../../assets/img";
 
 const HomePage: React.FunctionComponent = () => {
-    const banner = ["img", "img", "igm"];
+    const banner = [bannerImg, logospkt, logoclcspkt, logo];
     const midlebanner = [midleBanner, midleBanner, midleBanner];
     const cate: categoryItem[] = [{ name: "Shop all", img: cate1, color: 1 }, { name: "Fiction", img: cate2, color: 2 }, { name: "Non-Fiction", img: cate3, color: 2 }, { name: "Children's", img: cate4, color: 1 }, { name: "Stationery & Gifts", img: cate5, color: 1 }, { name: "Gift cards & Vouchers", img: cate6, color: 2 }];
     const productList: productDetail[] = [{ discount: 10, name: "Build the life you want", des: "Arthur c. brooks oprah winfrey", price: "300", rate: 3, img: productItem },
@@ -61,14 +61,14 @@ const HomePage: React.FunctionComponent = () => {
                 <Slider {...bannerSettings}>
                     {banner.map((item, index) => (
                         <div key={index} className="banner bg-[#FBF4EA] pt-[84px] pb-[100px]">
-                            <div className="mx-auto container-nmc px-3">
+                            <div className="mx-auto container-nmc px-3 sm:items-between sm:h-full sm:gap-[24px]">
                                 <div className="w-[60%] lg:w-[70%] sm:w-[100%] flex flex-col justify-center">
-                                    <p className="mb-2 text-[20px] font-semibold" >Welcome to the NMC Bookstore</p>
-                                    <h1 className="lg:text-[36px] text-[56px] leading-normal font-bold mb-6" >Your Gateway to a World of Knowledge and Imagination!</h1>
+                                    <p className="mb-2 text-[20px] font-semibold capitalize text-[#262626]" >Welcome to the NMC Bookstore</p>
+                                    <h1 className="lg:text-[36px] text-[56px] leading-normal font-bold mb-6 capitalize text-[#262626]" >Your Gateway to a World of Knowledge and Imagination!</h1>
                                     <Link to="product" className="flex py-3 px-6 items-center bg-orange-orange-6 w-fit rounded-full"> <i className="bdx-cart-fill inline-flex mr-2 items-center"></i> SHOP NOW</Link>
                                 </div>
-                                <div className="w-[30%] sm:w-[100%] flex items-center">
-                                    <img src={bannerImg} alt="banner" />
+                                <div className="w-[40%] lg:w-[60%] sm:w-[100%] flex items-center banner-img">
+                                    <img src={item} alt="banner" />
                                 </div>
                             </div>
                         </div>
@@ -77,12 +77,12 @@ const HomePage: React.FunctionComponent = () => {
             </div>
             <div className="bg-primary py-[60px]">
                 <div className="mx-auto px-3 container-nmc">
-                    <h2 className=" mb-8 text-center font-bold text-orange-orange-6 text-center text-[32px]">Our Popular Categories</h2>
+                    <h2 className=" mb-8 text-center font-bold text-orange-orange-6 text-center text-[32px] capitalize">Our Popular Categories</h2>
                     <div className="cate-carousel">
                         <Slider {...cateSettings}>
                             {cate.map((item, index) => (
                                 <div key={index} className="overflow-hidden">
-                                    <p className="mb-2 text-[20px] font-semibold" >{item.name}</p>
+                                    <p className="mb-2 text-[20px] font-semibold text-[#262626]" >{item.name}</p>
                                     <div className="relative">
                                         <svg className="absolute top-[-40px] left-[-40px] z-0" width="280" height="243" viewBox="0 0 280 243" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M169.554 1.14663C204.611 2.11203 246.112 -4.73555 268.539 22.2427C290.475 48.6302 275.214 87.4579 269.431 121.29C264.982 147.315 258.351 172.803 239.623 191.403C220.967 209.933 195.119 214.367 169.554 220.488C130.755 229.777 89.8417 255.668 55.4085 235.508C17.4768 213.299 -1.78808 165.224 0.130567 121.29C1.99214 78.6629 30.1766 41.3075 64.9669 16.6367C94.8584 -4.56027 132.931 0.138099 169.554 1.14663Z" fill={`${item.color === 1 ? '#63A19A' : '#E79797'}`} />
@@ -98,7 +98,7 @@ const HomePage: React.FunctionComponent = () => {
             <div className="bg-primary">
                 <div className="bg-[#FFE8AD] py-[60px] md:rounded-t-[60px] rounded-t-[120px]">
                     <div className="mx-auto px-3 container-nmc">
-                        <h2 className=" mb-8 font-bold text-primary text-center text-[32px]">New arrivals</h2>
+                        <h2 className=" mb-8 font-bold text-primary text-center text-[32px] capitalize">New arrivals</h2>
                         <div className="productList-carousel py-3">
                             <Slider {...productListSettings}>
                                 {productList.map((item, index) => (
@@ -185,7 +185,7 @@ const HomePage: React.FunctionComponent = () => {
                                     <img src={item.img} alt={item.name} />
                                 </div>
                                 <div className="blog_list_item_content">
-                                    <h3>{item.name}</h3>
+                                    <h3 className="text-[#262626]">{item.name}</h3>
                                     <p>{item.des}</p>
                                 </div>
                             </div>

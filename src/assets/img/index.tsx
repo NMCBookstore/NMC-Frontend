@@ -9,4 +9,7 @@ export { default as cate6 } from "./cate-6.svg";
 export { default as productItem } from "./product.png";
 export { default as midleBanner } from "./midle-banner.png";
 export { default as articleImg } from "./articleItem.png";
+export { default as logospkt } from "./clcspkt.png";
+export { default as logoclcspkt } from "./logospkt.png";
+export { default as page404 } from "./404.svg";
 

@@ -16,6 +16,28 @@
             flex-wrap: wrap;
         }
     }
+    .slick-track{
+        display: flex;
+        .slick-slide{
+            height: auto;
+            &>div{
+                height: 100%;
+                &>div{
+                    height: 100%;
+                    display: flex !important;
+                    align-items: center;
+                    .banner-img{
+                        display: flex;
+                        justify-content: center;
+                        img{
+                            max-width: 70%;
+                            min-width: 50%;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 .cate-carousel {
