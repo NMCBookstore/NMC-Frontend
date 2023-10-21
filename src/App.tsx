@@ -1,5 +1,4 @@
 import React from 'react';
-import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -8,17 +7,8 @@ import HomePage from "./page/home"
 import NotFound from "./page/error"
 import Header from './component/header';
 import Footer from './component/footer';
-import { setupListeners } from '@reduxjs/toolkit/query';
+import store from './app/store';
 
-const store = configureStore({
-    reducer: {
-
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(),
-});
-
-setupListeners(store.dispatch);
 function App() {
     return (
         <Provider store={store}>

@@ -30,6 +30,15 @@ const Header: React.FunctionComponent = () => {
                             <p className="text-[#fff] text-[14px] uppercase block sm:hidden">Wishlist</p>
                         </Link>
                     </div>
+                    <div className="flex">
+                        <Link to="/cart" className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header">
+                            <div className="relative">
+                                <i className="bdx-cart-fill text-[20px] text-[#fff] flex items-center"></i>
+                                <NoteNotify numberCount={numberCount3} />
+                            </div>
+                            <p className="text-[#fff] text-[14px] uppercase sm:block hidden">Cart</p>
+                        </Link>
+                    </div>
                     <div className="flex relative subMenu-btn">
                         <Link to="/account" className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header">
                             <div className="relative">
@@ -46,15 +55,7 @@ const Header: React.FunctionComponent = () => {
                             </ul>
                         </div>
                     </div>
-                    <div className="flex">
-                        <Link to="/cart" className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header">
-                            <div className="relative">
-                                <i className="bdx-cart-fill text-[20px] text-[#fff] flex items-center"></i>
-                                <NoteNotify numberCount={numberCount3} />
-                            </div>
-                            <p className="text-[#fff] text-[14px] uppercase block sm:hidden">Cart</p>
-                        </Link>
-                    </div>
+
                 </div>
             </div>
         </header>
