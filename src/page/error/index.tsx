@@ -7,8 +7,8 @@ const NotFound: React.FunctionComponent = () => {
     return (
         <div className="bg-[#FBF4EA] flex flex-col items-center py-[104px] px-3">
             <div>
-                <img src={page404} alt="404 page" />
-                <h1 className="text-primary font-semibold text-[32px] text-center mb-6">Page Not Found</h1>
+                <img className="mb-4" src={page404} alt="404 page" />
+                <h1 className="text-primary text-center mb-6">Page Not Found</h1>
                 <p className="text-[#707070] text-[16px] text-center mb-8">The page you are looking for is not available or has been deleted</p>
             </div>
             <div>

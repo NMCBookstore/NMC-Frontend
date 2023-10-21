@@ -5,7 +5,8 @@
     position: relative;
     display: flex !important;
     flex-direction: column;
-    align-items: center;
+    align-items:center;
+    justify-content: space-between;
     height: 100%;
     padding: 10px 20px 20px;
     border-radius: 12px;
@@ -43,11 +44,12 @@
     }
 
     &__rate {
+        display: flex;
         position: relative;
+        justify-content: center;
         margin-bottom: 24px;
         color: #FFCA41;
         cursor: pointer;
-
         i {
             z-index: 1;
             margin: 0px 4px;

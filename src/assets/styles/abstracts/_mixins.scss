@@ -12,91 +12,91 @@ $width-425: 425px;
 $width-360: 360px;
 
 @mixin min-width-576 {
-    @media (min-width: #{$width-576}) {
+    @media (min-width: #{$width-576 + 1px }) {
         @content;
     }
 }
 
 @mixin min-width-640 {
-    @media (min-width: #{$width-640}) {
+    @media (min-width: #{$width-640 + 1px }) {
         @content;
     }
 }
 
 @mixin min-width-768 {
-    @media (min-width: #{$width-768}) {
+    @media (min-width: #{$width-768 + 1px }) {
         @content;
     }
 }
 
 @mixin min-width-992 {
-    @media (min-width: #{$width-992}) {
+    @media (min-width: #{$width-992 + 1px }) {
         @content;
     }
 }
 
 @mixin min-width-1280 {
-    @media (min-width: #{$width-1280}) {
+    @media (min-width: #{$width-1280 + 1px }) {
         @content;
     }
 }
 
 @mixin min-width-1366 {
-    @media (min-width: #{$width-1366}) {
+    @media (min-width: #{$width-1366 + 1px }) {
         @content;
     }
 }
 
 @mixin min-width-1400 {
-    @media (min-width: #{$width-1400}) {
+    @media (min-width: #{$width-1400 + 1px }) {
         @content;
     }
 }
 
 @mixin min-width-1440 {
-    @media (min-width: #{$width-1440}) {
+    @media (min-width: #{$width-1440 + 1px }) {
         @content;
     }
 }
 
 @mixin min-width-1536 {
-    @media (min-width: #{$width-1536}) {
+    @media (min-width: #{$width-1536 + 1px }) {
         @content;
     }
 }
 
 @mixin min-width-1920 {
-    @media (min-width: #{$width-1920}) {
+    @media (min-width: #{$width-1920 + 1px }) {
         @content;
     }
 }
 
 @mixin max-width-1400 {
-    @media (max-width: #{$width-1400 - 1px}) {
+    @media (max-width: #{$width-1400}) {
         @content;
     }
 }
 
 @mixin max-width-1366 {
-    @media (max-width: #{$width-1366 - 1px}) {
+    @media (max-width: #{$width-1366}) {
         @content;
     }
 }
 
 @mixin max-width-1280 {
-    @media (max-width: #{$width-1280 - 1px}) {
+    @media (max-width: #{$width-1280}) {
         @content;
     }
 }
 
 @mixin max-width-992 {
-    @media (max-width: #{$width-992 - 1px}) {
+    @media (max-width: #{$width-992}) {
         @content;
     }
 }
 
 @mixin max-width-768 {
-    @media (max-width: #{$width-768 - 1px}) {
+    @media (max-width: #{$width-768}) {
         @content;
     }
 }
@@ -108,13 +108,13 @@ $width-360: 360px;
 }
 
 @mixin max-width-576 {
-    @media (max-width: #{$width-576 - 1px}) {
+    @media (max-width: #{$width-576}) {
         @content;
     }
 }
 
 @mixin max-width-425 {
-    @media (max-width: #{$width-425 - 1px}) {
+    @media (max-width: #{$width-425}) {
         @content;
     }
 }

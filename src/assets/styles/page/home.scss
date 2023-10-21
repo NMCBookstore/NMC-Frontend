@@ -31,7 +31,10 @@
                         justify-content: center;
                         img{
                             max-width: 70%;
-                            min-width: 50%;
+                            min-width: 40%;
+                            @include max-width-768{
+                                max-width: 40%;
+                            }
                         }
                     }
                 }
@@ -54,19 +57,28 @@
         display: flex;
         flex-direction: column;
         gap: 24px;
+        @include max-width-425{
+            gap: 12px;
+        }
 
         &>div {
             margin: 0 12px;
             height: 50%;
 
             &>div {
-                height: 100%;
                 display: flex !important;
+                height: 100%;
+                padding: 20px;
                 justify-content: space-between;
                 align-items: center;
                 background: #FBF4EA;
                 border-radius: 24px;
-                padding: 20px;
+                @include max-width-425{
+                    padding: 10px 24px;
+                    img{
+                        max-height: 64px;
+                    }
+                }
 
                 &>* {
                     width: calc((100% - 40px)/2);
@@ -152,6 +164,9 @@
 
         &>div {
             height: 100%;
+            &>div{
+                height: 100%;
+            }
         }
     }
 
@@ -164,7 +179,46 @@
         li {
             width: 40px !important;
             @include max-width-768{
-                width: 14px !important;
+                width: 24px !important;
+            }
+        }
+    }
+    @include max-width-425{
+        .slick-list {
+            padding: 0px -4px;
+        }
+        .slick-slide {
+            padding: 0px 4px;
+            .product-item{
+                @include max-width-425{
+                    padding:12px;
+                    &__img{
+                        margin-bottom: 8px;
+                        img{
+                            border-radius: 6px;
+                        }
+                    }
+                    &__title{
+                        font-size: 16px;
+                    }
+                    &__des{
+                        font-size: 12px;
+                        font-weight: 500;
+                    }
+                    &__rate{
+                        margin-bottom: 8px;
+                    }
+                    &__control {
+                        &> p{
+                            font-size: 14px;
+                        }
+                        &>div{
+                            i{
+                                font-size: 16px;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -206,6 +260,18 @@
 
             &>* {
                 height: 100%;
+            }
+        }
+    }
+
+    @include max-width-425{
+        .slick-list {
+            margin: 0px -12px;
+            .slick-slide{
+                padding: 0px 4px;
+                &>div{
+                    margin: 0px;
+                }
             }
         }
     }

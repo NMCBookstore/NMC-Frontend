@@ -17,6 +17,7 @@ export const cateSettings = {
     slidesToScroll: 1,
     arrows: false,
     rows: 2,
+    autoplaySpeed:2000,
     responsive: [
         {
             breakpoint: 768,
@@ -38,11 +39,12 @@ export const cateSettings = {
 export const productListSettings = {
     autoplay:true,
     dots: true,
-    infinite: false,
+    infinite: true,
     speed: 500,
     slidesToShow: 5,
     slidesToScroll: 1,
     arrows: true,
+    autoplaySpeed:3000,
     responsive: [
         {
             breakpoint: 1440,
@@ -61,12 +63,6 @@ export const productListSettings = {
             settings: {
                 slidesToShow: 2,
             }
-        },
-        {
-            breakpoint: 425,
-            settings: {
-                slidesToShow: 1,
-            }
         }
     ]
 };
@@ -79,6 +75,7 @@ export const productTabsListSettings = {
     slidesToShow: 5,
     slidesToScroll: 1,
     arrows: true,
+    autoplaySpeed:2000,
     rows:2,
     responsive: [
         {
@@ -102,7 +99,7 @@ export const productTabsListSettings = {
         {
             breakpoint: 425,
             settings: {
-                slidesToShow: 1,
+                slidesToShow: 2,
                 rows:1,
                 dots:false
             }
@@ -118,6 +115,7 @@ export const servicesCarousel = {
     slidesToShow: 4,
     slidesToScroll: 1,
     arrows: false,
+    autoplaySpeed:1000,
     responsive: [
         {
             breakpoint: 768,

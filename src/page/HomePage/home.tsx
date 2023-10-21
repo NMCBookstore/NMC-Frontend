@@ -60,14 +60,14 @@ const HomePage: React.FunctionComponent = () => {
             <div className="banner-carousel">
                 <Slider {...bannerSettings}>
                     {banner.map((item, index) => (
-                        <div key={index} className="banner bg-[#FBF4EA] pt-[84px] pb-[100px]">
-                            <div className="mx-auto container-nmc px-3 sm:items-between sm:h-full sm:gap-[24px]">
-                                <div className="w-[60%] lg:w-[70%] sm:w-[100%] flex flex-col justify-center">
-                                    <p className="mb-2 text-[20px] font-semibold capitalize text-[#262626]" >Welcome to the NMC Bookstore</p>
-                                    <h1 className="lg:text-[36px] text-[56px] leading-normal font-bold mb-6 capitalize text-[#262626]" >Your Gateway to a World of Knowledge and Imagination!</h1>
+                        <div key={index} className="banner bg-[#FBF4EA] pt-[84px] pb-[100px] md:pt-[40px] md:pb-[60px]">
+                            <div className="mx-auto container-nmc px-3 md:gap-[60px] sm:items-between sm:h-full sm:gap-[16px]">
+                                <div className="w-[60%] lg:w-[70%] md:w-[100%] flex flex-col justify-center md:items-center">
+                                    <p className="mb-2 text-[20px] sm:text-[16px] font-semibold sm:font-normal capitalize text-[#262626] md:text-center" >Welcome to the NMC Bookstore</p>
+                                    <h1 className="mb-6 capitalize text-[#262626] md:text-center" >Your Gateway to a World of Knowledge and Imagination!</h1>
                                     <Link to="product" className="flex py-3 px-6 items-center bg-orange-orange-6 w-fit rounded-full"> <i className="bdx-cart-fill inline-flex mr-2 items-center"></i> SHOP NOW</Link>
                                 </div>
-                                <div className="w-[40%] lg:w-[60%] sm:w-[100%] flex items-center banner-img">
+                                <div className="w-[40%] lg:w-[30%] md:w-[100%] flex items-center banner-img">
                                     <img src={item} alt="banner" />
                                 </div>
                             </div>
@@ -75,15 +75,15 @@ const HomePage: React.FunctionComponent = () => {
                     ))}
                 </Slider>
             </div>
-            <div className="bg-primary py-[60px]">
+            <div className="bg-primary py-[60px] sm:pt-[40px]">
                 <div className="mx-auto px-3 container-nmc">
-                    <h2 className=" mb-8 text-center font-bold text-orange-orange-6 text-center text-[32px] capitalize">Our Popular Categories</h2>
+                    <h2 className=" mb-8 sm:mb-6 text-center text-orange-orange-6 text-center capitalize">Our Popular Categories</h2>
                     <div className="cate-carousel">
                         <Slider {...cateSettings}>
                             {cate.map((item, index) => (
                                 <div key={index} className="overflow-hidden">
-                                    <p className="mb-2 text-[20px] font-semibold text-[#262626]" >{item.name}</p>
-                                    <div className="relative">
+                                    <p className="text-[20px] sm:text-[16px] font-semibold text-[#262626]" >{item.name}</p>
+                                    <div className="relative flex justify-center">
                                         <svg className="absolute top-[-40px] left-[-40px] z-0" width="280" height="243" viewBox="0 0 280 243" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path fillRule="evenodd" clipRule="evenodd" d="M169.554 1.14663C204.611 2.11203 246.112 -4.73555 268.539 22.2427C290.475 48.6302 275.214 87.4579 269.431 121.29C264.982 147.315 258.351 172.803 239.623 191.403C220.967 209.933 195.119 214.367 169.554 220.488C130.755 229.777 89.8417 255.668 55.4085 235.508C17.4768 213.299 -1.78808 165.224 0.130567 121.29C1.99214 78.6629 30.1766 41.3075 64.9669 16.6367C94.8584 -4.56027 132.931 0.138099 169.554 1.14663Z" fill={`${item.color === 1 ? '#63A19A' : '#E79797'}`} />
                                         </svg>
@@ -96,10 +96,10 @@ const HomePage: React.FunctionComponent = () => {
                 </div>
             </div>
             <div className="bg-primary">
-                <div className="bg-[#FFE8AD] py-[60px] md:rounded-t-[60px] rounded-t-[120px]">
+                <div className="bg-[#FFE8AD] py-[60px] sm:py-[40px] rounded-t-[120px] md:rounded-t-[60px] sm:rounded-t-[40px]">
                     <div className="mx-auto px-3 container-nmc">
-                        <h2 className=" mb-8 font-bold text-primary text-center text-[32px] capitalize">New arrivals</h2>
-                        <div className="productList-carousel py-3">
+                        <h2 className=" mb-8 sm:mb-0 text-primary text-center capitalize">New arrivals</h2>
+                        <div className="productList-carousel py-3 sm:pt-0">
                             <Slider {...productListSettings}>
                                 {productList.map((item, index) => (
                                     <ProductItem key={index} itemDetail={item}></ProductItem>
@@ -109,10 +109,10 @@ const HomePage: React.FunctionComponent = () => {
                     </div>
                 </div>
             </div>
-            <div className="bg-[#FFE8AD] md:pt-[20px] pt-[60px] pb-[180px] md:pb-[120px] sm:rounded-b-[60px] rounded-b-[120px]">
+            <div className="bg-[#FFE8AD] md:pt-[20px] pt-[60px] pb-[180px] md:pb-[120px] sm:pb-[60px] sm:rounded-b-[60px] rounded-b-[120px]">
                 <div className="mx-auto px-3 container-nmc">
                     <div className="flex justify-between">
-                        <h2 className="mb-8 font-bold text-primary text-[32px]">Bestsellers <i className="bdx-like ml-2 text-accent inline-flex items-center"></i> </h2>
+                        <h2 className="mb-8 sm:mb-0 text-primary">Bestsellers <i className="bdx-like ml-2 text-accent inline-flex items-center"></i> </h2>
                         <div className="lg:hidden">
                             <span className="cursor-pointer px-6 border-r border-[#BFBFBF] border-solid font-semibold text-primary relative before:absolute before:bottom-[-10%] before:left-[50%] before:h-0.5 before:translate-x-[-50%] before:w-[50%] before:bg-primary">All</span>
                             <span className="cursor-pointer px-6 border-r border-[#BFBFBF] border-solid text-[#595959] hover:text-primary">Fiction</span>
@@ -140,7 +140,7 @@ const HomePage: React.FunctionComponent = () => {
             </div>
             <div className="mx-auto px-3 container-nmc productList-carousel md:mb-[40px] mb-[100px]">
                 <div className="flex mb-6 justify-between" >
-                    <h2 className="font-bold text-primary text-[32px]">Fiction</h2>
+                    <h2 className="text-primary">Fiction</h2>
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>
                 </div>
                 <Slider {...productListSettings}>
@@ -151,7 +151,7 @@ const HomePage: React.FunctionComponent = () => {
             </div>
             <div className="mx-auto px-3 container-nmc productList-carousel md:mb-[40px] mb-[100px]">
                 <div className="flex mb-6 justify-between" >
-                    <h2 className="font-bold text-primary text-[32px]">Non-Fiction</h2>
+                    <h2 className="text-primary">Non-Fiction</h2>
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>
                 </div>
                 <Slider {...productListSettings}>
@@ -162,7 +162,7 @@ const HomePage: React.FunctionComponent = () => {
             </div>
             <div className="mx-auto px-3 container-nmc productList-carousel dots-bottom md:mb-[40px] mb-[60px]">
                 <div className="flex mb-6 justify-between" >
-                    <h2 className="font-bold text-primary text-[32px]">Children’s</h2>
+                    <h2 className="text-primary">Children’s</h2>
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>
                 </div>
                 <Slider {...productListSettings}>
@@ -174,7 +174,7 @@ const HomePage: React.FunctionComponent = () => {
             <div className="bg-[#FFE8AD] blog">
                 <div className="mx-auto px-3 container-nmc py-[60px]">
                     <i className="bdx-book text-primary text-[32px] flex justify-center"></i>
-                    <h2 className="font-bold text-primary text-[32px] text-center mb-10">Our Blog</h2>
+                    <h2 className="text-primary text-center mb-10">Our Blog</h2>
                     <div className="blog_list mb-8">
                         {articleList.slice(0, 4).map((item, index) => (
                             <div

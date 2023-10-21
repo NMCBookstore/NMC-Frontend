@@ -13,7 +13,7 @@ const Header: React.FunctionComponent = () => {
                 <Link to="/" className="w-[80px] flex justify-center px-[12px]">
                     <img className="" src={logo} alt="logo" />
                 </Link>
-                <div className="xl:w-3/4 w-2/3 flex sm:hidden items-center px-[12px] relative">
+                <div className="xl:w-3/4 w-2/3 flex md:hidden items-center px-[12px] relative">
                     <input className="w-full px-[24px] h-4/5 rounded-full" type="text" placeholder="Search by Title, Author, ISBN or Keywords" />
                     <i className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"></i>
                 </div>
