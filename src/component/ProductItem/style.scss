@@ -1,0 +1,110 @@
+.product_hover{
+    padding: 24px 0px;
+}
+.product-item {
+    position: relative;
+    display: flex !important;
+    flex-direction: column;
+    align-items:center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 10px 20px 20px;
+    border-radius: 12px;
+    transition: all 0.3s;
+    &:hover{
+        background-color: #c3ebff;
+        box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.03), 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+    }
+
+    &__img {
+        margin-bottom: 18px;
+        aspect-ratio: 396/595;
+        max-height: 286px;
+    }
+
+    &__title {
+        margin-bottom: 8px;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 150%;
+        color: #0F3BB0;
+        text-align: center;
+    }
+
+    &__des {
+        text-align: center;
+        margin-bottom: 8px;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 150%;
+        text-transform: uppercase;
+        color: #595959;
+    }
+
+    &__rate {
+        display: flex;
+        position: relative;
+        justify-content: center;
+        margin-bottom: 24px;
+        color: #FFCA41;
+        cursor: pointer;
+        i {
+            z-index: 1;
+            margin: 0px 4px;
+        }
+    }
+
+    &__control {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+
+        &>p {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 150%;
+            color: #0F3BB0;
+        }
+
+        &>div {
+            i {
+                cursor: pointer;
+                font-size: 20px;
+
+                &:first-child {
+                    margin-right: 12px;
+                }
+            }
+        }
+    }
+    &__discount{
+        position: absolute;
+        padding: 14px 4px 6px;
+        right: 12px;
+        top: 0px;
+        background-color: #D41A1A;
+        color: white;
+        width: 44px;
+        span{
+            position: relative;
+            z-index: 1;
+        }
+        &::before {
+            z-index: 0;
+            bottom: -15.6px;
+            right: 6.6px;
+            margin: 0 0 0 -6px;
+            content: "";
+            position: absolute;
+            width: 31.112px;
+            height: 31.112px;
+            transform: rotate(45deg);
+            background: #D41A1A;
+            box-shadow: -3px -3px 5px rgba(82, 95, 127, 0.04);
+            transition: all 0.3s;
+            border-bottom-right-radius: 4px ;
+        }
+    }
+}

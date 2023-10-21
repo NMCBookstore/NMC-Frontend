@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from 'react-router-dom';
-import NoteNotify from "../note-notify";
-import logo from "../../assets/img/logo.svg";
+import NoteNotify from "../NoteNotify";
+import {logo} from "../../assets/img";
 
 const Header: React.FunctionComponent = () => {
     const numberCount1: number = 10;
@@ -13,7 +13,7 @@ const Header: React.FunctionComponent = () => {
                 <Link to="/" className="w-[80px] flex justify-center px-[12px]">
                     <img className="" src={logo} alt="logo" />
                 </Link>
-                <div className="xl:w-3/4 w-2/3 flex sm:hidden items-center px-[12px] relative">
+                <div className="xl:w-3/4 w-2/3 flex md:hidden items-center px-[12px] relative">
                     <input className="w-full px-[24px] h-4/5 rounded-full" type="text" placeholder="Search by Title, Author, ISBN or Keywords" />
                     <i className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"></i>
                 </div>
@@ -47,7 +47,7 @@ const Header: React.FunctionComponent = () => {
                             </div>
                             <p className="text-[#fff] text-[14px] uppercase block sm:hidden">Account</p>
                         </Link>
-                        <div className="absolute top-full subMenu">
+                        <div className="absolute top-full subMenu z-[100]">
                             <ul>
                                 <li><Link to="/profile"><span>Profile</span></Link></li>
                                 <li><Link to="/profile"><span>Edit Profile</span></Link></li>
