@@ -23,6 +23,19 @@ h2 {
     }
 }
 
+h3 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 140%;
+    @include max-width-992{
+        font-size: 18px !important;
+    }
+    @include max-width-425{
+        font-size: 16px !important;
+        font-weight: 600;
+    }
+}
+
 @font-face {
     font-display: swap;
     font-family: "Inter";

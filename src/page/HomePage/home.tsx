@@ -172,10 +172,10 @@ const HomePage: React.FunctionComponent = () => {
                 </Slider>
             </div>
             <div className="bg-[#FFE8AD] blog">
-                <div className="mx-auto px-3 container-nmc py-[60px]">
+                <div className="mx-auto px-3 container-nmc py-[60px] sm:py-[40px]">
                     <i className="bdx-book text-primary text-[32px] flex justify-center"></i>
-                    <h2 className="text-primary text-center mb-10">Our Blog</h2>
-                    <div className="blog_list mb-8">
+                    <h2 className="text-primary text-center mb-10 sm:mb-4">Our Blog</h2>
+                    <div className="blog_list mb-8 sm:mb-6">
                         {articleList.slice(0, 4).map((item, index) => (
                             <div
                                 key={index}
@@ -192,33 +192,33 @@ const HomePage: React.FunctionComponent = () => {
                         ))}
                     </div>
                     <div className="flex justify-center">
-                        <button className="px-6 py-3 uppercase rounded-xl border border-primary border-solid">Read more</button>
+                        <button className="px-6 py-3 sm:px-4 sm:py-2 uppercase rounded-xl border border-primary border-solid sm:text-[12px]">Read more</button>
                     </div>
                 </div>
             </div>
             <div className="services">
                 <div className="mx-auto px-3 container-nmc">
-                    <div className="mx-[-12px] py-10 servicesCarousel">
+                    <div className="mx-[-12px] py-10 sm:py-6 servicesCarousel">
                         <Slider {...servicesCarousel}>
                             <div className="px-3 flex flex-col items-center">
                                 <i className="text-[64px] text-primary bdx-truck-free"></i>
-                                <p className="font-bold text-[20px] leading-[28px] mb-2 text-center">Free delivery</p>
-                                <p className="text-[16px] leading-[24px] text-[#595959] text-center">For all orders over $100</p>
+                                <p className="font-bold text-[20px] leading-[28px] mb-2 sm:mb-0 text-center sm:text-[16px] sm:font-semibold">Free delivery</p>
+                                <p className="text-[16px] leading-[24px] text-[#595959] text-center sm:text-[14px]">For all orders over $100</p>
                             </div>
                             <div className="px-3 flex flex-col items-center">
                                 <i className="text-[64px] text-primary bdx-truck-transporation"></i>
-                                <p className="font-bold text-[20px] leading-[28px] mb-2 text-center">Fast delivery</p>
-                                <p className="text-[16px] leading-[24px] text-[#595959] text-center">2 hours delivery is available</p>
+                                <p className="font-bold text-[20px] leading-[28px] mb-2 sm:mb-0 text-center sm:text-[16px] sm:font-semibold">Fast delivery</p>
+                                <p className="text-[16px] leading-[24px] text-[#595959] text-center sm:text-[14px]">2 hours delivery is available</p>
                             </div>
                             <div className="px-3 flex flex-col items-center">
                                 <i className="text-[64px] text-primary bdx-sale"></i>
-                                <p className="font-bold text-[20px] leading-[28px] mb-2 text-center">Fast delivery</p>
-                                <p className="text-[16px] leading-[24px] text-[#595959] text-center">2 hours delivery is available</p>
+                                <p className="font-bold text-[20px] leading-[28px] mb-2 sm:mb-0 text-center sm:text-[16px] sm:font-semibold">Fast delivery</p>
+                                <p className="text-[16px] leading-[24px] text-[#595959] text-center sm:text-[14px]">2 hours delivery is available</p>
                             </div>
                             <div className="px-3 flex flex-col items-center">
                                 <i className="text-[64px] text-primary bdx-price-sale"></i>
-                                <p className="font-bold text-[20px] leading-[28px] mb-2 text-center">Fast delivery</p>
-                                <p className="text-[16px] leading-[24px] text-[#595959] text-center">2 hours delivery is available</p>
+                                <p className="font-bold text-[20px] leading-[28px] mb-2 sm:mb-0 text-center sm:text-[16px] sm:font-semibold">Fast delivery</p>
+                                <p className="text-[16px] leading-[24px] text-[#595959] text-center sm:text-[14px]">2 hours delivery is available</p>
                             </div>
                         </Slider>
                     </div>
@@ -232,7 +232,7 @@ const HomePage: React.FunctionComponent = () => {
                         </div>
                     </div>
                     <div className="w-2/3 sm:w-full flex items-center">
-                        <p className="pl-6 sm:p-0 text-white text-[16px] leading-[24px] sm:text-center sm:border-0 border-l-2 border-[#FFCA41] border-solid">
+                        <p className="pl-6 sm:p-0 text-white text-[16px] sm:text-[14px] leading-[24px] sm:text-center sm:border-0 border-l-2 border-[#FFCA41] border-solid">
                             At NMC, we're more than just a bookstore; we're a community of book enthusiasts, scholars, and lifelong learners. Our mission is to provide you with a diverse selection of books that cater to your interests, whether you're a seasoned bibliophile or a student embarking on an academic journey.
                         </p>
                     </div>
