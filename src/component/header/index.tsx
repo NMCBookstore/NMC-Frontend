@@ -23,7 +23,7 @@ const Header: React.FunctionComponent = () => {
                         <i className="bdx-search-2 text-[20px] text-[#fff] flex items-center"
                             onClick={()=>setshowSearch(!showSearch)}    
                         ></i>
-                        <div className={`${showSearch ? "visible" : "invisible"} inset-0 w-full z-10`} aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                        <div className={`modalItem ${showSearch ? "visible" : "invisible"} inset-0 w-full z-10`} aria-labelledby="modal-title" role="dialog" aria-modal="true">
                             <div className="fixed inset-0 bg-backdrop bg-opacity-75 transition-opacity"
                                 onClick={()=>setshowSearch(!showSearch)}
                             ></div>

@@ -17,7 +17,7 @@
 }
 body {
     font-family: 'Inter';
-    &:has(.bg-backdrop) {
+    &:has(.modalItem.visible) {
         overflow: hidden;
     }
 }
