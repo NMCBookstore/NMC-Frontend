@@ -3,11 +3,14 @@ import { Link } from 'react-router-dom';
 import { Dialog, Transition } from '@headlessui/react'
 
 import NoteNotify from "../NoteNotify";
+import { useDispatch } from 'react-redux';
+import { login } from '../../slice/ShowLoginSlide';
 import { logo } from "../../assets/img";
 
 const Header: React.FunctionComponent = () => {
     const [showSearch, setshowSearch] = useState<boolean>(false);
-    const [open, setOpen] = useState(true)
+
+    const dispatch = useDispatch();
 
     const cancelButtonRef = useRef(null)
     const numberCount1: number = 10;
@@ -99,7 +102,9 @@ const Header: React.FunctionComponent = () => {
                             <ul>
                                 <li><Link to="/profile"><span>Profile</span></Link></li>
                                 <li><Link to="/profile"><span>Edit Profile</span></Link></li>
-                                <li><button><span>Login</span></button></li>
+                                <li
+                                    onClick={() => dispatch(login())}
+                                ><button><span>Login</span></button></li>
                             </ul>
                         </div>
                     </div>
