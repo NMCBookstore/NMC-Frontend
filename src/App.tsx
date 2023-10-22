@@ -1,5 +1,4 @@
 import React from 'react';
-import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -8,19 +7,10 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import HomePage from "./page/HomePage/home"
 import NotFound from "./page/error"
-import Header from './component/Header';
-import Footer from './component/Footer';
-import { setupListeners } from '@reduxjs/toolkit/query';
+import Header from './component/header';
+import Footer from './component/footer';
+import store from './app/store';
 
-const store = configureStore({
-    reducer: {
-
-    },
-    middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(),
-});
-
-setupListeners(store.dispatch);
 function App() {
     return (
         <Provider store={store}>
