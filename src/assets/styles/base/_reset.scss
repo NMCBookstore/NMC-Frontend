@@ -17,9 +17,6 @@
 }
 body {
     font-family: 'Inter';
-    &:has(.modalItem.visible) {
-        overflow: hidden;
-    }
 }
 .webkitbox-1{
     @include webkit-box(1)
