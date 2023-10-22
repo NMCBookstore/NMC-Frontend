@@ -36,7 +36,7 @@ const Header: React.FunctionComponent = () => {
                                 <i className="bdx-cart-fill text-[20px] text-[#fff] flex items-center"></i>
                                 <NoteNotify numberCount={numberCount3} />
                             </div>
-                            <p className="text-[#fff] text-[14px] uppercase sm:block hidden">Cart</p>
+                            <p className="text-[#fff] text-[14px] uppercase block sm:hidden">Cart</p>
                         </Link>
                     </div>
                     <div className="flex relative subMenu-btn">
