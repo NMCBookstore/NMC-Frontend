@@ -1,11 +1,10 @@
 import { Login } from "../../types/Login";
-import { User } from "../../types/User";
 import { book } from "../Base/baseAPI";
 
 
 const auth = book.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<Login, Partial<Login>>({
+    login: builder.mutation<Login, Pick<Login,'username' | 'password' >>({
       query: (credentials) => ({
         method: "POST",
         url: `login`,

@@ -1,5 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { useLoginMutation } from "../../services/authentication/authAPI";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { loginStart, setCredentials } from "../../features/auth/authSlice";
 
 const LogModal = () => {
 
@@ -64,16 +67,22 @@ const LoginForm = ({ onClose }: { onClose: () => void }) => {
     password: "",
   });
 
+  const dispatch = useDispatch();
+  // const navigate = useNavigate();
+
   const handleLogin = async (e: any) => {
     e.preventDefault();
-    console.log(values)
+    dispatch(loginStart());
+    
     try {
-      const data = await login(values);
+      const  data  = await login(values).unwrap();
+      const { user, access_token } = data;
+      dispatch(setCredentials({ user, access_token }));
       console.log(data)
-
     }
     catch (err) {
       console.log(err)
+      // dispatch(loginFailed());
     }
   }
 

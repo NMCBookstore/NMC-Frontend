@@ -7,13 +7,18 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import HomePage from "./page/HomePage/home"
 import NotFound from "./page/error"
-import Header from './component/Header';
-import Footer from './component/Footer';
-import store from './app/store';
+import Header from './component/header';
+import Footer from './component/footer';
+import { store, persistor } from './app/store';
+
+import { PersistGate } from 'redux-persist/lib/integration/react';
+
 
 function App() {
     return (
         <Provider store={store}>
+            <PersistGate loading = {null} persistor={persistor}>
+
             <Router>
                 <Header />
                 <Routes>
@@ -21,7 +26,10 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
                 <Footer />
+
             </Router>
+            </PersistGate>
+
         </Provider>
     );
 }
