@@ -1,12 +1,10 @@
-import { User } from "./User"
+import { User } from "./User";
 
-export interface Login{
-    // session_id: string
-    // access_token: string
-    // access_token_expires_at: string
-    // refresh_token: string
-    // refresh_token_expires_at: string
-    // user: User
-    username: string
-    password: string
+export interface Login {
+  isFetching: boolean;
+  error: boolean;
+  access_token: string | null;
+  user: User | null;
+  username: string;
+  password: string;
 }

@@ -1,45 +1,31 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Login } from "../../types/Login";
+
+const initialState: Partial<Login> = {
+  user: null,
+  isFetching: false,
+  error: false,
+  access_token: null,
+};
 
 const authSlice = createSlice({
   name: "auth",
-  initialState: {
-    session_id: null,
-    user: null,
-    access_token: null,
-    refresh_token: null,
-    access_token_expires_at: null,
-    refresh_token_expires_at: null,
-    isFetching: false,
-    error: false,
-  },
+  initialState,
   reducers: {
     loginStart: (state) => {
       state.isFetching = true;
     },
-    setCredentials: (state, action) => {
-      state.isFetching = false;
+    setCredentials: (state, action: PayloadAction<Partial<Login>>) => {
       state.user = action.payload.user;
-      state.error = false;
-      if (
-        action.payload?.session_id &&
-        action.payload?.access_token &&
-        action.payload?.refresh_token &&
-        action.payload?.access_token_expires_at &&
-        action.payload?.refresh_token_expires_at
-      ) {
-        state.session_id = action.payload.session_id;
-        state.access_token = action.payload.access_token;
-        state.refresh_token = action.payload.refresh_token;
-        state.access_token_expires_at = action.payload.access_token_expires_at;
-        state.refresh_token_expires_at =
-          action.payload.refresh_token_expires_at;
-      }
+      state.access_token = action.payload.access_token;
     },
-    loginFailed: (state) => {
-      state.isFetching = false;
+
+    logout: () => {
+      window.localStorage.clear();
+      alert("You're logged out")
     },
   },
 });
-export const { setCredentials, loginFailed, loginStart } = authSlice.actions;
+export const { setCredentials, loginStart, logout } = authSlice.actions;
 
 export default authSlice.reducer;
