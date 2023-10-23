@@ -21,9 +21,11 @@ const persistConfig = {
   whitelist: ["auth"],
 };
 
+import showLoginReducer from '../slice/ShowLoginSlide';
+
 const rootReducer = combineReducers({
   [book.reducerPath]: book.reducer,
-  auth: authSlice
+  showLogin:showLoginReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
