@@ -6,9 +6,12 @@ import NoteNotify from "../NoteNotify";
 import { useDispatch } from 'react-redux';
 import { login } from '../../slice/ShowLoginSlide';
 import { logo } from "../../assets/img";
+import CartSidebar from "./CartSidebar"
 
 const Header: React.FunctionComponent = () => {
     const [showSearch, setshowSearch] = useState<boolean>(false);
+    const [showCart, setshowCart] = useState<boolean>(false);
+
 
     const dispatch = useDispatch();
 
@@ -82,13 +85,16 @@ const Header: React.FunctionComponent = () => {
                         </Link>
                     </div>
                     <div className="flex">
-                        <Link to="/cart" className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header">
+                        <div className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
+                            onClick={()=>setshowCart(!showCart)}
+                        >
                             <div className="relative">
                                 <i className="bdx-cart-fill text-[20px] text-[#fff] flex items-center"></i>
                                 <NoteNotify numberCount={numberCount3} />
                             </div>
-                            <p className="text-[#fff] text-[14px] uppercase block sm:hidden">Cart</p>
-                        </Link>
+                            <p className="text-[#fff] text-[14px] uppercase block sm:hidden"
+                            >Cart</p>
+                        </div>
                     </div>
                     <div className="flex relative subMenu-btn">
                         <Link to="/account" className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header">
@@ -111,7 +117,12 @@ const Header: React.FunctionComponent = () => {
 
                 </div>
             </div>
+            <CartSidebar
+                showCart={showCart}
+                setshowCart={setshowCart}
+            ></CartSidebar>
         </header>
+
     );
 };
 

@@ -1,10 +1,10 @@
 export interface productDetail {
   name: string;
   des: string;
-  price: string;
+  price: number;
+  salePrice:number;
   rate: number;
-  img: string,
-  discount:number
+  img: string
 }
 export interface categoryItem {
   name: string;

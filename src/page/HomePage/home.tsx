@@ -13,27 +13,27 @@ const HomePage: React.FunctionComponent = () => {
     const banner = [bannerImg, logospkt, logoclcspkt, logo];
     const midlebanner = [midleBanner, midleBanner, midleBanner];
     const cate: categoryItem[] = [{ name: "Shop all", img: cate1, color: 1 }, { name: "Fiction", img: cate2, color: 2 }, { name: "Non-Fiction", img: cate3, color: 2 }, { name: "Children's", img: cate4, color: 1 }, { name: "Stationery & Gifts", img: cate5, color: 1 }, { name: "Gift cards & Vouchers", img: cate6, color: 2 }];
-    const productList: productDetail[] = [{ discount: 10, name: "Build the life you want", des: "Arthur c. brooks oprah winfrey", price: "300", rate: 3, img: productItem },
-    { discount: 0, name: "Build the life you want 2", des: "Arthur c. brooks oprah winfrey", price: "300.00", rate: 4, img: productItem },
-    { discount: 0, name: "Build the life you want 3", des: "Arthur c. brooks oprah winfrey", price: "200.10", rate: 4, img: productItem },
-    { discount: 10, name: "Build the life you want 4", des: "Arthur c. brooks oprah winfrey", price: "100", rate: 5, img: productItem },
-    { discount: 10, name: "Build the life you want 5", des: "Arthur c. brooks oprah winfrey", price: "50.50", rate: 2, img: productItem },
-    { discount: 10, name: "Build the life you want 6", des: "Arthur c. brooks oprah winfrey", price: "300", rate: 4, img: productItem }];
+    const productList: productDetail[] = [{ name: "Build the life you want", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:0, rate: 3, img: productItem },
+    { name: "Build the life you want 2", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rate: 4, img: productItem },
+    { name: "Build the life you want 3", des: "Arthur c. brooks oprah winfrey", price: 200.10,salePrice:150, rate: 4, img: productItem },
+    { name: "Build the life you want 4", des: "Arthur c. brooks oprah winfrey", price: 100,salePrice:0, rate: 5, img: productItem },
+    { name: "Build the life you want 5", des: "Arthur c. brooks oprah winfrey", price: 50.50,salePrice:40.5, rate: 2, img: productItem },
+    { name: "Build the life you want 6", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rate: 4, img: productItem }];
 
 
     //section productList
-    const productList1: productDetail[] = [{ discount: 10, name: "Build the life you want", des: "Arthur c. brooks oprah winfrey", price: "300", rate: 3, img: productItem },
-    { discount: 10, name: "Build the life you want 12", des: "Arthur c. brooks oprah winfrey", price: "300.00", rate: 4, img: productItem },
-    { discount: 0, name: "Build the life you want 13", des: "Arthur c. brooks oprah winfrey", price: "200.10", rate: 4, img: productItem },
-    { discount: 0, name: "Build the life you want 14", des: "Arthur c. brooks oprah winfrey", price: "100", rate: 5, img: productItem },
-    { discount: 0, name: "Build the life you want 15", des: "Arthur c. brooks oprah winfrey", price: "50.50", rate: 2, img: productItem },
-    { discount: 0, name: "Build the life you want 16", des: "Arthur c. brooks oprah winfrey", price: "300", rate: 4, img: productItem },
-    { discount: 10, name: "Build the life you want 12", des: "Arthur c. brooks oprah winfrey", price: "300.00", rate: 4, img: productItem },
-    { discount: 10, name: "Build the life you want 13", des: "Arthur c. brooks oprah winfrey", price: "200.10", rate: 4, img: productItem },
-    { discount: 0, name: "Build the life you want 14", des: "Arthur c. brooks oprah winfrey", price: "100", rate: 5, img: productItem },
-    { discount: 0, name: "Build the life you want 16", des: "Arthur c. brooks oprah winfrey", price: "300", rate: 4, img: productItem },
-    { discount: 10, name: "Build the life you want 15", des: "Arthur c. brooks oprah winfrey", price: "50.50", rate: 2, img: productItem },
-    { discount: 10, name: "Build the life you want 16Build the life you want 16", des: "Arthur c. brooks oprah winfrey", price: "300", rate: 4, img: productItem }];
+    const productList1: productDetail[] = [{ name: "Build the life you want", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:270, rate: 3, img: productItem },
+    { name: "Build the life you want 12", des: "Arthur c. brooks oprah winfrey", price: 300.00,salePrice:0, rate: 4, img: productItem },
+    { name: "Build the life you want 13", des: "Arthur c. brooks oprah winfrey", price: 200.10,salePrice:200, rate: 4, img: productItem },
+    { name: "Build the life you want 14", des: "Arthur c. brooks oprah winfrey", price: 100,salePrice:90, rate: 5, img: productItem },
+    { name: "Build the life you want 15", des: "Arthur c. brooks oprah winfrey", price: 50.50,salePrice:40, rate: 2, img: productItem },
+    { name: "Build the life you want 16", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:250, rate: 4, img: productItem },
+    { name: "Build the life you want 12", des: "Arthur c. brooks oprah winfrey", price: 300.00,salePrice:0, rate: 4, img: productItem },
+    { name: "Build the life you want 13", des: "Arthur c. brooks oprah winfrey", price: 200.10,salePrice:110, rate: 4, img: productItem },
+    { name: "Build the life you want 14", des: "Arthur c. brooks oprah winfrey", price: 100,salePrice:90, rate: 5, img: productItem },
+    { name: "Build the life you want 16", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rate: 4, img: productItem },
+    { name: "Build the life you want 15", des: "Arthur c. brooks oprah winfrey", price: 50.50,salePrice:50, rate: 2, img: productItem },
+    { name: "Build the life you want 16Build the life you want 16", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rate: 4, img: productItem }];
     //article
     const articleList: articleItem[] = [{ name: "Kids share their thoughts about banned books with NPR", img: articleImg, des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids." },
     { name: "The 10 Most Challenged Books of 2022-2023", img: articleImg, des: "Parents and politicians are trying to pull books off shelves at a record-setting pace." },

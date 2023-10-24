@@ -26,13 +26,25 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (ProductItemitem)
                         ))}
                     </div>
                     <div className="product-item__control">
-                        <p>${ProductItemitem.itemDetail.price}</p>
-                        <div>
+                        {
+                            ProductItemitem.itemDetail.salePrice > 0 &&
+                            <div>
+                                <p className="product-item__control__old-price">${ProductItemitem.itemDetail.salePrice}</p>
+                                <p className="product-item__control__price">${ProductItemitem.itemDetail.price}</p>
+                            </div>
+                        }
+                        {
+                            ProductItemitem.itemDetail.salePrice === 0 &&
+                            <div>
+                                <p className="product-item__control__price">${ProductItemitem.itemDetail.price}</p>
+                            </div>
+                        }
+                        <div className="product-item__control__item">
                             <i className="bdx-cart"></i>
                             <i className="bdx-heart-1"></i>
                         </div>
                     </div>
-                    {ProductItemitem.itemDetail.discount > 0 && (<p className="product-item__discount"><span>-{ProductItemitem.itemDetail.discount}%</span></p>)}
+                    {ProductItemitem.itemDetail.salePrice > 0 && (<p className="product-item__discount"><span>-{(((ProductItemitem.itemDetail.price - ProductItemitem.itemDetail.salePrice)/ProductItemitem.itemDetail.price)*100).toFixed(0)}%</span></p>)}
                 </div>
             </div>
         </div>
