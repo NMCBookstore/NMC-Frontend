@@ -7,8 +7,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import HomePage from "./page/HomePage/home"
 import NotFound from "./page/error"
-import Header from './component/header';
-import Footer from './component/footer';
+import Header from './component/Header';
+import Footer from './component/Footer';
 import { store, persistor } from './app/store';
 
 import { PersistGate } from 'redux-persist/lib/integration/react';
