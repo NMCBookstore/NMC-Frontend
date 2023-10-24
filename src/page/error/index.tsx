@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const NotFound: React.FunctionComponent = () => {
     return (
-        <div className="bg-[#FBF4EA] flex flex-col items-center py-[104px] px-3">
+        <div className="bg-[#FBF4EA] flex flex-col items-center py-[104px] px-3 mt-[76px]">
             <div>
                 <img className="mb-4" src={page404} alt="404 page" />
                 <h1 className="text-primary text-center mb-6">Page Not Found</h1>

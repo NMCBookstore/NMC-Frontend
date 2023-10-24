@@ -11,16 +11,15 @@ import CartSidebar from "./CartSidebar"
 const Header: React.FunctionComponent = () => {
     const [showSearch, setshowSearch] = useState<boolean>(false);
     const [showCart, setshowCart] = useState<boolean>(false);
-
-
     const dispatch = useDispatch();
 
     const cancelButtonRef = useRef(null)
     const numberCount1: number = 10;
     const numberCount3: number = 6;
     const numberCount2: number = 2;
+    
     return (
-        <header className="bg-primary header">
+        <header className="bg-primary header fixed w-full top-0 z-[1000]">
             <div className="container-nmc mx-auto py-[12px] flex flex-row">
                 <Link to="/" className="w-[80px] flex justify-center px-[12px]">
                     <img className="" src={logo} alt="logo" />

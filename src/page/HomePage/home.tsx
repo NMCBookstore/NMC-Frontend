@@ -42,7 +42,7 @@ const HomePage: React.FunctionComponent = () => {
     { name: "Kids share their thoughts about banned books with NPR", img: articleImg, des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids." }];
     
     return (
-        <div className='bg-[#FBF4EA]'>
+        <div className='bg-[#FBF4EA] mt-[76px]'>
             <div className="marquee-container">
                 <div className="flex">
                     <div className="marquee px-3 mx-auto">
