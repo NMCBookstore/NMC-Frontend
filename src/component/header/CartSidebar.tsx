@@ -15,7 +15,7 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({ showCart, setshowCar
     };
     return (
         <Transition.Root show={showCart} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={() => handleClick()}>
+            <Dialog as="div" className="relative z-[1010]" onClose={() => handleClick()}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-in-out duration-500"
@@ -100,7 +100,9 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({ showCart, setshowCar
                                                 >
                                                     Back To Shopping
                                                 </button>
-                                                <Link to="/cart" className="btn sidebar-cart__footer--button--order">
+                                                <Link to="/cart" className="btn sidebar-cart__footer--button--order"
+                                                    onClick={() => handleClick()}
+                                                >
                                                     <span><i className="bdx-cart-fill"></i></span>
                                                     <span className="text-uppercase">Show Now</span>
                                                 </Link>
