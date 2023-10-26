@@ -42,7 +42,7 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({ showCart, setshowCar
                             >
                                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                                     <div className="flex h-full flex-col overflow-y-scroll bg-[#FBF4EA] shadow-xl">
-                                        <div className="px-4 sm:px-6 py-5 border-b border-[#BFBFBF] border-solid">
+                                        <div className="px-4 sm:px-6 h-[76px] flex items-center border-b border-[#BFBFBF] border-solid">
                                             <Dialog.Title className="text-primary flex items-center">
                                                 Your Cart <i className="ml-3 bdx-cart-fill inline-flex items-center"></i>
                                             </Dialog.Title>

@@ -6,8 +6,12 @@ import './App.css';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import HomePage from "./page/HomePage/home"
-import NotFound from "./page/error"
+import NotFound from "./page/Error"
 import Header from './component/Header';
+import Cart from './page/Cart';
+import OrderInfo from "./page/Order/info"
+import OrderPayment from './page/Order/payment';
+import OrderReturn from './page/Order/return';
 import Footer from './component/Footer';
 import { store, persistor } from './app/store';
 
@@ -23,6 +27,10 @@ function App() {
                 <Header />
                 <Routes>
                     <Route path="/" element={<HomePage/>} />
+                    <Route path="/cart" element={<Cart />} />
+                    <Route path="/order/info" element={<OrderInfo/>} />
+                    <Route path="/order/payment" element={<OrderPayment />} />
+                    <Route path="/order/return" element={<OrderReturn />} />
                     <Route path="*" element={<NotFound />} />
                 </Routes>
                 <Footer />

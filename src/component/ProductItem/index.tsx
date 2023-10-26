@@ -21,7 +21,7 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (ProductItemitem)
                         {[...Array(5)].map((_, index) => (
                             <i
                                 key={index}
-                                className={index < ProductItemitem.itemDetail.rate ? "bdx-heart" : "bdx-heart-1"}
+                                className={index < ProductItemitem.itemDetail.rate ? "bdx-star-fill" : "bdx-star-1"}
                             ></i>
                         ))}
                     </div>

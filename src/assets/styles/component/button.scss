@@ -1,0 +1,96 @@
+.qty-input {
+    color: #212121;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    justify-content: center;
+
+    .product-qty,
+    .qty-count {
+        background: transparent;
+        color: inherit;
+        font-size: 16px;
+        font-weight: 600;
+        border-top: 1px solid #D9D9D9;
+        border-bottom: 1px solid #D9D9D9;
+        border-left: none;
+        border-right: none;
+        display: inline-block;
+        min-width: 0;
+        
+
+        &:focus {
+            outline: none;
+        }
+    }
+
+    .product-qty {
+        width: 67px;
+        height: 32px;
+        text-align: center;
+        appearance: textfield;		
+        
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            appearance: none;
+            margin: 0;
+        }
+    }
+
+    .qty-count {
+        padding: 0;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        border: 1px solid #D9D9D9;
+        font-size: 24px;
+        text-indent: -100px;
+        overflow: hidden;
+        position: relative;
+        transition: all 0.5s;
+
+        &:before, 
+        &:after {
+            content: "";
+            height: 2px;
+            width: 10px;
+            position: absolute;
+            display: block;
+            background: #262626;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            transition: background 0.5s;
+        }
+        &--add {
+            &:after {
+                transform: rotate(90deg);
+            }
+        }
+        
+        &:hover {
+            color: #0F3BB0;
+            background: #0F3BB0;
+            border-color: #0F3BB0;
+
+            &:before, 
+            &:after {
+                background: white;
+            }
+        }
+
+        &:disabled {
+            color: #ccc;
+            background: #d2f3e3;
+            cursor: not-allowed;
+            border-color: transparent;
+            
+            &:before,
+            &:after {
+                background: #ccc;
+            }
+        }
+    }
+}
