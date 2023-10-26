@@ -1,4 +1,4 @@
-import { Login } from "../../types/Login";
+import { Login } from "../../interface/Login";
 import { book } from "../Base/baseAPI";
 
 

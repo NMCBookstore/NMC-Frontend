@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from 'react-router-dom';
 
-// import LogModal from "./LogModal";
-import LogModal from "./BdxLogModal";
+import LogModal from "./LogModal";
 
 const Footer: React.FunctionComponent = () => {
     return (

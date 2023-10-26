@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 
 import NoteNotify from "../NoteNotify";
 import { useDispatch } from 'react-redux';
-import { login } from '../../slice/ShowLoginSlide';
+import { login } from "../../features/auth/authSlice";
 import { logo } from "../../assets/img";
 import CartSidebar from "./CartSidebar"
 

@@ -1,5 +1,5 @@
 import { book } from "../Base/baseAPI";
-import { Genres } from "../../types/Genres";
+import { Genres } from "../../interface/Genres";
 
 const genres = book.injectEndpoints({
   endpoints: (builder) => ({
