@@ -1,0 +1,40 @@
+.breadcrumb{
+    padding: 12px 0;
+    margin: 0px;
+
+    ol {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+    }
+
+    
+    li,
+    a {
+        color: #707070;
+    }
+    li{
+        display: inline;
+        i {
+            font-size: 24px;
+            vertical-align: middle;
+        }
+        .bdx-caret {
+            display: inline-flex;
+            margin: 0 4px;
+            color: #707070;
+            font-size: 14px;
+            transform: rotate(180deg);
+        }
+        &.active {
+            font-weight: 600;
+            color: #0F3BB0;
+        }
+    }
+
+    li:last-child{
+        .lp-caret {
+            display: none !important;
+        }
+    }
+}
