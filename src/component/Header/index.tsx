@@ -4,7 +4,7 @@ import { Dialog, Transition } from '@headlessui/react'
 
 import NoteNotify from "../NoteNotify";
 import { useDispatch } from 'react-redux';
-import { login } from '../../slice/ShowLoginSlide';
+import { login } from "../../features/auth/authSlice";
 import { logo } from "../../assets/img";
 import CartSidebar from "./CartSidebar"
 
@@ -21,7 +21,7 @@ const Header: React.FunctionComponent = () => {
     return (
         <header className="bg-primary header fixed w-full top-0 z-[1000]">
             <div className="container-nmc mx-auto py-[12px] flex flex-row">
-                <Link to="/" className="w-[80px] flex justify-center px-[12px]">
+                <Link to="/" className="w-[80px] flex justify-center px-[12px] shrink-0">
                     <img className="" src={logo} alt="logo" />
                 </Link>
                 <div className="xl:w-3/4 w-2/3 flex md:hidden items-center px-[12px] relative">
@@ -85,7 +85,14 @@ const Header: React.FunctionComponent = () => {
                     </div>
                     <div className="flex">
                         <div className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
-                            onClick={()=>setshowCart(!showCart)}
+                            onClick={()=>{
+                                const pathAfterDomain = window.location.pathname;
+                                const pathArray = pathAfterDomain.split('/').filter(Boolean);
+                                const page = pathArray[0];
+                                if(page !== "cart" && page !== "order"){
+                                    setshowCart(!showCart)
+                                }
+                            }}
                         >
                             <div className="relative">
                                 <i className="bdx-cart-fill text-[20px] text-[#fff] flex items-center"></i>
