@@ -10,7 +10,7 @@ const CartIndex = () => {
         <div className="mt-[76px] bg-[#FBF4EA]">
             <div className="container-nmc mx-auto pb-8">
                 <Breadcrumb></Breadcrumb>
-                <h1 className='text-primary px-3 flex items-center justify-center mb-3 py-4'><i className="bdx-cart-fill inline-flex items-center"></i> <span>My Cart</span></h1>
+                <h1 className='text-orange-orange-6 px-3 flex items-center justify-center mb-3 py-4'><i className="bdx-cart-fill inline-flex items-center"></i> <span>My Cart</span></h1>
                 <div className="cart-info__block">
                     <div className="cart-info__table">
                         <table className="table">
@@ -165,7 +165,7 @@ const CartIndex = () => {
                             </tbody>
                         </table>
                     </div>
-                    <div className="col-12 w-[25%] ms-auto">
+                    <div className="md:w-full w-[25%] ms-auto">
                         <div className="cart-info__bottom">
                             <p className="cart-info__bottom__noting">
                                 *Shipping fee included
@@ -178,10 +178,10 @@ const CartIndex = () => {
                                 <a href="javascript:history.back()">
                                     Return
                                 </a>
-                                <a href="<?= PUBLIC_ASSETS_URL ?>cart/order.info">
+                                <Link to="/order/info">
                                     Accept
                                     <i className="bdx-cart"></i>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </div>

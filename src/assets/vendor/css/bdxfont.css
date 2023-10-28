@@ -4,12 +4,12 @@
   font-family: "datn";
   src:url("../font/datn.eot");
   src:url("../font/datn.eot?#iefix") format("embedded-opentype"),
-    url("../font/datn.woff") format("woff"),
-    url("../font/datn.ttf") format("truetype"),
-    url("../font/datn.svg#datn") format("svg");
+  url("../font/datn.woff") format("woff"),
+  url("../font/datn.ttf") format("truetype"),
+  url("../font/datn.svg#datn") format("svg");
   font-weight: normal;
   font-style: normal;
-
+  
 }
 
 [data-icon]:before {
@@ -38,87 +38,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.bdx-box:before {
-  content: "\61";
-}
-.bdx-calendar:before {
-  content: "\62";
-}
-.bdx-calendar-tick:before {
-  content: "\63";
-}
-.bdx-caret:before {
-  content: "\64";
-}
-.bdx-category:before {
-  content: "\65";
-}
-.bdx-category-outline:before {
-  content: "\66";
-}
-.bdx-countdown:before {
-  content: "\67";
-}
-.bdx-flash:before {
-  content: "\68";
-}
-.bdx-home:before {
-  content: "\69";
-}
-.bdx-home-outline:before {
-  content: "\6a";
-}
-.bdx-info:before {
-  content: "\6b";
-}
-.bdx-location:before {
-  content: "\6c";
-}
-.bdx-menu-board:before {
-  content: "\6d";
-}
-.bdx-notification-status:before {
-  content: "\6e";
-}
-.bdx-phone:before {
-  content: "\6f";
-}
-.bdx-profile:before {
-  content: "\70";
-}
-.bdx-profile-outline:before {
-  content: "\71";
-}
-.bdx-profile-verified:before {
-  content: "\72";
-}
-.bdx-qr-wallet:before {
-  content: "\73";
-}
-.bdx-shield:before {
-  content: "\74";
-}
-.bdx-sms:before {
-  content: "\75";
-}
-.bdx-success:before {
-  content: "\76";
-}
-.bdx-touch:before {
-  content: "\77";
-}
-.bdx-verified:before {
-  content: "\78";
-}
-.bdx-zalo:before {
-  content: "\79";
-}
-.bdx-zalo-outline:before {
-  content: "\7a";
-}
-.bdx-zalo-square:before {
-  content: "\41";
-}
 .bdx-arrow:before {
   content: "\61";
 }
@@ -140,60 +59,66 @@
 .bdx-close:before {
   content: "\67";
 }
-.bdx-facebook:before {
+.bdx-email:before {
   content: "\68";
 }
-.bdx-heart:before {
+.bdx-facebook:before {
   content: "\69";
 }
-.bdx-heart-1:before {
+.bdx-heart:before {
   content: "\6a";
 }
-.bdx-instagram:before {
+.bdx-heart-1:before {
   content: "\6b";
 }
-.bdx-like:before {
+.bdx-instagram:before {
   content: "\6c";
 }
-.bdx-location:before {
+.bdx-like:before {
   content: "\6d";
 }
-.bdx-menu:before {
+.bdx-location:before {
   content: "\6e";
 }
-.bdx-phone:before {
+.bdx-menu:before {
   content: "\6f";
 }
-.bdx-pinterest:before {
+.bdx-note:before {
   content: "\70";
 }
-.bdx-price-sale:before {
+.bdx-person:before {
   content: "\71";
 }
-.bdx-sale:before {
+.bdx-phone:before {
   content: "\72";
 }
-.bdx-search:before {
+.bdx-price-sale:before {
   content: "\73";
 }
-.bdx-search-2:before {
+.bdx-sale:before {
   content: "\74";
 }
-.bdx-star:before {
+.bdx-search:before {
   content: "\75";
 }
-.bdx-truck-free:before {
+.bdx-search-2:before {
   content: "\76";
 }
-.bdx-truck-transporation:before {
+.bdx-star:before {
   content: "\77";
 }
-.bdx-twitter:before {
+.bdx-truck-free:before {
   content: "\78";
 }
-.bdx-user:before {
+.bdx-truck-transporation:before {
   content: "\79";
 }
-.bdx-youtube:before {
+.bdx-twitter:before {
   content: "\7a";
+}
+.bdx-user:before {
+  content: "\41";
+}
+.bdx-youtube:before {
+  content: "\42";
 }
