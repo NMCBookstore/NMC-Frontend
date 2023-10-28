@@ -8,54 +8,53 @@ const CartIndex = () => {
 
     return (
         <div className="mt-[76px] bg-[#FBF4EA]">
-            <div className="container-nmc mx-auto">
+            <div className="container-nmc mx-auto pb-8">
                 <Breadcrumb></Breadcrumb>
-                <h1 className='text-primary px-3 flex items-center py-4'><i className="bdx-cart-fill inline-flex items-center"></i> <span>My Cart</span></h1>
+                <h1 className='text-primary px-3 flex items-center justify-center mb-3 py-4'><i className="bdx-cart-fill inline-flex items-center"></i> <span>My Cart</span></h1>
                 <div className="cart-info__block">
                     <div className="cart-info__table">
                         <table className="table">
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th scope="col">Sản phẩm</th>
-                                    <th scope="col">Đơn giá</th>
-                                    <th scope="col">Số lượng</th>
-                                    <th scope="col">Tổng cộng</th>
+                                    <th scope="col">Product</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Order Value</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td className="btn-delete">
-                                        <i className="lp-remove"></i>
+                                        <i className="bdx-close"></i>
                                     </td>
-                                    <td data-th="Sản Phẩm">
-                                        <div className="product-img flex-shrink-0">
-                                            <a href="<?= PUBLIC_ASSETS_URL ?>product/detail" target="_blank">
-                                                <img src={productItem}
-                                                    alt="img-banner"></img>
+                                    <td data-th="Product">
+                                        <div className="product-img shrink-0">
+                                            <a href="" target="_blank">
+                                                <img src={productItem} alt="img-banner"></img>
                                             </a>
                                         </div>
                                         <div>
                                             <p>
-                                                <a  href="<?= PUBLIC_ASSETS_URL ?>product/detail" target="_blank">
-                                                    ĐẦM THIẾT KẾ | SKU324352
+                                                <a href="" target="_blank">
+                                                    Build the life you want
                                                 </a>
                                             </p>
-                                            <p>Size S, Màu đen</p>
+                                            <p>Arthur c. brooks oprah winfrey</p>
                                         </div>
                                     </td>
-                                    <td data-th="Đơn giá">
+                                    <td data-th="Price">
                                         <div className="table-price">
                                             <p className="table-price__new">
-                                                1.800.000 ₫
+                                                270$
                                             </p >
                                             <p className="table-price__old">
-                                                2.000.000 ₫
+                                                300$
                                             </p>
                                             <p className="table-price__discount">-10%</p>
                                         </div>
                                     </td>
-                                    <td data-th="Số Lượng">
+                                    <td data-th="Quantity">
                                         <div className="qty-input">
                                             <button className="qty-count qty-count--minus" data-action="minus"
                                                 type="button">-</button>
@@ -65,44 +64,43 @@ const CartIndex = () => {
                                                 type="button">+</button>
                                         </div>
                                     </td>
-                                    <td data-th="Thành Tiền">
+                                    <td data-th="Order Value">
                                         <p className="table-sumprice">
-                                            1,365,000 ₫
+                                            270$
                                         </p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td className="btn-delete">
-                                        <i className="lp-remove"></i>
+                                        <i className="bdx-close"></i>
                                     </td>
-                                    <td data-th="Sản Phẩm">
-                                        <div className="product-img flex-shrink-0">
-                                            <a href="<?= PUBLIC_ASSETS_URL ?>product/detail" target="_blank">
-                                                <img src={productItem}
-                                                    alt="img-banner"></img>
+                                    <td data-th="Product">
+                                        <div className="product-img shrink-0">
+                                            <a href="" target="_blank">
+                                                <img src={productItem} alt="img-banner"></img>
                                             </a>
                                         </div>
                                         <div>
                                             <p>
-                                                <a href="<?= PUBLIC_ASSETS_URL ?>product/detail" target="_blank">
-                                                    ĐẦM THIẾT KẾ | SKU324352
+                                                <a href="" target="_blank">
+                                                    Build the life you want
                                                 </a>
                                             </p>
-                                            <p>Size S, Màu đen</p>
+                                            <p>Arthur c. brooks oprah winfrey</p>
                                         </div>
                                     </td>
-                                    <td data-th="Đơn giá">
+                                    <td data-th="Price">
                                         <div className="table-price">
                                             <p className="table-price__new">
-                                                1.800.000 ₫
+                                                270$
                                             </p >
                                             <p className="table-price__old">
-                                                2.000.000 ₫
+                                                300$
                                             </p>
                                             <p className="table-price__discount">-10%</p>
                                         </div>
                                     </td>
-                                    <td data-th="Số Lượng">
+                                    <td data-th="Quantity">
                                         <div className="qty-input">
                                             <button className="qty-count qty-count--minus" data-action="minus"
                                                 type="button">-</button>
@@ -112,44 +110,43 @@ const CartIndex = () => {
                                                 type="button">+</button>
                                         </div>
                                     </td>
-                                    <td data-th="Thành Tiền">
+                                    <td data-th="Order Value">
                                         <p className="table-sumprice">
-                                            1,365,000 ₫
+                                            270$
                                         </p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td className="btn-delete">
-                                        <i className="lp-remove"></i>
+                                        <i className="bdx-close"></i>
                                     </td>
-                                    <td data-th="Sản Phẩm">
-                                        <div className="product-img flex-shrink-0">
-                                            <a href="<?= PUBLIC_ASSETS_URL ?>product/detail" target="_blank">
-                                                <img src={productItem}
-                                                    alt="img-banner"></img>
+                                    <td data-th="Product">
+                                        <div className="product-img shrink-0">
+                                            <a href="" target="_blank">
+                                                <img src={productItem} alt="img-banner"></img>
                                             </a>
                                         </div>
                                         <div>
                                             <p>
-                                                <a href="<?= PUBLIC_ASSETS_URL ?>product/detail" target="_blank">
-                                                    ĐẦM THIẾT KẾ | SKU324352
+                                                <a href="" target="_blank">
+                                                    Build the life you want
                                                 </a>
                                             </p>
-                                            <p>Size S, Màu đen</p>
+                                            <p>Arthur c. brooks oprah winfrey</p>
                                         </div>
                                     </td>
-                                    <td data-th="Đơn giá">
+                                    <td data-th="Price">
                                         <div className="table-price">
                                             <p className="table-price__new">
-                                                1.800.000 ₫
+                                                270$
                                             </p >
                                             <p className="table-price__old">
-                                                2.000.000 ₫
+                                                300$
                                             </p>
                                             <p className="table-price__discount">-10%</p>
                                         </div>
                                     </td>
-                                    <td data-th="Số Lượng">
+                                    <td data-th="Quantity">
                                         <div className="qty-input">
                                             <button className="qty-count qty-count--minus" data-action="minus"
                                                 type="button">-</button>
@@ -159,9 +156,9 @@ const CartIndex = () => {
                                                 type="button">+</button>
                                         </div>
                                     </td>
-                                    <td data-th="Thành Tiền">
+                                    <td data-th="Order Value">
                                         <p className="table-sumprice">
-                                            1,365,000 ₫
+                                            270$
                                         </p>
                                     </td>
                                 </tr>
@@ -171,20 +168,19 @@ const CartIndex = () => {
                     <div className="col-12 w-[25%] ms-auto">
                         <div className="cart-info__bottom">
                             <p className="cart-info__bottom__noting">
-                                *Chưa bao gồm phí vận chuyển
+                                *Shipping fee included
                             </p>
                             <p className="cart-info__bottom__sum">
-                                <span className="text-uppercase">Tổng đơn</span>
-                                <span>5.400.000 ₫</span>
+                                <span className="text-uppercase">Total order value</span>
+                                <span>270$</span>
                             </p>
                             <div className="cart-info__bottom__btn d-flex justify-content-between align-items-center">
                                 <a href="javascript:history.back()">
-                                    <i className="lp-arrow"></i>
-                                    quay trở lại
+                                    Return
                                 </a>
                                 <a href="<?= PUBLIC_ASSETS_URL ?>cart/order.info">
-                                    đặt hàng
-                                    <i className="lp-arrow"></i>
+                                    Accept
+                                    <i className="bdx-cart"></i>
                                 </a>
                             </div>
                         </div>

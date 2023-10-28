@@ -1,9 +1,12 @@
 .qty-input {
-    color: #212121;
-    display: flex;
+    color: #fff;
+    display: inline-flex;
     align-items: center;
     overflow: hidden;
     justify-content: center;
+    background: $primary;
+    width: fit-content;
+    border-radius: 99px;
 
     .product-qty,
     .qty-count {
@@ -11,8 +14,6 @@
         color: inherit;
         font-size: 16px;
         font-weight: 600;
-        border-top: 1px solid #D9D9D9;
-        border-bottom: 1px solid #D9D9D9;
         border-left: none;
         border-right: none;
         display: inline-block;
@@ -42,7 +43,6 @@
         width: 32px;
         height: 32px;
         cursor: pointer;
-        border: 1px solid #D9D9D9;
         font-size: 24px;
         text-indent: -100px;
         overflow: hidden;
@@ -56,7 +56,7 @@
             width: 10px;
             position: absolute;
             display: block;
-            background: #262626;
+            background: #fff;
             top: 0;
             bottom: 0;
             left: 0;
@@ -67,17 +67,6 @@
         &--add {
             &:after {
                 transform: rotate(90deg);
-            }
-        }
-        
-        &:hover {
-            color: #0F3BB0;
-            background: #0F3BB0;
-            border-color: #0F3BB0;
-
-            &:before, 
-            &:after {
-                background: white;
             }
         }
 

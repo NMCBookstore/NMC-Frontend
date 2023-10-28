@@ -11,7 +11,7 @@ const OrderReturn = lazy(() => import("./page/Order/return"));
 const Cart = lazy(() => import("./page/Cart"));
 
 /**** 404 page *****/
-const NotFound = lazy(() => import("./page/error"));
+const NotFound = lazy(() => import("./page/Error"));
 
 const HomePage = lazy(() => import("./page/HomePage/home"));
 

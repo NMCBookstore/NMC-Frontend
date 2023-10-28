@@ -1,6 +1,11 @@
 .cart-info {
     &__block {
-        padding: 0 0 80px 0;
+        border-radius: 20px;
+        padding:0px 24px 40px 24px;
+        background-color: white;
+        @include max-width-992{
+            padding: 40px 24px;
+        }
     }
 
     &__table {
@@ -15,18 +20,17 @@
                 --bs-table-bg: transparent;
             }
             thead {
-                border-top: 1px solid #595959;
-                border-bottom: 1px solid #595959;
                 @include max-width-992 {
                     display: none;
                 }
 
                 tr {
                     th {
-                        padding: 12px;
-                        font-weight: 600;
+                        font-size: 20px;
+                        padding: 28px;
+                        font-weight: 700;
                         text-transform: uppercase;
-                        color: #262626;
+                        color: $primary;
                         &:first-child {
                             padding-left: 0;
                             padding-right: 0;
@@ -34,22 +38,23 @@
                         &:nth-child(2) {
                             width: 50%;
                         }
-                        &:last-child {
-                            padding-right: 0;
-                            text-align: end;
-                        }
                     }
                 }
             }
 
             tbody {
                 tr {
+                    padding: 0px 12px;
+                    background-color:transparent;
+                    transition: all 0.3s;
+                    overflow: hidden;
                     td {
                         padding: 12px;
                         vertical-align: middle;
                         &:first-child {
-                            padding-left: 0;
                             padding-right: 0;
+                            border-bottom-left-radius: 12px;
+                            border-top-left-radius: 12px;
                             i {
                                 font-size: 24px;
                                 color: #BFBFBF;
@@ -66,7 +71,7 @@
                             .product-img {
                                 overflow: hidden;
                                 max-width: 86px;
-                                aspect-ratio: 550/640;
+                                aspect-ratio: 396/595;
                                 object-fit: cover;
 
                                 img {
@@ -88,16 +93,20 @@
                                 p:first-child {
                                     a {
                                         margin-bottom: 2px;
-                                        font-size: 14px;
+                                        font-size: 18px;
                                         font-weight: 600;
                                         color: #262626;
+                                        transition: all 0.3s;
                                         @include webkit-box(2);
+                                        &:hover{
+                                            color: $primary;
+                                        }
                                     }
                                 }
 
                                 p:nth-child(2) {
                                     color: #595959;
-                                    font-size: 14px;
+                                    font-size: 16px;
                                     @include webkit-box(1);
                                 }
                             }
@@ -106,7 +115,7 @@
                         .table-price {
                             display: flex;
                             flex-direction: column;
-                            align-items: start;
+                            align-items: center;
                             gap: 12px;
                             @include max-width-992 {
                                 align-items: end;
@@ -134,11 +143,15 @@
                                 border-radius: 8px;
                             }
                         }
+                        &:nth-child(4) {
+                            text-align: center;
+                        }
 
                         &:last-child {
-                            padding-right: 0;
+                            border-bottom-right-radius: 12px;
+                            border-top-right-radius: 12px;
                             .table-sumprice {
-                                text-align: end;
+                                text-align: center;
                                 font-weight: 600;
                                 color: #262626;
                             }
@@ -149,8 +162,9 @@
                         display: flex;
                         flex-direction: column;
                         padding: 16px 12px;
-                        border-top: 3px solid #262626;
-                        background: white;
+                        border-top: 3px solid $primary;
+                        background: #f1f1f1;
+                        border-radius: 12px;
 
                         &:last-child {
                             margin-bottom: 0;
@@ -218,6 +232,9 @@
                             }
                         }
                     }
+                    &:hover{
+                        background-color: #f7d888;
+                    }
                 }
 
                 @include max-width-992 {
@@ -273,10 +290,12 @@
                 font-weight: 600;
                 line-height: 120%;
                 text-transform: uppercase;
+                border-radius: 99px;
                 i {
                     font-size: 18px;
                 }
                 &:first-child {
+                    margin-bottom: 16px;
                     color: #F7C937;
                     border: 1px solid #F7C937;
                     &:hover {
