@@ -6,6 +6,7 @@ interface ProductItemProps {
     itemDetail: productDetail;
 }
 const ProductItem: React.FunctionComponent<ProductItemProps> = (ProductItemitem) => {
+    console.log(ProductItemitem);
     return (
         <div className="product_hover">
             <div className="bg-white product-item">
@@ -21,7 +22,7 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (ProductItemitem)
                         {[...Array(5)].map((_, index) => (
                             <i
                                 key={index}
-                                className={index < ProductItemitem.itemDetail.rate ? "bdx-star-fill" : "bdx-star-1"}
+                                className={index < ProductItemitem.itemDetail.rate ? "bdx-start-fill" : "bdx-star"}
                             ></i>
                         ))}
                     </div>

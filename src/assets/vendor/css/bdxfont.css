@@ -107,18 +107,21 @@
 .bdx-star:before {
   content: "\77";
 }
-.bdx-truck-free:before {
+.bdx-start-fill:before {
   content: "\78";
 }
-.bdx-truck-transporation:before {
+.bdx-truck-free:before {
   content: "\79";
 }
-.bdx-twitter:before {
+.bdx-truck-transporation:before {
   content: "\7a";
 }
-.bdx-user:before {
+.bdx-twitter:before {
   content: "\41";
 }
-.bdx-youtube:before {
+.bdx-user:before {
   content: "\42";
+}
+.bdx-youtube:before {
+  content: "\43";
 }

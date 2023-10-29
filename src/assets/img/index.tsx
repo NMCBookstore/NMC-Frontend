@@ -12,4 +12,7 @@ export { default as articleImg } from "./articleItem.png";
 export { default as logospkt } from "./clcspkt.png";
 export { default as logoclcspkt } from "./logospkt.png";
 export { default as page404 } from "./404.svg";
+export { default as jcb } from "./jcb.png";
+export { default as visa } from "./visa.jpg";
+export { default as mastercard } from "./mastercard.jpg";
 

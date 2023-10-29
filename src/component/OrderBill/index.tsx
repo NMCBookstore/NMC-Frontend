@@ -3,8 +3,8 @@ import { productItem } from "../../assets/img";
 
 const OrderBill: React.FunctionComponent = () => {
     return (
-        <div className="order-bill">
-            <h2>Đơn hàng của bạn</h2>
+        <div className="order-bill order-payment">
+            <h2>Your order details</h2>
             <div className="order-bill__list">
                 <div className="order-bill__item">
                     <div className="flex gap-3">
@@ -25,7 +25,7 @@ const OrderBill: React.FunctionComponent = () => {
                 </div>
             </div>
             <div className="order-bill__footer flex justify-end">
-                <div>
+                <div className="text-center">
                     <p className="order-bill__footer--note">*Shipping fee included</p>
                     <div className="order-bill__footer--sum d-flex justify-content-between align-items-center">
                         <div>Total order value:</div>
