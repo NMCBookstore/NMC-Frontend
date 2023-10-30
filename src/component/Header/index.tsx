@@ -103,7 +103,7 @@ const Header: React.FunctionComponent = () => {
                         </div>
                     </div>
                     <div className="flex relative subMenu-btn">
-                        <Link to="/account" className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header">
+                        <Link to="/user/account" className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header">
                             <div className="relative">
                                 <i className="bdx-user text-[20px] text-[#fff] flex items-center"></i>
                                 <NoteNotify numberCount={numberCount2} />

@@ -1,13 +1,11 @@
-import React, { useEffect } from "react";
-import { useLocation, Outlet } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { selectCurrentAccessToken } from "./authSlice";
-import { login } from "./authSlice";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
+import { login, selectCurrentAccessToken } from "./authSlice";
 
 const RequireAuth = () => {
   const dispatch = useDispatch();
   const token = useSelector(selectCurrentAccessToken);
-  const location = useLocation();
 
   useEffect(() => {
     if (!token) {
