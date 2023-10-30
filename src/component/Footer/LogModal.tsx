@@ -1,22 +1,24 @@
-import React, { Fragment, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { RootState } from "../../app/store";
 import { Dialog, Transition } from "@headlessui/react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { Fragment, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { RootState } from "../../app/store";
+import { signInWithGoogle } from "../../features/auth/FireBase";
 import {
-  login,
   close,
-  signup,
+  login,
   loginStart,
   setCredentials,
+  signup,
 } from "../../features/auth/authSlice";
 import { useLoginMutation } from "../../services/authentication/authAPI";
 const BdxLogModal: React.FunctionComponent = () => {
   const showLog = useSelector((state: RootState) => state.auth.status);
   const cancelButtonRef = useRef(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [login] = useLoginMutation();
+  const [executeLogin] = useLoginMutation();
 
   const [values, setValues] = useState({
     username: "",
@@ -26,13 +28,13 @@ const BdxLogModal: React.FunctionComponent = () => {
   const handleLogin = async () => {
     dispatch(loginStart());
     try {
-      const data = await login(values).unwrap();
+      const data = await executeLogin(values).unwrap();
       const { user, access_token, refresh_token } = data;
       dispatch(setCredentials({ user, access_token, refresh_token }));
-      console.log(data);
+      navigate("/");
+      dispatch(close());
     } catch (err) {
       console.log(err);
-      // dispatch(loginFailed());
     }
     return false;
   };
@@ -43,7 +45,7 @@ const BdxLogModal: React.FunctionComponent = () => {
     console.log("my forgotpassword");
   };
   return (
-    <Transition.Root show={showLog == "none" ? false : true} as={Fragment}>
+    <Transition.Root show={showLog === "none" ? false : true} as={Fragment}>
       <Dialog
         as="div"
         className="relative z-10"
@@ -81,9 +83,9 @@ const BdxLogModal: React.FunctionComponent = () => {
                         as="h3"
                         className="mb-4 font-semibold leading-normal capitalize text-[40px] text-[#0F3BB0]"
                       >
-                        {showLog == "login" && "Login"}
-                        {showLog == "signup" && "Sign Up"}
-                        {showLog == "forgotpassword" && "Forgot Password"}
+                        {showLog === "login" && "Login"}
+                        {showLog === "signup" && "Sign Up"}
+                        {showLog === "forgotpassword" && "Forgot Password"}
                       </Dialog.Title>
                       <p className="text-[#595959] text-[20px] leading-normal mb-6">
                         Welcome to NMC Bookstore!
@@ -106,7 +108,7 @@ const BdxLogModal: React.FunctionComponent = () => {
                             }
                           />
                         </div>
-                        {showLog == "signup" && (
+                        {showLog === "signup" && (
                           <div className="text-left mb-4">
                             <label
                               className="block text-[16px] leading-normal mb-2"
@@ -157,15 +159,21 @@ const BdxLogModal: React.FunctionComponent = () => {
                       }
                     }}
                   >
-                    {showLog == "login" && "Login"}
-                    {showLog == "signup" && "Sign Up"}
-                    {showLog == "forgotpassword" && "Submit"}
+                    {showLog === "login" && "Login"}
+                    {showLog === "signup" && "Sign Up"}
+                    {showLog === "forgotpassword" && "Submit"}
                   </button>
                   <button
                     type="button"
                     className="w-full py-3 px-6 block border-[1px] border-[#262626] border-solid rounded-[12px]"
+                    onClick={() => {
+                      if(showLog === "login") {
+                        signInWithGoogle()
+                      }
+                    }}
                   >
-                    Log in with Google
+                    {showLog === "login" && "Log in with Google"}
+                    {showLog === "signup" && "Sign up with Google"}
                   </button>
                 </div>
                 <div className="flex flex-col items-center">
@@ -173,12 +181,22 @@ const BdxLogModal: React.FunctionComponent = () => {
                     Forgot your password?
                   </button>
                   <div>
-                    <span className="mr-2">Don't have an account?</span>
+                    <span className="mr-2">
+                      {showLog === "login" && "Don't have an account?"}
+                      {showLog === "signup" && "Already have an account?"}
+                    </span>
                     <button
                       className="underline-offset-2 underline"
-                      onClick={() => dispatch(signup())}
+                      onClick={() => {
+                        if (showLog === "login") {
+                          dispatch(signup());
+                        } else if (showLog === "signup") {
+                          dispatch(login());
+                        }
+                      }}
                     >
-                      sign up
+                      {showLog === "login" && "Sign up"}
+                      {showLog === "signup" && "Log in"}
                     </button>
                   </div>
                 </div>

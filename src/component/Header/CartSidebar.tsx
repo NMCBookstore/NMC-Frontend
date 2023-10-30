@@ -100,7 +100,7 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({ showCart, setshowCar
                                                 >
                                                     Back To Shopping
                                                 </button>
-                                                <Link to="/cart" className="btn sidebar-cart__footer--button--order"
+                                                <Link to="/user/cart" className="btn sidebar-cart__footer--button--order"
                                                     onClick={() => handleClick()}
                                                 >
                                                     <span><i className="bdx-cart-fill"></i></span>
