@@ -6,7 +6,7 @@ h1 {
         font-size: 36px;
     }
     @include max-width-425{
-        font-size: 28px;    
+        font-size: 30px;    
         font-weight: 600;
     }
 }
@@ -18,7 +18,7 @@ h2 {
         font-size: 28px;
     }
     @include max-width-425{
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 600;
     }
 }

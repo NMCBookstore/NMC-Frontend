@@ -15,4 +15,6 @@ export { default as page404 } from "./404.svg";
 export { default as jcb } from "./jcb.png";
 export { default as visa } from "./visa.jpg";
 export { default as mastercard } from "./mastercard.jpg";
+export { default as orderReturn } from "./order_return.svg";
+
 

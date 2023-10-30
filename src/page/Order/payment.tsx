@@ -44,7 +44,7 @@ const OrderPayment = () => {
                                 <a href="javascript:history.back()">
                                     Return
                                 </a>
-                                <Link to="/order/payment">
+                                <Link to="/order/return">
                                     Accept
                                     <i className="bdx-cart"></i>
                                 </Link>
@@ -53,7 +53,7 @@ const OrderPayment = () => {
                         </div>
                         <div>
                             <h2 className="text-second-color" >Shipment Details</h2>
-                            <form className="order-info__form">
+                            <div className="order-info__form">
                                 <div className="flex flex-wrap justify-between gap-y-3 p-5 rounded-[24px] mb-6">
                                     <div className="sm:w-full w-[49%]">
                                         <div className="input-group">
@@ -86,7 +86,7 @@ const OrderPayment = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
                     <div className="md:w-full w-[50%] px-3">

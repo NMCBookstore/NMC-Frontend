@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const BreadcrumbConponent: React.FunctionComponent = () => {
     return (
         <nav className="breadcrumb">
-            <div className="container-xl">
+            <div className="px-3">
                 <ol>
                     <li>
                         <Link to="/">Home</Link>
