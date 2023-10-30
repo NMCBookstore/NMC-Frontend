@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Login } from "../../interface/Login";
+import { RootState } from "../../app/store";
 
 const initialState: Partial<Login> = {
   status: "none",
@@ -39,6 +40,11 @@ const authSlice = createSlice({
     },
   },
 });
-export const { setCredentials, loginStart, logout, login, signup, close } = authSlice.actions;
+export const { setCredentials, loginStart, logout, login, signup, close } =
+  authSlice.actions;
 
 export default authSlice.reducer;
+
+export const selectCurrentUser = (state: RootState) => state.auth?.user;
+export const selectCurrentAccessToken = (state: RootState) =>
+  state.auth?.access_token;
