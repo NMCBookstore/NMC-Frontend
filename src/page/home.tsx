@@ -1,15 +1,11 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import Slider from "react-slick";
-import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import bannerImg from "../assets/img/img_banner.png"
-import { useGetTopNewProductQuery } from '../services/product/productAPI';
-import { useGetGenresQuery } from '../services/genres/genresAPI';
+import 'slick-carousel/slick/slick.css';
+import bannerImg from "../assets/img/img_banner.png";
 
 const HomePage: React.FunctionComponent = () => {
-    const { data } = useGetGenresQuery()
-    console.log(data);
     const banner = ["img", "img", "igm"];
     const settings = {
         dots: true,

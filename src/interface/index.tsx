@@ -2,18 +2,18 @@ export interface productDetail {
   name: string;
   des: string;
   price: number;
-  salePrice:number;
+  salePrice: number;
   rate: number;
-  img: string
+  img: string;
 }
 export interface categoryItem {
   name: string;
-  img:string;
-  color:number
+  img: string;
+  color: number;
 }
 
 export interface articleItem {
   name: string;
-  img:string;
-  des:string
+  img: string;
+  des: string;
 }
