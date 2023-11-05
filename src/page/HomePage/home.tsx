@@ -1,39 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Slider from "react-slick";
 
 import ProductItem from "../../component/ProductItem";
 import { productDetail, categoryItem, articleItem } from "../../interface";
+import { Product } from '../../interface/Product';
 import { productListSettings, bannerSettings, cateSettings, productTabsListSettings, servicesCarousel } from "../../common/CarouselSetting";
 
 import { logo, cate1, cate2, cate3, cate4, cate5, cate6, productItem, bannerImg, midleBanner, articleImg, logospkt,logoclcspkt } from "../../assets/img";
+import { useGetSubGenresQuery } from '../../services/subgenres/subgenresAPI';
+import { useGetTopNewProductQuery } from '../../services/product/productAPI';
+
 
 const HomePage: React.FunctionComponent = () => {
     const banner = [bannerImg, logospkt, logoclcspkt, logo];
     const midlebanner = [midleBanner, midleBanner, midleBanner];
     const cate: categoryItem[] = [{ name: "Shop all", img: cate1, color: 1 }, { name: "Fiction", img: cate2, color: 2 }, { name: "Non-Fiction", img: cate3, color: 2 }, { name: "Children's", img: cate4, color: 1 }, { name: "Stationery & Gifts", img: cate5, color: 1 }, { name: "Gift cards & Vouchers", img: cate6, color: 2 }];
-    const productList: productDetail[] = [{ name: "Build the life you want", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:0, rate: 3, img: productItem },
-    { name: "Build the life you want 2", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rate: 4, img: productItem },
-    { name: "Build the life you want 3", des: "Arthur c. brooks oprah winfrey", price: 200.10,salePrice:150, rate: 4, img: productItem },
-    { name: "Build the life you want 4", des: "Arthur c. brooks oprah winfrey", price: 100,salePrice:0, rate: 5, img: productItem },
-    { name: "Build the life you want 5", des: "Arthur c. brooks oprah winfrey", price: 50.50,salePrice:40.5, rate: 2, img: productItem },
-    { name: "Build the life you want 6", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rate: 4, img: productItem }];
+   
+   
+    const [id, setId] = useState(1);
+    const {data} = useGetSubGenresQuery(id);
+    const {data: getNewProduct = []} = useGetTopNewProductQuery()
+    console.log(getNewProduct)
+
+    // const productList: Product[] = [{ name: "Build the life you want", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:0, rating: 3, image: productItem },
+    // { name: "Section with number 2", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rating: 4, image: productItem },
+    // { name: "Section with number 3", description: "Arthur c. brooks oprah winfrey", price: 200.10,salePrice:150, rating: 4, image: productItem },
+    // { name: "Section with number 4", description: "Arthur c. brooks oprah winfrey", price: 100,salePrice:0, rating: 5, image: productItem },
+    // { name: "Section with number 5", description: "Arthur c. brooks oprah winfrey", price: 50.50,salePrice:40.5, rating: 2, image: productItem },
+    // { name: "Section with number 6", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rating: 4, image: productItem }];
 
 
-    //section productList
-    const productList1: productDetail[] = [{ name: "Build the life you want", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:270, rate: 3, img: productItem },
-    { name: "Build the life you want 12", des: "Arthur c. brooks oprah winfrey", price: 300.00,salePrice:0, rate: 4, img: productItem },
-    { name: "Build the life you want 13", des: "Arthur c. brooks oprah winfrey", price: 200.10,salePrice:200, rate: 4, img: productItem },
-    { name: "Build the life you want 14", des: "Arthur c. brooks oprah winfrey", price: 100,salePrice:90, rate: 5, img: productItem },
-    { name: "Build the life you want 15", des: "Arthur c. brooks oprah winfrey", price: 50.50,salePrice:40, rate: 2, img: productItem },
-    { name: "Build the life you want 16", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:250, rate: 4, img: productItem },
-    { name: "Build the life you want 12", des: "Arthur c. brooks oprah winfrey", price: 300.00,salePrice:0, rate: 4, img: productItem },
-    { name: "Build the life you want 13", des: "Arthur c. brooks oprah winfrey", price: 200.10,salePrice:110, rate: 4, img: productItem },
-    { name: "Build the life you want 14", des: "Arthur c. brooks oprah winfrey", price: 100,salePrice:90, rate: 5, img: productItem },
-    { name: "Build the life you want 16", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rate: 4, img: productItem },
-    { name: "Build the life you want 15", des: "Arthur c. brooks oprah winfrey", price: 50.50,salePrice:50, rate: 2, img: productItem },
-    { name: "Build the life you want 16Build the life you want 16", des: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rate: 4, img: productItem }];
+    // //section productList
+    // const productList1: Product[] = [{ name: "Build the life you want", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:270, rating: 3, image: productItem },
+    // { name: "Build the life you want 12", description: "Arthur c. brooks oprah winfrey", price: 300.00,salePrice:0, rating: 4, image: productItem },
+    // { name: "Build the life you want 13", description: "Arthur c. brooks oprah winfrey", price: 200.10,salePrice:200, rating: 4, image: productItem },
+    // { name: "Build the life you want 14", description: "Arthur c. brooks oprah winfrey", price: 100,salePrice:90, rating: 5, image: productItem },
+    // { name: "Build the life you want 15", description: "Arthur c. brooks oprah winfrey", price: 50.50,salePrice:40, rating: 2, image: productItem },
+    // { name: "Build the life you want 16", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:250, rating: 4, image: productItem },
+    // { name: "Build the life you want 12", description: "Arthur c. brooks oprah winfrey", price: 300.00,salePrice:0, rating: 4, image: productItem },
+    // { name: "Build the life you want 13", description: "Arthur c. brooks oprah winfrey", price: 200.10,salePrice:110, rating: 4, image: productItem },
+    // { name: "Build the life you want 14", description: "Arthur c. brooks oprah winfrey", price: 100,salePrice:90, rating: 5, image: productItem },
+    // { name: "Build the life you want 16", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rating: 4, image: productItem },
+    // { name: "Build the life you want 15", description: "Arthur c. brooks oprah winfrey", price: 50.50,salePrice:50, rating: 2, image: productItem },
+    // { name: "Build the life you want 16Build the life you want 16", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rating: 4, image: productItem }];
     //article
     const articleList: articleItem[] = [{ name: "Kids share their thoughts about banned books with NPR", img: articleImg, des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids." },
     { name: "The 10 Most Challenged Books of 2022-2023", img: articleImg, des: "Parents and politicians are trying to pull books off shelves at a record-setting pace." },
@@ -101,8 +112,8 @@ const HomePage: React.FunctionComponent = () => {
                         <h2 className=" mb-8 sm:mb-0 text-primary text-center capitalize">New arrivals</h2>
                         <div className="productList-carousel py-3 sm:pt-0">
                             <Slider {...productListSettings}>
-                                {productList.map((item, index) => (
-                                    <ProductItem key={index} itemDetail={item}></ProductItem>
+                                {getNewProduct.map((item) => (
+                                    <ProductItem  itemDetail={item}></ProductItem>
                                 ))}
                             </Slider>
                         </div>
@@ -122,8 +133,8 @@ const HomePage: React.FunctionComponent = () => {
                     </div>
                     <div className="productList-tworows">
                         <Slider {...productTabsListSettings}>
-                            {productList1.map((item, index) => (
-                                <ProductItem key={index} itemDetail={item}></ProductItem>
+                            {getNewProduct.map((item) => (
+                                <ProductItem itemDetail={item}></ProductItem>
                             ))}
                         </Slider>
                     </div>
@@ -144,7 +155,7 @@ const HomePage: React.FunctionComponent = () => {
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>
                 </div>
                 <Slider {...productListSettings}>
-                    {productList.map((item, index) => (
+                    {getNewProduct.map((item, index) => (
                         <ProductItem key={index} itemDetail={item}></ProductItem>
                     ))}
                 </Slider>
@@ -155,7 +166,7 @@ const HomePage: React.FunctionComponent = () => {
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>
                 </div>
                 <Slider {...productListSettings}>
-                    {productList.map((item, index) => (
+                    {getNewProduct.map((item, index) => (
                         <ProductItem key={index} itemDetail={item}></ProductItem>
                     ))}
                 </Slider>
@@ -166,7 +177,7 @@ const HomePage: React.FunctionComponent = () => {
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>
                 </div>
                 <Slider {...productListSettings}>
-                    {productList.map((item, index) => (
+                    {getNewProduct.map((item, index) => (
                         <ProductItem key={index} itemDetail={item}></ProductItem>
                     ))}
                 </Slider>

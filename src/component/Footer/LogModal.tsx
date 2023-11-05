@@ -3,7 +3,7 @@ import React, { Fragment, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../app/store";
-import { signInWithGoogle } from "../../features/auth/FireBase";
+import { SignInWithGoogle } from "../../features/auth/FireBase";
 import {
   close,
   login,
@@ -168,7 +168,7 @@ const BdxLogModal: React.FunctionComponent = () => {
                     className="w-full py-3 px-6 block border-[1px] border-[#262626] border-solid rounded-[12px]"
                     onClick={() => {
                       if(showLog === "login") {
-                        signInWithGoogle()
+                        SignInWithGoogle()
                       }
                     }}
                   >

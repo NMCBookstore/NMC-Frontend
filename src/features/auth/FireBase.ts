@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useDispatch } from "react-redux";
+import { setCredentials } from "./authSlice";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAVa5ujWbB8pnQCgSCnv1LcBu7JrNV86G0",
@@ -17,11 +19,21 @@ export const auth = getAuth(app);
 
 const provider = new GoogleAuthProvider();
 
-export const signInWithGoogle = () => {
-  console.log("this is called");
+export const SignInWithGoogle = () => {
+const dispatch = useDispatch()
+
   signInWithPopup(auth, provider)
     .then((result) => {
       console.log(result);
+      const username = result.user.displayName ?? '';
+      const email = result.user.email ?? '';
+      const image = result.user.photoURL ?? '';
+
+      // dispatch(setCredentials({username}))
+
+      localStorage.setItem("username", username );
+      localStorage.setItem("email", email);
+      localStorage.setItem("image", image);
     })
     .catch((err) => {
       alert(err);
