@@ -11,6 +11,7 @@ import { productListSettings, bannerSettings, cateSettings, productTabsListSetti
 import { logo, cate1, cate2, cate3, cate4, cate5, cate6, productItem, bannerImg, midleBanner, articleImg, logospkt,logoclcspkt } from "../../assets/img";
 import { useGetSubGenresQuery } from '../../services/subgenres/subgenresAPI';
 import { useGetTopNewProductQuery } from '../../services/product/productAPI';
+import { useGetWishlistQuery } from '../../services/wishlist/wishlistAPI';
 
 
 const HomePage: React.FunctionComponent = () => {
@@ -22,7 +23,7 @@ const HomePage: React.FunctionComponent = () => {
     const [id, setId] = useState(1);
     const {data} = useGetSubGenresQuery(id);
     const {data: getNewProduct = []} = useGetTopNewProductQuery()
-    console.log(getNewProduct)
+    const { data: wishlist = []} = useGetWishlistQuery();
 
     // const productList: Product[] = [{ name: "Build the life you want", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:0, rating: 3, image: productItem },
     // { name: "Section with number 2", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rating: 4, image: productItem },
@@ -113,7 +114,7 @@ const HomePage: React.FunctionComponent = () => {
                         <div className="productList-carousel py-3 sm:pt-0">
                             <Slider {...productListSettings}>
                                 {getNewProduct.map((item) => (
-                                    <ProductItem  itemDetail={item}></ProductItem>
+                                    <ProductItem key={item?.id}  itemDetail={item} wishlistItem={wishlist}></ProductItem>
                                 ))}
                             </Slider>
                         </div>
@@ -134,7 +135,7 @@ const HomePage: React.FunctionComponent = () => {
                     <div className="productList-tworows">
                         <Slider {...productTabsListSettings}>
                             {getNewProduct.map((item) => (
-                                <ProductItem itemDetail={item}></ProductItem>
+                                <ProductItem key={item?.id}  itemDetail={item} wishlistItem={wishlist}></ProductItem>
                             ))}
                         </Slider>
                     </div>
@@ -155,8 +156,8 @@ const HomePage: React.FunctionComponent = () => {
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>
                 </div>
                 <Slider {...productListSettings}>
-                    {getNewProduct.map((item, index) => (
-                        <ProductItem key={index} itemDetail={item}></ProductItem>
+                    {getNewProduct.map((item) => (
+                        <ProductItem key={item?.id}  itemDetail={item} wishlistItem={wishlist}></ProductItem>
                     ))}
                 </Slider>
             </div>
@@ -166,8 +167,8 @@ const HomePage: React.FunctionComponent = () => {
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>
                 </div>
                 <Slider {...productListSettings}>
-                    {getNewProduct.map((item, index) => (
-                        <ProductItem key={index} itemDetail={item}></ProductItem>
+                    {getNewProduct.map((item) => (
+                        <ProductItem key={item?.id}  itemDetail={item} wishlistItem={wishlist}></ProductItem>
                     ))}
                 </Slider>
             </div>
@@ -177,8 +178,8 @@ const HomePage: React.FunctionComponent = () => {
                     <p className="text-primary flex items-center"> <span>View all</span> <i className="bdx-arrow-2 ml-2 flex items-center"></i></p>
                 </div>
                 <Slider {...productListSettings}>
-                    {getNewProduct.map((item, index) => (
-                        <ProductItem key={index} itemDetail={item}></ProductItem>
+                    {getNewProduct.map((item) => (
+                        <ProductItem key={item?.id}  itemDetail={item} wishlistItem={wishlist}></ProductItem>
                     ))}
                 </Slider>
             </div>

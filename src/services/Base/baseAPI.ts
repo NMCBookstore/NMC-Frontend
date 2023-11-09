@@ -4,7 +4,10 @@ import type {
   FetchArgs,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
-import authSlice, { logout, setCredentials } from "../../features/auth/authSlice"; 
+import authSlice, {
+  logout,
+  setCredentials,
+} from "../../features/auth/authSlice";
 import { RootState } from "../../app/store";
 export const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080",
@@ -23,8 +26,8 @@ const baseQueryWithReauth: BaseQueryFn<
   unknown,
   FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-
-  const refresh_token = (api.getState() as RootState).auth.refresh_token
+  const refresh_token = (api.getState() as RootState).auth.refresh_token;
+  const user = (api.getState() as RootState).auth.user;
   let result = await baseQuery(args, api, extraOptions);
   if (result.error && result.error.status === 401) {
     // try to get a new token
@@ -39,15 +42,16 @@ const baseQueryWithReauth: BaseQueryFn<
       api,
       extraOptions
     );
-    if (refreshResult.data) {
+    if (refreshResult?.data) {
+      // store the new token
       api.dispatch(
         setCredentials({
           ...refreshResult.data,
           refresh_token,
+          user
         })
       );
-      // store the new token
-      api.dispatch(setCredentials(refreshResult.data));
+      console.log(refreshResult.data);
       // retry the initial query
       result = await baseQuery(args, api, extraOptions);
     } else {
@@ -61,5 +65,6 @@ export const book = createApi({
   reducerPath: "bookApi",
   baseQuery: baseQueryWithReauth,
   refetchOnMountOrArgChange: true,
+  tagTypes: ["WishlistItems"],
   endpoints: () => ({}),
 });
