@@ -7,8 +7,9 @@ import ProductItem from "../../component/ProductItem";
 import { productDetail, categoryItem, articleItem } from "../../interface";
 import { Product } from '../../interface/Product';
 import { productListSettings, bannerSettings, cateSettings, productTabsListSettings, servicesCarousel } from "../../common/CarouselSetting";
+import Marquee from '../../component/Marquee';
 
-import { logo, cate1, cate2, cate3, cate4, cate5, cate6, productItem, bannerImg, midleBanner, articleImg, logospkt,logoclcspkt } from "../../assets/img";
+import { logo, cate1, cate2, cate3, cate4, cate5, cate6, bannerImg, midleBanner, articleImg, logospkt,logoclcspkt } from "../../assets/img";
 import { useGetSubGenresQuery } from '../../services/subgenres/subgenresAPI';
 import { useGetTopNewProductQuery } from '../../services/product/productAPI';
 import { useGetWishlistQuery } from '../../services/wishlist/wishlistAPI';
@@ -55,20 +56,7 @@ const HomePage: React.FunctionComponent = () => {
     
     return (
         <div className='bg-[#FBF4EA] mt-[76px]'>
-            <div className="marquee-container">
-                <div className="flex">
-                    <div className="marquee px-3 mx-auto">
-                        <p>Shop all <span>◆</span> </p>
-                        <p>New arrivals <span>◆</span> </p>
-                        <p>Bestsellers <i className="bdx-like ml-2 text-accent inline-flex items-center"></i><span>◆</span> </p>
-                        <p>Fiction <span>◆</span> </p>
-                        <p>Non-Fiction<span>◆</span> </p>
-                        <p>Children’s <span>◆</span> </p>
-                        <p>Stationery and gifts <span>◆</span> </p>
-                        <p>Gift cards and vouchers</p>
-                    </div>
-                </div>
-            </div>
+            <Marquee></Marquee>
             <div className="banner-carousel">
                 <Slider {...bannerSettings}>
                     {banner.map((item, index) => (

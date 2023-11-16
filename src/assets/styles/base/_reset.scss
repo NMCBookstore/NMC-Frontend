@@ -1,15 +1,12 @@
 .container-nmc{
-    @include max-width-992{
+    @include max-width-1280{
         width: 100%;
-    }
-    @include min-width-992{
-        max-width: 876px !important;
     }
     @include min-width-1280{
         max-width: 1140px !important;
     }
     @include min-width-1440{
-        max-width: 1200px !important;
+        max-width: 1320px !important;
     }
     @include min-width-1536{
         max-width: 1440px !important;
@@ -58,5 +55,21 @@ body {
 button{
     &:focus-visible{
         outline: none;
+    }
+}
+.row{
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+    &>* {
+        flex-shrink: 0;
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * .5);
+        padding-left: calc(var(--bs-gutter-x) * .5);
+        margin-top: var(--bs-gutter-y);
     }
 }

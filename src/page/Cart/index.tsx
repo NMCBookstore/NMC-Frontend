@@ -2,12 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Breadcrumb from "../../component/Breadcrumb";
 import { productItem } from "../../assets/img";
+import Marquee from '../../component/Marquee';
 
 const CartIndex = () => {
     const pathAfterDomain = window.location.pathname;
 
     return (
         <div className="mt-[76px] bg-[#FBF4EA]">
+            <Marquee></Marquee>
             <div className="container-nmc mx-auto pb-8">
                 <Breadcrumb></Breadcrumb>
                 <h1 className='text-orange-orange-6 px-3 flex items-center justify-center mb-3 py-4'><i className="bdx-cart-fill inline-flex items-center"></i> <span>My Cart</span></h1>
