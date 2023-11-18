@@ -11,7 +11,7 @@
     
     li,
     a {
-        color: #707070;
+        color: #0F3BB0;
     }
     li{
         display: inline;
@@ -22,13 +22,13 @@
         .bdx-caret {
             display: inline-flex;
             margin: 0 4px;
-            color: #707070;
+            color: #0F3BB0;
             font-size: 14px;
             transform: rotate(180deg);
         }
         &.active {
             font-weight: 600;
-            color: #0F3BB0;
+            color: #707070;
         }
     }
 

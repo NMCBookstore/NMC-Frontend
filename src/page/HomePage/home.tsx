@@ -13,6 +13,7 @@ import { logo, cate1, cate2, cate3, cate4, cate5, cate6, bannerImg, midleBanner,
 import { useGetSubGenresQuery } from '../../services/subgenres/subgenresAPI';
 import { useGetTopNewProductQuery } from '../../services/product/productAPI';
 import { useGetWishlistQuery } from '../../services/wishlist/wishlistAPI';
+import NotiHome from '../../component/NotiHome';
 
 
 const HomePage: React.FunctionComponent = () => {
@@ -175,16 +176,16 @@ const HomePage: React.FunctionComponent = () => {
                 <div className="mx-auto px-3 container-nmc py-[60px] sm:py-[40px]">
                     <i className="bdx-book text-primary text-[32px] flex justify-center"></i>
                     <h2 className="text-primary text-center mb-10 sm:mb-4">Our Blog</h2>
-                    <div className="blog_list mb-8 sm:mb-6">
+                    <div className="home_blog_list mb-8 sm:mb-6">
                         {articleList.slice(0, 4).map((item, index) => (
                             <div
                                 key={index}
-                                className="blog_list_item"
+                                className="home_blog_list_item"
                             >
-                                <div className="blog_list_item_img">
+                                <div className="home_blog_list_item_img">
                                     <img src={item.img} alt={item.name} />
                                 </div>
-                                <div className="blog_list_item_content">
+                                <div className="home_blog_list_item_content">
                                     <h3 className="text-[#262626]">{item.name}</h3>
                                     <p>{item.des}</p>
                                 </div>
@@ -224,20 +225,7 @@ const HomePage: React.FunctionComponent = () => {
                     </div>
                 </div>
             </div>
-            <div className="notiHome bg-primary py-5">
-                <div className="mx-auto px-3 container-nmc flex flex-wrap">
-                    <div className="w-1/3 sm:w-full flex justify-center sm:mb-4">
-                        <div className="w-1/2 flex justify-center items-center">
-                            <img className="max-h-[120px]" src={logo} alt="logo" />
-                        </div>
-                    </div>
-                    <div className="w-2/3 sm:w-full flex items-center">
-                        <p className="pl-6 sm:p-0 text-white text-[16px] sm:text-[14px] leading-[24px] sm:text-center sm:border-0 border-l-2 border-[#FFCA41] border-solid">
-                            At NMC, we're more than just a bookstore; we're a community of book enthusiasts, scholars, and lifelong learners. Our mission is to provide you with a diverse selection of books that cater to your interests, whether you're a seasoned bibliophile or a student embarking on an academic journey.
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <NotiHome></NotiHome>
         </div>
 
     );

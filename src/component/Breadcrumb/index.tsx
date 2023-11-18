@@ -6,7 +6,7 @@ const BreadcrumbConponent: React.FunctionComponent = () => {
         <nav className="breadcrumb">
             <ol>
                 <li>
-                    <Link to="/">Home</Link>
+                    <Link to="/"><i className="bdx-home"></i> Home</Link>
                     <i className="bdx-caret"></i>
                 </li>
                 <li>

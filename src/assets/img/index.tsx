@@ -16,5 +16,8 @@ export { default as jcb } from "./jcb.png";
 export { default as visa } from "./visa.jpg";
 export { default as mastercard } from "./mastercard.jpg";
 export { default as orderReturn } from "./order_return.svg";
+export { default as productBaner } from "./product_banner.png";
+export { default as avatarUser } from "./avatar_user.png";
+
 
 

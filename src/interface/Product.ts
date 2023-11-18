@@ -8,10 +8,10 @@ export interface Product {
   salePrice: number;
   image: string[];
   description: string;
-  author: string;
-  publisher: string;
-  quantity: number;
+  author?: string;
+  publisher?: string;
+  quantity?: number;
   rating: number;
-  genres: Genres;
-  subgenres: Subgenres;
+  genres?: Genres;
+  subgenres?: Subgenres;
 }
