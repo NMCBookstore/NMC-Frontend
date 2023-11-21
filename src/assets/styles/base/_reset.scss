@@ -26,27 +26,27 @@ body {
 }
 .product-item{
     @include max-width-425{
-        padding:12px;
+        padding:12px !important;
         &__img{
-            margin-bottom: 8px;
+            margin-bottom: 8px !important;
             img{
-                border-radius: 6px;
+                border-radius: 6px !important;
             }
         }
         &__des{
-            font-size: 12px;
-            font-weight: 500;
+            font-size: 12px !important;
+            font-weight: 500 !important;
         }
         &__rate{
-            margin-bottom: 8px;
+            margin-bottom: 8px !important;
         }
         &__control {
             &> p{
-                font-size: 14px;
+                font-size: 14px !important;
             }
             &>div{
                 i{
-                    font-size: 16px;
+                    font-size: 16px !important;
                 }
             }
         }
@@ -72,4 +72,7 @@ button{
         padding-left: calc(var(--bs-gutter-x) * .5);
         margin-top: var(--bs-gutter-y);
     }
+}
+input{
+    outline: none !important;
 }

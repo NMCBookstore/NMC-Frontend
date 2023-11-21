@@ -67,6 +67,28 @@ export const productListSettings = {
     ]
 };
 
+export const productListCate = {
+    autoplay:false,
+    dots: false,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: true,
+    responsive: [
+        {
+            breakpoint: 768,
+            settings: {
+                slidesToShow: 3,
+            }
+        },
+        {
+            breakpoint: 576,
+            settings: {
+                slidesToShow: 2,
+            }
+        }
+    ]
+};
+
 export const productTabsListSettings = {
     autoplay:true,
     dots: true,
