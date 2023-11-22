@@ -76,3 +76,10 @@ button{
 input{
     outline: none !important;
 }
+
+body {
+    font-family: 'Inter';
+    &:has(#modal-backdrop[data-show="true"]) {
+        overflow: hidden;
+    }
+}

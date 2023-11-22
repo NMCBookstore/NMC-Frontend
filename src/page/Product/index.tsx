@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useRef, useState } from "react";
 import { Product } from "../../interface/Product";
 import { articleItem } from "../../interface";
 import { articleImg, productItem } from "../../assets/img";
@@ -31,16 +31,46 @@ const people: Person[] = [
 const ProductList: React.FunctionComponent = () => {
     const [selected, setSelected] = useState<Person>(people[0]);
     const [query, setQuery] = useState<string>('');
+    const filteredPeople =  query === ''
+                                ? people
+                                : people.filter((person) =>
+                                    person.name
+                                        .toLowerCase()
+                                        .replace(/\s+/g, '')
+                                        .includes(query.toLowerCase().replace(/\s+/g, ''))
+                                );
 
-    const filteredPeople =
-        query === ''
-            ? people
-            : people.filter((person) =>
-                person.name
-                    .toLowerCase()
-                    .replace(/\s+/g, '')
-                    .includes(query.toLowerCase().replace(/\s+/g, ''))
-            );
+    const showSideBar = useRef(false);
+    const elementRef = useRef<HTMLDivElement>(null);
+    const modalBackdrop = document.getElementById('modal-backdrop') as HTMLElement;
+
+    const handleClick = () => {
+        showSideBar.current = !showSideBar.current;
+        const element = elementRef.current;
+        if (showSideBar.current && element) {
+            modalBackdrop.setAttribute('data-show', 'true');
+            modalBackdrop.style.setProperty('opacity', '1');
+            element.style.setProperty('left', '0px');
+
+        }
+        else  if (!showSideBar.current && element) {
+            modalBackdrop.setAttribute('data-show', 'false');
+            modalBackdrop.style.setProperty('opacity', '0');
+            element.style.setProperty('left', '-300px');
+        }
+    };
+    const overWrite = () => {
+        if(elementRef.current && modalBackdrop && window.innerWidth >= 1280){
+            showSideBar.current = false;
+            modalBackdrop.setAttribute('data-show', 'false');
+            modalBackdrop.style.setProperty('opacity', '0');
+            elementRef.current.style.setProperty('left', '0px');
+        }
+        else if(elementRef.current && window.innerWidth < 1280){
+            elementRef.current.style.setProperty('left', '-300px');
+        }
+    }
+        window.addEventListener('resize', overWrite);
     const { data: wishlist = [] } = useGetWishlistQuery();
 
     const productList: Product[] = [{ id: 1, name: "Build the life you want", description: "Arthur c. brooks oprah winfrey", price: 300, salePrice: 0, rating: 3, image: [productItem] },
@@ -84,123 +114,134 @@ const ProductList: React.FunctionComponent = () => {
                 <BreadcrumbConponent></BreadcrumbConponent>
             </div>
             <div className="container-nmc px-3 mx-auto product-list__handle-sidebar mb-12">
-                <div className="product-list__handle-sidebar__sidebar">
-                    <h2 className="product-list__handle-sidebar__sidebar__heading">sort by</h2>
-                    <div className="product-list__handle-sidebar__sidebar__item">
-                        <h3>price</h3>
-                        <div className="product-list__handle-sidebar__sidebar__item__price">
-                            {priceFilter.map((item) => (
-                                <div key={item.key}>
-                                    <input className="product-list__handle-sidebar__sidebar__item__price__input" id={item.key} type="checkbox" />
-                                    <label htmlFor={`#${item.key}`}>{item.value}</label>
+                <div>
+                    <div  ref={elementRef} className="product-list__handle-sidebar__sidebar">
+                        <h2 className="product-list__handle-sidebar__sidebar__heading">sort by</h2>
+                        <div className="product-list__handle-sidebar__sidebar__item">
+                            <h3>price</h3>
+                            <div className="product-list__handle-sidebar__sidebar__item__price">
+                                {priceFilter.map((item) => (
+                                    <div key={item.key}>
+                                        <input className="product-list__handle-sidebar__sidebar__item__price__input" id={item.key} type="checkbox" />
+                                        <label htmlFor={`#${item.key}`}>{item.value}</label>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        <div className="product-list__handle-sidebar__sidebar__item">
+                            <h3>name</h3>
+                            <div className="product-list__handle-sidebar__sidebar__item__name">
+                                <div>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            value="option1"
+                                            checked={true}
+                                            name="sortName"
+                                        />
+                                        Name A-Z
+                                    </label>
                                 </div>
-                            ))}
-                        </div>
-                    </div>
-                    <div className="product-list__handle-sidebar__sidebar__item">
-                        <h3>name</h3>
-                        <div className="product-list__handle-sidebar__sidebar__item__name">
-                            <div>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="option1"
-                                        checked={true}
-                                        name="sortName"
-                                    />
-                                    Name A-Z
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input
-                                        type="radio"
-                                        value="option2"
-                                        name="sortName"
-                                    />
-                                    Name Z-A
-                                </label>
+                                <div>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            value="option2"
+                                            name="sortName"
+                                        />
+                                        Name Z-A
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="product-list__handle-sidebar__sidebar__item">
-                        <h3>rating</h3>
-                        <div className="product-list__handle-sidebar__sidebar__item__rate">
-                            <div>
-                                <input id="5start" type="checkbox" hidden/>
-                                <label htmlFor="5start">
-                                    <span>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                    </span>
-                                    <span>From 5 stars</span>
-                                </label>
-                            </div>
-                            <div>
-                                <input id="4start" type="checkbox" hidden/>
-                                <label htmlFor="4start">
-                                    <span>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-star"></i>
-                                    </span>
-                                    <span>From 4 stars</span>
-                                </label>
-                            </div>
-                            <div>
-                                <input id="3start" type="checkbox" hidden/>
-                                <label htmlFor="3start">
-                                    <span>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-star"></i>
-                                        <i className="bdx-star"></i>
-                                    </span>
-                                    <span>From 3 stars</span>
-                                </label>
-                            </div>
-                            <div>
-                                <input id="2start" type="checkbox" hidden/>
-                                <label htmlFor="2start">
-                                    <span>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-star"></i>
-                                        <i className="bdx-star"></i>
-                                        <i className="bdx-star"></i>
-                                    </span>
-                                    <span>From 2 stars</span>
-                                </label>
-                            </div>
-                            <div>
-                                <input id="1start" type="checkbox" hidden/>
-                                <label htmlFor="1start">
-                                    <span>
-                                        <i className="bdx-start-fill"></i>
-                                        <i className="bdx-star"></i>
-                                        <i className="bdx-star"></i>
-                                        <i className="bdx-star"></i>
-                                        <i className="bdx-star"></i>
-                                    </span>
-                                    <span>From 1 stars</span>
-                                </label>
+                        <div className="product-list__handle-sidebar__sidebar__item">
+                            <h3>rating</h3>
+                            <div className="product-list__handle-sidebar__sidebar__item__rate">
+                                <div>
+                                    <input id="5start" type="checkbox" hidden/>
+                                    <label htmlFor="5start">
+                                        <span>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                        </span>
+                                        <span>Five stars</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <input id="4start" type="checkbox" hidden/>
+                                    <label htmlFor="4start">
+                                        <span>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-star"></i>
+                                        </span>
+                                        <span>Four stars</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <input id="3start" type="checkbox" hidden/>
+                                    <label htmlFor="3start">
+                                        <span>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-star"></i>
+                                            <i className="bdx-star"></i>
+                                        </span>
+                                        <span>Three stars</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <input id="2start" type="checkbox" hidden/>
+                                    <label htmlFor="2start">
+                                        <span>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-star"></i>
+                                            <i className="bdx-star"></i>
+                                            <i className="bdx-star"></i>
+                                        </span>
+                                        <span>Two stars</span>
+                                    </label>
+                                </div>
+                                <div>
+                                    <input id="1start" type="checkbox" hidden/>
+                                    <label htmlFor="1start">
+                                        <span>
+                                            <i className="bdx-start-fill"></i>
+                                            <i className="bdx-star"></i>
+                                            <i className="bdx-star"></i>
+                                            <i className="bdx-star"></i>
+                                            <i className="bdx-star"></i>
+                                        </span>
+                                        <span>One stars</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
+                        <button onClick={()=>handleClick()}>Close</button>
                     </div>
+                    <div onClick={()=>handleClick()} id="modal-backdrop" className="modal-backdrop"></div>
                 </div>
                 <div className="product-list__handle-sidebar__items">
-                    <div className="flex justify-between mb-8">
+                    <div className="row gap-4 mb-8">
+                        <button
+                        className="product-list__handle-sidebar__items__show-menu h-[48px] shadow-md"
+                        onClick={()=>handleClick()}
+                        >
+                            <span>SORT</span>
+                            <i className="bdx-caret"></i>
+                        </button>
                         <Combobox value={selected} onChange={setSelected}>
-                            <div className="relative w-fit">
-                                <div className="relative border border-primary border-solid w-fit cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
+                            <div className="relative w-fit md:grow">
+                                <div className="relative md:grow border border-primary border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
                                     <Combobox.Input
-                                        className="w-fit border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize text-primary bg-[transparent] font-semibold focus:outline-none"
+                                        className="w-fit md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize text-primary bg-[transparent] font-semibold focus:outline-none"
                                         displayValue={(person: Person) => person.name}
                                         onChange={(event) => setQuery(event.target.value)}
                                     />
@@ -247,9 +288,9 @@ const ProductList: React.FunctionComponent = () => {
                                 </Transition>
                             </div>
                         </Combobox>
-                        <div className="xl:w-3/4 w-2/3 flex md:hidden items-center px-[12px] relative">
+                        <div className="flex h-[48px] md:w-full items-center grow px-[12px] relative">
                             <input
-                                className="w-full px-[24px] h-full rounded-full"
+                                className="px-[24px] w-full h-full rounded-full shadow-md"
                                 type="text"
                                 placeholder="Search by Title, Author, ISBN or Keywords"
                             />
