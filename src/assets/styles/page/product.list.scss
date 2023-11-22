@@ -109,6 +109,9 @@
                 height: 48px;
                 border-radius: 24px;
                 text-transform: uppercase;
+                @include min-width-1280{
+                    display: none;
+                }
             }
         }
         &>div:first-child{
@@ -116,7 +119,7 @@
                 display: none;
                 position: absolute;
                 z-index: 900;
-                left: 0px;
+                left: -100vw;
                 top: 0px;
                 width: 100vw;
                 height: 100vh;

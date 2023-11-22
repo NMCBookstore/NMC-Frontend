@@ -50,12 +50,14 @@ const ProductList: React.FunctionComponent = () => {
         if (showSideBar.current && element) {
             modalBackdrop.setAttribute('data-show', 'true');
             modalBackdrop.style.setProperty('opacity', '1');
+            modalBackdrop.style.setProperty('left', '0vw');
             element.style.setProperty('left', '0px');
 
         }
         else  if (!showSideBar.current && element) {
             modalBackdrop.setAttribute('data-show', 'false');
             modalBackdrop.style.setProperty('opacity', '0');
+            modalBackdrop.style.setProperty('left', '-100vw');
             element.style.setProperty('left', '-300px');
         }
     };
@@ -64,6 +66,7 @@ const ProductList: React.FunctionComponent = () => {
             showSideBar.current = false;
             modalBackdrop.setAttribute('data-show', 'false');
             modalBackdrop.style.setProperty('opacity', '0');
+            modalBackdrop.style.setProperty('left', '-100vw');
             elementRef.current.style.setProperty('left', '0px');
         }
         else if(elementRef.current && window.innerWidth < 1280){
