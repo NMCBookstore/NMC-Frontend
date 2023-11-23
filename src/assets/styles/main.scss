@@ -9,6 +9,8 @@
 @import "component/breadcumb";
 @import "component/button";
 @import "component/orderbill";
+@import "component/review.item";
+@import "component/addcomment.scss";
 @import "page/home";
 @import "page/cart";
 @import "page/order.info";
@@ -16,3 +18,4 @@
 @import "page/order.return";
 @import "page/product.detail";
 @import "page/product.list";
+@import "page/article.detail";
