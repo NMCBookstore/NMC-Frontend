@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Product } from "../../interface/Product";
-import { useAddToWishlistMutation } from "../../services/wishlist/wishlistAPI";
-import { currencyExchange } from "../../utils/helper";
-import "./style.scss";
 import { Wishlist } from "../../interface/Wishlist";
+import { useAddToWishlistMutation, useDeleteWishlistMutation } from "../../services/wishlist/wishlistAPI";
+import "./style.scss";
 
 interface ProductItemProps {
     itemDetail: Product;
@@ -12,12 +11,21 @@ interface ProductItemProps {
 }
 const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
     const [addWishList] = useAddToWishlistMutation();
+    const [deleteWishList] = useDeleteWishlistMutation()
 
     const navigate = useNavigate();
 
+    const findWishlistIds = (): number[] => {
+        const foundWishlistItems = props.wishlistItem.filter(
+          (item) => item?.book.id === props.itemDetail?.id
+        );
+      
+        return foundWishlistItems.map((wishlistItem) => wishlistItem?.wishlist_id || 0);
+      };
+
     const handleClick = () => {
-        console.log(`navigate to ${props.itemDetail?.id}`);
-        // navigate(`/product/${props?.id}`);
+        // console.log(`navigate to ${props.itemDetail?.id}`);
+        navigate(`/product/${props.itemDetail?.id}`);
     };
 
     const handleAddToCart = () => {
@@ -28,13 +36,18 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
         console.log("Add to wish list clicked");
         addWishList(props.itemDetail.id);
     };
+
+    const handleDeleteWishListItem = () => {
+        const wishlistId = findWishlistIds();
+        deleteWishList(wishlistId)
+    }
     return (
         <div className="product_hover">
-            <div className="bg-white product-item">
-                <div className="flex flex-col items-center">
+            <div  className="bg-white product-item">
+                <div onClick={handleClick} className="flex flex-col items-center">
                     <div className="product-item__img">
                         <img
-                            src={props.itemDetail.image[0]}
+                            src={props.itemDetail.image[0].replace(/'/g, '')}
                             alt={props.itemDetail.image[0]}
                         />
                     </div>
@@ -67,7 +80,7 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
                             <div>
                                 {/* <p className="product-item__control__old-price">${props.itemDetail?.salePrice}</p> */}
                                 <p className="product-item__control__price">
-                                    {currencyExchange(props.itemDetail?.price)}
+                                    {props.itemDetail?.price}$
                                 </p>
                             </div>
                         }
@@ -82,7 +95,7 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
                             {props.wishlistItem?.some(
                                 (item) => item?.book.id === props.itemDetail?.id
                             ) ? (
-                                <i className="bdx-heart text-accent"></i>
+                                <i onClick={handleDeleteWishListItem} className="bdx-heart text-accent"></i>
                             ) : (
                                 <i onClick={handleAddToWishList} className="bdx-heart-1"></i>
                             )}

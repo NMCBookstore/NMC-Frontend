@@ -11,15 +11,38 @@ import { Product } from '../../interface/Product';
 import Slider from "react-slick";
 import { productListSettings } from "../../common/CarouselSetting";
 import ProductItem from "../../component/ProductItem";
-import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
+import { useAddToWishlistMutation, useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 import { articleItem } from "../../interface";
 import NotiHome from "../../component/NotiHome";
+import { useParams } from "react-router-dom";
+import { useGetProductDetailsQuery } from "../../services/product/productAPI";
 
 
-const ProductDetail: React.FunctionComponent = () => {
+const ProductDetail: React.FunctionComponent =() => {
+
+    let [count, setCount] = useState(1);
+    
+
+    function incrementCount() {
+        setCount(count + 1);
+      }
+      function decrementCount() {
+        setCount(count > 1 ? count - 1 : 1);
+      }
+
+    const {id}= useParams()
+    const {data} = useGetProductDetailsQuery(Number(id))
+    const {data : wishList} = useGetWishlistQuery()
+
+    const [addWishList] = useAddToWishlistMutation()
+
     const showFullContent = useRef(false);
 
     const elementRef = useRef<HTMLDivElement>(null);
+
+    const handleAddToWishList = () => {
+        addWishList(Number(id));
+    };
 
     const handleClick = () => {
         showFullContent.current = !showFullContent.current;
@@ -94,7 +117,7 @@ const ProductDetail: React.FunctionComponent = () => {
                                     >
                                         <img
                                             alt=""
-                                            data-lazy-src={productItem}
+                                            data-lazy-src={data?.image[0].replace(/'/g, '')}
                                         />
                                     </div>
                                     <div
@@ -157,8 +180,8 @@ const ProductDetail: React.FunctionComponent = () => {
                         </div>
                         <div className="lg:w-[100%] w-[50%]">
                             <div className="product-detail__item__heading">
-                                <h1>Harry Potter and the Chamber of Secrets (Harry Potter Series #2)</h1>
-                                <p className="product-detail__item__heading__author">By <span>J. K. Rowling, Mary GrandPré (Illustrator)</span></p>
+                                <h1>{data?.name}</h1>
+                                <p className="product-detail__item__heading__author">By <span>{data?.author}</span></p>
                                 <div className="product-detail__item__heading__rate">
                                     <div className="product-detail__item__heading__rate__start">
                                         <i className="bdx-start-fill"></i>
@@ -168,11 +191,11 @@ const ProductDetail: React.FunctionComponent = () => {
                                         <i className="bdx-start-fill"></i>
                                     </div>
                                     <span className="mx-3 text-gray">|</span>
-                                    <p className="product-detail__item__heading__rate__note"><span>5.0</span> (<span>1080</span> reviews)</p>
+                                    <p className="product-detail__item__heading__rate__note"><span>{data?.rating}</span> (<span>1080</span> reviews)</p>
                                 </div>
                             </div>
                             <div className="product-detail__item__info">
-                                <p className="product-detail__item__info__price">$ <span>9.99</span></p>
+                                <p className="product-detail__item__info__price">$ <span>{data?.price}</span></p>
                                 <div className="product-detail__item__info__discount">
                                     <p className="product-detail__item__info__discount__oldprice">$ <span>10.99</span></p>
                                     <p className="product-detail__item__info__discount__percent">Save <span>10</span> %</p>
@@ -181,16 +204,24 @@ const ProductDetail: React.FunctionComponent = () => {
                                     <p className="product-detail__item__info__quantity__title">Amount:</p>
                                     <div className="qty-input">
                                         <button className="qty-count qty-count--minus" data-action="minus"
+                                            onClick={decrementCount}
                                             type="button">-</button>
                                         <input className="product-qty" type="number" name="product-qty" min="0" max="100"
-                                            defaultValue="1"></input>
+                                            value={count} onChange={incrementCount}></input>
                                         <button className="qty-count qty-count--add" data-action="add"
+                                            onClick={incrementCount}
                                             type="button">+</button>
                                     </div>
                                 </div>
                                 <div className="product-detail__item__info__behavior">
                                     <button className="product-detail__item__info__behavior__addtocart"><i className="bdx-cart-fill"></i><span>Add to cart</span></button>
-                                    <button className="product-detail__item__info__behavior__addtowishlist"><i className="bdx-heart-1"></i><span>Add to wishlist</span></button>
+                                    {wishList?.some((item) => item.book.id === Number(id)) ? (
+                                    <button disabled className="product-detail__item__info__behavior__addtowishlist"><i className="bdx-heart-1"></i>
+                                    <span>Already in your wishlist</span></button>
+                                    ) : (
+                                    <button onClick={handleAddToWishList} className="product-detail__item__info__behavior__addtowishlist"><i className="bdx-heart-1"></i>
+                                    <span>Add to wishlist</span></button>
+                                    ) }
                                 </div>
                             </div>
                         </div>
@@ -204,12 +235,7 @@ const ProductDetail: React.FunctionComponent = () => {
                                     <h2 className="product-detail__content__overview__main__heading">Overview</h2>
                                     <div className="product-detail__content__overview__main__des" id={`${showFullContent ? "showMain" : ""}`}>
                                         <div ref={elementRef}>
-                                            <p>The Dursleys were so mean and hideous that summer that all Harry Potter wanted was to get back to the Hogwarts School for Witchcraft and Wizardry.</p>
-                                            <p> But just as he's packing his bags, Harry receives a warning from a strange, impish creature named Dobby who says that if Harry Potter returns to Hogwarts, disaster will strike.And strike it does. For in Harry's second year at Hogwarts, fresh torments and horrors arise, including an outrageously stuck-up new professor, Gilderoy Lockhart, a spirit named Moaning Myrtle who haunts the girls' bathroom, and the unwanted attentions of Ron Weasley's younger sister, Ginny.But each of these seem minor annoyances when the real trouble begins, and someone - or something - starts turning Hogwarts students to stone. Could it be Draco Malfoy, a more poisonous rival than ever?</p>
-                                            <p>Could it possibly be Hagrid, whose mysterious past is finally told? Or could it be the one everyone at Hogwarts most suspects... Harry Potter himself!</p>
-                                            <p>The Dursleys were so mean and hideous that summer that all Harry Potter wanted was to get back to the Hogwarts School for Witchcraft and Wizardry.</p>
-                                            <p> But just as he's packing his bags, Harry receives a warning from a strange, impish creature named Dobby who says that if Harry Potter returns to Hogwarts, disaster will strike.And strike it does. For in Harry's second year at Hogwarts, fresh torments and horrors arise, including an outrageously stuck-up new professor, Gilderoy Lockhart, a spirit named Moaning Myrtle who haunts the girls' bathroom, and the unwanted attentions of Ron Weasley's younger sister, Ginny.But each of these seem minor annoyances when the real trouble begins, and someone - or something - starts turning Hogwarts students to stone. Could it be Draco Malfoy, a more poisonous rival than ever?</p>
-                                            <p>Could it possibly be Hagrid, whose mysterious past is finally told? Or could it be the one everyone at Hogwarts most suspects... Harry Potter himself!</p>
+                                            <p>{data?.description}</p>
                                         </div>
                                     </div>
                                 </div>

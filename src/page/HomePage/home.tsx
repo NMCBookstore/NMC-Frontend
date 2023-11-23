@@ -25,7 +25,7 @@ const HomePage: React.FunctionComponent = () => {
     const [id, setId] = useState(1);
     const {data} = useGetSubGenresQuery(id);
     const {data: getNewProduct = []} = useGetTopNewProductQuery()
-    const { data: wishlist = []} = useGetWishlistQuery();
+    const {data: wishlist = []} = useGetWishlistQuery();
 
     // const productList: Product[] = [{ name: "Build the life you want", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:0, rating: 3, image: productItem },
     // { name: "Section with number 2", description: "Arthur c. brooks oprah winfrey", price: 300,salePrice:200, rating: 4, image: productItem },
