@@ -18,9 +18,19 @@ const wishlist = book.injectEndpoints({
       providesTags: ["WishlistItems"],
 
     }),
-    
+    deleteWishlist: builder.mutation<Wishlist, number[]>({
+      query: (IDsArr) => {
+        let endPoint = `users/wishlists?`;
+        IDsArr.map((id: any) => (endPoint += `ids=${id}&`));
+        return {
+          method: "DELETE",
+          url: endPoint,
+        };
+      },
+      invalidatesTags: ["WishlistItems"],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useAddToWishlistMutation, useGetWishlistQuery } = wishlist;
+export const { useAddToWishlistMutation, useGetWishlistQuery, useDeleteWishlistMutation } = wishlist;

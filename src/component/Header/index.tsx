@@ -4,9 +4,10 @@ import { Dialog, Transition } from "@headlessui/react";
 
 import NoteNotify from "../NoteNotify";
 import { useDispatch, useSelector } from "react-redux";
-import { login, selectCurrentAccessToken } from "../../features/auth/authSlice";
+import { login, selectCurrentAccessToken, selectCurrentUser } from "../../features/auth/authSlice";
 import { logo } from "../../assets/img";
 import CartSidebar from "./CartSidebar";
+import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 
 const Header: React.FunctionComponent = () => {
   const [showSearch, setshowSearch] = useState<boolean>(false);
@@ -14,8 +15,8 @@ const Header: React.FunctionComponent = () => {
   const dispatch = useDispatch();
 
   const token = useSelector(selectCurrentAccessToken);
-
-
+  const user = useSelector(selectCurrentUser);
+  const {data: wishlistBadge} = useGetWishlistQuery()
 
   const handleOpenCart = () => {
     const pathAfterDomain = window.location.pathname;
@@ -35,7 +36,7 @@ const Header: React.FunctionComponent = () => {
   }
 
   const cancelButtonRef = useRef(null);
-  const numberCount1: number = 10;
+  const numberWishlist = Number(wishlistBadge?.length);
   const numberCount3: number = 6;
   const numberCount2: number = 2;
 
@@ -115,12 +116,12 @@ const Header: React.FunctionComponent = () => {
           </div>
           <div className="flex">
             <Link
-              to="/wishlist"
+              to="/user/wishlist"
               className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
             >
               <div className="relative">
                 <i className="bdx-heart text-[20px] text-[#fff] flex items-center"></i>
-                <NoteNotify numberCount={numberCount1} />
+                {numberWishlist > 0 ? <NoteNotify numberCount={numberWishlist} /> : null}
               </div>
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
                 Wishlist
@@ -147,8 +148,11 @@ const Header: React.FunctionComponent = () => {
               className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
             >
               <div className="relative">
-                <i className="bdx-user text-[20px] text-[#fff] flex items-center"></i>
-                <NoteNotify numberCount={numberCount2} />
+
+                {/* cần phải chỉnh lại kích cỡ ảnh */}
+                {token ? <img style={{ width: '22px', height: '22px', borderRadius: '50%' }} src={user?.image}></img> : <i className="bdx-user text-[20px] text-[#fff] flex items-center"></i> }
+                
+                {/* <NoteNotify numberCount={numberCount2} /> */}
               </div>
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
                 Account

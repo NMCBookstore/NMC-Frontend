@@ -8,10 +8,12 @@ const Layout = lazy(() => import("./layout/Layout"));
 const OrderInfo = lazy(() => import("./page/Order/info"));
 const OrderPayment = lazy(() => import("./page/Order/payment"));
 const OrderReturn = lazy(() => import("./page/Order/return"));
-const Cart = lazy(() => import("./page/Cart"));
+const ProductDetails = lazy(() => import("./page/Product/detail"));
 
 /**** Protected User Routes *****/
 const RequireAuth = lazy(() => import("./features/auth/RequireAuth"));
+const Cart = lazy(() => import("./page/Cart"));
+// const Wishlist = lazy(() => import("./page/
 
 /**** 404 page *****/
 const NotFound = lazy(() => import("./page/error"));
@@ -28,6 +30,7 @@ const RouterConfig: RouteObject[] = [
       { path: "/order/payment", element: <OrderPayment /> },
       { path: "/order/return", element: <OrderReturn /> },
       { path: "*", element: <NotFound /> },
+      { path: "/product/:id", element: <ProductDetails /> },
     ],
   },
 
@@ -37,7 +40,7 @@ const RouterConfig: RouteObject[] = [
     children: [
       {
         element: <RequireAuth />,
-        children: [{ path: "cart", element: <Cart /> }],
+        children: [{ path: "cart", element: <Cart /> },]
       },
     ],
   },
