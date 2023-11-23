@@ -76,3 +76,48 @@ button{
 input{
     outline: none !important;
 }
+
+body {
+    font-family: 'Inter';
+    &:has(#modal-backdrop[data-show="true"]) {
+        overflow: hidden;
+    }
+}
+.reset-for-article {
+    img,
+    iframe,
+    video {
+        max-width: 100% !important;
+        margin-bottom: 10px;
+    }
+
+    img {
+        display: block;
+        margin: auto;
+    }
+
+    table {
+        margin-bottom: 16px;
+        width: 100% !important;
+        border-collapse: collapse;
+        border: 1px solid #000;
+
+        td {
+            border: 1px solid #000;
+            padding: 4px 8px;
+        }
+    }
+
+    ul,
+    ol {
+
+        li {
+            list-style-type: disc;
+        }
+    }
+
+    a {
+        color: var(--bs-link-color);
+        text-decoration: underline;
+    }
+}

@@ -1,0 +1,40 @@
+.addcomment-block{
+    margin-top: 24px;
+    margin-bottom: 24px;
+    display: flex;
+    gap: 16px;
+    @include max-width-576{
+        flex-direction: column;
+    }
+    &__main{
+        display: flex;
+        gap: 16px;
+        flex-grow: 1;
+        img{
+            border-radius: 100%;
+            object-fit: cover;
+            width: 40px;
+            height: 40px;
+            flex-shrink: 0;
+        }
+        textarea{
+            padding: 16px;
+            height: 96px;
+            border-radius: 8px;
+            flex-grow: 1;
+        }
+    }
+    button{
+        display: flex;
+        gap: 12px;
+        padding: 12px 24px;
+        border-radius: 100px;
+        width: fit-content;
+        height: fit-content;
+        background-color: $orange-orange-6;
+        @include max-width-576{
+            width: 100%;
+            justify-content: center;
+        }
+    }
+}

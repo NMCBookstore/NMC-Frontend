@@ -265,20 +265,20 @@ const ProductDetail: React.FunctionComponent =() => {
                                     </div>
                                 </div>
                                 <div className="product-detail__content__review__list">
-                                    <div className="product-detail__content__review__list__item">
-                                        <div className="product-detail__content__review__list__item__heading">
-                                            <div className="product-detail__content__review__list__item__heading__left">
-                                                <div className="product-detail__content__review__list__item__heading__left__user">
+                                    <div className="review__item">
+                                        <div className="review__item__heading">
+                                            <div className="review__item__heading__left">
+                                                <div className="review__item__heading__left__user">
                                                     <img src={avatarUser} alt="avatarUser" />
-                                                    <p className="product-detail__content__review__list__item__heading__left__user__name">amyrobson</p>
-                                                    <p className="product-detail__content__review__list__item__heading__left__user__date">18/11/2023</p>
+                                                    <p className="review__item__heading__left__user__name">amyrobson</p>
+                                                    <p className="review__item__heading__left__user__date">18/11/2023</p>
                                                 </div>
-                                                <div className="product-detail__content__review__list__item__heading__left__info">
-                                                    <div className="product-detail__content__review__list__item__heading__left__info__sumary">
+                                                <div className="review__item__heading__left__info">
+                                                    <div className="review__item__heading__left__info__sumary">
                                                         <p>Reviews: <span>1075</span></p>
                                                         <p>Votes: <span>347</span></p>
                                                     </div>
-                                                    <div className="product-detail__content__review__list__item__heading__left__info__datail">
+                                                    <div className="review__item__heading__left__info__datail">
                                                         <p>Rate:
                                                             <span>
                                                                 <i className="bdx-start-fill"></i>
@@ -292,15 +292,15 @@ const ProductDetail: React.FunctionComponent =() => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="product-detail__content__review__list__item__heading__right">
-                                                <div className="product-detail__content__review__list__item__heading__right__help">
+                                            <div className="review__item__heading__right">
+                                                <div className="review__item__heading__right__help">
                                                     <p>Helpful?</p>
-                                                    <div className="product-detail__content__review__list__item__heading__right__help__behavior">
+                                                    <div className="review__item__heading__right__help__behavior">
                                                         <button><i className="bdx-arrow-2"></i>yes</button>
                                                         <button><i className="bdx-arrow-2"></i>no</button>
                                                     </div>
                                                 </div>
-                                                <div className="product-detail__content__review__list__item__heading__right__spam">
+                                                <div className="review__item__heading__right__spam">
                                                     <p>Spam?</p>
                                                     <button><span><i className="bdx-close"></i>Report</span></button>
                                                 </div>
@@ -318,20 +318,20 @@ const ProductDetail: React.FunctionComponent =() => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="product-detail__content__review__list__item">
-                                        <div className="product-detail__content__review__list__item__heading">
-                                            <div className="product-detail__content__review__list__item__heading__left">
-                                                <div className="product-detail__content__review__list__item__heading__left__user">
+                                    <div className="review__item">
+                                        <div className="review__item__heading">
+                                            <div className="review__item__heading__left">
+                                                <div className="review__item__heading__left__user">
                                                     <img src={avatarUser} alt="avatarUser" />
-                                                    <p className="product-detail__content__review__list__item__heading__left__user__name">amyrobson</p>
-                                                    <p className="product-detail__content__review__list__item__heading__left__user__date">18/11/2023</p>
+                                                    <p className="review__item__heading__left__user__name">amyrobson</p>
+                                                    <p className="review__item__heading__left__user__date">18/11/2023</p>
                                                 </div>
-                                                <div className="product-detail__content__review__list__item__heading__left__info">
-                                                    <div className="product-detail__content__review__list__item__heading__left__info__sumary">
+                                                <div className="review__item__heading__left__info">
+                                                    <div className="review__item__heading__left__info__sumary">
                                                         <p>Reviews: <span>1075</span></p>
                                                         <p>Votes: <span>347</span></p>
                                                     </div>
-                                                    <div className="product-detail__content__review__list__item__heading__left__info__datail">
+                                                    <div className="review__item__heading__left__info__datail">
                                                         <p>Rate:
                                                             <span>
                                                                 <i className="bdx-start-fill"></i>
@@ -345,15 +345,15 @@ const ProductDetail: React.FunctionComponent =() => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="product-detail__content__review__list__item__heading__right">
-                                                <div className="product-detail__content__review__list__item__heading__right__help">
+                                            <div className="review__item__heading__right">
+                                                <div className="review__item__heading__right__help">
                                                     <p>Helpful?</p>
-                                                    <div className="product-detail__content__review__list__item__heading__right__help__behavior">
+                                                    <div className="review__item__heading__right__help__behavior">
                                                         <button><i className="bdx-arrow-2"></i>yes</button>
                                                         <button><i className="bdx-arrow-2"></i>no</button>
                                                     </div>
                                                 </div>
-                                                <div className="product-detail__content__review__list__item__heading__right__spam">
+                                                <div className="review__item__heading__right__spam">
                                                     <p>Spam?</p>
                                                     <button><span><i className="bdx-close"></i>Report</span></button>
                                                 </div>
@@ -371,20 +371,20 @@ const ProductDetail: React.FunctionComponent =() => {
                                             </p>
                                         </div>
                                     </div>
-                                    <div className="product-detail__content__review__list__item">
-                                        <div className="product-detail__content__review__list__item__heading">
-                                            <div className="product-detail__content__review__list__item__heading__left">
-                                                <div className="product-detail__content__review__list__item__heading__left__user">
+                                    <div className="review__item">
+                                        <div className="review__item__heading">
+                                            <div className="review__item__heading__left">
+                                                <div className="review__item__heading__left__user">
                                                     <img src={avatarUser} alt="avatarUser" />
-                                                    <p className="product-detail__content__review__list__item__heading__left__user__name">amyrobson</p>
-                                                    <p className="product-detail__content__review__list__item__heading__left__user__date">18/11/2023</p>
+                                                    <p className="review__item__heading__left__user__name">amyrobson</p>
+                                                    <p className="review__item__heading__left__user__date">18/11/2023</p>
                                                 </div>
-                                                <div className="product-detail__content__review__list__item__heading__left__info">
-                                                    <div className="product-detail__content__review__list__item__heading__left__info__sumary">
+                                                <div className="review__item__heading__left__info">
+                                                    <div className="review__item__heading__left__info__sumary">
                                                         <p>Reviews: <span>1075</span></p>
                                                         <p>Votes: <span>347</span></p>
                                                     </div>
-                                                    <div className="product-detail__content__review__list__item__heading__left__info__datail">
+                                                    <div className="review__item__heading__left__info__datail">
                                                         <p>Rate:
                                                             <span>
                                                                 <i className="bdx-start-fill"></i>
@@ -398,15 +398,15 @@ const ProductDetail: React.FunctionComponent =() => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="product-detail__content__review__list__item__heading__right">
-                                                <div className="product-detail__content__review__list__item__heading__right__help">
+                                            <div className="review__item__heading__right">
+                                                <div className="review__item__heading__right__help">
                                                     <p>Helpful?</p>
-                                                    <div className="product-detail__content__review__list__item__heading__right__help__behavior">
+                                                    <div className="review__item__heading__right__help__behavior">
                                                         <button><i className="bdx-arrow-2"></i>yes</button>
                                                         <button><i className="bdx-arrow-2"></i>no</button>
                                                     </div>
                                                 </div>
-                                                <div className="product-detail__content__review__list__item__heading__right__spam">
+                                                <div className="review__item__heading__right__spam">
                                                     <p>Spam?</p>
                                                     <button><span><i className="bdx-close"></i>Report</span></button>
                                                 </div>
