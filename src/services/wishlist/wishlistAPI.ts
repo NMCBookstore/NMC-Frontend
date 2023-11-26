@@ -4,6 +4,7 @@ import { book } from "../Base/baseAPI";
 
 const wishlist = book.injectEndpoints({
   endpoints: (builder) => ({
+    
     addToWishlist: builder.mutation<Wishlist, number>({
       query: (books_id) => ({
         method: "POST",
@@ -11,6 +12,8 @@ const wishlist = book.injectEndpoints({
       }),
       invalidatesTags: ["WishlistItems"],
     }),
+
+
     getWishlist: builder.query<Wishlist[], void>({
       query: () => ({
         url: `users/wishlists`,

@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import { store, persistor } from "./app/store";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { BrowserRouter } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import ScrollToTop from "./layout/ScrollToTop";
 
 const root = ReactDOM.createRoot(
@@ -22,8 +23,9 @@ root.render(
             <div style={{ display: "flex", justifyContent: "center" }}></div>
           }
         >
+          <Toaster />
           <PersistGate loading={null} persistor={persistor}>
-            <ScrollToTop/>
+            <ScrollToTop />
             <App />
           </PersistGate>
         </Suspense>

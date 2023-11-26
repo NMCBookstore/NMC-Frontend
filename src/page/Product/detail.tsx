@@ -16,6 +16,8 @@ import { articleItem } from "../../interface";
 import NotiHome from "../../component/NotiHome";
 import { useParams } from "react-router-dom";
 import { useGetProductDetailsQuery } from "../../services/product/productAPI";
+import { useAddToCartMutation } from "../../services/cart/cartAPI";
+import toast from "react-hot-toast";
 
 
 const ProductDetail: React.FunctionComponent =() => {
@@ -35,6 +37,7 @@ const ProductDetail: React.FunctionComponent =() => {
     const {data : wishList} = useGetWishlistQuery()
 
     const [addWishList] = useAddToWishlistMutation()
+    const [addToCart] = useAddToCartMutation()
 
     const showFullContent = useRef(false);
 
@@ -43,6 +46,10 @@ const ProductDetail: React.FunctionComponent =() => {
     const handleAddToWishList = () => {
         addWishList(Number(id));
     };
+
+    const handleAddToCart = () => {
+        toast.success("Added to your cart")
+    }
 
     const handleClick = () => {
         showFullContent.current = !showFullContent.current;
@@ -81,102 +88,50 @@ const ProductDetail: React.FunctionComponent =() => {
                 <div className="product-detail__item">
                     <div className="row gap-y-8 justify-center">
                         <div className="md:w-[100%] lg:w-[80%] w-[50%]">
+                        {data?.image.map((item, index) => (
                             <Fancybox
-                                options={{
-                                    Carousel: {
-                                        infinite: false,
-                                    },
-                                }}
-                            >
-                                <Carousel options={{
+                            options={{
+                                Carousel: {
                                     infinite: false,
-                                    Dots: false,
-                                    Navigation: false,
-                                    Thumbs: {
-                                        type: 'classic',
-                                        Carousel: {
-                                            slidesPerPage: 1,
-                                            Navigation: false,
-                                            center: true,
-                                            fill: true,
-                                            dragFree: true,
-                                            axis: 'y',
-                                            breakpoints: {
-                                                '(max-width: 576px)': {
-                                                    axis: 'x',
-                                                },
+                                },
+                            }}
+                        >
+                            <Carousel options={{
+                                infinite: false,
+                                Dots: false,
+                                Navigation: false,
+                                Thumbs: {
+                                    type: 'classic',
+                                    Carousel: {
+                                        slidesPerPage: 1,
+                                        Navigation: false,
+                                        center: true,
+                                        fill: true,
+                                        dragFree: true,
+                                        axis: 'y',
+                                        breakpoints: {
+                                            '(max-width: 576px)': {
+                                                axis: 'x',
                                             },
                                         },
                                     },
-                                }} >
-                                    <div
-                                        className="f-carousel__slide"
-                                        data-thumb-src={productItem}
-                                        data-fancybox="gallery"
-                                        data-src={productItem}
-                                    >
-                                        <img
-                                            alt=""
-                                            data-lazy-src={data?.image[0].replace(/'/g, '')}
-                                        />
-                                    </div>
-                                    <div
-                                        className="f-carousel__slide"
-                                        data-thumb-src={productItem}
-                                        data-fancybox="gallery"
-                                        data-src={productItem}
-                                    >
-                                        <img
-                                            alt=""
-                                            data-lazy-src={productItem}
-                                        />
-                                    </div>
-                                    <div
-                                        className="f-carousel__slide"
-                                        data-thumb-src={productItem}
-                                        data-fancybox="gallery"
-                                        data-src={productItem}
-                                    >
-                                        <img
-                                            alt=""
-                                            data-lazy-src={productItem}
-                                        />
-                                    </div>
-                                    <div
-                                        className="f-carousel__slide"
-                                        data-thumb-src={productItem}
-                                        data-fancybox="gallery"
-                                        data-src={productItem}
-                                    >
-                                        <img
-                                            alt=""
-                                            data-lazy-src={productItem}
-                                        />
-                                    </div>
-                                    <div
-                                        className="f-carousel__slide"
-                                        data-thumb-src={productItem}
-                                        data-fancybox="gallery"
-                                        data-src={productItem}
-                                    >
-                                        <img
-                                            alt=""
-                                            data-lazy-src={productItem}
-                                        />
-                                    </div>
-                                    <div
-                                        className="f-carousel__slide"
-                                        data-thumb-src={productItem}
-                                        data-fancybox="gallery"
-                                        data-src={productItem}
-                                    >
-                                        <img
-                                            alt=""
-                                            data-lazy-src={productItem}
-                                        />
-                                    </div>
-                                </Carousel>
-                            </Fancybox>
+                                },
+                            }} >
+                                <div
+                                    className="f-carousel__slide"
+                                    data-thumb-src={item}
+                                    data-fancybox="gallery"
+                                    data-src={item}
+                                >
+                                    <img
+                                        alt=""
+                                        data-lazy-src={item}
+                                    />
+                                </div>
+                            </Carousel>
+                        </Fancybox>
+                        ))}
+
                         </div>
                         <div className="lg:w-[100%] w-[50%]">
                             <div className="product-detail__item__heading">
@@ -207,14 +162,16 @@ const ProductDetail: React.FunctionComponent =() => {
                                             onClick={decrementCount}
                                             type="button">-</button>
                                         <input className="product-qty" type="number" name="product-qty" min="0" max="100"
-                                            value={count} onChange={incrementCount}></input>
+                                            value={count}></input>
                                         <button className="qty-count qty-count--add" data-action="add"
                                             onClick={incrementCount}
                                             type="button">+</button>
                                     </div>
                                 </div>
                                 <div className="product-detail__item__info__behavior">
-                                    <button className="product-detail__item__info__behavior__addtocart"><i className="bdx-cart-fill"></i><span>Add to cart</span></button>
+                                    <button onClick={handleAddToCart} className="product-detail__item__info__behavior__addtocart"><i className="bdx-cart-fill"></i>
+                                    <span>Add to cart</span>
+                                    </button>
                                     {wishList?.some((item) => item.book.id === Number(id)) ? (
                                     <button disabled className="product-detail__item__info__behavior__addtowishlist"><i className="bdx-heart-1"></i>
                                     <span>Already in your wishlist</span></button>
