@@ -7,6 +7,7 @@ const Layout = lazy(() => import("./layout/Layout"));
 
 const OrderInfo = lazy(() => import("./page/Order/info"));
 const OrderPayment = lazy(() => import("./page/Order/payment"));
+const StripeContainer = lazy(() => import("./page/Order/StripeContainer"));
 const OrderReturn = lazy(() => import("./page/Order/return"));
 
 const Cart = lazy(() => import("./page/Cart"));
@@ -15,14 +16,12 @@ const ProductDetails = lazy(() => import("./page/Product/detail"));
 const ArticleDetail = lazy(() => import("./page/Article/detail"));
 const ProductList = lazy(() => import("./page/Product"));
 
-
 /**** Protected User Routes *****/
 const RequireAuth = lazy(() => import("./features/auth/RequireAuth"));
-const Cart = lazy(() => import("./page/Cart"));
 // const Wishlist = lazy(() => import("./page/
 
 /**** 404 page *****/
-const NotFound = lazy(() => import("./page/Error"));
+const NotFound = lazy(() => import("./page/error"));
 
 const HomePage = lazy(() => import("./page/HomePage/home"));
 
@@ -33,7 +32,11 @@ const RouterConfig: RouteObject[] = [
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/order/info", element: <OrderInfo /> },
-      { path: "/order/payment", element: <OrderPayment /> },
+      {
+        path: "/order",
+        element: <StripeContainer />,
+        children: [{ path: "payment", element: <OrderPayment /> }],
+      },
       { path: "/order/return", element: <OrderReturn /> },
       { path: "/product/list", element: <ProductList /> },
       { path: "/article/detail", element: <ArticleDetail /> },
@@ -49,7 +52,7 @@ const RouterConfig: RouteObject[] = [
     children: [
       {
         element: <RequireAuth />,
-        children: [{ path: "cart", element: <Cart /> },]
+        children: [{ path: "cart", element: <Cart /> }],
       },
     ],
   },

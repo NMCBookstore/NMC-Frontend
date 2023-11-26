@@ -8,6 +8,9 @@ import { login, selectCurrentAccessToken, selectCurrentUser } from "../../featur
 import { logo } from "../../assets/img";
 import CartSidebar from "./CartSidebar";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
+import { Wishlist } from "../../interface/Wishlist";
+import { useGetCartQuery } from "../../services/cart/cartAPI";
+
 
 const Header: React.FunctionComponent = () => {
   const [showSearch, setshowSearch] = useState<boolean>(false);
@@ -17,6 +20,7 @@ const Header: React.FunctionComponent = () => {
   const token = useSelector(selectCurrentAccessToken);
   const user = useSelector(selectCurrentUser);
   const {data: wishlistBadge} = useGetWishlistQuery()
+  const {data: cartBadge = []} = useGetCartQuery()
 
   const handleOpenCart = () => {
     const pathAfterDomain = window.location.pathname;
@@ -37,7 +41,7 @@ const Header: React.FunctionComponent = () => {
 
   const cancelButtonRef = useRef(null);
   const numberWishlist = Number(wishlistBadge?.length);
-  const numberCount3: number = 6;
+  const numberCart = Number(cartBadge?.length)
   const numberCount2: number = 2;
 
   return (
@@ -135,7 +139,7 @@ const Header: React.FunctionComponent = () => {
             >
               <div className="relative">
                 <i className="bdx-cart-fill text-[20px] text-[#fff] flex items-center"></i>
-                <NoteNotify numberCount={numberCount3} />
+                {numberCart > 0 ? <NoteNotify numberCount={numberCart} /> : null}
               </div>
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
                 Cart
@@ -180,7 +184,7 @@ const Header: React.FunctionComponent = () => {
           </div>
         </div>
       </div>
-      <CartSidebar showCart={showCart} setshowCart={setshowCart}></CartSidebar>
+      <CartSidebar showCart={showCart} setshowCart={setshowCart} cartItem={cartBadge}></CartSidebar>
     </header>
   );
 };
