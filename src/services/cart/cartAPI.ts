@@ -33,9 +33,26 @@ const cart = book.injectEndpoints({
         };
       },
       invalidatesTags: ["CartItems"],
-    })
+    }),
+    updateCart: builder.mutation<Cart, {cart_id: number, amount: number;  }>({
+      query: ({ cart_id, amount }) => {
+        return {
+          method: "PUT",
+          url: `users/carts/${cart_id}`,
+          body: {
+            amount: amount,
+          },
+        };
+      },
+      invalidatesTags: ["CartItems"],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useAddToCartMutation, useGetCartQuery, useDeleteCartItemMutation } = cart;
+export const {
+  useAddToCartMutation,
+  useGetCartQuery,
+  useDeleteCartItemMutation,
+  useUpdateCartMutation
+} = cart;

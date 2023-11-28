@@ -2,9 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import OrderBill from "../../component/OrderBill";
 import Breadcrumb from "../../component/Breadcrumb";
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../../features/auth/authSlice';
 
 const OrderInfo = () => {
     const pathAfterDomain = window.location.pathname;
+
+    const user = useSelector(selectCurrentUser)
 
     return (
         <div className="order-info mt-[76px]">
@@ -18,19 +22,19 @@ const OrderInfo = () => {
                                 <div className="sm:w-full w-[49%]">
                                     <div className="input-group">
                                         <span className="input-group-text align-items-start"><i className="bdx-user inline-flex items-center"></i></span>
-                                        <input type="text" className="form-control" placeholder="Full Name"></input>
+                                        <input type="text" className="form-control" placeholder="Full Name" value={user?.full_name}></input>
                                     </div>
                                 </div>
                                 <div className="sm:w-full w-[49%]">
                                     <div className="input-group">
                                         <span className="input-group-text align-items-start"><i className="bdx-phone inline-flex items-center"></i></span>
-                                        <input type="text" className="form-control" placeholder="Phone Number"></input>
+                                        <input type="text" className="form-control" placeholder="Phone Number" value={user?.phone_number}></input>
                                     </div>
                                 </div>
                                 <div className="w-full">
                                     <div className="input-group">
                                         <span className="input-group-text align-items-start"><i className="bdx-email inline-flex items-center"></i></span>
-                                        <input type="text" className="form-control" placeholder="Email"></input>
+                                        <input type="text" className="form-control" placeholder="Email" value={user?.email}></input>
                                     </div>
                                 </div>
                                 <div className="w-full">
