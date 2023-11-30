@@ -42,7 +42,6 @@ const OrderPayment = () => {
       console.error("CardElement is not available");
       return;
     }
-
     try {
       const { error, paymentMethod } = await stripe.createPaymentMethod({
         type: "card",
@@ -114,9 +113,7 @@ const OrderPayment = () => {
                       ></input>
                     </div>
                   </div> */}
-                  <h4>Nothing here ?</h4>
-                  <CardElement options={CARD_OPTIONS} />
-                  <h4>Nothing there ?</h4>
+                  <CardElement  />
                   <button >
                     Accept
                     <i className="bdx-cart"></i>

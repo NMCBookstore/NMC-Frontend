@@ -21,6 +21,8 @@ import { useParams } from "react-router-dom";
 import { useGetProductDetailsQuery } from "../../services/product/productAPI";
 import { useAddToCartMutation } from "../../services/cart/cartAPI";
 import toast from "react-hot-toast";
+import { useGetReviewQuery } from "../../services/review/reviewAPI";
+import Pagination from "../../component/Pagination/Pagination";
 
 const ProductDetail: React.FunctionComponent = () => {
   let [count, setCount] = useState(1);
@@ -32,9 +34,18 @@ const ProductDetail: React.FunctionComponent = () => {
     setCount(count > 1 ? count - 1 : 1);
   }
 
+  const [page, setPage] = useState({ id: 1, size: 5 });
+
   const { id } = useParams();
+
   const { data } = useGetProductDetailsQuery(Number(id));
   const { data: wishList } = useGetWishlistQuery();
+  const { data: reviewData } = useGetReviewQuery({
+    book_id: Number(id),
+    page_id: page.id,
+    page_size: page.size,
+  });
+  
 
   const [addWishList] = useAddToWishlistMutation();
   const [addToCart] = useAddToCartMutation();
@@ -326,299 +337,106 @@ const ProductDetail: React.FunctionComponent = () => {
                   </button>
                 </div>
               </div>
+              
               <div className="product-detail__content__review">
-                <div className="product-detail__content__review__heading">
-                  <h2>Reviews</h2>
-                  <div>
-                    <div className="product-detail__content__review__heading__start">
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
+              <div className="product-detail__content__review__heading">
+                <h2>Reviews</h2>
+                <div>
+                  <div className="product-detail__content__review__heading__start">
+                    <i className="bdx-start-fill"></i>
+                    <i className="bdx-start-fill"></i>
+                    <i className="bdx-start-fill"></i>
+                    <i className="bdx-start-fill"></i>
+                    <i className="bdx-start-fill"></i>
+                  </div>
+                  <span className="mx-3 text-gray">|</span>
+                  <p className="product-detail__content__review__heading__note">
+                    <span>5.0 </span>(<span>1080</span> reviews)
+                  </p>
+                </div>
+              </div>
+                {/* Reviewss */}
+              {reviewData?.reviews.map((item, index) => (
+              <div className="product-detail__content__review__list">
+                <div className="review__item">
+                  <div className="review__item__heading">
+                    <div className="review__item__heading__left">
+                      <div className="review__item__heading__left__user">
+                        <img src={avatarUser} alt="avatarUser" />
+                        <p className="review__item__heading__left__user__name">
+                          {item?.username}
+                        </p>
+                        <p className="review__item__heading__left__user__date">
+                          {item?.created_at}
+                        </p>
+                      </div>
+                      <div className="review__item__heading__left__info">
+                        <div className="review__item__heading__left__info__sumary">
+                          <p>
+                            Reviews: <span>1075</span>
+                          </p>
+                          <p>
+                            Votes: <span>347</span>
+                          </p>
+                        </div>
+                        <div className="review__item__heading__left__info__datail">
+                          <p>
+                            Rate:
+                            <span>
+                              <i className="bdx-start-fill"></i>
+                              <i className="bdx-start-fill"></i>
+                              <i className="bdx-start-fill"></i>
+                              <i className="bdx-start-fill"></i>
+                              <i className="bdx-start-fill"></i>
+                            </span>
+                          </p>
+                          <p>
+                            Vote in this review: <span>10</span>
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                    <span className="mx-3 text-gray">|</span>
-                    <p className="product-detail__content__review__heading__note">
-                      <span>5.0 </span>(<span>1080</span> reviews)
+                    <div className="review__item__heading__right">
+                      <div className="review__item__heading__right__help">
+                        <p>Helpful?</p>
+                        <div className="review__item__heading__right__help__behavior">
+                          <button>
+                            <i className="bdx-arrow-2"></i>yes
+                          </button>
+                          <button>
+                            <i className="bdx-arrow-2"></i>no
+                          </button>
+                        </div>
+                      </div>
+                      <div className="review__item__heading__right__spam">
+                        <p>Spam?</p>
+                        <button>
+                          <span>
+                            <i className="bdx-close"></i>Report
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <p>
+                      {item?.comments}
                     </p>
                   </div>
                 </div>
-                <div className="product-detail__content__review__list">
-                  <div className="review__item">
-                    <div className="review__item__heading">
-                      <div className="review__item__heading__left">
-                        <div className="review__item__heading__left__user">
-                          <img src={avatarUser} alt="avatarUser" />
-                          <p className="review__item__heading__left__user__name">
-                            amyrobson
-                          </p>
-                          <p className="review__item__heading__left__user__date">
-                            18/11/2023
-                          </p>
-                        </div>
-                        <div className="review__item__heading__left__info">
-                          <div className="review__item__heading__left__info__sumary">
-                            <p>
-                              Reviews: <span>1075</span>
-                            </p>
-                            <p>
-                              Votes: <span>347</span>
-                            </p>
-                          </div>
-                          <div className="review__item__heading__left__info__datail">
-                            <p>
-                              Rate:
-                              <span>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                              </span>
-                            </p>
-                            <p>
-                              Vote in this review: <span>10</span>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="review__item__heading__right">
-                        <div className="review__item__heading__right__help">
-                          <p>Helpful?</p>
-                          <div className="review__item__heading__right__help__behavior">
-                            <button>
-                              <i className="bdx-arrow-2"></i>yes
-                            </button>
-                            <button>
-                              <i className="bdx-arrow-2"></i>no
-                            </button>
-                          </div>
-                        </div>
-                        <div className="review__item__heading__right__spam">
-                          <p>Spam?</p>
-                          <button>
-                            <span>
-                              <i className="bdx-close"></i>Report
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p>
-                        Impressive! Though it seems the drag feature could be
-                        improved. But overall it looks incredible. You’ve nailed
-                        the design and the responsiveness at various breakpoints
-                        works really well.
-                      </p>
-                      <p>
-                        Dimpna Wilde left her home in Dingle long ago, but when
-                        her father is found dead on the beach, she finally heads
-                        home, leaving Dublin behind. With her family at the top
-                        of the suspect list, Dimpna has to clear her family’s
-                        name before she can truly focus on running the family’s
-                        race horse farm. Even if the truth hits too close to
-                        home.
-                      </p>
-                      <p>
-                        I love O’Connor’s Irish Village series and was thrilled
-                        to see a new Novel from her. While I was expecting
-                        another cozy mystery, this one is far from it, with a
-                        darker and deeper focus…and it couldn’t be better!
-                        O’Connor brings the town of Dingle to life with her
-                        words. You’re not just reading a story, you find
-                        yourself coming to life inside of the story as it
-                        unfolds. If you have not yet read one of O’Connors
-                        books, you’re in for a treat!
-                      </p>
-                    </div>
-                  </div>
-                  <div className="review__item">
-                    <div className="review__item__heading">
-                      <div className="review__item__heading__left">
-                        <div className="review__item__heading__left__user">
-                          <img src={avatarUser} alt="avatarUser" />
-                          <p className="review__item__heading__left__user__name">
-                            amyrobson
-                          </p>
-                          <p className="review__item__heading__left__user__date">
-                            18/11/2023
-                          </p>
-                        </div>
-                        <div className="review__item__heading__left__info">
-                          <div className="review__item__heading__left__info__sumary">
-                            <p>
-                              Reviews: <span>1075</span>
-                            </p>
-                            <p>
-                              Votes: <span>347</span>
-                            </p>
-                          </div>
-                          <div className="review__item__heading__left__info__datail">
-                            <p>
-                              Rate:
-                              <span>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                              </span>
-                            </p>
-                            <p>
-                              Vote in this review: <span>10</span>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="review__item__heading__right">
-                        <div className="review__item__heading__right__help">
-                          <p>Helpful?</p>
-                          <div className="review__item__heading__right__help__behavior">
-                            <button>
-                              <i className="bdx-arrow-2"></i>yes
-                            </button>
-                            <button>
-                              <i className="bdx-arrow-2"></i>no
-                            </button>
-                          </div>
-                        </div>
-                        <div className="review__item__heading__right__spam">
-                          <p>Spam?</p>
-                          <button>
-                            <span>
-                              <i className="bdx-close"></i>Report
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p>
-                        Impressive! Though it seems the drag feature could be
-                        improved. But overall it looks incredible. You’ve nailed
-                        the design and the responsiveness at various breakpoints
-                        works really well.
-                      </p>
-                      <p>
-                        Dimpna Wilde left her home in Dingle long ago, but when
-                        her father is found dead on the beach, she finally heads
-                        home, leaving Dublin behind. With her family at the top
-                        of the suspect list, Dimpna has to clear her family’s
-                        name before she can truly focus on running the family’s
-                        race horse farm. Even if the truth hits too close to
-                        home.
-                      </p>
-                      <p>
-                        I love O’Connor’s Irish Village series and was thrilled
-                        to see a new Novel from her. While I was expecting
-                        another cozy mystery, this one is far from it, with a
-                        darker and deeper focus…and it couldn’t be better!
-                        O’Connor brings the town of Dingle to life with her
-                        words. You’re not just reading a story, you find
-                        yourself coming to life inside of the story as it
-                        unfolds. If you have not yet read one of O’Connors
-                        books, you’re in for a treat!
-                      </p>
-                    </div>
-                  </div>
-                  <div className="review__item">
-                    <div className="review__item__heading">
-                      <div className="review__item__heading__left">
-                        <div className="review__item__heading__left__user">
-                          <img src={avatarUser} alt="avatarUser" />
-                          <p className="review__item__heading__left__user__name">
-                            amyrobson
-                          </p>
-                          <p className="review__item__heading__left__user__date">
-                            18/11/2023
-                          </p>
-                        </div>
-                        <div className="review__item__heading__left__info">
-                          <div className="review__item__heading__left__info__sumary">
-                            <p>
-                              Reviews: <span>1075</span>
-                            </p>
-                            <p>
-                              Votes: <span>347</span>
-                            </p>
-                          </div>
-                          <div className="review__item__heading__left__info__datail">
-                            <p>
-                              Rate:
-                              <span>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                                <i className="bdx-start-fill"></i>
-                              </span>
-                            </p>
-                            <p>
-                              Vote in this review: <span>10</span>
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="review__item__heading__right">
-                        <div className="review__item__heading__right__help">
-                          <p>Helpful?</p>
-                          <div className="review__item__heading__right__help__behavior">
-                            <button>
-                              <i className="bdx-arrow-2"></i>yes
-                            </button>
-                            <button>
-                              <i className="bdx-arrow-2"></i>no
-                            </button>
-                          </div>
-                        </div>
-                        <div className="review__item__heading__right__spam">
-                          <p>Spam?</p>
-                          <button>
-                            <span>
-                              <i className="bdx-close"></i>Report
-                            </span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <p>
-                        Impressive! Though it seems the drag feature could be
-                        improved. But overall it looks incredible. You’ve nailed
-                        the design and the responsiveness at various breakpoints
-                        works really well.
-                      </p>
-                      <p>
-                        Dimpna Wilde left her home in Dingle long ago, but when
-                        her father is found dead on the beach, she finally heads
-                        home, leaving Dublin behind. With her family at the top
-                        of the suspect list, Dimpna has to clear her family’s
-                        name before she can truly focus on running the family’s
-                        race horse farm. Even if the truth hits too close to
-                        home.
-                      </p>
-                      <p>
-                        I love O’Connor’s Irish Village series and was thrilled
-                        to see a new Novel from her. While I was expecting
-                        another cozy mystery, this one is far from it, with a
-                        darker and deeper focus…and it couldn’t be better!
-                        O’Connor brings the town of Dingle to life with her
-                        words. You’re not just reading a story, you find
-                        yourself coming to life inside of the story as it
-                        unfolds. If you have not yet read one of O’Connors
-                        books, you’re in for a treat!
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
+              ))}
+            </div>
+              
+
             </div>
             <div className="w-[25%]">
               <img src={productBaner} alt="productBaner" />
             </div>
           </div>
         </div>
+        {/* end of comment, start pagination of comments */}
+        <Pagination total={Number(reviewData?.total_page)} setCurrentPage={setPage} />
       </section>
       <section className="product-detail__recommend">
         <div className="container-nmc px-3 mx-auto">
