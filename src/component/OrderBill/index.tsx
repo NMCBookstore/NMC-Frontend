@@ -11,8 +11,8 @@ const OrderBill: React.FunctionComponent = () => {
     return (
         <div className="order-bill order-payment">
             <h2>Your order details</h2>
-            {cartInfo.map((item, index) => (
             <div className="order-bill__list">
+            {cartInfo.map((item, index) => (
             <div className="order-bill__item">
                 <div className="flex gap-3">
                     <div className="order-bill__item--img flex-shrink-0">
@@ -30,8 +30,8 @@ const OrderBill: React.FunctionComponent = () => {
                     <div className="order-bill__item--price--percent">-10%</div>
                 </div>
             </div>
-        </div>
             ))}
+        </div>
             <div className="order-bill__footer flex justify-end">
                 <div className="text-center">
                     <p className="order-bill__footer--note">*Shipping fee included</p>
