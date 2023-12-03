@@ -3,7 +3,6 @@ import Fancybox from "../../component/Fancybox/Fancy";
 import Carousel from "../../component/Fancybox/Carousel";
 
 import { articleImg, avatarUser, productItem } from "../../assets/img";
-import "./style.css"
 import Marquee from "../../component/Marquee";
 import BreadcrumbConponent from "../../component/Breadcrumb";
 import { productBaner } from "../../assets/img";

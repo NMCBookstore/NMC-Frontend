@@ -125,7 +125,7 @@ const ProductList: React.FunctionComponent = () => {
                             <div className="product-list__handle-sidebar__sidebar__item__price">
                                 {priceFilter.map((item) => (
                                     <div key={item.key}>
-                                        <input className="product-list__handle-sidebar__sidebar__item__price__input" id={item.key} type="checkbox" />
+                                        <input className="product-list__handle-sidebar__sidebar__item__price__input" id={item.key} type="radio" value={item.value} name="sortPrice" />
                                         <label htmlFor={`#${item.key}`}>{item.value}</label>
                                     </div>
                                 ))}
@@ -153,6 +153,32 @@ const ProductList: React.FunctionComponent = () => {
                                             name="sortName"
                                         />
                                         Name Z-A
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="product-list__handle-sidebar__sidebar__item">
+                            <h3>Sort</h3>
+                            <div className="product-list__handle-sidebar__sidebar__item__name">
+                                <div>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            value="option1"
+                                            checked={true}
+                                            name="sortPrice"
+                                        />
+                                        Price Low To High
+                                    </label>
+                                </div>
+                                <div>
+                                    <label>
+                                        <input
+                                            type="radio"
+                                            value="option2"
+                                            name="sortPrice"
+                                        />
+                                        Price High To Low
                                     </label>
                                 </div>
                             </div>
