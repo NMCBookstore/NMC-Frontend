@@ -3,6 +3,10 @@ import { book } from "../Base/baseAPI";
 
 const product = book.injectEndpoints({
   endpoints: (builder) => ({
+    getProductDetails : builder.query<Product, number>({
+      query: (id) => `books/${id}`,
+    }),
+
     getTopNewProduct: builder.query<Product[], void>({
       query: () => `books/newest`,
     }),
@@ -10,4 +14,4 @@ const product = book.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetTopNewProductQuery } = product;
+export const { useGetProductDetailsQuery, useGetTopNewProductQuery } = product;

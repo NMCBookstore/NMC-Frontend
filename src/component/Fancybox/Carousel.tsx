@@ -1,12 +1,12 @@
-import React, { useRef, useEffect, PropsWithChildren } from 'react';
+import React, { useRef, useEffect, PropsWithChildren } from "react";
 
-import { Carousel as NativeCarousel } from '@fancyapps/ui';
-import '@fancyapps/ui/dist/carousel/carousel.css';
+import { Carousel as NativeCarousel } from "@fancyapps/ui";
+import "@fancyapps/ui/dist/carousel/carousel.css";
 
-import { Thumbs } from '@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js';
-import '@fancyapps/ui/dist/carousel/carousel.thumbs.css';
+import { Thumbs } from "@fancyapps/ui/dist/carousel/carousel.thumbs.esm.js";
+import "@fancyapps/ui/dist/carousel/carousel.thumbs.css";
 
-import type { OptionsType } from '@fancyapps/ui/types/Carousel/options';
+import type { OptionsType } from "@fancyapps/ui/types/Carousel/options";
 
 interface Props {
   options?: Partial<OptionsType>;
@@ -15,7 +15,7 @@ interface Props {
 const defaults: Partial<OptionsType> = {
   Dots: false,
   Thumbs: {
-    type: 'modern',
+    type: "modern",
   },
 };
 

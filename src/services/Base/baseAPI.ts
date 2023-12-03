@@ -55,7 +55,7 @@ const baseQueryWithReauth: BaseQueryFn<
       // retry the initial query
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(logout());
+      // api.dispatch(logout());
     }
   }
   return result;
@@ -65,6 +65,6 @@ export const book = createApi({
   reducerPath: "bookApi",
   baseQuery: baseQueryWithReauth,
   refetchOnMountOrArgChange: true,
-  tagTypes: ["WishlistItems"],
+  tagTypes: ["WishlistItems", "CartItems"],
   endpoints: () => ({}),
 });
