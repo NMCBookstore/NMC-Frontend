@@ -29,12 +29,12 @@ const BdxLogModal: React.FunctionComponent = () => {
     dispatch(loginStart());
     try {
       const data = await executeLogin(values).unwrap();
-      const { user, access_token, refresh_token } = data;
-      dispatch(setCredentials({ user, access_token, refresh_token }));
+      // const { user, access_token, refresh_token } = data;
+      // dispatch(setCredentials({ user, access_token, refresh_token }));
       navigate("/");
       dispatch(close());
     } catch (err) {
-      console.log(err);
+      console.log(err, "the data is not set");
     }
     return false;
   };

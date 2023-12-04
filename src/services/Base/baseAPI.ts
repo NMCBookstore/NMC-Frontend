@@ -1,25 +1,39 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
-import authSlice, {
-  logout,
-  setCredentials,
-} from "../../features/auth/authSlice";
-import { RootState } from "../../app/store";
-export const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080",
-  prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.access_token;
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query";
+import type { RootState } from "../../app/store";
+import { setCredentials } from "../../features/auth/authSlice";
 
+// export const baseQuery = fetchBaseQuery({
+//   baseUrl: "http://localhost:8080",
+//   prepareHeaders: (headers, { getState }) => {
+//     const token = (getState() as RootState)?.auth?.access_token;
+//     // const token = localStorage.getItem("token");
+//     console.log("this is token get from store: ", token);
+
+//     if (token) {
+//       headers.set("Authorization", `Bearer ${token}`);
+//     }
+//     return headers;
+//   },
+// });
+const baseQuery = fetchBaseQuery({
+  baseUrl: 'http://localhost:8080',
+  prepareHeaders: (headers, { getState }) => {
+    const token = (getState() as RootState).auth.access_token
+    console.log("this is token get from store: ", token);
+    // If we have a token set in state, let's assume that we should be passing it.
     if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
+      headers.set('authorization', `Bearer ${token}`)
     }
-    return headers;
+
+    return headers
   },
-});
+})
 
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
@@ -48,7 +62,7 @@ const baseQueryWithReauth: BaseQueryFn<
         setCredentials({
           ...refreshResult.data,
           refresh_token,
-          user
+          user,
         })
       );
       console.log(refreshResult.data);

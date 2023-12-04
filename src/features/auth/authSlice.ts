@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Login } from "../../interface/Login";
 import { RootState } from "../../app/store";
+import toast from "react-hot-toast";
+import { book } from "../../services/Base/baseAPI";
 
 const initialState: Partial<Login> = {
   status: "none",
@@ -32,11 +34,13 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.access_token = action.payload.access_token;
       state.refresh_token = action.payload.refresh_token;
+      // localStorage.setItem('token', String(action.payload.access_token))
     },
 
     logout: () => {
       window.localStorage.clear();
-      alert("You're logged out");
+      toast.success("You're logged out");
+      window.location.reload();
     },
   },
 });
