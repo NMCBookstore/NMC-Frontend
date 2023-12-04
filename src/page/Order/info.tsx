@@ -54,7 +54,7 @@ const OrderInfo = () => {
                                 <a href="javascript:history.back()">
                                     Return
                                 </a>
-                                <Link to="/order/payment">
+                                <Link to="/user/order/payment">
                                     Accept
                                     <i className="bdx-cart"></i>
                                 </Link>

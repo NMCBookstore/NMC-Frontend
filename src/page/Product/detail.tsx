@@ -213,11 +213,11 @@ const ProductDetail: React.FunctionComponent = () => {
                     <div
                       key={index}
                       className="f-carousel__slide"
-                      data-thumb-src={item}
+                      data-thumb-src={articleImg}
                       data-fancybox="gallery"
-                      data-src={item}
+                      data-src={articleImg}
                     >
-                      <img alt="" data-lazy-src={item} />
+                      <img alt="" data-lazy-src={articleImg} />
                     </div>
                   ))}
                 </Carousel>

@@ -1,13 +1,8 @@
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../component/Breadcrumb";
 import Marquee from "../../component/Marquee";
-import {
-  selectCurrentCartProduct,
-  selectCurrentTotalCartValue,
-  setCartInfo,
-} from "../../features/cart/cartSlice";
+import { selectCurrentTotalCartValue } from "../../features/cart/cartSlice";
 import {
   useDeleteCartItemMutation,
   useGetCartQuery,
@@ -15,9 +10,6 @@ import {
 } from "../../services/cart/cartAPI";
 
 const CartIndex = () => {
-  const dispatch = useDispatch();
-  const [isDataDispatched, setIsDataDispatched] = useState(false);
-
   const totalItemPrice = useSelector(selectCurrentTotalCartValue);
 
   const { data } = useGetCartQuery();
@@ -29,11 +21,6 @@ const CartIndex = () => {
     deleteCartItem(cart_id);
   };
 
-  if (data && !isDataDispatched) {
-    dispatch(setCartInfo(data));  
-    setIsDataDispatched(true);
-  }
-
   async function incrementCount(id_cart: number, amount: number) {
     const amountInc = amount + 1;
     await updateCartItem({ cart_id: id_cart, amount: amountInc });
@@ -41,7 +28,6 @@ const CartIndex = () => {
       ...item,
       amount: amountInc,
     }));
-    dispatch(setCartInfo(updateAmount));
   }
 
   async function decrementCount(id_cart: number, amount: number) {
@@ -51,7 +37,6 @@ const CartIndex = () => {
       ...item,
       amount: amountDec,
     }));
-    dispatch(setCartInfo(updateAmount));
   }
 
   const pathAfterDomain = window.location.pathname;
@@ -169,7 +154,7 @@ const CartIndex = () => {
               </p>
               <div className="cart-info__bottom__btn d-flex justify-content-between align-items-center">
                 <a href="javascript:history.back()">Return</a>
-                <Link to="/order/info">
+                <Link to="/user/order/info">
                   Accept
                   <i className="bdx-cart"></i>
                 </Link>

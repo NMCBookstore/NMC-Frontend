@@ -3,23 +3,26 @@ import { Link } from "react-router-dom";
 import OrderBill from "../../component/OrderBill";
 import Breadcrumb from "../../component/Breadcrumb";
 import { visa, jcb, mastercard } from "../../assets/img";
+import { StripeCardElementOptions } from "@stripe/stripe-js";
 
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import PaypalCheckoutButton from "./PaypalCheckoutButton";
 
-const CARD_OPTIONS = {
+const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
+  iconStyle: "default",
   style: {
     base: {
-      color: "#000",
-      fontWeight: 400,
+      color: "#82A0D8",
+      fontWeight: 800,
       fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
-      fontSize: "16px",
+      fontSize: "20px",
       fontSmoothing: "antialiased",
       ":-webkit-autofill": { color: "#fce883" },
       "::placeholder": { color: "#2f3542" },
     },
     invalid: {
       iconColor: "#eb2f06",
-      color: "#000",
+      color: "#82A0D8",
     },
   },
 };
@@ -33,7 +36,7 @@ const OrderPayment = () => {
     return null;
   }
 
-  const handlePayment = async (e:any) => {
+  const handlePayment = async (e: any) => {
     e.preventDefault();
     console.log("Paymentttt");
     const cardElement = elements.getElement(CardElement);
@@ -78,55 +81,23 @@ const OrderPayment = () => {
                   <img className="w-[40px]" src={mastercard} alt="mastercard" />
                 </div>
                 {/* this is the checkout part */}
-                <form onSubmit={handlePayment} className="order-payment__list__item">
-                  {/* <div className="w-full">
-                    <div className="">
-                      <p className="order-payment__list__item__label">
-                        Card Number:
-                      </p>
-                      <input
-                        type="text"
-                        className="order-payment__list__item__input"
-                        placeholder="Card Number"
-                      ></input>
-                    </div>
-                  </div>
-                  <div className="sm:w-full w-[49%]">
-                    <div className="">
-                      <p className="order-payment__list__item__label">
-                        Expiry Date:
-                      </p>
-                      <input
-                        type="text"
-                        className="order-payment__list__item__input"
-                        placeholder="Expiry Date"
-                      ></input>
-                    </div>
-                  </div>
-                  <div className="sm:w-full w-[49%]">
-                    <div className="">
-                      <p className="order-payment__list__item__label">CVV:</p>
-                      <input
-                        type="text"
-                        className="order-payment__list__item__input"
-                        placeholder="CVV"
-                      ></input>
-                    </div>
-                  </div> */}
-                  <CardElement  />
-                  <button >
+                <form onSubmit={handlePayment}>
+                  <CardElement options={CARD_ELEMENT_OPTIONS} />
+                  <button>
                     Accept
                     <i className="bdx-cart"></i>
                   </button>
                 </form>
+                <h3>OR YOU CAN USE</h3>
+                <PaypalCheckoutButton />
               </div>
               <div className="order-info__form__btn flex justify-between items-center">
                 <a href="javascript:history.back()">Return</a>
                 {/* <Link to="/order/return"> */}
-                <button onSubmit={handlePayment}>
+                {/* <button >
                   Accept
                   <i className="bdx-cart"></i>
-                </button>
+                </button> */}
                 {/* </Link> */}
               </div>
             </div>
