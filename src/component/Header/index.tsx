@@ -4,13 +4,18 @@ import { Dialog, Transition } from "@headlessui/react";
 
 import NoteNotify from "../NoteNotify";
 import { useDispatch, useSelector } from "react-redux";
-import { login, selectCurrentAccessToken, selectCurrentUser } from "../../features/auth/authSlice";
+import {
+  login,
+  logout,
+  selectCurrentAccessToken,
+  selectCurrentUser,
+} from "../../features/auth/authSlice";
 import { logo } from "../../assets/img";
 import CartSidebar from "./CartSidebar";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 import { Wishlist } from "../../interface/Wishlist";
 import { useGetCartQuery } from "../../services/cart/cartAPI";
-
+import { selectCurrentCartProduct } from "../../features/cart/cartSlice";
 
 const Header: React.FunctionComponent = () => {
   const [showSearch, setshowSearch] = useState<boolean>(false);
@@ -19,8 +24,9 @@ const Header: React.FunctionComponent = () => {
 
   const token = useSelector(selectCurrentAccessToken);
   const user = useSelector(selectCurrentUser);
-  const {data: wishlistBadge} = useGetWishlistQuery()
-  const {data: cartBadge = []} = useGetCartQuery()
+  const { data: wishlistBadge } = useGetWishlistQuery();
+  // const { data: cartBadge = [] } = useGetCartQuery();
+  const cartBadge = useSelector(selectCurrentCartProduct);
 
   const handleOpenCart = () => {
     const pathAfterDomain = window.location.pathname;
@@ -33,15 +39,15 @@ const Header: React.FunctionComponent = () => {
 
   const handleOpenCartSide = () => {
     if (token) {
-        handleOpenCart()
+      handleOpenCart();
     } else {
-        dispatch(login())
+      dispatch(login());
     }
-  }
+  };
 
   const cancelButtonRef = useRef(null);
   const numberWishlist = Number(wishlistBadge?.length);
-  const numberCart = Number(cartBadge?.length)
+  const numberCart = Number(cartBadge?.length);
   const numberCount2: number = 2;
 
   return (
@@ -125,7 +131,9 @@ const Header: React.FunctionComponent = () => {
             >
               <div className="relative">
                 <i className="bdx-heart text-[20px] text-[#fff] flex items-center"></i>
-                {numberWishlist > 0 ? <NoteNotify numberCount={numberWishlist} /> : null}
+                {numberWishlist > 0 ? (
+                  <NoteNotify numberCount={numberWishlist} />
+                ) : null}
               </div>
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
                 Wishlist
@@ -139,7 +147,9 @@ const Header: React.FunctionComponent = () => {
             >
               <div className="relative">
                 <i className="bdx-cart-fill text-[20px] text-[#fff] flex items-center"></i>
-                {numberCart > 0 ? <NoteNotify numberCount={numberCart} /> : null}
+                {numberCart > 0 ? (
+                  <NoteNotify numberCount={numberCart} />
+                ) : null}
               </div>
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
                 Cart
@@ -152,10 +162,20 @@ const Header: React.FunctionComponent = () => {
               className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
             >
               <div className="relative">
-
                 {/* cần phải chỉnh lại kích cỡ ảnh */}
-                {token ? <img style={{ width: '22px', height: '22px', borderRadius: '50%' }} src={user?.image}></img> : <i className="bdx-user text-[20px] text-[#fff] flex items-center"></i> }
-                
+                {token ? (
+                  <img
+                    style={{
+                      width: "22px",
+                      height: "22px",
+                      borderRadius: "50%",
+                    }}
+                    src={user?.image}
+                  ></img>
+                ) : (
+                  <i className="bdx-user text-[20px] text-[#fff] flex items-center"></i>
+                )}
+
                 {/* <NoteNotify numberCount={numberCount2} /> */}
               </div>
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
@@ -174,17 +194,29 @@ const Header: React.FunctionComponent = () => {
                     <span>Edit Profile</span>
                   </Link>
                 </li>
-                <li onClick={() => dispatch(login())}>
-                  <button>
-                    <span>Login</span>
-                  </button>
-                </li>
+                {token ? (
+                  <li onClick={() => dispatch(logout())}>
+                    <button>
+                      <span>Logout</span>
+                    </button>
+                  </li>
+                ) : (
+                  <li onClick={() => dispatch(login())}>
+                    <button>
+                      <span>Login</span>
+                    </button>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <CartSidebar showCart={showCart} setshowCart={setshowCart} cartItem={cartBadge}></CartSidebar>
+      <CartSidebar
+        showCart={showCart}
+        setshowCart={setshowCart}
+        cartItem={cartBadge}
+      ></CartSidebar>
     </header>
   );
 };

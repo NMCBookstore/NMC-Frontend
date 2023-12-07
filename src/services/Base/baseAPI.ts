@@ -1,19 +1,17 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query";
-import authSlice, {
-  logout,
-  setCredentials,
-} from "../../features/auth/authSlice";
-import { RootState } from "../../app/store";
+import { createApi } from "@reduxjs/toolkit/query/react";
+import { fetchBaseQuery } from "@reduxjs/toolkit/query";
+import type { RootState } from "../../app/store";
+import { setCredentials } from "../../features/auth/authSlice";
+
 export const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:8080",
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.access_token;
-
+    const token = (getState() as RootState)?.auth?.access_token;
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }
@@ -48,7 +46,7 @@ const baseQueryWithReauth: BaseQueryFn<
         setCredentials({
           ...refreshResult.data,
           refresh_token,
-          user
+          user,
         })
       );
       console.log(refreshResult.data);

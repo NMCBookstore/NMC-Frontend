@@ -12,13 +12,18 @@ import {
   signup,
 } from "../../features/auth/authSlice";
 import { useLoginMutation } from "../../services/authentication/authAPI";
+import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
+import { useGetCartQuery } from "../../services/cart/cartAPI";
+import toast from "react-hot-toast";
 const BdxLogModal: React.FunctionComponent = () => {
   const showLog = useSelector((state: RootState) => state.auth.status);
   const cancelButtonRef = useRef(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { refetch: wishlistRefetch } = useGetWishlistQuery();
+  const { refetch: cartRefetch } = useGetCartQuery();
 
-  const [executeLogin] = useLoginMutation();
+  const [executeLogin, { isLoading }] = useLoginMutation();
 
   const [values, setValues] = useState({
     username: "",
@@ -29,12 +34,14 @@ const BdxLogModal: React.FunctionComponent = () => {
     dispatch(loginStart());
     try {
       const data = await executeLogin(values).unwrap();
-      const { user, access_token, refresh_token } = data;
-      dispatch(setCredentials({ user, access_token, refresh_token }));
+      toast.success("Login success !");
       navigate("/");
       dispatch(close());
+      wishlistRefetch();
+      cartRefetch();
     } catch (err) {
-      console.log(err);
+      toast.error("Login failed!");
+      console.log(err, "the data is not set");
     }
     return false;
   };
@@ -149,6 +156,7 @@ const BdxLogModal: React.FunctionComponent = () => {
                   <button
                     // type="submit"
                     className="w-full py-3 px-6 block uppercase bg-orange-orange-4 hover:bg-orange-orange-6 rounded-full mb-4"
+                    disabled={isLoading}
                     onClick={() => {
                       if (showLog === "login") {
                         handleLogin();
@@ -167,8 +175,8 @@ const BdxLogModal: React.FunctionComponent = () => {
                     type="button"
                     className="w-full py-3 px-6 block border-[1px] border-[#262626] border-solid rounded-[12px]"
                     onClick={() => {
-                      if(showLog === "login") {
-                        SignInWithGoogle()
+                      if (showLog === "login") {
+                        SignInWithGoogle();
                       }
                     }}
                   >

@@ -1,5 +1,6 @@
 import { book } from "../Base/baseAPI";
 import { Cart } from "../../interface/Cart";
+import { setCartInfo } from "../../features/cart/cartSlice";
 
 const cart = book.injectEndpoints({
   endpoints: (builder) => ({
@@ -22,6 +23,14 @@ const cart = book.injectEndpoints({
         url: "users/carts/",
       }),
       providesTags: ["CartItems"],
+      onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(setCartInfo(data));
+        } catch (error) {
+          console.log("error to dispatch cart info");
+        }
+      },
     }),
     deleteCartItem: builder.mutation<Cart, number[]>({
       query: (IDsArr) => {
@@ -34,7 +43,7 @@ const cart = book.injectEndpoints({
       },
       invalidatesTags: ["CartItems"],
     }),
-    updateCart: builder.mutation<Cart, {cart_id: number, amount: number;  }>({
+    updateCart: builder.mutation<Cart, { cart_id: number; amount: number }>({
       query: ({ cart_id, amount }) => {
         return {
           method: "PUT",
@@ -54,5 +63,5 @@ export const {
   useAddToCartMutation,
   useGetCartQuery,
   useDeleteCartItemMutation,
-  useUpdateCartMutation
+  useUpdateCartMutation,
 } = cart;

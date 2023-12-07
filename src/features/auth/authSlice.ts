@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Login } from "../../interface/Login";
 import { RootState } from "../../app/store";
+import toast from "react-hot-toast";
+import { book } from "../../services/Base/baseAPI";
 
 const initialState: Partial<Login> = {
   status: "none",
@@ -36,7 +38,8 @@ const authSlice = createSlice({
 
     logout: () => {
       window.localStorage.clear();
-      alert("You're logged out");
+      toast.success("You're logged out");
+      window.location.reload();
     },
   },
 });

@@ -1,30 +1,45 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import OrderBill from "../../component/OrderBill";
+import { StripeCardElementOptions } from "@stripe/stripe-js";
+import { useState } from "react";
+import { jcb, mastercard, visa } from "../../assets/img";
 import Breadcrumb from "../../component/Breadcrumb";
-import { visa, jcb, mastercard } from "../../assets/img";
+import OrderBill from "../../component/OrderBill";
 
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
+import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { selectCurrentCardID } from "../../features/cart/cartSlice";
+import { useCreateOrderMutation } from "../../services/order/orderAPI";
+import PaypalCheckoutButton from "./PaypalCheckoutButton";
 
-const CARD_OPTIONS = {
+const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
+  iconStyle: "solid",
   style: {
     base: {
-      color: "#000",
-      fontWeight: 400,
+      color: "#374259",
+      fontWeight: 800,
       fontFamily: "Roboto, Open Sans, Segoe UI, sans-serif",
-      fontSize: "16px",
+      fontSize: "20px",
       fontSmoothing: "antialiased",
       ":-webkit-autofill": { color: "#fce883" },
       "::placeholder": { color: "#2f3542" },
     },
     invalid: {
-      iconColor: "#eb2f06",
-      color: "#000",
+      iconColor: "#FF8080",
+      color: "#FF8080",
     },
   },
 };
 
 const OrderPayment = () => {
+  const [isPaymentInfoComplete, setIsPaymentInfoComplete] = useState(false);
+
+  const totalCartIdArr = useSelector(selectCurrentCardID);
+  const [createOrder] = useCreateOrderMutation();
+
+  const handleCardElementChange = (event: any) => {
+    setIsPaymentInfoComplete(event.complete);
+  };
+
   const stripe = useStripe();
   const elements = useElements();
 
@@ -33,7 +48,7 @@ const OrderPayment = () => {
     return null;
   }
 
-  const handlePayment = async (e:any) => {
+  const handlePayment = async (e: any) => {
     e.preventDefault();
     console.log("Paymentttt");
     const cardElement = elements.getElement(CardElement);
@@ -42,21 +57,30 @@ const OrderPayment = () => {
       console.error("CardElement is not available");
       return;
     }
-    try {
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: "card",
-        card: cardElement,
-      });
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: "card",
+      card: cardElement,
+    });
 
-      if (error) {
-        console.error("Payment failed:", error.message);
-      } else if (paymentMethod) {
-        console.log("Payment successful. PaymentMethod:", paymentMethod);
-      } else {
-        console.error("Unexpected result: No paymentMethod returned.");
+    if (!error) {
+      try {
+        const { id } = paymentMethod;
+        const response = await createOrder({
+          payment_id: id,
+          cart_ids: totalCartIdArr,
+          to_address: "test address hihi",
+          total_shipping: 30000,
+          status: "success",
+        });
+        if (response) {
+          toast.success("Payment success !");
+        }
+      } catch (error) {
+        toast.error("Failed to create ");
+        console.log("Error", error);
       }
-    } catch (error) {
-      console.error("Unexpected error:", error);
+    } else {
+      toast.error("Payment not initialized");
     }
   };
 
@@ -78,55 +102,29 @@ const OrderPayment = () => {
                   <img className="w-[40px]" src={mastercard} alt="mastercard" />
                 </div>
                 {/* this is the checkout part */}
-                <form onSubmit={handlePayment} className="order-payment__list__item">
-                  {/* <div className="w-full">
-                    <div className="">
-                      <p className="order-payment__list__item__label">
-                        Card Number:
-                      </p>
-                      <input
-                        type="text"
-                        className="order-payment__list__item__input"
-                        placeholder="Card Number"
-                      ></input>
-                    </div>
-                  </div>
-                  <div className="sm:w-full w-[49%]">
-                    <div className="">
-                      <p className="order-payment__list__item__label">
-                        Expiry Date:
-                      </p>
-                      <input
-                        type="text"
-                        className="order-payment__list__item__input"
-                        placeholder="Expiry Date"
-                      ></input>
-                    </div>
-                  </div>
-                  <div className="sm:w-full w-[49%]">
-                    <div className="">
-                      <p className="order-payment__list__item__label">CVV:</p>
-                      <input
-                        type="text"
-                        className="order-payment__list__item__input"
-                        placeholder="CVV"
-                      ></input>
-                    </div>
-                  </div> */}
-                  <CardElement  />
-                  <button >
-                    Accept
-                    <i className="bdx-cart"></i>
-                  </button>
+                <h3>Fill in your card info to order: </h3>
+                <form onSubmit={handlePayment}>
+                  <CardElement
+                    options={CARD_ELEMENT_OPTIONS}
+                    onChange={handleCardElementChange}
+                  />
+                  {isPaymentInfoComplete && (
+                    <button>
+                      Accept
+                      <i className="bdx-cart"></i>
+                    </button>
+                  )}
                 </form>
+                <h3>OR YOU CAN USE</h3>
+                <PaypalCheckoutButton />
               </div>
               <div className="order-info__form__btn flex justify-between items-center">
                 <a href="javascript:history.back()">Return</a>
                 {/* <Link to="/order/return"> */}
-                <button onSubmit={handlePayment}>
+                {/* <button >
                   Accept
                   <i className="bdx-cart"></i>
-                </button>
+                </button> */}
                 {/* </Link> */}
               </div>
             </div>

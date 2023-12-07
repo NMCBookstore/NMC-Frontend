@@ -19,11 +19,12 @@ export const { setCartInfo } = cartSlice.actions;
 export default cartSlice.reducer;
 
 export const selectCurrentCartProduct = (state: RootState) => state.cart?.item;
+export const selectCurrentCardID = (state: RootState) =>
+  state?.cart.item.map((item) => item.cart_id);
 
 export const selectCurrentTotalCartValue = createSelector(
-    [selectCurrentCartProduct],
-    (items) => {
-      return items.reduce((total, item) => total + item.price * item.amount, 0);
-    }
-  );
-
+  [selectCurrentCartProduct],
+  (items) => {
+    return items.reduce((total, item) => total + item.price * item.amount, 0);
+  }
+);
