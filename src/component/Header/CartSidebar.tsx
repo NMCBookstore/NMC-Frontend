@@ -2,10 +2,9 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import {
-  selectCurrentTotalCartValue
-} from "../../features/cart/cartSlice";
+import { selectCurrentTotalCartValue } from "../../features/cart/cartSlice";
 import { Cart } from "../../interface/Cart";
+import { useDeleteCartItemMutation } from "../../services/cart/cartAPI";
 
 interface ChildProps {
   showCart: boolean;
@@ -20,6 +19,11 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({
 }) => {
   const handleClick = () => {
     setshowCart(!showCart); // Cập nhật state bằng cách đảo ngược giá trị hiện tại
+  };
+
+  const [deleteCart] = useDeleteCartItemMutation();
+  const handleDeleteCartItem = (cart_id: number[]) => {
+    deleteCart(cart_id)
   };
 
   const totalPrice = useSelector(selectCurrentTotalCartValue);
@@ -68,7 +72,12 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({
                         <div key={index} className="sidebar-cart__item">
                           <div className="sidebar-cart__item--action">
                             <button className="sidebar-cart__item--action--btn btn-delete">
-                              <i className="bdx-close"></i>
+                              <i
+                                onClick={() =>
+                                  handleDeleteCartItem([item?.cart_id])
+                                }
+                                className="bdx-close"
+                              ></i>
                             </button>
                           </div>
                           <div className="sidebar-cart__item--img flex-shrink-0">

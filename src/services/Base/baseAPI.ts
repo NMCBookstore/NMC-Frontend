@@ -8,32 +8,16 @@ import { fetchBaseQuery } from "@reduxjs/toolkit/query";
 import type { RootState } from "../../app/store";
 import { setCredentials } from "../../features/auth/authSlice";
 
-// export const baseQuery = fetchBaseQuery({
-//   baseUrl: "http://localhost:8080",
-//   prepareHeaders: (headers, { getState }) => {
-//     const token = (getState() as RootState)?.auth?.access_token;
-//     // const token = localStorage.getItem("token");
-//     console.log("this is token get from store: ", token);
-
-//     if (token) {
-//       headers.set("Authorization", `Bearer ${token}`);
-//     }
-//     return headers;
-//   },
-// });
-const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:8080',
+export const baseQuery = fetchBaseQuery({
+  baseUrl: "http://localhost:8080",
   prepareHeaders: (headers, { getState }) => {
-    const token = (getState() as RootState).auth.access_token
-    console.log("this is token get from store: ", token);
-    // If we have a token set in state, let's assume that we should be passing it.
+    const token = (getState() as RootState)?.auth?.access_token;
     if (token) {
-      headers.set('authorization', `Bearer ${token}`)
+      headers.set("Authorization", `Bearer ${token}`);
     }
-
-    return headers
+    return headers;
   },
-})
+});
 
 const baseQueryWithReauth: BaseQueryFn<
   string | FetchArgs,
