@@ -1,4 +1,4 @@
-import React from "react";
+import React,{memo} from "react";
 import "./Pagination.css";
 
 interface PaginationProps {
@@ -8,10 +8,8 @@ interface PaginationProps {
   >;
 }
 
-const Pagination: React.FunctionComponent<PaginationProps> = ({
-  total,
-  setCurrentPage,
-}) => {
+const Pagination: React.FunctionComponent<PaginationProps> = memo(
+  ({ total, setCurrentPage }) => {
   let pages: number[] = [];
 
   for (let i = 1; i <= total; i++) {
@@ -33,6 +31,6 @@ const Pagination: React.FunctionComponent<PaginationProps> = ({
       })}
     </div>
   );
-};
+});
 
 export default Pagination;

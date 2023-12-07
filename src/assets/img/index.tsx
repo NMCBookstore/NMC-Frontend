@@ -18,6 +18,9 @@ export { default as mastercard } from "./mastercard.jpg";
 export { default as orderReturn } from "./order_return.svg";
 export { default as productBaner } from "./product_banner.png";
 export { default as avatarUser } from "./avatar_user.png";
+export { default as avatarProfile } from "./user_avatar.jpg";
+export { default as defaultAvatar } from "./defaultAvatar.png";
+export { default as cartEmpty } from "./cartEmpty.png";
 
 
 

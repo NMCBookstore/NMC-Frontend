@@ -1,0 +1,65 @@
+.edit-profile {
+    &>div {
+        &>div {
+            &:nth-child(2) {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                &>div {
+                    &:nth-child(1) {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+
+                        img {
+                            margin-bottom: 32px;
+                            max-width: 200px;
+                            aspect-ratio: 1/1;
+                            object-fit: cover;
+                            border-radius: 100%;
+                        }
+
+                        label {
+                            display: flex;
+                            min-width: 60px;
+                            padding: 10px;
+                            background: $orange-orange-6;
+                            color: #fff;
+                            justify-content: center;
+                            align-items: center;
+                            i{
+                                display: inline-flex;
+                                justify-content: center;
+                                align-items: center;                                
+                            }
+                            &:hover{
+                                cursor: pointer;
+                            }    
+                        }
+
+
+
+                        input[type="file"] {
+                            display: none;
+                        }
+                    }
+                    &:nth-child(2),&:nth-child(5),&:nth-child(4){
+                        width: 100%;
+                    }
+                    &:nth-child(3){
+                        display: flex;
+                        justify-content: space-between;
+                        width: 100%;
+                        &>div{
+                            width: calc((100% - 24px)/2);
+                            @include max-width-576{
+                                width: calc((100% - 16px)/2);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

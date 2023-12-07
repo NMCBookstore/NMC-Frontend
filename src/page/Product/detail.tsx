@@ -38,7 +38,6 @@ const ProductDetail: React.FunctionComponent = () => {
   const { id } = useParams();
 
   const { data: books, isFetching } = useGetProductDetailsQuery(Number(id));
-  console.log(books?.image);
 
   const { data: wishList } = useGetWishlistQuery();
   const { data: reviewData } = useGetReviewQuery({
@@ -275,6 +274,7 @@ const ProductDetail: React.FunctionComponent = () => {
                       min="0"
                       max="100"
                       value={count}
+                      readOnly
                     ></input>
                     <button
                       className="qty-count qty-count--add"
@@ -360,9 +360,9 @@ const ProductDetail: React.FunctionComponent = () => {
                 {/* Reviewss */}
 
                 <div className="product-detail__content__review__list">
-                  {reviewData?.reviews &&
+                  {/* {reviewData?.reviews &&
                     reviewData?.reviews.map((item, index) => (
-                      <div className="review__item">
+                      <div key={index} className="review__item">
                         <div className="review__item__heading">
                           <div className="review__item__heading__left">
                             <div className="review__item__heading__left__user">
@@ -426,7 +426,7 @@ const ProductDetail: React.FunctionComponent = () => {
                           <p>{item?.comments}</p>
                         </div>
                       </div>
-                    ))}
+                    ))} */}
                 </div>
               </div>
             </div>
@@ -436,10 +436,10 @@ const ProductDetail: React.FunctionComponent = () => {
           </div>
         </div>
         {/* end of comment, start pagination of comments */}
-        <Pagination
+        {/* <Pagination
           total={Number(reviewData?.total_page)}
           setCurrentPage={setPage}
-        />
+        /> */}
       </section>
       <section className="product-detail__recommend">
         <div className="container-nmc px-3 mx-auto">
@@ -448,7 +448,7 @@ const ProductDetail: React.FunctionComponent = () => {
           </h2>
           <div className="product-detail__recommend__list">
             <Slider {...productListSettings}>
-              {productList.map((item) => (
+              {productList.map((item,index) => (
                 <ProductItem
                   key={item?.id}
                   itemDetail={item}
