@@ -9,7 +9,7 @@ import {
   useUpdateCartMutation,
 } from "../../services/cart/cartAPI";
 
-const CartIndex = () => {
+const CartIndex : React.FunctionComponent = () =>{
   const totalItemPrice = useSelector(selectCurrentTotalCartValue);
 
   const { data } = useGetCartQuery();

@@ -4,7 +4,7 @@ import OrderBill from "../../component/OrderBill";
 import Breadcrumb from "../../component/Breadcrumb";
 import { orderReturn } from '../../assets/img';
 
-const OrderReturn = () => {
+const OrderReturn : React.FunctionComponent = () => {
 	const pathAfterDomain = window.location.pathname;
 
 	return (

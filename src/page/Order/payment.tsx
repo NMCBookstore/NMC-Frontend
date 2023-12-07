@@ -30,7 +30,7 @@ const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
   },
 };
 
-const OrderPayment = () => {
+const OrderPayment : React.FunctionComponent = () => {
   const [isPaymentInfoComplete, setIsPaymentInfoComplete] = useState(false);
 
   const totalCartIdArr = useSelector(selectCurrentCardID);

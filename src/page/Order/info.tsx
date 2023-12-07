@@ -5,7 +5,7 @@ import Breadcrumb from "../../component/Breadcrumb";
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../features/auth/authSlice';
 
-const OrderInfo = () => {
+const OrderInfo : React.FunctionComponent = () => {
     const pathAfterDomain = window.location.pathname;
 
     const user = useSelector(selectCurrentUser)
