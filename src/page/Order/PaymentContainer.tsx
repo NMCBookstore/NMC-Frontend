@@ -9,7 +9,7 @@ const PUBLIC_KEY =
 
 const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
-const StripeContainer: React.FC = () => {
+const PaymentContainer: React.FC = () => {
   const [stripe, setStripe] = useState<Stripe | null>(null);
   const [isStripeLoaded, setStripeLoaded] = useState(false);
 
@@ -38,4 +38,4 @@ const StripeContainer: React.FC = () => {
   );
 };
 
-export default StripeContainer;
+export default PaymentContainer;

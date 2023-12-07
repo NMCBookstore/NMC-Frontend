@@ -7,7 +7,7 @@ const Layout = lazy(() => import("./layout/Layout"));
 
 const OrderInfo = lazy(() => import("./page/Order/info"));
 const OrderPayment = lazy(() => import("./page/Order/payment"));
-const StripeContainer = lazy(() => import("./page/Order/StripeContainer"));
+const PaymentContainer = lazy(() => import("./page/Order/PaymentContainer"));
 const OrderReturn = lazy(() => import("./page/Order/return"));
 
 const Cart = lazy(() => import("./page/Cart"));
@@ -24,7 +24,7 @@ const RequireAuth = lazy(() => import("./features/auth/RequireAuth"));
 const RequireCartItem = lazy(() => import("./features/cart/RequireCart"));
 
 /**** 404 page *****/
-const NotFound = lazy(() => import("./page/Error"));
+const NotFound = lazy(() => import("./page/error"));
 
 const HomePage = lazy(() => import("./page/HomePage/home"));
 
@@ -56,7 +56,7 @@ const RouterConfig: RouteObject[] = [
               { path: "order/info", element: <OrderInfo /> },
               {
                 path: "order",
-                element: <StripeContainer />,
+                element: <PaymentContainer />,
                 children: [{ path: "payment", element: <OrderPayment /> }],
               },
               { path: "order/return", element: <OrderReturn /> },

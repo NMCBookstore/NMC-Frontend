@@ -15,6 +15,7 @@ import CartSidebar from "./CartSidebar";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 import { Wishlist } from "../../interface/Wishlist";
 import { useGetCartQuery } from "../../services/cart/cartAPI";
+import { selectCurrentCartProduct } from "../../features/cart/cartSlice";
 
 const Header: React.FunctionComponent = () => {
   const [showSearch, setshowSearch] = useState<boolean>(false);
@@ -24,7 +25,8 @@ const Header: React.FunctionComponent = () => {
   const token = useSelector(selectCurrentAccessToken);
   const user = useSelector(selectCurrentUser);
   const { data: wishlistBadge } = useGetWishlistQuery();
-  const { data: cartBadge = [] } = useGetCartQuery();
+  // const { data: cartBadge = [] } = useGetCartQuery();
+  const cartBadge = useSelector(selectCurrentCartProduct);
 
   const handleOpenCart = () => {
     const pathAfterDomain = window.location.pathname;
