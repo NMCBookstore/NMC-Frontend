@@ -15,10 +15,11 @@ const CartDemo = lazy(() => import("./page/Cart"));
 const ProductDetails = lazy(() => import("./page/Product/detail"));
 const ArticleDetail = lazy(() => import("./page/Article/detail"));
 const ProductList = lazy(() => import("./page/Product"));
+const Profile = lazy(() => import("./page/Profile"));
+const Wishlist = lazy(() => import("./page/WishList"));
 
 /**** Protected User Routes *****/
 const RequireAuth = lazy(() => import("./features/auth/RequireAuth"));
-// const Wishlist = lazy(() => import("./page/
 
 /**** Protected Checkout *****/
 const RequireCartItem = lazy(() => import("./features/cart/RequireCart"));
@@ -62,6 +63,8 @@ const RouterConfig: RouteObject[] = [
               { path: "order/return", element: <OrderReturn /> },
             ],
           },
+          { path: "profile", element: <Profile /> },
+          { path: "wishlist", element: <Wishlist /> },
         ],
       },
     ],

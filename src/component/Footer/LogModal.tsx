@@ -11,11 +11,18 @@ import {
   setCredentials,
   signup,
 } from "../../features/auth/authSlice";
-import { useLoginMutation } from "../../services/authentication/authAPI";
+import {
+  getGoogleUrl,
+  useLoginMutation,
+  useLoginWithGoogleMutation,
+} from "../../services/authentication/authAPI";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 import { useGetCartQuery } from "../../services/cart/cartAPI";
 import { GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
+import { useGoogleLogin } from "@react-oauth/google";
+import { avatarProfile } from "../../assets/img";
+
 const BdxLogModal: React.FunctionComponent = () => {
   const showLog = useSelector((state: RootState) => state.auth.status);
   const cancelButtonRef = useRef(null);
@@ -25,6 +32,7 @@ const BdxLogModal: React.FunctionComponent = () => {
   const { refetch: cartRefetch } = useGetCartQuery();
 
   const [executeLogin, { isLoading }] = useLoginMutation();
+  const [executeGoogleLogin] = useLoginWithGoogleMutation()
 
   const [values, setValues] = useState({
     username: "",
@@ -33,7 +41,9 @@ const BdxLogModal: React.FunctionComponent = () => {
 
   const handleGoogle = async (creden: any) => {
     try {
-      const data = await executeLogin(creden).unwrap();
+      const data = await executeGoogleLogin(creden);
+      console.log("this is data: ", data);
+      return data;
     } catch (err) {
       console.log("can't login");
     }
@@ -193,15 +203,27 @@ const BdxLogModal: React.FunctionComponent = () => {
                     {showLog === "signup" && "Sign up with Google"}
                   </button> */}
 
-                  <GoogleLogin
+                  <a href={getGoogleUrl("http://localhost:3000")}>
+                    <img
+                      className="pr-2"
+                      src={avatarProfile}
+                      alt=""
+                      style={{ height: "2rem" }}
+                    />
+                    Continue with Google
+                  </a>
+
+                  {/* <GoogleLogin
                     onSuccess={(credentialResponse) => {
                       console.log(credentialResponse);
-                      handleGoogle(credentialResponse.clientId);
+                      handleGoogle(credentialResponse);
                     }}
                     onError={() => {
                       console.log("Login Failed");
                     }}
-                  />
+                    text="continue_with"
+                    shape="circle"
+                  /> */}
                 </div>
                 <div className="flex flex-col items-center">
                   <button className="w-fit leading-normal mb-4 underline-offset-2 underline">
