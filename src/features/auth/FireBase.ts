@@ -20,7 +20,7 @@ export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 export const SignInWithGoogle = () => {
-const dispatch = useDispatch()
+// const dispatch = useDispatch()
 
   signInWithPopup(auth, provider)
     .then((result) => {

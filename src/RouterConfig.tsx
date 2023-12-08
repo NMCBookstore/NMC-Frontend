@@ -34,7 +34,7 @@ const RouterConfig: RouteObject[] = [
     element: <Layout />,
     children: [
       { path: "/", element: <HomePage /> },
-      { path: "/product/list", element: <ProductList /> },
+      { path: "/product/all", element: <ProductList /> },
       { path: "/article/detail", element: <ArticleDetail /> },
       { path: "/cartdemo", element: <CartDemo /> },
       { path: "*", element: <NotFound /> },

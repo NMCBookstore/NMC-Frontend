@@ -86,8 +86,7 @@ const CartIndex : React.FunctionComponent = () =>{
                           </a>
                         </p>
                         <p>
-                          Chỗ này nên thay thế bằng tên tác giả chứ không phải
-                          id : {item?.book_id}
+                          {item?.author}
                         </p>
                       </div>
                     </td>

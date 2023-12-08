@@ -7,7 +7,7 @@ const auth = book.injectEndpoints({
     login: builder.mutation<Login, Pick<Login, "username" | "password">>({
       query: (credentials) => ({
         method: "POST",
-        url: `login`,
+        url: `/login`,
         body: { ...credentials },
       }),
       onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
