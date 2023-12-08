@@ -14,6 +14,7 @@ import {
 import { useLoginMutation } from "../../services/authentication/authAPI";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 import { useGetCartQuery } from "../../services/cart/cartAPI";
+import { GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
 const BdxLogModal: React.FunctionComponent = () => {
   const showLog = useSelector((state: RootState) => state.auth.status);
@@ -29,6 +30,14 @@ const BdxLogModal: React.FunctionComponent = () => {
     username: "",
     password: "",
   });
+
+  const handleGoogle = async (creden: any) => {
+    try {
+      const data = await executeLogin(creden).unwrap();
+    } catch (err) {
+      console.log("can't login");
+    }
+  };
 
   const handleLogin = async () => {
     dispatch(loginStart());
@@ -171,7 +180,7 @@ const BdxLogModal: React.FunctionComponent = () => {
                     {showLog === "signup" && "Sign Up"}
                     {showLog === "forgotpassword" && "Submit"}
                   </button>
-                  <button
+                  {/* <button
                     type="button"
                     className="w-full py-3 px-6 block border-[1px] border-[#262626] border-solid rounded-[12px]"
                     onClick={() => {
@@ -182,7 +191,17 @@ const BdxLogModal: React.FunctionComponent = () => {
                   >
                     {showLog === "login" && "Log in with Google"}
                     {showLog === "signup" && "Sign up with Google"}
-                  </button>
+                  </button> */}
+
+                  <GoogleLogin
+                    onSuccess={(credentialResponse) => {
+                      console.log(credentialResponse);
+                      handleGoogle(credentialResponse.clientId);
+                    }}
+                    onError={() => {
+                      console.log("Login Failed");
+                    }}
+                  />
                 </div>
                 <div className="flex flex-col items-center">
                   <button className="w-fit leading-normal mb-4 underline-offset-2 underline">

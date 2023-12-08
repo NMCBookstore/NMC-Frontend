@@ -11,12 +11,15 @@ import { PersistGate } from "redux-persist/lib/integration/react";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "./layout/ScrollToTop";
+import { GoogleOAuthProvider } from '@react-oauth/google';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
+    <GoogleOAuthProvider clientId="322762283450-vd7agq6rmri1s0h06gi7ffg4aher31nm.apps.googleusercontent.com">
     <Provider store={store}>
       <BrowserRouter>
         <Suspense
@@ -32,6 +35,7 @@ root.render(
         </Suspense>
       </BrowserRouter>
     </Provider>
+    </GoogleOAuthProvider>
   </React.StrictMode>
 );
 
