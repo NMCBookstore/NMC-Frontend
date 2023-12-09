@@ -319,7 +319,7 @@ const ProductDetail: React.FunctionComponent = () => {
         <div className="product-detail__content">
           <div className="row">
             <div className="w-[75%]">
-              <div className="product-detail__content__overview relative">
+              <div className="product-detail__content__overview relative" id="review-block">
                 <div className="product-detail__content__overview__main">
                   <h2 className="product-detail__content__overview__main__heading">
                     Overview
@@ -360,7 +360,7 @@ const ProductDetail: React.FunctionComponent = () => {
                 {/* Reviewss */}
 
                 <div className="product-detail__content__review__list">
-                  {/* {reviewData?.reviews &&
+                  {reviewData?.reviews &&
                     reviewData?.reviews.map((item, index) => (
                       <div key={index} className="review__item">
                         <div className="review__item__heading">
@@ -426,7 +426,7 @@ const ProductDetail: React.FunctionComponent = () => {
                           <p>{item?.comments}</p>
                         </div>
                       </div>
-                    ))} */}
+                    ))}
                 </div>
               </div>
             </div>
@@ -436,10 +436,12 @@ const ProductDetail: React.FunctionComponent = () => {
           </div>
         </div>
         {/* end of comment, start pagination of comments */}
-        {/* <Pagination
+        <Pagination
           total={Number(reviewData?.total_page)}
           setCurrentPage={setPage}
-        /> */}
+          page = {page.id}
+          target="review-block"
+        />
       </section>
       <section className="product-detail__recommend">
         <div className="container-nmc px-3 mx-auto">

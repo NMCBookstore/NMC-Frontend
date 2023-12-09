@@ -1,47 +1,106 @@
 .order-payment {
-    .text-second-color{
+    .text-second-color {
         margin-bottom: 20px;
         text-align: center;
-        color:$orange-orange-4;
+        color: $orange-orange-4;
     }
+
     .order-info__form {
         &>div:first-child {
             background: #f9f9f9;
             box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.03), 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
 
         }
+
         .input-group__textarea {
             padding: 0px 12px;
-            i{
+
+            i {
                 padding: 12px 0px;
             }
+
             textarea {
                 height: fit-content !important;
             }
         }
-        .form-control{
+
+        .form-control {
             color: $gray;
         }
     }
-    &__list{
+
+    &__list {
         border-radius: 24px;
-        padding:24px;
+        padding: 24px;
         background: #ffebce;
         box-shadow: 0px 4px 6px 3px rgba(255, 202, 65, 0.1), 0px 12px 16px -4px rgba(255, 202, 65, 0.08);
-        &__item{
+
+        &__item {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             row-gap: 16px;
-            &__label{
-                color:#262626;
+
+            &__label {
+                color: #262626;
                 font-weight: 500;
                 margin-bottom: 8px;
             }
-            &__input{
+
+            &__input {
                 width: 100%;
                 padding: 12px;
                 border-radius: 12px;
+            }
+        }
+
+        &__cart {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            &>div:first-child {
+                margin-bottom: 24px;
+                position: relative;
+                background-color: white;
+                height: 48px !important;
+                border-radius: 100px;
+
+                &>* {
+                    position: absolute;
+                    width: calc(100% - 24px);
+                    top: 50%;
+                    left: 12px;
+                    transform: translateY(-50%);
+
+                }
+            }
+            .order-payment__list__handle{
+                display: flex;
+                justify-content: center;
+                margin-bottom: 24px;
+                button{
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12px;
+                    width: fit-content;
+                    padding: 12px;
+                    background: white;
+                    color: $primary;
+                    border-radius: 100px;
+                    font-weight: 600;
+                    min-width: 200px;
+                    transition: all 0.3s;
+                    border: 1px solid $primary;
+                    &:hover{
+                        background: $primary;
+                        color: white;
+                    }
+                    i{
+                        display: inline-flex;
+                        align-items: center;
+                    }
+                }
             }
         }
     }

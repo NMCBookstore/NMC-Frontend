@@ -102,20 +102,22 @@ const OrderPayment : React.FunctionComponent = () => {
                   <img className="w-[40px]" src={mastercard} alt="mastercard" />
                 </div>
                 {/* this is the checkout part */}
-                <h3>Fill in your card info to order: </h3>
-                <form onSubmit={handlePayment}>
+                <h3>Fill In Your Card Info To Order: </h3>
+                <form onSubmit={handlePayment} className="order-payment__list__cart">
                   <CardElement
                     options={CARD_ELEMENT_OPTIONS}
                     onChange={handleCardElementChange}
                   />
                   {isPaymentInfoComplete && (
-                    <button>
-                      Accept
-                      <i className="bdx-cart"></i>
-                    </button>
+                    <div className="order-payment__list__handle">
+                      <button>
+                        <span>Accept</span>
+                        <i className="bdx-cart-fill"></i>
+                      </button>
+                    </div>
                   )}
                 </form>
-                <h3>OR YOU CAN USE</h3>
+                <h3 className="mb-3">Or You Can Use</h3>
                 <PaypalCheckoutButton />
               </div>
               <div className="order-info__form__btn flex justify-between items-center">

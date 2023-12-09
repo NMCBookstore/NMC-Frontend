@@ -38,7 +38,6 @@ export const cateSettings = {
 
 export const productListSettings = {
     autoplay:true,
-    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 5,
@@ -91,7 +90,6 @@ export const productListCate = {
 
 export const productTabsListSettings = {
     autoplay:true,
-    dots: true,
     infinite: false,
     speed: 500,
     slidesToShow: 5,
@@ -156,6 +154,35 @@ export const servicesCarousel = {
             settings: {
                 slidesToShow: 1,
                 dots:false
+            }
+        }
+    ]
+};
+export const productListToReviewSettings = {
+    autoplay:true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 1,
+    arrows: false,
+    autoplaySpeed:3000,
+    responsive: [
+        {
+            breakpoint: 1440,
+            settings: {
+                slidesToShow: 4,
+            }
+        },
+        {
+            breakpoint: 768,
+            settings: {
+                slidesToShow: 3,
+            }
+        },
+        {
+            breakpoint: 576,
+            settings: {
+                slidesToShow: 2,
             }
         }
     ]
