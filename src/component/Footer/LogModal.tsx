@@ -22,6 +22,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
 import { useGoogleLogin } from "@react-oauth/google";
 import { avatarProfile } from "../../assets/img";
+import axios from "axios";
 
 const BdxLogModal: React.FunctionComponent = () => {
   const showLog = useSelector((state: RootState) => state.auth.status);
@@ -32,7 +33,7 @@ const BdxLogModal: React.FunctionComponent = () => {
   const { refetch: cartRefetch } = useGetCartQuery();
 
   const [executeLogin, { isLoading }] = useLoginMutation();
-  const [executeGoogleLogin] = useLoginWithGoogleMutation()
+  const [executeGoogleLogin] = useLoginWithGoogleMutation();
 
   const [values, setValues] = useState({
     username: "",
@@ -48,6 +49,18 @@ const BdxLogModal: React.FunctionComponent = () => {
       console.log("can't login");
     }
   };
+
+  const googleLogin = useGoogleLogin({
+    flow: "auth-code",
+    onSuccess: async (codeResponse) => {
+      console.log(codeResponse);
+      const tokens = await axios.post("http://localhost:8080/login/oauth/google", {
+        code: codeResponse.code,
+      });
+      console.log(tokens);
+    },
+    onError: (errorResponse) => console.log(errorResponse),
+  });
 
   const handleLogin = async () => {
     dispatch(loginStart());
@@ -203,7 +216,7 @@ const BdxLogModal: React.FunctionComponent = () => {
                     {showLog === "signup" && "Sign up with Google"}
                   </button> */}
 
-                  <a href={getGoogleUrl("http://localhost:3000")}>
+                  {/* <a href={getGoogleUrl("http://localhost:3000")}>
                     <img
                       className="pr-2"
                       src={avatarProfile}
@@ -211,20 +224,30 @@ const BdxLogModal: React.FunctionComponent = () => {
                       style={{ height: "2rem" }}
                     />
                     Continue with Google
-                  </a>
+                  </a> */}
 
                   {/* <GoogleLogin
-                    onSuccess={(credentialResponse) => {
-                      console.log(credentialResponse);
-                      handleGoogle(credentialResponse);
-                    }}
+                    onSuccess={googleLogin}
                     onError={() => {
                       console.log("Login Failed");
                     }}
                     text="continue_with"
                     shape="circle"
                   /> */}
+                  <button
+                    type="button"
+                    className="w-full py-3 px-6 block border-[1px] border-[#262626] border-solid rounded-[12px]"
+                    onClick={() => {
+                      if (showLog === "login") {
+                        googleLogin();
+                      }
+                    }}
+                  >
+                    {showLog === "login" && "Log in with Google"}
+                    {showLog === "signup" && "Sign up with Google"}
+                  </button>
                 </div>
+
                 <div className="flex flex-col items-center">
                   <button className="w-fit leading-normal mb-4 underline-offset-2 underline">
                     Forgot your password?
