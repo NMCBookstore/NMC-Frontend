@@ -158,7 +158,7 @@ const Header: React.FunctionComponent = () => {
           </div>
           <div className="flex relative subMenu-btn">
             <Link
-              to="/user/account"
+              to="/user/profile"
               className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
             >
               <div className="relative">
@@ -185,7 +185,7 @@ const Header: React.FunctionComponent = () => {
             <div className="absolute top-full subMenu z-[100]">
               <ul>
                 <li>
-                  <Link to="/profile">
+                  <Link to="user/profile">
                     <span>Profile</span>
                   </Link>
                 </li>

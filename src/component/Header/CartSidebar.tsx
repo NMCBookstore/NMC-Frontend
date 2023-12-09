@@ -23,7 +23,7 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({
 
   const [deleteCart] = useDeleteCartItemMutation();
   const handleDeleteCartItem = (cart_id: number[]) => {
-    deleteCart(cart_id)
+    deleteCart(cart_id);
   };
 
   const totalPrice = useSelector(selectCurrentTotalCartValue);
@@ -92,7 +92,7 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({
                               {item?.book_name}
                             </div>
                             <div className="sidebar-cart__item--desc--attribute">
-                              Arthur c. brooks oprah winfrey
+                              {item?.author}
                             </div>
                             <div className="sidebar-cart__item--desc--quantity">
                               Quantity: {item?.amount}

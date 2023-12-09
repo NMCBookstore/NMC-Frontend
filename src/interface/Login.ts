@@ -9,4 +9,5 @@ export interface Login {
   user: User | null;
   username: string;
   password: string;
+  credential: string;
 }

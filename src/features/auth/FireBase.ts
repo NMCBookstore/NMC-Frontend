@@ -20,18 +20,18 @@ export const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 export const SignInWithGoogle = () => {
-const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   signInWithPopup(auth, provider)
     .then((result) => {
       console.log(result);
-      const username = result.user.displayName ?? '';
-      const email = result.user.email ?? '';
-      const image = result.user.photoURL ?? '';
+      const username = result.user.displayName ?? "";
+      const email = result.user.email ?? "";
+      const image = result.user.photoURL ?? "";
 
       // dispatch(setCredentials({username}))
 
-      localStorage.setItem("username", username );
+      localStorage.setItem("username", username);
       localStorage.setItem("email", email);
       localStorage.setItem("image", image);
     })
