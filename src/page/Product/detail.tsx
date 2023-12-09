@@ -360,7 +360,7 @@ const ProductDetail: React.FunctionComponent = () => {
                 {/* Reviewss */}
 
                 <div className="product-detail__content__review__list">
-                  {/* {reviewData?.reviews &&
+                  {reviewData?.reviews &&
                     reviewData?.reviews.map((item, index) => (
                       <div key={index} className="review__item">
                         <div className="review__item__heading">
@@ -426,7 +426,7 @@ const ProductDetail: React.FunctionComponent = () => {
                           <p>{item?.comments}</p>
                         </div>
                       </div>
-                    ))} */}
+                    ))}
                 </div>
               </div>
             </div>
