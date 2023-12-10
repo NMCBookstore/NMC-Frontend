@@ -321,7 +321,7 @@ const ProductDetail: React.FunctionComponent = () => {
         <div className="product-detail__content">
           <div className="row">
             <div className="w-[75%]">
-              <div className="product-detail__content__overview relative">
+              <div className="product-detail__content__overview relative" id="review-block">
                 <div className="product-detail__content__overview__main">
                   <h2 className="product-detail__content__overview__main__heading">
                     Overview
@@ -441,7 +441,8 @@ const ProductDetail: React.FunctionComponent = () => {
         <Pagination
           total={Number(reviewData?.total_page)}
           setCurrentPage={setPage}
-          page={page.id}
+          page = {page.id}
+          target="review-block"
         />
       </section>
       <section className="product-detail__recommend">

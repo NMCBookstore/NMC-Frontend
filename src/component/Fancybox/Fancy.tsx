@@ -23,6 +23,7 @@ function Fancybox(props: PropsWithChildren<Props>) {
     NativeFancybox.bind(container, delegate, options);
 
     return () => {
+      console.log("fancy");
       NativeFancybox.unbind(container);
       NativeFancybox.close();
     };

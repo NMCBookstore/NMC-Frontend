@@ -156,8 +156,7 @@
                     }
                 }
                 @include max-width-576{
-                    padding-left: 4px;
-                    padding-right: 4px;
+                    padding:16px 4px;
                 }
             }
             @include max-width-992{
@@ -197,6 +196,9 @@
     .tab-list{
         border-radius: 0px 12px 12px 12px;
         box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.03), 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+        @include max-width-576{
+            padding: 16px 12px;
+        }
     }
     .tab-lable{
         padding: 12px 24px;
@@ -210,8 +212,14 @@
         background: #f0efef !important;
         width: fit-content;
         border-radius: 12px 12px 0px 0px;
-        overflow: hidden;
+        display: flex;
+        overflow-x: scroll;
+        &::-webkit-scrollbar {
+            height: 0px;
+            background-color: transparent;
+        }
         button{
+            flex-shrink: 0;
             &:nth-child(1){
                 border-radius: 12px 0px 0px 0px;
                 overflow: hidden;
@@ -223,6 +231,318 @@
             &[aria-selected="false"]{
                 p{
                     background: #f0efef !important;
+                }
+            }
+        }
+    }
+    .order-item{
+        background-color: #fef1d4;
+        padding: 24px 12px;
+        border-radius: 12px;
+        margin-bottom: 32px;
+        &__heading{
+            margin-top: 24px;
+            margin-left: 12px;
+            h3{
+                font-size: 28px;
+            }
+            @include  max-width-992{
+                margin-top: 16px;
+                margin-bottom: 32px;
+            }
+        }
+        .table {
+            width: 100%;
+            vertical-align: top;
+            margin-bottom: 48px;
+
+            @include max-width-992 {
+                margin-bottom: 24px;
+            }
+
+            &> :not(caption)>*>* {
+                --bs-table-bg: transparent;
+            }
+
+            thead {
+                @include max-width-992 {
+                    display: none;
+                }
+
+                tr {
+                    th {
+                        font-size: 20px;
+                        padding: 28px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        color: $gray;
+
+                        &:first-child {
+                            padding-left: 0;
+                            padding-right: 0;
+                            width: 50%;
+                        }
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    padding: 0px 12px;
+                    background-color: transparent;
+                    transition: all 0.3s;
+                    overflow: hidden;
+
+                    td {
+                        padding: 12px;
+                        vertical-align: middle;
+
+                        &:nth-child(1) {
+                            display: flex;
+                            column-gap: 12px;
+                            overflow: hidden;
+
+                            .product-img {
+                                overflow: hidden;
+                                max-width: 86px;
+                                aspect-ratio: 396/595;
+                                object-fit: cover;
+
+                                img {
+                                    transition: all 0.3s;
+                                }
+
+                                &:hover {
+                                    img {
+                                        transform: scale(1.1);
+                                    }
+                                }
+                            }
+
+                            div {
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+
+                                p:first-child {
+                                    a {
+                                        margin-bottom: 2px;
+                                        font-size: 18px;
+                                        font-weight: 600;
+                                        color: #262626;
+                                        transition: all 0.3s;
+                                        @include webkit-box(2);
+
+                                        &:hover {
+                                            color: $primary;
+                                        }
+                                    }
+                                }
+
+                                p:nth-child(2) {
+                                    color: #595959;
+                                    font-size: 16px;
+                                    @include webkit-box(1);
+                                }
+                            }
+                        }
+
+                        .table-price {
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 12px;
+
+                            @include max-width-992 {
+                                align-items: end;
+                                gap: 6px;
+                            }
+
+                            p:first-child {
+                                font-weight: 600;
+                                color: #262626;
+                            }
+
+                            p:nth-child(2) {
+                                font-size: 14px;
+                                color: #595959;
+                                text-decoration-line: line-through;
+                            }
+
+                            p:nth-child(3) {
+                                padding: 4px;
+                                font-size: 14px;
+                                font-weight: 600;
+                                color: white;
+                                background: #D41A1A;
+                                padding: 2px 8px;
+                                border-radius: 8px;
+                            }
+                        }
+
+                        &:nth-child(3) {
+                            text-align: center;
+                        }
+
+                        &:last-child {
+
+                            .table-sumprice {
+                                text-align: center;
+                                font-weight: 600;
+                                color: #262626;
+                            }
+                        }
+                    }
+
+                    @include max-width-992 {
+                        display: flex;
+                        flex-direction: column;
+                        padding: 16px 12px;
+                        border-top: 3px solid $primary;
+                        background: #f1f1f1;
+                        border-radius: 12px;
+
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        td {
+                            padding: 6px 0px;
+                            display: flex;
+                            justify-content: space-between;
+                            flex-wrap: wrap;
+                            column-gap: 18px;
+                            vertical-align: middle;
+
+                            &::before {
+                                content: attr(data-th);
+                                font-weight: 600;
+                                font-size: 16px;
+                                line-height: 20px;
+                            }
+
+                            &:first-child,
+                            &:last-child {
+                                border-bottom: none;
+                            }
+
+                            &:first-child {
+                                padding: 0;
+                            }
+
+                            &:last-child {
+                                padding-bottom: 0;
+                            }
+
+                            &:nth-child(1) {
+                                padding-bottom: 8px;
+                                justify-content: start;
+                                flex-wrap: nowrap;
+
+                                &>div {
+                                    p:first-child {
+                                        @include webkit-box(2);
+                                    }
+                                }
+
+                                &::before {
+                                    display: none;
+                                }
+                            }
+
+                            &:nth-child(2) {
+                                &::before {
+                                    line-height: 49px;
+                                }
+
+                                .table-price {
+                                    p:last-child {
+                                        display: none;
+                                    }
+                                }
+                            }
+
+                            &:nth-child(3) {
+                                &::before {
+                                    line-height: 38px;
+                                }
+                            }
+
+                            &:nth-child(4) {
+                                &::before {
+                                    line-height: 30px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                @include max-width-992 {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    grid-gap: 16px;
+                }
+
+                @include max-width-576 {
+                    grid-template-columns: repeat(1, 1fr);
+                }
+            }
+
+        }
+        &.received{
+            background-color: #d7d5d5;
+        }
+    }
+    .WaitingReview{
+        .slick-slide{
+            padding: 12px;
+            .product-item {
+                .profile__user__right__adress{
+                    padding: 0px;
+                }
+                box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.03), 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+                position: relative;
+                display: flex !important;
+                flex-direction: column;
+                align-items:center;
+                justify-content: space-between;
+                height: 100%;
+                padding: 10px 20px 20px;
+                border-radius: 12px;
+                transition: all 0.3s;
+                border: 2px solid transparent;
+                &:hover{
+                    background-color: #FFE8AD;
+                    border: 2px solid #FFCA41;
+                    box-shadow: 0px 4px 6px -2px rgba(0, 0, 0, 0.03), 0px 12px 16px -4px rgba(0, 0, 0, 0.08);
+                }
+            
+                &__img {
+                    margin-bottom: 18px;
+                    aspect-ratio: 396/595;
+                    max-height: 286px;
+                }
+            
+                &__title {
+                    margin-bottom: 8px;
+                    color: #262626;
+                    text-align: center;
+                    transition: all 0.3s;
+                    &:hover{
+                        cursor: pointer;
+                        color:#0F3BB0;
+                    }
+                }
+            
+                &__des {
+                    text-align: center;
+                    margin-bottom: 8px;
+                    font-size: 14px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 150%;
+                    text-transform: uppercase;
+                    color: #595959;
                 }
             }
         }
