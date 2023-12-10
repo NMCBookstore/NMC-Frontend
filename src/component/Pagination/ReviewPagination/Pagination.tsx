@@ -6,10 +6,11 @@ interface PaginationProps {
   setCurrentPage: React.Dispatch<
     React.SetStateAction<{ id: number; size: number }>
   >;
+  page: number
 }
 
 const Pagination: React.FunctionComponent<PaginationProps> = memo(
-  ({ total, setCurrentPage }) => {
+  ({ total, setCurrentPage, page }) => {
   let pages: number[] = [];
 
   for (let i = 1; i <= total; i++) {
@@ -22,10 +23,10 @@ const Pagination: React.FunctionComponent<PaginationProps> = memo(
 
   return (
     <div className="pagination">
-      {pages.map((page, index) => {
+      {pages.map((item, index) => {
         return (
-          <button onClick={() => handlePageClick(page, 5)} key={index}>
-            {page}
+          <button className={page==item ? "active" : ""} onClick={() => handlePageClick(item, 5)} key={index}>
+            {item}
           </button>
         );
       })}

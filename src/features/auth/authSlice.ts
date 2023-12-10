@@ -34,6 +34,10 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.access_token = action.payload.access_token;
       state.refresh_token = action.payload.refresh_token;
+      if (action.payload?.access_token && action.payload?.refresh_token) {
+        state.access_token = action.payload.access_token;
+        state.refresh_token = action.payload.refresh_token;
+      }
     },
 
     logout: () => {
@@ -51,3 +55,5 @@ export default authSlice.reducer;
 export const selectCurrentUser = (state: RootState) => state.auth?.user;
 export const selectCurrentAccessToken = (state: RootState) =>
   state.auth?.access_token;
+  export const selectCurrentRefreshToken = (state: RootState) =>
+  state.auth?.refresh_token;

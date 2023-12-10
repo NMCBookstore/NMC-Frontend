@@ -52,11 +52,12 @@ const BdxLogModal: React.FunctionComponent = () => {
 
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
+    scope: "profile email",
     onSuccess: async (codeResponse) => {
       console.log(codeResponse);
-      const tokens = await axios.post("http://localhost:8080/login/oauth/google", {
-        code: codeResponse.code,
-      });
+      const tokens = await axios.get(
+        `http://localhost:8080/login/oauth/google?code=${codeResponse.code}`
+      );
       console.log(tokens);
     },
     onError: (errorResponse) => console.log(errorResponse),
