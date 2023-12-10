@@ -3,7 +3,7 @@ import { Genres } from "../../interface/Genres";
 
 const genres = book.injectEndpoints({
   endpoints: (builder) => ({
-    getGenres: builder.query<Genres, void>({
+    getGenres: builder.query<Genres[], void>({
       query: () => ({
         url: `genres/`,
       }),

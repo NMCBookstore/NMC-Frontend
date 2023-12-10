@@ -15,3 +15,8 @@ export interface Product {
   genres?: Genres;
   subgenres?: Subgenres;
 }
+
+export interface AllProduct {
+  total_page: number;
+  books: Product[];
+}

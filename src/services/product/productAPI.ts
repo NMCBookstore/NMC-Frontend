@@ -1,4 +1,4 @@
-import { Product } from "../../interface/Product";
+import { AllProduct, Product } from "../../interface/Product";
 import { book } from "../Base/baseAPI";
 
 const product = book.injectEndpoints({
@@ -7,6 +7,11 @@ const product = book.injectEndpoints({
       query: (id) => `books/${id}`,
     }),
 
+    getAllProducts : builder.query<AllProduct,{page_id: number, page_size: number}>({
+      query: ({page_id, page_size}) => 
+      `books/?page_id=${page_id}&page_size=${page_size}`,
+    }), 
+
     getTopNewProduct: builder.query<Product[], void>({
       query: () => `books/newest`,
     }),
@@ -14,4 +19,4 @@ const product = book.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useGetProductDetailsQuery, useGetTopNewProductQuery } = product;
+export const { useGetProductDetailsQuery, useGetTopNewProductQuery, useGetAllProductsQuery } = product;

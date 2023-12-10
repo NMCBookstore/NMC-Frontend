@@ -11,14 +11,15 @@ import {
 const WishListComponent: React.FunctionComponent = () => {
   const pathAfterDomain = window.location.pathname;
 
-  const [amount, setAmount] = useState(1);
+  const [amounts, setAmounts] = useState(1);
 
-  function incrementCount(wishlist_id: number) {
-    setAmount(amount + 1);
-  }
+  const incrementCount = (wishlist_id: number) => {
+    setAmounts(amounts +1)
+  };
 
   function decrementCount(wishlist_id: number) {
-  setAmount(amount > 1 ? amount - 1 : 1);
+    setAmounts(amounts > 1 ? amounts - 1 : 1);
+    console.log(wishlist_id);
   }
 
   const { data } = useGetWishlistQuery();
@@ -98,7 +99,7 @@ const WishListComponent: React.FunctionComponent = () => {
                           name="product-qty"
                           min="0"
                           max="100"
-                          value={amount}
+                          value={amounts}
                         ></input>
                         <button
                           className="qty-count qty-count--add"

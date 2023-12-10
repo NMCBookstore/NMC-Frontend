@@ -1,4 +1,4 @@
-import React, { Fragment, useRef, useState } from "react";
+import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Product } from "../../interface/Product";
 import { articleItem } from "../../interface";
 import { articleImg, productItem } from "../../assets/img";
@@ -11,34 +11,63 @@ import Marquee from "../../component/Marquee";
 import BreadcrumbConponent from "../../component/Breadcrumb";
 
 import { Combobox, Transition } from '@headlessui/react'
-interface Person {
-    id: number;
-    name: string;
-}
+import { useGetGenresQuery } from "../../services/genres/genresAPI";
+import { Genres } from "../../interface/Genres";
+import { debounce } from "lodash";
+import { useGetAllProductsQuery } from "../../services/product/productAPI";
+import ProductPagination from "../../component/Pagination/AllProductPagination/ProductPagination";
+
 interface PriceFilter {
     key: string;
     value: string;
 }
-const people: Person[] = [
-    { id: 1, name: 'new arrivals' },
-    { id: 2, name: 'Non-Fiction' },
-    { id: 3, name: 'Children’s' },
-    { id: 4, name: 'Stationery and gifts' },
-    { id: 5, name: 'Gift cards and vouchers' },
-    { id: 6, name: 'adventure' },
-];
 
 const ProductList: React.FunctionComponent = () => {
-    const [selected, setSelected] = useState<Person>(people[0]);
+
+    const [page, setPage] = useState({ id: 1, size: 24 });
+
+    const { data: genresData = [], isLoading } = useGetGenresQuery();
+    const {data: allProduct} = useGetAllProductsQuery({page_id: page.id, page_size: page.size});
+
+    const [isDataReady, setIsDataReady] = useState(false);
+    const [genres, setGenres] = useState<Genres[]>([]);
+
+  
+    useEffect(() => {
+        if (!isLoading && genresData.length > 0) {
+            setGenres(genresData);
+            setIsDataReady(true);
+          }
+        }, [isLoading, genresData]);
+
+    const [select, setSelect] = useState<Genres>(genres[0])
     const [query, setQuery] = useState<string>('');
-    const filteredPeople =  query === ''
-                                ? people
-                                : people.filter((person) =>
-                                    person.name
-                                        .toLowerCase()
-                                        .replace(/\s+/g, '')
-                                        .includes(query.toLowerCase().replace(/\s+/g, ''))
-                                );
+
+    const debouncedSetQuery = debounce((newQuery) => {
+        setQuery(newQuery);
+      }, 300); // Khoảng thời gian debounce
+    
+      const handleInputChange = (event: any) => {
+        const newQuery = event.target.value;
+        // Gọi hàm debounce để cập nhật query mới
+        debouncedSetQuery(newQuery);
+      };
+
+      const filterGenres = useMemo(() => {
+        if (query === '') {
+          return genres.slice(0, 50);
+        } else {
+          return genresData
+            .filter((item) =>
+              item?.name
+                .toLowerCase()
+                .replace(/\s+/g, '')
+                .includes(query.toLowerCase().replace(/\s+/g, ''))
+            )
+            .slice(0, 50);
+        }
+      }, [query, genres, genresData]);
+    
 
     const showSideBar = useRef(false);
     const elementRef = useRef<HTMLDivElement>(null);
@@ -266,13 +295,14 @@ const ProductList: React.FunctionComponent = () => {
                             <span>SORT</span>
                             <i className="bdx-caret"></i>
                         </button>
-                        <Combobox value={selected} onChange={setSelected}>
+                        <Combobox disabled={isLoading} value={select} onChange={setSelect}>
                             <div className="relative w-fit md:grow">
                                 <div className="relative md:grow border border-primary border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
                                     <Combobox.Input
                                         className="w-fit md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize text-primary bg-[transparent] font-semibold focus:outline-none"
-                                        displayValue={(person: Person) => person.name}
-                                        onChange={(event) => setQuery(event.target.value)}
+                                        displayValue={(genre: Genres) => genre?.name}
+                                        placeholder="Search genres..."
+                                        onChange={handleInputChange}
                                     />
                                     <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pb-6 rotate-[-90deg]">
                                         <i className="bdx-caret text-primary"></i>
@@ -286,19 +316,19 @@ const ProductList: React.FunctionComponent = () => {
                                     afterLeave={() => setQuery('')}
                                 >
                                     <Combobox.Options className="absolute mt-1 max-h-[264px] w-fit overflow-auto rounded-md bg-white p-3 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-[100]">
-                                        {filteredPeople.length === 0 && query !== '' ? (
-                                            <div className="relative cursor-default select-none px-4 py-2 text-primary">
+                                        {filterGenres.length === 0 && query !== '' ? (
+                                            <div className="font-semibold relative cursor-default select-none px-4 py-2 text-primary">
                                                 Nothing found.
                                             </div>
                                         ) : (
-                                            filteredPeople.map((person) => (
+                                            filterGenres.map((item) => (
                                                 <Combobox.Option
-                                                    key={person.id}
+                                                    key={item.id}
                                                     className={({ active }) =>
                                                         `relative cursor-default select-none py-2 px-6 rounded-xl ${active ? 'bg-primary text-white' : 'text-primary'
                                                         }`
                                                     }
-                                                    value={person}
+                                                    value={item}
                                                 >
                                                     {({ selected, active }) => (
                                                         <>
@@ -306,7 +336,7 @@ const ProductList: React.FunctionComponent = () => {
                                                                 className={`block leading-[24px] truncate ${selected ? 'font-semibold' : 'font-medium'
                                                                     }`}
                                                             >
-                                                                {person.name}
+                                                                {item.name}
                                                             </span>
                                                         </>
                                                     )}
@@ -327,12 +357,17 @@ const ProductList: React.FunctionComponent = () => {
                         </div>
                     </div>
                     <div className="row gap-y-[24px] sm:gap-y-[8px]">
-                        {productList.map((item) => (
+                        {/* here is all item */}
+                        {allProduct?.books.map((item) => (
                             <div className="sm:w-[50%] md:w-[33.33%] w-[25%] product-list__handle-sidebar__items__detail">
                                 <ProductItem key={item?.id} itemDetail={item} wishlistItem={wishlist}></ProductItem>
                             </div>
                         ))}
                     </div>
+                    <ProductPagination 
+                    total={Number(allProduct?.total_page)}
+                    setCurrentPage={setPage}
+                    page={page.id}/>
                 </div>
             </div>
             <section className="product-detail__recommend">

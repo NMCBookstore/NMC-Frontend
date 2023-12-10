@@ -21,7 +21,7 @@ import { useGetProductDetailsQuery } from "../../services/product/productAPI";
 import { useAddToCartMutation } from "../../services/cart/cartAPI";
 import toast from "react-hot-toast";
 import { useGetReviewQuery } from "../../services/review/reviewAPI";
-import Pagination from "../../component/Pagination/Pagination";
+import Pagination from "../../component/Pagination/ReviewPagination/Pagination";
 
 const ProductDetail: React.FunctionComponent = () => {
   let [count, setCount] = useState(1);
@@ -38,6 +38,7 @@ const ProductDetail: React.FunctionComponent = () => {
   const { id } = useParams();
 
   const { data: books, isFetching } = useGetProductDetailsQuery(Number(id));
+  
 
   const { data: wishList } = useGetWishlistQuery();
   const { data: reviewData } = useGetReviewQuery({
@@ -45,6 +46,7 @@ const ProductDetail: React.FunctionComponent = () => {
     page_id: page.id,
     page_size: page.size,
   });
+  console.log(reviewData)
 
   const [addWishList] = useAddToWishlistMutation();
   const [addToCart] = useAddToCartMutation();
