@@ -140,7 +140,7 @@ const ProductList: React.FunctionComponent = () => {
     { name: "Kids share their thoughts about banned books with NPR", img: articleImg, des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids." }];
     const priceFilter: PriceFilter[] = [{ key: "over5000", value: ">5000" }, { key: "nomal", value: "$ 100 - 500" }, { key: "under100", value: "< $100" }]
     return (
-        <div className="bg-[#F9EEDE] mt-[76px] product-list">
+        <div className="bg-[#F9EEDE] mt-[76px] product-list" id="block-product">
             <Marquee></Marquee>
             <div className="mx-auto px-3 container-nmc">
                 <BreadcrumbConponent></BreadcrumbConponent>
@@ -367,7 +367,9 @@ const ProductList: React.FunctionComponent = () => {
                     <ProductPagination 
                     total={Number(allProduct?.total_page)}
                     setCurrentPage={setPage}
-                    page={page.id}/>
+                    page={page.id}
+                    target= "block-product"
+                    />
                 </div>
             </div>
             <section className="product-detail__recommend">
