@@ -15,7 +15,7 @@ import { debounce } from "lodash";
 import { useSearchParams } from "react-router-dom";
 import ProductPagination from "../../component/Pagination/AllProductPagination/ProductPagination";
 import { Genres } from "../../interface/Genres";
-import { useGetSearchQuery } from "../../services/Search/searchAPI";
+import { useGetSearchQuery } from "../../services/search/searchAPI";
 import { useGetGenresQuery } from "../../services/genres/genresAPI";
 import { useGetAllProductsQuery } from "../../services/product/productAPI";
 
