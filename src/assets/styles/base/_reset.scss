@@ -1,0 +1,135 @@
+.container-nmc{
+    @include max-width-1280{
+        width: 100%;
+    }
+    @include min-width-1280{
+        max-width: 1140px !important;
+    }
+    @include min-width-1440{
+        max-width: 1320px !important;
+    }
+    @include min-width-1536{
+        max-width: 1440px !important;
+    }
+}
+body {
+    font-family: 'Inter';
+}
+.webkitbox-1{
+    @include webkit-box(1)
+}
+.webkitbox-2{
+    @include webkit-box(2)
+}
+.webkitbox-3{
+    @include webkit-box(3)
+}
+.product-item{
+    @include max-width-425{
+        padding:12px !important;
+        &__img{
+            margin-bottom: 8px !important;
+            img{
+                border-radius: 6px !important;
+            }
+        }
+        &__des{
+            font-size: 12px !important;
+            font-weight: 500 !important;
+        }
+        &__rate{
+            margin-bottom: 8px !important;
+        }
+        &__control {
+            &> p{
+                font-size: 14px !important;
+            }
+            &>div{
+                i{
+                    font-size: 16px !important;
+                }
+            }
+        }
+    }
+}
+button{
+    &:focus-visible{
+        outline: none;
+    }
+}
+.row{
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: calc(-1 * var(--bs-gutter-y));
+    margin-right: calc(-.5 * var(--bs-gutter-x));
+    margin-left: calc(-.5 * var(--bs-gutter-x));
+    &>* {
+        flex-shrink: 0;
+        max-width: 100%;
+        padding-right: calc(var(--bs-gutter-x) * .5);
+        padding-left: calc(var(--bs-gutter-x) * .5);
+        margin-top: var(--bs-gutter-y);
+    }
+}
+input{
+    outline: none !important;
+}
+
+body {
+    font-family: 'Inter';
+    &:has(#modal-backdrop[data-show="true"]) {
+        overflow: hidden;
+    }
+}
+.reset-for-article {
+    img,
+    iframe,
+    video {
+        max-width: 100% !important;
+        margin-bottom: 10px;
+    }
+
+    img {
+        display: block;
+        margin: auto;
+    }
+
+    table {
+        margin-bottom: 16px;
+        width: 100% !important;
+        border-collapse: collapse;
+        border: 1px solid #000;
+
+        td {
+            border: 1px solid #000;
+            padding: 4px 8px;
+        }
+    }
+
+    ul,
+    ol {
+
+        li {
+            list-style-type: disc;
+        }
+    }
+
+    a {
+        color: var(--bs-link-color);
+        text-decoration: underline;
+    }
+}
+
+.single-img{
+    display:flex !important;
+    justify-content:center;
+    height:100% !important;
+}
+.height-modal{
+    min-height: 100vh;
+    &>div{
+        margin-top: 76px;
+    }
+}

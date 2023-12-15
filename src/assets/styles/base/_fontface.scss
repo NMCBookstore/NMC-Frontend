@@ -1,0 +1,99 @@
+h1 {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.5;
+    @include max-width-992{
+        font-size: 36px;
+    }
+    @include max-width-425{
+        font-size: 30px;    
+        font-weight: 600;
+    }
+}
+
+h2 {
+    font-size: 32px;
+    font-weight: 700;
+    @include max-width-992{
+        font-size: 28px;
+    }
+    @include max-width-425{
+        font-size: 24px;
+        font-weight: 600;
+    }
+}
+
+h3 {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 140%;
+    @include max-width-992{
+        font-size: 18px !important;
+    }
+    @include max-width-425{
+        font-size: 16px !important;
+        font-weight: 600;
+    }
+}
+
+p{
+    color: $black;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    src: url("../../vendor/font/Inter-Light.ttf") format("truetype");
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    src: url("../../vendor/font/Inter-Regular.ttf") format("truetype");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    src: url("../../vendor/font/Inter-Medium.ttf") format("truetype");
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    src: url("../../vendor/font/Inter-SemiBold.ttf") format("truetype");
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    src: url("../../vendor/font/Inter-Bold.ttf") format("truetype");
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "Inter";
+    src: url("../../vendor/font//Inter-ExtraBold.ttf") format("truetype");
+    font-weight: 800;
+    font-style: normal;
+}
+@font-face {
+    font-family: "datn";
+    src: url("../../vendor//font/datn.eot");
+    src: url("../../vendor//font/datn.eot?#iefix") format("embedded-opentype"),
+        url("../../vendor//font/datn.woff") format("woff"),
+        url("../../vendor/font/datn.ttf") format("truetype"),
+        url("../../vendor/font/datn.svg#lptech-font") format("svg");
+    font-weight: normal;
+    font-style: normal;
+}

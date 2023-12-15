@@ -1,0 +1,42 @@
+$dark-border-radius: 10px;
+$dark-background: #333;
+$dark-color: #333;
+
+$light-border-radius: 10px;
+$light-background: #fff;
+$light-color: #333;
+
+$toastBorderStyle: 1px solid #713200;
+$toastPadding: 16px;
+$toastColor: rgb(248, 8, 8);
+$toastPrimaryColor: rgb(223, 3, 3);
+$toastSecondaryColor: #FFFAEE;
+
+.dark-style {
+  border-radius: $dark-border-radius;
+  background: $dark-background;
+  color: $dark-color;
+}
+
+.toast-success {
+    border: $toastBorderStyle;
+    padding: $toastPadding;
+    color: $toastColor;
+    
+    .toast-icon {
+      // Bạn có thể áp dụng màu sắc cho các phần tử con nếu cần thiết
+      &.primary {
+        color: $toastPrimaryColor;
+      }
+  
+      &.secondary {
+        color: $toastSecondaryColor;
+      }
+    }
+  }
+
+.light-style {
+  border-radius: $light-border-radius;
+  background: $light-background;
+  color: $light-color;
+}

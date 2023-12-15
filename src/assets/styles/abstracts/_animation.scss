@@ -1,0 +1,85 @@
+.hover-text-orange-orange-4-header {
+    &:hover {
+
+        i,
+        p {
+            color: $orange-orange-4 !important;
+        }
+    }
+
+    i,
+    p {
+        transition: all 0.3s;
+    }
+}
+
+.notify-header {
+    right: -10px;
+    position: absolute;
+    top: -6px;
+}
+
+.header {
+    &__content {
+        @include min-width-640 {
+            flex-basis: 25%;
+        }
+
+        @include min-width-1280 {
+            flex-basis: 16.666667%;
+        }
+
+        @include max-width-640 {
+            flex-basis: calc(100% - 80px);
+        }
+    }
+}
+
+.ssm-hidden {
+    @include max-width-425 {
+        display: none;
+    }
+}
+
+.btn-close {
+    i {
+        font-size: 22px;
+        color: #FFDE87;
+        transition: all 0.3s;
+
+        &:hover {
+            color: #D41A1A;
+        }
+    }
+}
+  .marquee-container{
+    height: 54px;
+    overflow: hidden;
+    background: #FCFCFC;
+    border-bottom: 2px solid #BFBFBF;
+  }
+  .marquee {
+    display: flex;
+    overflow-x: scroll;
+    white-space: nowrap;
+    &::-webkit-scrollbar {
+        color: transparent;
+        background-color: transparent;
+    }
+    p{
+        display: inline-flex;
+        padding: 16px 0px;
+        align-items: center;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 22px;
+        text-transform: uppercase;
+        color: #595959;
+        span{
+            margin: 0px 24px;
+            font-size: 10px;
+            line-height: 22px;
+        }
+    }
+  }

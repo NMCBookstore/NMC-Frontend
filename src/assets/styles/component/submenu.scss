@@ -1,0 +1,54 @@
+.subMenu-btn{
+    .subMenu{
+        right: 0px;
+        background: white;
+        box-shadow: 0px 0px 10px #ddd;
+        min-width: 200px;
+        will-change: transform,opacity,visibility;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s;
+        &::before{
+            top: -6px;
+            right: 14%;
+            margin: 0 0 0 -6px;
+            content: "";
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            transform: rotate(45deg);
+            border-radius: 4px 0 0;
+            background: #fff;
+            box-shadow: -3px -3px 5px rgba(82,95,127,.04);
+            transition: all 0.3s;
+        }
+        &:has(>ul>li:first-child:hover)::before {
+            background-color: rgb(255 202 65);
+        }
+        li{
+            &>*{
+                padding: 10px 16px;
+                display: flex;
+                width: 100%;
+                transition: all 0.3s;
+                span{
+                    transition: all 0.3s;
+                }
+            }
+            &:hover{
+                &>*{
+                    background-color: rgb(255 202 65);
+                    span{
+                        color: rgb(212 26 26);
+                    }
+                }
+            }
+        }
+    }
+    &:hover{
+        .subMenu{
+            opacity: 1;
+            visibility: visible;
+        }
+    }
+}
