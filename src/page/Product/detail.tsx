@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Fancybox from "../../component/Fancybox/Fancy";
 import Carousel from "../../component/Fancybox/Carousel";
 
@@ -20,11 +20,14 @@ import { useParams } from "react-router-dom";
 import { useGetProductDetailsQuery } from "../../services/product/productAPI";
 import { useAddToCartMutation } from "../../services/cart/cartAPI";
 import toast from "react-hot-toast";
-import { useGetReviewQuery } from "../../services/review/reviewAPI";
-import Pagination from "../../component/Pagination/ReviewPagination/Pagination";
+import ReviewList from "../../component/Review";
 
 const ProductDetail: React.FunctionComponent = () => {
+  const { id } = useParams();
   let [count, setCount] = useState(1);
+
+  const { data: wishlist = [] } = useGetWishlistQuery();
+  const { data: books, isFetching } = useGetProductDetailsQuery(Number(id));
 
   function incrementCount() {
     setCount(count + 1);
@@ -33,22 +36,12 @@ const ProductDetail: React.FunctionComponent = () => {
     setCount(count > 1 ? count - 1 : 1);
   }
 
-  const [page, setPage] = useState({ id: 1, size: 5 });
 
-  const { id } = useParams();
 
-  const { data: books, isFetching } = useGetProductDetailsQuery(Number(id));
   
 
-  const { data: wishList } = useGetWishlistQuery();
-  const { data: reviewData } = useGetReviewQuery({
-    book_id: Number(id),
-    page_id: page.id,
-    page_size: page.size,
-  });
-  console.log(reviewData)
-
   const [addWishList] = useAddToWishlistMutation();
+
   const [addToCart] = useAddToCartMutation();
 
   const showFullContent = useRef(false);
@@ -75,7 +68,6 @@ const ProductDetail: React.FunctionComponent = () => {
     }
   };
 
-  const { data: wishlist = [] } = useGetWishlistQuery();
   const productList: Product[] = [
     {
       id: 1,
@@ -169,6 +161,7 @@ const ProductDetail: React.FunctionComponent = () => {
       des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
     },
   ];
+  console.log("here");
   return (
     <div className="product-detail bg-[#F9EEDE] mt-[76px]">
       <Marquee></Marquee>
@@ -296,7 +289,7 @@ const ProductDetail: React.FunctionComponent = () => {
                     <i className="bdx-cart-fill"></i>
                     <span>Add to cart</span>
                   </button>
-                  {wishList?.some((item) => item.book.id === Number(id)) ? (
+                  {wishlist?.some((item: any) => item.book.id === Number(id)) ? (
                     <button
                       disabled
                       className="product-detail__item__info__behavior__addtowishlist"
@@ -359,77 +352,7 @@ const ProductDetail: React.FunctionComponent = () => {
                     </p>
                   </div>
                 </div>
-                {/* Reviewss */}
-
-                <div className="product-detail__content__review__list">
-                  {reviewData?.reviews &&
-                    reviewData?.reviews.map((item, index) => (
-                      <div key={index} className="review__item">
-                        <div className="review__item__heading">
-                          <div className="review__item__heading__left">
-                            <div className="review__item__heading__left__user">
-                              <img src={avatarUser} alt="avatarUser" />
-                              <p className="review__item__heading__left__user__name">
-                                {item?.username}
-                              </p>
-                              <p className="review__item__heading__left__user__date">
-                                {item?.created_at}
-                              </p>
-                            </div>
-                            <div className="review__item__heading__left__info">
-                              <div className="review__item__heading__left__info__sumary">
-                                <p>
-                                  Reviews: <span>1075</span>
-                                </p>
-                                <p>
-                                  Votes: <span>347</span>
-                                </p>
-                              </div>
-                              <div className="review__item__heading__left__info__datail">
-                                <p>
-                                  Rate:
-                                  <span>
-                                    <i className="bdx-start-fill"></i>
-                                    <i className="bdx-start-fill"></i>
-                                    <i className="bdx-start-fill"></i>
-                                    <i className="bdx-start-fill"></i>
-                                    <i className="bdx-start-fill"></i>
-                                  </span>
-                                </p>
-                                <p>
-                                  Vote in this review: <span>10</span>
-                                </p>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="review__item__heading__right">
-                            <div className="review__item__heading__right__help">
-                              <p>Helpful?</p>
-                              <div className="review__item__heading__right__help__behavior">
-                                <button>
-                                  <i className="bdx-arrow-2"></i>yes
-                                </button>
-                                <button>
-                                  <i className="bdx-arrow-2"></i>no
-                                </button>
-                              </div>
-                            </div>
-                            <div className="review__item__heading__right__spam">
-                              <p>Spam?</p>
-                              <button>
-                                <span>
-                                  <i className="bdx-close"></i>Report
-                                </span>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div>
-                          <p>{item?.comments}</p>
-                        </div>
-                      </div>
-                    ))}
-                </div>
+                <ReviewList id={id}></ReviewList>
               </div>
             </div>
             <div className="w-[25%]">
@@ -437,13 +360,7 @@ const ProductDetail: React.FunctionComponent = () => {
             </div>
           </div>
         </div>
-        {/* end of comment, start pagination of comments */}
-        <Pagination
-          total={Number(reviewData?.total_page)}
-          setCurrentPage={setPage}
-          page = {page.id}
-          target="review-block"
-        />
+        
       </section>
       <section className="product-detail__recommend">
         <div className="container-nmc px-3 mx-auto">

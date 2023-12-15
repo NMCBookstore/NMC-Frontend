@@ -25,6 +25,12 @@ const ProductPagination: React.FunctionComponent<PaginationProps> = memo(
       setCurrentPage({ id: pageNumber, size: 24 });
       handleScrollToBlockContent()
     };
+    const handleScrollToBlockContent = () => {
+      const blockContentElement = document.getElementById(target);
+      if (blockContentElement) {
+        blockContentElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
 
     const renderPagination = () => {
       const paginationRange = 2; // Number of pagination buttons
