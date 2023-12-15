@@ -62,15 +62,8 @@ const auth = book.injectEndpoints({
         }
       },
     }),
-    signUp: builder.mutation<Login, FormData>({
-      query: (formData) => ({
-        method: "POST",
-        url: `signup`,
-        body: formData,
-      }),
-    }),
   }),
   overrideExisting: false,
 });
 
-export const { useLoginWithGoogleMutation, useLoginMutation, useSignUpMutation } = auth;
+export const { useLoginWithGoogleMutation, useLoginMutation } = auth;
