@@ -10,16 +10,8 @@ const order = book.injectEndpoints({
         body: order,
       }),
     }),
-    getAllOrder: builder.query<Order[], void>({
-      query: () => {
-        return {
-          method: "GET",
-          url: `users/orders/paid`,
-        };
-      },
-    }),
   }),
   overrideExisting: false,
 });
 
-export const { useCreateOrderMutation, useGetAllOrderQuery } = order;
+export const { useCreateOrderMutation } = order;
