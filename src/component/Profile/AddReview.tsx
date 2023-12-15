@@ -77,7 +77,7 @@ const AddReviewComponent: React.FunctionComponent = () => {
                                             className="w-full py-3 px-6 block rounded-[12px] bg-orange-orange-4 hover:bg-orange-orange-6 focus:outline-none"
                                             onClick={closeModal}
                                         >
-                                            Create Blog
+                                            Post Review
                                         </button>
                                     </div>
                                     <button

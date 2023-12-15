@@ -20,8 +20,8 @@ interface Person {
 }
 const people: Person[] = [
   { id: 1, name: "Male" },
-  { id: 2, name: "Female" },
-  { id: 3, name: "Other" },
+  { id: 0, name: "Female" },
+  { id: 2, name: "Other" },
 ];
 
 const EditProfileComponent: React.FunctionComponent = () => {
@@ -33,6 +33,9 @@ const EditProfileComponent: React.FunctionComponent = () => {
   const dispatch = useDispatch();
 
   let [isOpen, setIsOpen] = useState(false);
+  const [idGender, setIdGender] = useState(1);
+  console.log(idGender);
+
   const cancelButtonRef = useRef(null);
 
   const [avatar, setAvatar] = useState<any | undefined>();
@@ -66,6 +69,8 @@ const EditProfileComponent: React.FunctionComponent = () => {
     const formData = new FormData();
     formData.append("full_name", userInfo.full_name);
     formData.append("phone_number", userInfo.phone_number);
+    formData.append("age", userInfo.age.toString())
+    formData.append("sex", userInfo.sex)
     if (avatar) {
       formData.append("image", avatar);
     }
@@ -84,7 +89,7 @@ const EditProfileComponent: React.FunctionComponent = () => {
           refresh_token: refresh_token,
         })
       );
-      toast.success("Profile updated")
+      toast.success("Profile updated");
       closeModal();
     } else {
       console.log("can't dispatch credentials");
@@ -189,13 +194,34 @@ const EditProfileComponent: React.FunctionComponent = () => {
                         >
                           Age<span>*</span>
                         </label>
-                        <input
-                          className="rounded-full border-[1px] border-[#BFBFBF] border-solid px-4 py-3 w-full shadow-md"
-                          type="text"
-                          name="age"
-                          placeholder="Your age"
-                          defaultValue={userInfo?.age}
-                        />
+                        {userInfo?.age === 0 ? (
+                          <input
+                            className="rounded-full border-[1px] border-[#BFBFBF] border-solid px-4 py-3 w-full shadow-md"
+                            type="text"
+                            name="age"
+                            placeholder="Your age"
+                            onChange={(e) =>
+                              setUserInfo({
+                                ...userInfo,
+                                age: Number(e.target.value),
+                              })
+                            }
+                          />
+                        ) : (
+                          <input
+                            className="rounded-full border-[1px] border-[#BFBFBF] border-solid px-4 py-3 w-full shadow-md"
+                            type="text"
+                            name="age"
+                            placeholder="Your age"
+                            defaultValue={userInfo?.age}
+                            onChange={(e) =>
+                              setUserInfo({
+                                ...userInfo,
+                                age: Number(e.target.value),
+                              })
+                            }
+                          />
+                        )}
                       </div>
                       <div className="text-left mb-4">
                         <label
@@ -240,6 +266,7 @@ const EditProfileComponent: React.FunctionComponent = () => {
                                         }`
                                       }
                                       value={person}
+                                      onClick={() => setUserInfo({...userInfo, sex: String(person.id)})}
                                     >
                                       {({ selected, active }) => (
                                         <>
@@ -304,7 +331,7 @@ const EditProfileComponent: React.FunctionComponent = () => {
                       onClick={handleUpdateInfo}
                       disabled={isLoading}
                     >
-                      {isLoading ? 'Updating...' : 'Save Changes'}
+                      {isLoading ? "Updating..." : "Save Changes"}
                     </button>
                   </div>
                   <button
