@@ -15,7 +15,7 @@ import { debounce } from "lodash";
 import { useSearchParams } from "react-router-dom";
 import ProductPagination from "../../component/Pagination/AllProductPagination/ProductPagination";
 import { Genres } from "../../interface/Genres";
-import { useGetSearchQuery } from "../../services/Search/searchAPI";
+import { useGetSearchQuery } from "../../services/search/searchAPI";
 import { useGetGenresQuery } from "../../services/genres/genresAPI";
 import { useGetAllProductsQuery } from "../../services/product/productAPI";
 
@@ -137,7 +137,6 @@ const ProductList: React.FunctionComponent = () => {
   const handleTextSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     debouncedHandleTextSearch(event);
   };
-
   const filterGenres = useMemo(() => {
     if (query === "") {
       return genres.slice(0, 50);
@@ -469,7 +468,7 @@ const ProductList: React.FunctionComponent = () => {
     { key: "under100", value: "<10", minPrice: 0, maxPrice: 10 },
   ];
   return (
-    <div className="bg-[#F9EEDE] mt-[76px] product-list">
+    <div className="bg-[#F9EEDE] mt-[76px] product-list"> 
       <Marquee></Marquee>
       <div className="mx-auto px-3 container-nmc">
         <BreadcrumbConponent></BreadcrumbConponent>
@@ -605,6 +604,90 @@ const ProductList: React.FunctionComponent = () => {
                       Four stars
                     </span>
                   </label>
+                <div className="product-list__handle-sidebar__items">
+                    <div className="row gap-4 mb-8">
+                        <button
+                        className="product-list__handle-sidebar__items__show-menu h-[48px] shadow-md"
+                        onClick={()=>handleClick()}
+                        >
+                            <span>SORT</span>
+                            <i className="bdx-caret"></i>
+                        </button>
+                        <Combobox disabled={isLoading} value={select} onChange={setSelect}>
+                            <div className="relative w-fit md:grow">
+                                <div className="relative md:grow border border-primary border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
+                                    <Combobox.Input
+                                        className="w-fit md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize text-primary bg-[transparent] font-semibold focus:outline-none"
+                                        displayValue={(genre: Genres) => genre?.name}
+                                        placeholder="Search genres..."
+                                        onChange={handleInputChange}
+                                    />
+                                    <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pb-6 rotate-[-90deg]">
+                                        <i className="bdx-caret text-primary"></i>
+                                    </Combobox.Button>
+                                </div>
+                                <Transition
+                                    as={Fragment}
+                                    leave="transition ease-in duration-100"
+                                    leaveFrom="opacity-100"
+                                    leaveTo="opacity-0"
+                                    afterLeave={() => setQuery('')}
+                                >
+                                    <Combobox.Options className="absolute mt-1 max-h-[264px] w-fit overflow-auto rounded-md bg-white p-3 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-[100]">
+                                        {filterGenres.length === 0 && query !== '' ? (
+                                            <div className="font-semibold relative cursor-default select-none px-4 py-2 text-primary">
+                                                Nothing found.
+                                            </div>
+                                        ) : (
+                                            filterGenres.map((item) => (
+                                                <Combobox.Option
+                                                    key={item.id}
+                                                    className={({ active }) =>
+                                                        `relative cursor-default select-none py-2 px-6 rounded-xl ${active ? 'bg-primary text-white' : 'text-primary'
+                                                        }`
+                                                    }
+                                                    value={item}
+                                                >
+                                                    {({ selected, active }) => (
+                                                        <>
+                                                            <span
+                                                                className={`block leading-[24px] truncate ${selected ? 'font-semibold' : 'font-medium'
+                                                                    }`}
+                                                            >
+                                                                {item.name}
+                                                            </span>
+                                                        </>
+                                                    )}
+                                                </Combobox.Option>
+                                            ))
+                                        )}
+                                    </Combobox.Options>
+                                </Transition>
+                            </div>
+                        </Combobox>
+                        <div className="flex h-[48px] md:w-full items-center grow px-[12px] relative">
+                            <input
+                                className="px-[24px] w-full h-full rounded-full shadow-md"
+                                type="text"
+                                placeholder="Search by Title, Author, ISBN or Keywords"
+                            />
+                            <i className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"></i>
+                        </div>
+                    </div>
+                    <div className="row gap-y-[24px] sm:gap-y-[8px]">
+                        {/* here is all item */}
+                        {allProduct?.books.map((item) => (
+                            <div className="sm:w-[50%] md:w-[33.33%] w-[25%] product-list__handle-sidebar__items__detail">
+                                <ProductItem key={item?.id} itemDetail={item} wishlistItem={wishlist}></ProductItem>
+                            </div>
+                        ))}
+                    </div>
+                    <ProductPagination 
+                    total={Number(allProduct?.total_page)}
+                    setCurrentPage={setPage}
+                    page={page.id}
+                    target= "block-product"
+                    />
                 </div>
                 <div>
                   <input id="3start" type="checkbox" hidden />
@@ -773,7 +856,10 @@ const ProductList: React.FunctionComponent = () => {
                 onChange={(e) => {
                   // setText(e.target.value);
                   handleTextSearch(e);
-                  delete searchInfo.text;
+                  // if (e.target.value === "")
+                  // {
+                  // delete searchInfo.text;
+                  // }
                 }}
               />
               <i className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"></i>
@@ -849,7 +935,7 @@ const ProductList: React.FunctionComponent = () => {
       </div>
       <NotiHome></NotiHome>
     </div>
+    </div>
   );
 };
-
 export default ProductList;
