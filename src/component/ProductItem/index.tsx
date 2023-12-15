@@ -40,35 +40,27 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
     navigate(`/product/${props.itemDetail?.id}`);
   };
 
-  const handleAddToCart = async () => {
-    const v = await addToCart({ book_id: props.itemDetail.id, amount: 1 });
-    if ("error" in v) {
-      toast.error("Add to cart failed");
-    } else {
-      toast.success("Added to your carttt");
-    }
+  const handleAddToCart = () => {
+    addToCart({ book_id: props.itemDetail.id, amount: 1 });
+    toast.success("Added to your cart")
   };
 
-  const handleAddToWishList = async () => {
-    const v = await addWishList(props.itemDetail.id);
-    if ("error" in v) {
-      toast.error("Add to wish list failed");
-    } else {
-      toast.success("Added to your wish list");
-    }
+  const handleAddToWishList = () => {
+    addWishList(props.itemDetail.id);
+    toast.success("Added to your wish list");
   };
 
   const handleDeleteWishListItem = () => {
     deleteWishList(wishlistId);
   };
 
-  //   useEffect(() => {
-  //     if (addWishListSuccess) {
-  //         toast.success("Added to your wish list");
-  //     } else if (isError) {
-  //         toast.error("Can't add to your wish list");
-  //     }
-  // }, [addWishListSuccess, isError]);
+//   useEffect(() => {
+//     if (addWishListSuccess) {
+//         toast.success("Added to your wish list");
+//     } else if (isError) {
+//         toast.error("Can't add to your wish list");
+//     }
+// }, [addWishListSuccess, isError]);
 
   return (
     <div className="product_hover">

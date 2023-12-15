@@ -1,24 +1,28 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { useGoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
+import React, { Fragment, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../app/store";
+import { SignInWithGoogle } from "../../features/auth/FireBase";
 import {
   close,
   login,
   loginStart,
-  signup
+  setCredentials,
+  signup,
 } from "../../features/auth/authSlice";
 import {
+  getGoogleUrl,
   useLoginMutation,
   useLoginWithGoogleMutation,
-  useSignUpMutation
 } from "../../services/authentication/authAPI";
-import { useGetCartQuery } from "../../services/cart/cartAPI";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
+import { useGetCartQuery } from "../../services/cart/cartAPI";
+import { GoogleLogin } from "@react-oauth/google";
+import toast from "react-hot-toast";
+import { useGoogleLogin } from "@react-oauth/google";
+import { avatarProfile } from "../../assets/img";
+import axios from "axios";
 
 const BdxLogModal: React.FunctionComponent = () => {
   const showLog = useSelector((state: RootState) => state.auth.status);
@@ -31,27 +35,20 @@ const BdxLogModal: React.FunctionComponent = () => {
   const [executeLogin, { isLoading }] = useLoginMutation();
   const [executeGoogleLogin] = useLoginWithGoogleMutation();
 
-  const [executeSignup, { isLoading: signUpLoading }] = useSignUpMutation();
-
   const [values, setValues] = useState({
     username: "",
     password: "",
   });
 
-  const [signUpValue, setSignUpValue] = useState({
-    username: "",
-    password: "",
-    email: "",
-  });
-
-  useEffect(() => {
-    if (showLog === "signup") {
-      setSignUpValue({
-        ...signUpValue,
-        username: "",
-      });
+  const handleGoogle = async (creden: any) => {
+    try {
+      const data = await executeGoogleLogin(creden);
+      console.log("this is data: ", data);
+      return data;
+    } catch (err) {
+      console.log("can't login");
     }
-  }, [showLog]);
+  };
 
   const googleLogin = useGoogleLogin({
     flow: "auth-code",
@@ -82,22 +79,7 @@ const BdxLogModal: React.FunctionComponent = () => {
     return false;
   };
   const handleSignUp = () => {
-    const formData = new FormData();
-    formData.append("username", signUpValue.username);
-    formData.append("email", signUpValue.email);
-    formData.append("password", signUpValue.password);
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
-
-    const v = executeSignup(formData);
-    if ("data" in v) {
-      toast.success("Signup successful");
-      dispatch(login());
-    } else {
-      toast.error("Signup failed !");
-
-    }
+    console.log("my signup");
   };
   const handleSubmitPassword = () => {
     console.log("my forgotpassword");
@@ -161,19 +143,9 @@ const BdxLogModal: React.FunctionComponent = () => {
                             type="text"
                             name="name"
                             placeholder="Username"
-                            onChange={(e) => {
-                              if (showLog === "login") {
-                                setValues({
-                                  ...values,
-                                  username: e.target.value,
-                                });
-                              } else if (showLog === "signup") {
-                                setSignUpValue({
-                                  ...signUpValue,
-                                  username: e.target.value,
-                                });
-                              }
-                            }}
+                            onChange={(e) =>
+                              setValues({ ...values, username: e.target.value })
+                            }
                           />
                         </div>
                         {showLog === "signup" && (
@@ -189,12 +161,6 @@ const BdxLogModal: React.FunctionComponent = () => {
                               type="text"
                               name="email"
                               placeholder="example@gmail.com"
-                              onChange={(e) =>
-                                setSignUpValue({
-                                  ...signUpValue,
-                                  email: e.target.value,
-                                })
-                              }
                             />
                           </div>
                         )}
@@ -210,19 +176,9 @@ const BdxLogModal: React.FunctionComponent = () => {
                             type="password"
                             name="password"
                             placeholder="*****"
-                            onChange={(e) => {
-                              if (showLog === "login") {
-                                setValues({
-                                  ...values,
-                                  password: e.target.value,
-                                });
-                              } else if (showLog === "signup") {
-                                setSignUpValue({
-                                  ...signUpValue,
-                                  password: e.target.value,
-                                });
-                              }
-                            }}
+                            onChange={(e) =>
+                              setValues({ ...values, password: e.target.value })
+                            }
                           />
                         </div>
                       </div>

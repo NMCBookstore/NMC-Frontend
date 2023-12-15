@@ -18,12 +18,5 @@ export interface Product {
 
 export interface AllProduct {
   total_page: number;
-  page_id: number;
-  page_size: number;
-  text?: string;
-  genres_id?: number;
-  min_price?: number;
-  max_price: number;
-  rating?: number;
   books: Product[];
 }

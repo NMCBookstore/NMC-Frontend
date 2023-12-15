@@ -45,7 +45,7 @@ const OrderBill: React.FunctionComponent = () => {
           <p className="order-bill__footer--note">*Shipping fee included</p>
           <div className="order-bill__footer--sum d-flex justify-content-between align-items-center">
             <div>Total order value:</div>
-            <p>{totalPrice.toFixed(2)}$</p>
+            <p>{totalPrice}$</p>
           </div>
         </div>
       </div>
