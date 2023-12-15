@@ -1,25 +1,29 @@
-import React, { Fragment, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 import { Dialog, Transition } from "@headlessui/react";
+import React, { Fragment, useRef, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 
-import NoteNotify from "../NoteNotify";
 import { useDispatch, useSelector } from "react-redux";
+import { logo } from "../../assets/img";
 import {
   login,
   logout,
   selectCurrentAccessToken,
   selectCurrentUser,
 } from "../../features/auth/authSlice";
-import { logo } from "../../assets/img";
-import CartSidebar from "./CartSidebar";
-import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
-import { Wishlist } from "../../interface/Wishlist";
-import { useGetCartQuery } from "../../services/cart/cartAPI";
 import { selectCurrentCartProduct } from "../../features/cart/cartSlice";
+import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
+import NoteNotify from "../NoteNotify";
+import CartSidebar from "./CartSidebar";
 
 const Header: React.FunctionComponent = () => {
   const [showSearch, setshowSearch] = useState<boolean>(false);
   const [showCart, setshowCart] = useState<boolean>(false);
+  const [text, setText] = useState("")
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page_id = 1
+  const page_size = 24
+
   const dispatch = useDispatch();
 
   const token = useSelector(selectCurrentAccessToken);
@@ -44,6 +48,11 @@ const Header: React.FunctionComponent = () => {
       dispatch(login());
     }
   };
+  console.log(text)
+
+  const handleTextSearch = () => {
+    console.log("clicked");
+  };
 
   const cancelButtonRef = useRef(null);
   const numberWishlist = Number(wishlistBadge?.length);
@@ -60,12 +69,18 @@ const Header: React.FunctionComponent = () => {
           <img className="" src={logo} alt="logo" />
         </Link>
         <div className="xl:w-3/4 w-2/3 flex md:hidden items-center px-[12px] relative">
+          {/* Search input */}
           <input
             className="w-full px-[24px] h-4/5 rounded-full"
             type="text"
             placeholder="Search by Title, Author, ISBN or Keywords"
+            defaultValue={searchParams.get("text")?? "" ? searchParams.get("text")?? "" : text}
+            onChange={(e) => { setText(e.target.value) }}
           />
-          <i className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"></i>
+          <i
+            onClick={() => window.location.replace(`/product/all?page_id=${page_id}&page_size=${page_size}${text ? "&text=" + text : ""}&min_price=0&max_price=5000`)}
+            className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"
+          ></i>
         </div>
         <div className="header__content flex flex-row justify-end px-[12px] sm:px-[24px] gap-[24px] grow">
           <div className="hidden sm:flex">
@@ -185,15 +200,11 @@ const Header: React.FunctionComponent = () => {
             <div className="absolute top-full subMenu z-[100]">
               <ul>
                 <li>
-                  <Link to="user/profile">
+                  <Link to="/user/profile">
                     <span>Profile</span>
                   </Link>
                 </li>
-                <li>
-                  <Link to="/profile">
-                    <span>Edit Profile</span>
-                  </Link>
-                </li>
+
                 {token ? (
                   <li onClick={() => dispatch(logout())}>
                     <button>

@@ -1,33 +1,86 @@
 import { Combobox, Dialog, Transition } from "@headlessui/react";
-import React, { Fragment, useState, useRef, useEffect } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
+import toast from "react-hot-toast";
+import { City, District } from "../../interface/Address";
 import {
   useCreateAddressMutation,
-  useListAddressQuery,
+  useGetAddressDetailQuery,
 } from "../../services/address/addressAPI";
-import { useGetListCitiesQuery } from "../../services/address/citiesAPI";
-import { City, District } from "../../interface/Address";
-import { useGetListDistrictQuery } from "../../services/address/districtAPI";
-const AddAdressComponent: React.FunctionComponent = () => {
+
+interface AddressProps {
+  mode: string;
+  addressId?: number;
+  amountAddress: number;
+  citiesData: City[];
+  districtData: District[];
+  idCity: number | null;
+  idDistrict: number | null;
+  setIdCity: React.Dispatch<React.SetStateAction<number | null>>;
+  setIdDistrict: React.Dispatch<React.SetStateAction<number | null>>;
+}
+
+const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
+  mode,
+  addressId,
+  amountAddress,
+  citiesData,
+  districtData,
+  idCity,
+  idDistrict,
+  setIdCity,
+  setIdDistrict,
+}) => {
   let [isOpen, setIsOpen] = useState(false);
   const cancelButtonRef = useRef(null);
-
-  const [idCity, setIdCity] = useState<number>(0);
-  const { data: citiesData = [] } = useGetListCitiesQuery();
-  const { data: districtData = [] } = useGetListDistrictQuery(idCity, {
-    skip: !idCity,
-  });
 
   function closeModal() {
     setIsOpen(false);
   }
 
-  function openModal() {
-    setIsOpen(true);
-  }
+  const openModal = () => {
+    const isCreateMode = mode === "create";
+
+    const canCreateMoreAddresses = amountAddress > 4;
+
+    isCreateMode
+      ? canCreateMoreAddresses
+        ? toast.error("You can't create more than 5 addresses")
+        : setIsOpen(true)
+      : setIsOpen(true);
+  };
 
   const [select, setSelect] = useState<City>(citiesData[0]);
   const [district, setDistrict] = useState<District>(districtData[0]);
   const [query, setQuery] = useState<string>("");
+
+  const [inputNewAddress, setInputNewAddress] = useState<string>("");
+
+  const [addAddress, { isError, isLoading }] = useCreateAddressMutation();
+  const { data: addressDetail, isFetching } = useGetAddressDetailQuery(
+    Number(addressId)
+  );
+  
+  const commonCity = citiesData?.filter(
+    (item) => item.id === addressDetail?.city_id
+  )?.[0]?.name;
+
+  const commonCityId = citiesData?.filter(
+    (item) => item.id === addressDetail?.city_id
+  )?.[0]?.id;
+
+  const handleCreateAddress = async () => {
+    const v = await addAddress({
+      address: inputNewAddress,
+      city_id: idCity,
+      district_id: idDistrict,
+    });
+    if ("error" in v) {
+      toast.error("Failed to add address");
+    } else {
+      toast.success("Address created");
+      closeModal();
+    }
+  };
 
   const filteredCity =
     query === ""
@@ -50,9 +103,18 @@ const AddAdressComponent: React.FunctionComponent = () => {
         );
   return (
     <div>
-      <button type="button" onClick={openModal} className="">
-        Add more adress
-      </button>
+      {mode === "create" ? (
+        <button
+          disabled={amountAddress > 5}
+          type="button"
+          onClick={openModal}
+          className=""
+        >
+          Add address
+        </button>
+      ) : (
+        <i onClick={openModal} className="bdx-note"></i>
+      )}
 
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog as="div" className="relative z-10" onClose={closeModal}>
@@ -80,9 +142,15 @@ const AddAdressComponent: React.FunctionComponent = () => {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-md transform rounded-2xl bg-white p-10 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title as="h3" className="mb-4">
-                    Add Your Address To Delivery
-                  </Dialog.Title>
+                  {mode === "create" ? (
+                    <Dialog.Title as="h3" className="mb-4">
+                      Add Your Address To Delivery
+                    </Dialog.Title>
+                  ) : (
+                    <Dialog.Title as="h3" className="mb-4">
+                      Edit your address
+                    </Dialog.Title>
+                  )}
                   <div className="">
                     <div className="text-left mb-4">
                       <label
@@ -95,7 +163,8 @@ const AddAdressComponent: React.FunctionComponent = () => {
                         className="rounded-full border-[1px] border-[#BFBFBF] border-solid px-4 py-3 w-full shadow-md"
                         type="text"
                         name="adress"
-                        placeholder="1 Vo Van Ngan"
+                        placeholder="Your address"
+                        onChange={(e) => setInputNewAddress(e.target.value)}
                       />
                     </div>
                     <div className="text-left mb-4">
@@ -105,13 +174,16 @@ const AddAdressComponent: React.FunctionComponent = () => {
                       >
                         City<span>*</span>
                       </label>
-                      <Combobox>
+                      <Combobox defaultValue={commonCity}>
                         <div className="relative w-full md:grow">
                           <div className="relative md:grow border border-[#BFBFBF] border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
                             <Combobox.Input
                               className="w-full md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize  bg-[transparent] focus:outline-none"
-                              displayValue={(city: City) => city?.name}
+                              displayValue={(city: City) =>
+                                city?.name || commonCity
+                              }
                               onChange={(event) => setQuery(event.target.value)}
+                              placeholder="Select or search city..."
                             />
                             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pb-6 rotate-[-90deg]">
                               <i className="bdx-caret "></i>
@@ -139,7 +211,9 @@ const AddAdressComponent: React.FunctionComponent = () => {
                                       }`
                                     }
                                     value={city}
-                                    onClick={() => setIdCity(city?.id)}
+                                    onClick={() => {
+                                      setIdCity(city?.id);
+                                    }}
                                   >
                                     {({ selected, active }) => (
                                       <>
@@ -165,14 +239,15 @@ const AddAdressComponent: React.FunctionComponent = () => {
                       >
                         District<span>*</span>
                       </label>
-                      <Combobox >
+                      <Combobox defaultValue={addressDetail?.district_id}>
                         <div className="relative w-full md:grow">
                           <div className="relative md:grow border border-[#BFBFBF] border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
                             <Combobox.Input
                               className="w-full md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize  bg-[transparent] focus:outline-none"
                               displayValue={(district: District) =>
-                                district?.name
+                                district?.name ||String(addressDetail?.district_id)
                               }
+                              placeholder="Select or search district..."
                               onChange={(event) => setQuery(event.target.value)}
                             />
                             <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pb-6 rotate-[-90deg]">
@@ -201,15 +276,16 @@ const AddAdressComponent: React.FunctionComponent = () => {
                                       }`
                                     }
                                     value={district}
+                                    onClick={() => setIdDistrict(district?.id)}
                                   >
                                     {/* {({ selected, active }) => ( */}
-                                      <>
-                                        <span
-                                          className={`block leading-[24px] truncate`}
-                                        >
-                                          {district?.name}
-                                        </span>
-                                      </>
+                                    <>
+                                      <span
+                                        className={`block leading-[24px] truncate`}
+                                      >
+                                        {district?.name}
+                                      </span>
+                                    </>
                                     {/* )} */}
                                   </Combobox.Option>
                                 ))
@@ -225,15 +301,22 @@ const AddAdressComponent: React.FunctionComponent = () => {
                     <button
                       type="button"
                       className="w-full py-3 px-6 block rounded-[12px] bg-orange-orange-4 hover:bg-orange-orange-6 focus:outline-none"
-                      onClick={closeModal}
+                      disabled={isLoading}
+                      onClick={handleCreateAddress}
                     >
-                      Add Address
+                      {isLoading ? "Creating Address..." : "Add Address"}
                     </button>
                   </div>
                   <button
                     className="btn-close absolute top-10 right-10 z-11 focus-visible:outline-0"
-                    onClick={() => closeModal()}
+                    onClick={() => {
+                      setIdCity(null);
+                      setIdDistrict(null);
+                      closeModal();
+                      console.log("close clicked");
+                    }}
                     ref={cancelButtonRef}
+                    disabled={isLoading}
                   >
                     <i className="bdx-close"></i>
                   </button>
