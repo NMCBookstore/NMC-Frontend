@@ -24,21 +24,18 @@ import ReviewList from "../../component/Review";
 
 const ProductDetail: React.FunctionComponent = () => {
   const { id } = useParams();
-  let [count, setCount] = useState(1);
 
   const { data: wishlist = [] } = useGetWishlistQuery();
   const { data: books, isFetching } = useGetProductDetailsQuery(Number(id));
-
+  let dataCountBook =  document.getElementById("inputId") as HTMLInputElement;
   function incrementCount() {
-    setCount(count + 1);
+    dataCountBook.value = String(Number(dataCountBook.value) + 1);
   }
+
   function decrementCount() {
-    setCount(count > 1 ? count - 1 : 1);
+    dataCountBook.value = Number(dataCountBook.value) > 1 ? String(Number(dataCountBook.value) - 1) : String(1);
   }
 
-
-
-  
 
   const [addWishList] = useAddToWishlistMutation();
 
@@ -53,7 +50,7 @@ const ProductDetail: React.FunctionComponent = () => {
   };
 
   const handleAddToCart = () => {
-    addToCart({ book_id: Number(id), amount: count });
+    addToCart({ book_id: Number(id), amount: Number(dataCountBook.value) });
   };
 
   const handleClick = () => {
@@ -161,7 +158,6 @@ const ProductDetail: React.FunctionComponent = () => {
       des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
     },
   ];
-  console.log("here");
   return (
     <div className="product-detail bg-[#F9EEDE] mt-[76px]">
       <Marquee></Marquee>
@@ -268,8 +264,9 @@ const ProductDetail: React.FunctionComponent = () => {
                       name="product-qty"
                       min="0"
                       max="100"
-                      value={count}
+                      value="1"
                       readOnly
+                      id="inputId"
                     ></input>
                     <button
                       className="qty-count qty-count--add"
