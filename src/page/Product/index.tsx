@@ -22,8 +22,8 @@ import { useGetAllProductsQuery } from "../../services/product/productAPI";
 interface PriceFilter {
   key: string;
   value: string;
-  minPrice: number;
-  maxPrice: number;
+  minPrice?: number;
+  maxPrice?: number;
 }
 
 const ProductList: React.FunctionComponent = () => {
@@ -51,7 +51,7 @@ const ProductList: React.FunctionComponent = () => {
       : 0,
     max_price: !isNaN(parseInt(searchParams.get("max_price") ?? ""))
       ? parseInt(searchParams.get("max_price") ?? "")
-      : 10000,
+      : 500,
   };
 
   if (searchParams.get("text") !== null) {
@@ -116,14 +116,19 @@ const ProductList: React.FunctionComponent = () => {
   };
 
   const handlePriceChange = (
-    value: any,
-    min_price: number,
-    max_price: number
+    item: PriceFilter
   ) => {
-    console.log(value, min_price, max_price);
-    searchInfo["min_price"] = min_price;
-    searchInfo["max_price"] = max_price;
-    setSearchParams(searchInfo as any);
+    const newSearchInfo = { ...searchInfo };
+  
+    if (item.key === "none") {
+      delete newSearchInfo.min_price;
+      delete newSearchInfo.max_price;
+    } else {
+      newSearchInfo.min_price = item?.minPrice;
+      newSearchInfo.max_price = item?.maxPrice;
+    }
+  
+    setSearchParams(newSearchInfo as any);
   };
 
   const debouncedHandleTextSearch = debounce((event) => {
@@ -464,6 +469,7 @@ const ProductList: React.FunctionComponent = () => {
     },
   ];
   const priceFilter: PriceFilter[] = [
+    { key: "none", value: "None"},
     { key: "over5000", value: "> 50$", minPrice: 50, maxPrice: Infinity },
     { key: "nomal", value: "10 - 50$", minPrice: 10, maxPrice: 50 },
     { key: "under100", value: "<10", minPrice: 0, maxPrice: 10 },
@@ -495,11 +501,7 @@ const ProductList: React.FunctionComponent = () => {
                   value={item.value}
                   name="sortPrice"
                   onClick={() =>
-                    handlePriceChange(
-                      item?.value,
-                      item?.minPrice,
-                      item?.maxPrice
-                    )
+                    handlePriceChange(item)
                   }
                 />
                 <label htmlFor={`#${item.key}`}>{item.value}</label>
@@ -711,6 +713,11 @@ const ProductList: React.FunctionComponent = () => {
                     displayValue={(genre: Genres) => genre?.name}
                     placeholder="Search genres..."
                     onChange={handleInputChange}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        console.log("Enter key pressed");
+                      }
+                    }}
                   />
                   <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pb-6 rotate-[-90deg]">
                     <i className="bdx-caret text-primary"></i>
@@ -739,12 +746,7 @@ const ProductList: React.FunctionComponent = () => {
                           }
                           value={item}
                           onClick={() => handleGenresChange(item?.id)}
-                          onKeyDown={(event) => {
-                            if (event.key === "Enter") {
-                              handleGenresChange(item?.id);
-                              console.log("Enter key pressed");
-                            }
-                          }}
+
                         >
                           {({ selected, active }) => (
                             <>

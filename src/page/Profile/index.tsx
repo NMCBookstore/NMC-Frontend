@@ -253,7 +253,7 @@ const Profile: React.FunctionComponent = () => {
                 <div className="order-item">
                   <div className="order-item__heading">
                     <h3>
-                      Order Number: <span>1</span>
+                      Order Number: <span>{item?.id}</span>
                     </h3>
                     <p>
                       Create at: <span>9-12-2023</span>
@@ -269,52 +269,59 @@ const Profile: React.FunctionComponent = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {item?.books.map((bookItem, bookIndex) => (
-                        <tr key={bookIndex}>
-                          {/* Product info */}
-                          <td data-th="Product">
-                            <div className="product-img shrink-0">
-                              <a href="" target="_blank">
-                                <img
-                                  src={String(bookItem?.image[0])}
-                                  alt="img-banner"
-                                ></img>
-                              </a>
-                            </div>
-                            <div>
-                              <p>
-                                <a href={`/product/`} target="_blank">
-                                  {bookItem?.name}
+                      {item?.books.map((bookItem, bookIndex) => {
+                        const transaction = item.transactions.find(
+                          (t) => t.books_id === bookItem.id
+                        );
+                        const amount = transaction ? transaction.amount : 0;
+                        const total = transaction ? transaction.total : 0;
+                        return (
+                          <tr key={bookIndex}>
+                            {/* Product info */}
+                            <td data-th="Product">
+                              <div className="product-img shrink-0">
+                                <a href="" target="_blank">
+                                  <img
+                                    src={String(bookItem?.image[0])}
+                                    alt="img-banner"
+                                  ></img>
                                 </a>
-                              </p>
-                              <p>
-                                by:
-                                {bookItem?.author}
-                              </p>
-                            </div>
-                          </td>
-                          {/* Product price */}
-                          <td data-th="Price">
-                            <div className="table-price">
-                              <p className="table-price__new">
-                                {bookItem?.price}$
-                              </p>
-                              <p className="table-price__old">
-                                {bookItem?.price}$
-                              </p>
-                              <p className="table-price__discount">-10%</p>
-                            </div>
-                          </td>
-                          {/* Product quantity */}
-                          <td data-th="Quantity">
-                            <p>{item?.books.length}</p>
-                          </td>
-                          {/* Total value of 1 item */}
-                          <td data-th="Order Value">
-                            <p className="table-sumprice">100$</p>
-                          </td>
-                        </tr>
-                      ))}
+                              </div>
+                              <div>
+                                <p>
+                                  <a href={`/product/`} target="_blank">
+                                    {bookItem?.name}
+                                  </a>
+                                </p>
+                                <p>
+                                  by:
+                                  {bookItem?.author}
+                                </p>
+                              </div>
+                            </td>
+                            {/* Product price */}
+                            <td data-th="Price">
+                              <div className="table-price">
+                                <p className="table-price__new">
+                                  {bookItem?.price}$
+                                </p>
+                                <p className="table-price__old">
+                                  {bookItem?.price}$
+                                </p>
+                                <p className="table-price__discount">-10%</p>
+                              </div>
+                            </td>
+                            {/* Product quantity */}
+                            <td data-th="Quantity">
+                              <p>{amount}</p>
+                            </td>
+                            {/* Total value of 1 item */}
+                            <td data-th="Order Value">
+                              <p className="table-sumprice">{total}$</p>
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
                   <div className="md:w-full w-[25%] ms-auto">

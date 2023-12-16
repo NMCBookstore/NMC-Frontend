@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentCardID } from "../../features/cart/cartSlice";
 import { useCreateOrderMutation } from "../../services/order/orderAPI";
 import PaypalCheckoutButton from "./PaypalCheckoutButton";
+import { useNavigate } from "react-router-dom";
 
 const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
   iconStyle: "solid",
@@ -30,7 +31,7 @@ const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
   },
 };
 
-const OrderPayment : React.FunctionComponent = () => {
+const OrderPayment: React.FunctionComponent = () => {
   const [isPaymentInfoComplete, setIsPaymentInfoComplete] = useState(false);
 
   const totalCartIdArr = useSelector(selectCurrentCardID);
@@ -39,6 +40,8 @@ const OrderPayment : React.FunctionComponent = () => {
   const handleCardElementChange = (event: any) => {
     setIsPaymentInfoComplete(event.complete);
   };
+
+  const navigate = useNavigate();
 
   const stripe = useStripe();
   const elements = useElements();
@@ -72,8 +75,9 @@ const OrderPayment : React.FunctionComponent = () => {
           total_shipping: 30000,
           status: "success",
         });
-        if (response) {
-          toast.success("Payment success !");
+        if ("data" in response) {
+          console.log("have dataaaaa")
+          navigate("/user/order/return", { state: { data: response.data } });
         }
       } catch (error) {
         toast.error("Failed to create ");
@@ -103,7 +107,10 @@ const OrderPayment : React.FunctionComponent = () => {
                 </div>
                 {/* this is the checkout part */}
                 <h3>Fill In Your Card Info To Order: </h3>
-                <form onSubmit={handlePayment} className="order-payment__list__cart">
+                <form
+                  onSubmit={handlePayment}
+                  className="order-payment__list__cart"
+                >
                   <CardElement
                     options={CARD_ELEMENT_OPTIONS}
                     onChange={handleCardElementChange}
