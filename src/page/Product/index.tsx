@@ -801,7 +801,7 @@ const ProductList: React.FunctionComponent = () => {
             total={Number(allProduct?.total_page)}
             setCurrentPage={setPage}
             page={page.id}
-            target="review-block"
+            target="block-product"
           />
         </div>
       </div>
