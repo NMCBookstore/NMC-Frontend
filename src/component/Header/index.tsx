@@ -1,6 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
 import { logo } from "../../assets/img";
@@ -32,6 +32,8 @@ const Header: React.FunctionComponent = () => {
   // const { data: cartBadge = [] } = useGetCartQuery();
   const cartBadge = useSelector(selectCurrentCartProduct);
 
+  const navigate = useNavigate()
+
   const handleOpenCart = () => {
     const pathAfterDomain = window.location.pathname;
     const pathArray = pathAfterDomain.split("/").filter(Boolean);
@@ -40,6 +42,23 @@ const Header: React.FunctionComponent = () => {
       setshowCart(!showCart);
     }
   };
+  const handleToLoginPage = () => {
+    if (token) {
+      navigate("/user/profile")
+    }
+    else {
+      dispatch(login())
+    }
+  }
+
+  const handleToWishlistPage = () => {
+    if (token) {
+      navigate("/user/wishlist")
+    }
+    else {
+      dispatch(login())
+    }
+  }
 
   const handleOpenCartSide = () => {
     if (token) {
@@ -75,10 +94,11 @@ const Header: React.FunctionComponent = () => {
             type="text"
             placeholder="Search by Title, Author, ISBN or Keywords"
             defaultValue={searchParams.get("text")?? "" ? searchParams.get("text")?? "" : text}
+            value={text}
             onChange={(e) => { setText(e.target.value) }}
           />
           <i
-            onClick={() => window.location.replace(`/product/all?page_id=${page_id}&page_size=${page_size}${text ? "&text=" + text : ""}&min_price=0&max_price=5000`)}
+            onClick={() => window.location.replace(`/product/all?page_id=${page_id}&page_size=${page_size}${text ? "&text=" + text : ""}`)}
             className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"
           ></i>
         </div>
@@ -140,8 +160,8 @@ const Header: React.FunctionComponent = () => {
             </Transition.Root>
           </div>
           <div className="flex">
-            <Link
-              to="/user/wishlist"
+            <p
+              onClick={handleToWishlistPage}
               className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
             >
               <div className="relative">
@@ -153,7 +173,7 @@ const Header: React.FunctionComponent = () => {
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
                 Wishlist
               </p>
-            </Link>
+            </p>
           </div>
           <div className="flex">
             <div
@@ -172,8 +192,8 @@ const Header: React.FunctionComponent = () => {
             </div>
           </div>
           <div className="flex relative subMenu-btn">
-            <Link
-              to="/user/profile"
+            <p
+            onClick={() => handleToLoginPage()}
               className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
             >
               <div className="relative">
@@ -196,13 +216,13 @@ const Header: React.FunctionComponent = () => {
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
                 Account
               </p>
-            </Link>
+            </p>
             <div className="absolute top-full subMenu z-[100]">
               <ul>
                 <li>
-                  <Link to="/user/profile">
+                  <p onClick={handleToLoginPage}>
                     <span>Profile</span>
-                  </Link>
+                  </p>
                 </li>
 
                 {token ? (

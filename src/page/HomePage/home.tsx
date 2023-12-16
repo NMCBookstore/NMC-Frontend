@@ -66,7 +66,7 @@ const HomePage: React.FunctionComponent = () => {
                                 <div className="w-[60%] lg:w-[70%] md:w-[100%] flex flex-col justify-center md:items-center">
                                     <p className="mb-2 text-[20px] sm:text-[16px] font-semibold sm:font-normal capitalize text-[#262626] md:text-center" >Welcome to the NMC Bookstore</p>
                                     <h1 className="mb-6 capitalize text-[#262626] md:text-center" >Your Gateway to a World of Knowledge and Imagination!</h1>
-                                    <Link to="/product/all?page_id=1&page_size=24&max_price=500" className="flex py-3 px-6 items-center bg-orange-orange-6 w-fit rounded-full"> <i className="bdx-cart-fill inline-flex mr-2 items-center">
+                                    <Link to="/product/all?page_id=1&page_size=24" className="flex py-3 px-6 items-center bg-orange-orange-6 w-fit rounded-full"> <i className="bdx-cart-fill inline-flex mr-2 items-center">
                                         </i> SHOP NOW</Link>
                                 </div>
                                 <div className="w-[40%] lg:w-[30%] md:w-[100%] flex items-center banner-img">

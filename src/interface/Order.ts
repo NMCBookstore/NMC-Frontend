@@ -1,5 +1,14 @@
 import { Product } from "./Product";
 
+export interface Transaction {
+  amount: number;
+  books_id: Product["id"];
+  id: number;
+  orders_id: number;
+  reviewed: boolean;
+  total: number;
+}
+
 export interface Order {
   id: number;
   payment_id: any;
@@ -9,6 +18,6 @@ export interface Order {
   sub_total: number;
   status: string;
   books: Product[];
-  // transaction:
+  transactions: Transaction[];
   sub_amount: number;
 }

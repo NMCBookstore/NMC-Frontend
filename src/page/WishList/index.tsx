@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../component/Breadcrumb";
 import { productItem } from "../../assets/img";
@@ -7,26 +7,47 @@ import {
   useDeleteWishlistMutation,
   useGetWishlistQuery,
 } from "../../services/wishlist/wishlistAPI";
+import { useAddToCartMutation } from "../../services/cart/cartAPI";
+import toast from "react-hot-toast";
 
 const WishListComponent: React.FunctionComponent = () => {
   const pathAfterDomain = window.location.pathname;
 
-  const [amounts, setAmounts] = useState(1);
-
-  const incrementCount = (wishlist_id: number) => {
-    setAmounts(amounts +1)
-  };
-
-  function decrementCount(wishlist_id: number) {
-    setAmounts(amounts > 1 ? amounts - 1 : 1);
-    console.log(wishlist_id);
-  }
-
   const { data } = useGetWishlistQuery();
   const [deleteWishlistItem] = useDeleteWishlistMutation();
+  const [addToCart] = useAddToCartMutation();
 
-  const hanldeDeleteWishlist = (wishlist_id: number[]) => {
-    deleteWishlistItem(wishlist_id);
+  const [amounts, setAmounts] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (data) {
+      setAmounts(Array(data.length).fill(1));
+    }
+  }, [data]);
+
+  const handleIncrement = (index: number) => {
+    const newAmounts = [...amounts];
+    newAmounts[index]++;
+    setAmounts(newAmounts);
+  };
+
+  const handleDecrement = (index: number) => {
+    const newAmounts = [...amounts];
+    if (newAmounts[index] > 1) {
+      newAmounts[index]--;
+      setAmounts(newAmounts);
+    }
+  };
+
+  const handleDeleteWishlist = async (wishlist_id: number[]) => {
+    await deleteWishlistItem(wishlist_id);
+  };
+
+  const handleAddToCart = async (a: number, b: number) => {
+    const v = await addToCart({ amount: a, book_id: b });
+    if ("data" in v) {
+      toast.success("Added to your cart");
+    }
   };
 
   return (
@@ -52,11 +73,11 @@ const WishListComponent: React.FunctionComponent = () => {
               </thead>
               <tbody>
                 {data?.map((item, index) => (
-                  <tr key={index}>
+                  <tr key={item.book.id}>
                     <td className="btn-delete">
                       <i
                         onClick={() =>
-                          hanldeDeleteWishlist([item?.wishlist_id])
+                          handleDeleteWishlist([item?.wishlist_id])
                         }
                         className="bdx-close"
                       ></i>
@@ -89,7 +110,7 @@ const WishListComponent: React.FunctionComponent = () => {
                           className="qty-count qty-count--minus"
                           data-action="minus"
                           type="button"
-                          onClick={() => decrementCount(item?.wishlist_id)}
+                          onClick={() => handleDecrement(index)}
                         >
                           -
                         </button>
@@ -99,13 +120,13 @@ const WishListComponent: React.FunctionComponent = () => {
                           name="product-qty"
                           min="0"
                           max="100"
-                          value={amounts}
+                          value={amounts[index]}
                         ></input>
                         <button
                           className="qty-count qty-count--add"
                           data-action="add"
                           type="button"
-                          onClick={() => incrementCount(item?.wishlist_id)}
+                          onClick={() => handleIncrement(index)}
                         >
                           +
                         </button>
@@ -113,7 +134,12 @@ const WishListComponent: React.FunctionComponent = () => {
                     </td>
                     <td data-th="Show Now">
                       <p className="table-sumprice">
-                        <i className="bdx-cart-fill cursor-pointer text-[32px] text-primary flex items-center justify-center"></i>
+                        <i
+                          onClick={() =>
+                            handleAddToCart(amounts[index], item?.book.id)
+                          }
+                          className="bdx-cart-fill cursor-pointer text-[32px] text-primary flex items-center justify-center"
+                        ></i>
                       </p>
                     </td>
                   </tr>
