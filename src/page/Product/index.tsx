@@ -469,7 +469,7 @@ const ProductList: React.FunctionComponent = () => {
     { key: "under100", value: "<10", minPrice: 0, maxPrice: 10 },
   ];
   return (
-    <div className="bg-[#F9EEDE] mt-[76px] product-list">
+    <div className="bg-[#F9EEDE] mt-[76px] product-list" id="block-product">
       <Marquee></Marquee>
       <div className="mx-auto px-3 container-nmc">
         <BreadcrumbConponent></BreadcrumbConponent>

@@ -13,18 +13,18 @@ interface PaginationProps {
 const ProductPagination: React.FunctionComponent<PaginationProps> = memo(
   ({ total, setCurrentPage, page, target }) => {
     const [current, setCurrent] = useState(page);
-    const handleScrollToBlockContent = () => {
-      const blockContentElement = document.getElementById(target);
-      if (blockContentElement) {
-        blockContentElement.scrollIntoView({ behavior: "smooth" });
-      }
-    }
 
     const handlePageClick = (pageNumber: number) => {
       setCurrent(pageNumber);
       setCurrentPage({ id: pageNumber, size: 24 });
       handleScrollToBlockContent()
     };
+    const handleScrollToBlockContent = () => {
+      const blockContentElement = document.getElementById(target);
+      if (blockContentElement) {
+        blockContentElement.scrollIntoView({ behavior: "smooth" });
+      }
+    }
 
     const renderPagination = () => {
       const paginationRange = 2; // Number of pagination buttons

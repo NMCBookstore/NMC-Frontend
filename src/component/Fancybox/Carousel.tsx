@@ -32,7 +32,6 @@ function Carousel(props: PropsWithChildren<Props>) {
     const instance = new NativeCarousel(container, options, { Thumbs });
 
     return () => {
-      console.log("carousel");
       instance.destroy();
     };
   });
