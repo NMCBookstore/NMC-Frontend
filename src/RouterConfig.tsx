@@ -1,3 +1,4 @@
+import { GoogleLogin } from "@react-oauth/google";
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 /**** Layout *****/
@@ -29,6 +30,8 @@ const NotFound = lazy(() => import("./page/error"));
 
 const HomePage = lazy(() => import("./page/HomePage/home"));
 
+const LoginGoogle = lazy(() => import("./page/HomePage/GoogleRedirect"));
+
 const RouterConfig: RouteObject[] = [
   {
     path: "/",
@@ -40,6 +43,7 @@ const RouterConfig: RouteObject[] = [
       { path: "/cartdemo", element: <CartDemo /> },
       { path: "*", element: <NotFound /> },
       { path: "/product/:id", element: <ProductDetails /> },
+      { path: "/login/oauth/google", element: <LoginGoogle /> },
     ],
   },
 
@@ -51,6 +55,8 @@ const RouterConfig: RouteObject[] = [
         element: <RequireAuth />,
         children: [
           { path: "cart", element: <Cart /> },
+          { path: "order/return", element: <OrderReturn /> },
+
           {
             element: <RequireCartItem />,
             children: [
@@ -60,7 +66,6 @@ const RouterConfig: RouteObject[] = [
                 element: <PaymentContainer />,
                 children: [{ path: "payment", element: <OrderPayment /> }],
               },
-              { path: "order/return", element: <OrderReturn /> },
             ],
           },
           { path: "profile", element: <Profile /> },

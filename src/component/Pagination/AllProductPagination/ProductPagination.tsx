@@ -1,4 +1,4 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import "../ReviewPagination/Pagination.css";
 
 interface PaginationProps {
@@ -8,23 +8,25 @@ interface PaginationProps {
   >;
   page: number;
   target: string;
+  handlePagination: (pageNum: number, pageSize: number) => void;
 }
 
 const ProductPagination: React.FunctionComponent<PaginationProps> = memo(
-  ({ total, setCurrentPage, page, target }) => {
+  ({ total, setCurrentPage, page, target, handlePagination }) => {
     const [current, setCurrent] = useState(page);
 
     const handlePageClick = (pageNumber: number) => {
       setCurrent(pageNumber);
+      handlePagination(pageNumber, 24);
       setCurrentPage({ id: pageNumber, size: 24 });
-      handleScrollToBlockContent()
+      handleScrollToBlockContent();
     };
     const handleScrollToBlockContent = () => {
       const blockContentElement = document.getElementById(target);
       if (blockContentElement) {
         blockContentElement.scrollIntoView({ behavior: "smooth" });
       }
-    }
+    };
 
     const renderPagination = () => {
       const paginationRange = 2; // Number of pagination buttons

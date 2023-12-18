@@ -6,6 +6,8 @@ import { orderReturn } from "../../assets/img";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../features/auth/authSlice";
 import toast from "react-hot-toast";
+import { useGetAllOrderQuery } from "../../services/order/orderAPI";
+import OrderBillCompleted from "../../component/OrderBillCompleted";
 
 const OrderReturn: React.FunctionComponent = () => {
   const pathAfterDomain = window.location.pathname;
@@ -18,6 +20,8 @@ const OrderReturn: React.FunctionComponent = () => {
   const [isToastDisplayed, setIsToastDisplayed] = useState(false);
 
   const initialRenderRef = useRef(true);
+
+  const { data: order = [] } = useGetAllOrderQuery();
 
   useEffect(() => {
     if (initialRenderRef.current) {
@@ -41,7 +45,7 @@ const OrderReturn: React.FunctionComponent = () => {
         </div>
         <h1>You Have Successfully Ordered</h1>
         <div className="order-info__form__btn flex justify-between items-center">
-          <Link to="/">Back To Home Page</Link>
+          <button onClick={() => navigate("/")}>Back To Home Page</button>
         </div>
         <div className="flex flex-wrap lg:mx-0 mx-[-12px]">
           <div className="md:w-full w-[50%] px-3 md:mb-6">
@@ -133,7 +137,7 @@ const OrderReturn: React.FunctionComponent = () => {
             </div>
           </div>
           <div className="md:w-full w-[50%] px-3">
-            <OrderBill></OrderBill>
+            <OrderBillCompleted dataPayment={dataPayment} order={order} />
           </div>
         </div>
       </div>

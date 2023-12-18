@@ -28,24 +28,10 @@ export const getGoogleUrl = (from: any) => {
 
 const auth = book.injectEndpoints({
   endpoints: (builder) => ({
-    loginWithGoogle: builder.mutation<
-      Login,
-      Pick<Login, "username" | "password">
-    >({
-      query: (credentials) => ({
-        method: "POST",
-        url: getGoogleUrl(credentials),
-        body: { ...credentials },
+    loginWithGoogle: builder.query({
+      query: (codeResponse) => ({
+        url: `http://localhost:8080/login/oauth/google?code=${codeResponse.code}`,
       }),
-
-      // onQueryStarted: async (_, { dispatch, queryFulfilled }) => {
-      //   try {
-      //     const { data } = await queryFulfilled;
-      //     dispatch(setCredentials(data));
-      //   } catch (error) {
-      //     console.log("error to dispatch authentication");
-      //   }
-      // },
     }),
     login: builder.mutation<Login, Pick<Login, "username" | "password">>({
       query: (credentials) => ({
@@ -73,4 +59,8 @@ const auth = book.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useLoginWithGoogleMutation, useLoginMutation, useSignUpMutation } = auth;
+export const {
+  useLoginWithGoogleQuery,
+  useLoginMutation,
+  useSignUpMutation,
+} = auth;

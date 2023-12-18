@@ -17,8 +17,8 @@ const CartIndex : React.FunctionComponent = () =>{
   const [deleteCartItem] = useDeleteCartItemMutation();
   const [updateCartItem] = useUpdateCartMutation();
 
-  const handleDeleteCartItem = (cart_id: number[]) => {
-    deleteCartItem(cart_id);
+  const handleDeleteCartItem = async (cart_id: number[]) => {
+    await deleteCartItem(cart_id);
   };
 
   async function incrementCount(id_cart: number, amount: number) {

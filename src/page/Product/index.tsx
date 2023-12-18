@@ -27,7 +27,6 @@ interface PriceFilter {
 }
 
 const ProductList: React.FunctionComponent = () => {
-  const [page, setPage] = useState({ id: 1, size: 24 });
   const [searchParams, setSearchParams] = useSearchParams();
 
   let searchInfo: Pick<
@@ -73,6 +72,8 @@ const ProductList: React.FunctionComponent = () => {
   const { data: genresData = [], isLoading } = useGetGenresQuery();
   const [genres, setGenres] = useState<Genres[]>([]);
 
+  const [page, setPage] = useState({ id: 1, size: 24 });
+
   const [genre, setGenre] = useState("");
   const [genreID, setGenreID] = useState(
     searchParams.get("genres_id") ? searchParams.get("genres_id") : 0
@@ -115,11 +116,9 @@ const ProductList: React.FunctionComponent = () => {
     console.log(genre);
   };
 
-  const handlePriceChange = (
-    item: PriceFilter
-  ) => {
+  const handlePriceChange = (item: PriceFilter) => {
     const newSearchInfo = { ...searchInfo };
-  
+
     if (item.key === "none") {
       delete newSearchInfo.min_price;
       delete newSearchInfo.max_price;
@@ -127,8 +126,16 @@ const ProductList: React.FunctionComponent = () => {
       newSearchInfo.min_price = item?.minPrice;
       newSearchInfo.max_price = item?.maxPrice;
     }
-  
+
     setSearchParams(newSearchInfo as any);
+  };
+
+  const handlePagination = (pageNum: number, pageSize: number) => {
+    searchInfo["page_id"] = pageNum;
+    searchInfo["page_size"] = pageSize;
+    delete searchInfo.min_price;
+    delete searchInfo.max_price;
+    setSearchParams(searchInfo as any);
   };
 
   const debouncedHandleTextSearch = debounce((event) => {
@@ -469,7 +476,7 @@ const ProductList: React.FunctionComponent = () => {
     },
   ];
   const priceFilter: PriceFilter[] = [
-    { key: "none", value: "None"},
+    { key: "none", value: "None" },
     { key: "over5000", value: "> 50$", minPrice: 50, maxPrice: Infinity },
     { key: "nomal", value: "10 - 50$", minPrice: 10, maxPrice: 50 },
     { key: "under100", value: "<10", minPrice: 0, maxPrice: 10 },
@@ -500,9 +507,7 @@ const ProductList: React.FunctionComponent = () => {
                   type="radio"
                   value={item.value}
                   name="sortPrice"
-                  onClick={() =>
-                    handlePriceChange(item)
-                  }
+                  onClick={() => handlePriceChange(item)}
                 />
                 <label htmlFor={`#${item.key}`}>{item.value}</label>
               </div>
@@ -746,7 +751,6 @@ const ProductList: React.FunctionComponent = () => {
                           }
                           value={item}
                           onClick={() => handleGenresChange(item?.id)}
-
                         >
                           {({ selected, active }) => (
                             <>
@@ -803,6 +807,7 @@ const ProductList: React.FunctionComponent = () => {
             total={Number(allProduct?.total_page)}
             setCurrentPage={setPage}
             page={page.id}
+            handlePagination={handlePagination}
             target="block-product"
           />
         </div>

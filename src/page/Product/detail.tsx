@@ -27,15 +27,17 @@ const ProductDetail: React.FunctionComponent = () => {
 
   const { data: wishlist = [] } = useGetWishlistQuery();
   const { data: books, isFetching } = useGetProductDetailsQuery(Number(id));
-  let dataCountBook =  document.getElementById("inputId") as HTMLInputElement;
+  let dataCountBook = document.getElementById("inputId") as HTMLInputElement;
   function incrementCount() {
     dataCountBook.value = String(Number(dataCountBook.value) + 1);
   }
 
   function decrementCount() {
-    dataCountBook.value = Number(dataCountBook.value) > 1 ? String(Number(dataCountBook.value) - 1) : String(1);
+    dataCountBook.value =
+      Number(dataCountBook.value) > 1
+        ? String(Number(dataCountBook.value) - 1)
+        : String(1);
   }
-
 
   const [addWishList] = useAddToWishlistMutation();
 
@@ -45,12 +47,21 @@ const ProductDetail: React.FunctionComponent = () => {
 
   const elementRef = useRef<HTMLDivElement>(null);
 
-  const handleAddToWishList = () => {
-    addWishList(Number(id));
+  const handleAddToWishList = async () => {
+    const v = await addWishList(Number(id));
+    if ("data" in v) {
+      toast.success("Added to your wishlist");
+    }
   };
 
-  const handleAddToCart = () => {
-    addToCart({ book_id: Number(id), amount: Number(dataCountBook.value) });
+  const handleAddToCart = async () => {
+    const v = await addToCart({
+      book_id: Number(id),
+      amount: Number(dataCountBook.value),
+    });
+    if ("data" in v){
+      toast.success("Added to your cart")
+    }
   };
 
   const handleClick = () => {
@@ -286,7 +297,9 @@ const ProductDetail: React.FunctionComponent = () => {
                     <i className="bdx-cart-fill"></i>
                     <span>Add to cart</span>
                   </button>
-                  {wishlist?.some((item: any) => item.book.id === Number(id)) ? (
+                  {wishlist?.some(
+                    (item: any) => item.book.id === Number(id)
+                  ) ? (
                     <button
                       disabled
                       className="product-detail__item__info__behavior__addtowishlist"
@@ -311,7 +324,10 @@ const ProductDetail: React.FunctionComponent = () => {
         <div className="product-detail__content">
           <div className="row">
             <div className="w-[75%]">
-              <div className="product-detail__content__overview relative" id="review-block">
+              <div
+                className="product-detail__content__overview relative"
+                id="review-block"
+              >
                 <div className="product-detail__content__overview__main">
                   <h2 className="product-detail__content__overview__main__heading">
                     Overview
@@ -357,7 +373,6 @@ const ProductDetail: React.FunctionComponent = () => {
             </div>
           </div>
         </div>
-        
       </section>
       <section className="product-detail__recommend">
         <div className="container-nmc px-3 mx-auto">
@@ -366,7 +381,7 @@ const ProductDetail: React.FunctionComponent = () => {
           </h2>
           <div className="product-detail__recommend__list">
             <Slider {...productListSettings}>
-              {productList.map((item,index) => (
+              {productList.map((item, index) => (
                 <ProductItem
                   key={item?.id}
                   itemDetail={item}

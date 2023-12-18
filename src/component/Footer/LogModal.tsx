@@ -4,21 +4,22 @@ import axios from "axios";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { RootState } from "../../app/store";
 import {
   close,
   login,
   loginStart,
-  signup
+  signup,
 } from "../../features/auth/authSlice";
 import {
   useLoginMutation,
-  useLoginWithGoogleMutation,
-  useSignUpMutation
+  useLoginWithGoogleQuery,
+  useSignUpMutation,
 } from "../../services/authentication/authAPI";
 import { useGetCartQuery } from "../../services/cart/cartAPI";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
+import { avatarProfile } from "../../assets/img";
 
 const BdxLogModal: React.FunctionComponent = () => {
   const showLog = useSelector((state: RootState) => state.auth.status);
@@ -29,7 +30,6 @@ const BdxLogModal: React.FunctionComponent = () => {
   const { refetch: cartRefetch } = useGetCartQuery();
 
   const [executeLogin, { isLoading }] = useLoginMutation();
-  const [executeGoogleLogin] = useLoginWithGoogleMutation();
 
   const [executeSignup, { isLoading: signUpLoading }] = useSignUpMutation();
 
@@ -53,18 +53,36 @@ const BdxLogModal: React.FunctionComponent = () => {
     }
   }, [showLog]);
 
-  const googleLogin = useGoogleLogin({
-    flow: "auth-code",
-    scope: "profile email",
-    onSuccess: async (codeResponse) => {
-      console.log(codeResponse);
-      const tokens = await axios.get(
-        `http://localhost:8080/login/oauth/google?code=${codeResponse.code}`
-      );
-      console.log(tokens);
-    },
-    onError: (errorResponse) => console.log(errorResponse),
-  });
+  // const googleLogin = useGoogleLogin({
+  //   flow: "auth-code",
+  //   scope: "profile email",
+
+  //   onSuccess: async (codeResponse) => {
+  //     console.log(codeResponse);
+  //     const tokens = await fetch(
+  //       `http://localhost:8080/login/oauth/google?code=${codeResponse.code}`
+  //     );
+  //     console.log(tokens);
+  //   },
+  //   onError: (errorResponse) => console.log(errorResponse),
+  // });
+
+  const googleLogin = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/login/oauth/google_url");
+      console.log(response)
+      const url = response?.data?.url;
+      console.log(url)
+      if (url) {
+        window.location.href = url; // Redirect to the specified URL
+        console.log(url)
+      } else {
+        console.log("Invalid URL");
+      }
+    } catch (error) {
+      console.log("API request failed:", error);
+    }
+  };
 
   const handleLogin = async () => {
     dispatch(loginStart());
@@ -96,7 +114,6 @@ const BdxLogModal: React.FunctionComponent = () => {
       dispatch(login());
     } else {
       toast.error("Signup failed !");
-
     }
   };
   const handleSubmitPassword = () => {
@@ -248,28 +265,16 @@ const BdxLogModal: React.FunctionComponent = () => {
                     {showLog === "signup" && "Sign Up"}
                     {showLog === "forgotpassword" && "Submit"}
                   </button>
-                  {/* <button
+                  <button
                     type="button"
                     className="w-full py-3 px-6 block border-[1px] border-[#262626] border-solid rounded-[12px]"
                     onClick={() => {
-                      if (showLog === "login") {
-                        SignInWithGoogle();
-                      }
+                        googleLogin();
                     }}
                   >
                     {showLog === "login" && "Log in with Google"}
                     {showLog === "signup" && "Sign up with Google"}
-                  </button> */}
-
-                  {/* <a href={getGoogleUrl("http://localhost:3000")}>
-                    <img
-                      className="pr-2"
-                      src={avatarProfile}
-                      alt=""
-                      style={{ height: "2rem" }}
-                    />
-                    Continue with Google
-                  </a> */}
+                  </button>
 
                   {/* <GoogleLogin
                     onSuccess={googleLogin}
@@ -279,7 +284,7 @@ const BdxLogModal: React.FunctionComponent = () => {
                     text="continue_with"
                     shape="circle"
                   /> */}
-                  <button
+                  {/* <button
                     type="button"
                     className="w-full py-3 px-6 block border-[1px] border-[#262626] border-solid rounded-[12px]"
                     onClick={() => {
@@ -290,7 +295,7 @@ const BdxLogModal: React.FunctionComponent = () => {
                   >
                     {showLog === "login" && "Log in with Google"}
                     {showLog === "signup" && "Sign up with Google"}
-                  </button>
+                  </button> */}
                 </div>
 
                 <div className="flex flex-col items-center">

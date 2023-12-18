@@ -72,7 +72,7 @@ const Profile: React.FunctionComponent = () => {
     skip: !idCity,
   });
   const addressAmount = Number(userAddress?.length);
-  const orderAmount = Number(order?.length);
+  const orderAmount = Number(order?.length) ? Number(order?.length) : 0;
   const userGender = userInfo?.sex;
 
   const genderTextMap = {

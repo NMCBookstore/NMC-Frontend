@@ -11,6 +11,8 @@ import { selectCurrentCardID } from "../../features/cart/cartSlice";
 import { useCreateOrderMutation } from "../../services/order/orderAPI";
 import PaypalCheckoutButton from "./PaypalCheckoutButton";
 import { useNavigate } from "react-router-dom";
+import { selectCurrentUser } from "../../features/auth/authSlice";
+import { User } from "../../interface/User";
 
 const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
   iconStyle: "solid",
@@ -40,6 +42,7 @@ const OrderPayment: React.FunctionComponent = () => {
   const handleCardElementChange = (event: any) => {
     setIsPaymentInfoComplete(event.complete);
   };
+  const userInfo = useSelector(selectCurrentUser) as User;
 
   const navigate = useNavigate();
 
@@ -73,10 +76,12 @@ const OrderPayment: React.FunctionComponent = () => {
           cart_ids: totalCartIdArr,
           to_address: "test address hihi",
           total_shipping: 30000,
+          email: userInfo?.email,
+          note: "test note",
           status: "success",
         });
         if ("data" in response) {
-          console.log("have dataaaaa")
+          console.log("have dataaaaa");
           navigate("/user/order/return", { state: { data: response.data } });
         }
       } catch (error) {
@@ -125,16 +130,10 @@ const OrderPayment: React.FunctionComponent = () => {
                   )}
                 </form>
                 <h3 className="mb-3">Or You Can Use</h3>
-                <PaypalCheckoutButton />
+                <PaypalCheckoutButton userInfo={userInfo} totalCartIdArr={totalCartIdArr}/>
               </div>
               <div className="order-info__form__btn flex justify-between items-center">
                 <a href="javascript:history.back()">Return</a>
-                {/* <Link to="/order/return"> */}
-                {/* <button >
-                  Accept
-                  <i className="bdx-cart"></i>
-                </button> */}
-                {/* </Link> */}
               </div>
             </div>
             <div>
