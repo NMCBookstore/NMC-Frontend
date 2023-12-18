@@ -1,23 +1,21 @@
-import React from "react";
 import {
-  PayPalScriptProvider,
-  PayPalButtons,
-  usePayPalScriptReducer,
+  PayPalButtons
 } from "@paypal/react-paypal-js";
-import { useCreateOrderMutation } from "../../services/order/orderAPI";
-import { useSelector } from "react-redux";
-import { selectCurrentCardID } from "../../features/cart/cartSlice";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../interface/User";
+import { useCreateOrderMutation } from "../../services/order/orderAPI";
 
 interface PaypalCheckout {
   userInfo: User
   totalCartIdArr: number[]
+  userNote: string
 }
 
 const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
   userInfo, 
-  totalCartIdArr
+  totalCartIdArr,
+  userNote
 }) => {
   const [createOrder] = useCreateOrderMutation();
   const navigate = useNavigate()
@@ -50,7 +48,7 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
           to_address: "test address hihi",
           total_shipping: 30000,
           email: userInfo?.email,
-          note: "test note",
+          note: userNote,
           status: "success",
         });
         if("data" in response) {

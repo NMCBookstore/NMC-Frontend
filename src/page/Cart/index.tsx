@@ -9,7 +9,7 @@ import {
   useUpdateCartMutation,
 } from "../../services/cart/cartAPI";
 
-const CartIndex : React.FunctionComponent = () =>{
+const CartIndex: React.FunctionComponent = () => {
   const totalItemPrice = useSelector(selectCurrentTotalCartValue);
 
   const { data } = useGetCartQuery();
@@ -85,18 +85,22 @@ const CartIndex : React.FunctionComponent = () =>{
                             {item?.book_name}
                           </a>
                         </p>
-                        <p>
-                          {item?.author}
-                        </p>
+                        <p>{item?.author}</p>
                       </div>
                     </td>
                     {/* Product price */}
                     <td data-th="Price">
-                      <div className="table-price">
-                        <p className="table-price__new">{item?.price}$</p>
-                        <p className="table-price__old">300$</p>
-                        <p className="table-price__discount">-10%</p>
-                      </div>
+                      {item?.sale === 0 ? (
+                        <div className="table-price">
+                          <p className="table-price__new">{item?.price}$</p>
+                        </div>
+                      ) : (
+                        <div className="table-price">
+                          <p className="table-price__new">{item?.price}$</p>
+                          <p className="table-price__old">{item?.price}$</p>
+                          <p className="table-price__discount">-{item?.sale}%</p>
+                        </div>
+                      )}
                     </td>
                     {/* Product quantity */}
                     <td data-th="Quantity">

@@ -62,14 +62,6 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
     deleteWishList(wishlistId);
   };
 
-  //   useEffect(() => {
-  //     if (addWishListSuccess) {
-  //         toast.success("Added to your wish list");
-  //     } else if (isError) {
-  //         toast.error("Can't add to your wish list");
-  //     }
-  // }, [addWishListSuccess, isError]);
-
   return (
     <div className="product_hover">
       <div className="bg-white product-item">
@@ -104,21 +96,23 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
             ))}
           </div>
           <div className="product-item__control">
-            {
-              // props.itemDetail.salePrice > 0 &&
+            {props.itemDetail.sale > 0 && (
               <div>
-                {/* <p className="product-item__control__old-price">${props.itemDetail?.salePrice}</p> */}
+                <p className="product-item__control__old-price">
+                  ${props.itemDetail?.sale}
+                </p>
                 <p className="product-item__control__price">
                   {props.itemDetail?.price}$
                 </p>
               </div>
-            }
-            {/* {
-                            props.itemDetail.salePrice === 0 &&
-                            <div>
-                                <p className="product-item__control__price">${props.itemDetail?.price}</p>
-                            </div>
-                        } */}
+            )}
+            {props.itemDetail.sale === 0 && (
+              <div>
+                <p className="product-item__control__price">
+                  ${props.itemDetail?.price}
+                </p>
+              </div>
+            )}
             <div className="product-item__control__item">
               <i onClick={handleAddToCart} className="bdx-cart"></i>
               {props.wishlistItem?.some(
@@ -133,7 +127,19 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
               )}
             </div>
           </div>
-          {/* {props.itemDetail?.salePrice > 0 && (<p className="product-item__discount"><span>-{(((props.itemDetail?.price - props.itemDetail?.salePrice)/props.itemDetail?.price)*100).toFixed(0)}%</span></p>)} */}
+          {props.itemDetail?.sale > 0 && (
+            <p className="product-item__discount">
+              <span>
+                -
+                {(
+                  ((props.itemDetail?.price - props.itemDetail?.sale) /
+                    props.itemDetail?.price) *
+                  100
+                ).toFixed(0)}
+                %
+              </span>
+            </p>
+          )}
         </div>
       </div>
     </div>

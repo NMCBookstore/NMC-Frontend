@@ -6,6 +6,7 @@ export interface Product {
   name: string;
   price: number;
   salePrice: number;
+  sale: number;
   image: string[];
   description: string;
   author?: string;

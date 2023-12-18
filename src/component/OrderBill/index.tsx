@@ -32,11 +32,25 @@ const OrderBill: React.FunctionComponent = () => {
                 </div>
               </div>
             </div>
-            <div className="order-bill__item--price flex-shrink-0">
-              <div className="order-bill__item--price--new">{item.price}$</div>
-              <div className="order-bill__item--price--old">{item.price}$</div>
-              <div className="order-bill__item--price--percent">-10%</div>
-            </div>
+            {item?.sale === 0 ? (
+              <div className="order-bill__item--price flex-shrink-0">
+                <div className="order-bill__item--price--new">
+                  {item.price}$
+                </div>
+              </div>
+            ) : (
+              <div className="order-bill__item--price flex-shrink-0">
+                <div className="order-bill__item--price--new">
+                  {item.price}$
+                </div>
+                <div className="order-bill__item--price--old">
+                  {item.price}$
+                </div>
+                <div className="order-bill__item--price--percent">
+                  {item.sale}%
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
