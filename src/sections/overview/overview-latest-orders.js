@@ -16,13 +16,6 @@ import {
   TableRow
 } from '@mui/material';
 import { Scrollbar } from 'src/components/scrollbar';
-import { SeverityPill } from 'src/components/severity-pill';
-
-const statusMap = {
-  pending: 'warning',
-  delivered: 'success',
-  refunded: 'error'
-};
 
 export const OverviewLatestOrders = (props) => {
   const { orders = [], sx } = props;
@@ -45,7 +38,7 @@ export const OverviewLatestOrders = (props) => {
                   Date
                 </TableCell>
                 <TableCell>
-                  Status
+                  total price
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -68,9 +61,7 @@ export const OverviewLatestOrders = (props) => {
                       {createdAt}
                     </TableCell>
                     <TableCell>
-                      <SeverityPill color={statusMap[order.status]}>
-                        {order.status}
-                      </SeverityPill>
+                      {order.status}
                     </TableCell>
                   </TableRow>
                 );
@@ -82,6 +73,10 @@ export const OverviewLatestOrders = (props) => {
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button
+          {...{
+            component: 'a',
+            href: "/order"
+          }}
           color="inherit"
           endIcon={(
             <SvgIcon fontSize="small">

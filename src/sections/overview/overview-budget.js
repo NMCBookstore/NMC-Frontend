@@ -6,7 +6,7 @@ import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/mate
 
 export const OverviewBudget = (props) => {
   const { difference, positive = false, sx, value } = props;
-
+  console.log(props);
   return (
     <Card sx={sx}>
       <CardContent>
@@ -21,7 +21,7 @@ export const OverviewBudget = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Budget
+              monthly income
             </Typography>
             <Typography variant="h4">
               {value}

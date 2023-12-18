@@ -111,19 +111,6 @@ export const OverviewSales = (props) => {
   return (
     <Card sx={sx}>
       <CardHeader
-        action={(
-          <Button
-            color="inherit"
-            size="small"
-            startIcon={(
-              <SvgIcon fontSize="small">
-                <ArrowPathIcon />
-              </SvgIcon>
-            )}
-          >
-            Sync
-          </Button>
-        )}
         title="Sales"
       />
       <CardContent>
@@ -138,6 +125,10 @@ export const OverviewSales = (props) => {
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button
+          {...{
+            component: 'a',
+            href: "/order"
+          }}
           color="inherit"
           endIcon={(
             <SvgIcon fontSize="small">

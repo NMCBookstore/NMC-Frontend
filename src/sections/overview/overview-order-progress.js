@@ -1,17 +1,8 @@
 import PropTypes from 'prop-types';
-import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
-import {
-  Avatar,
-  Box,
-  Card,
-  CardContent,
-  LinearProgress,
-  Stack,
-  SvgIcon,
-  Typography
-} from '@mui/material';
+import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
+import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
-export const OverviewTasksProgress = (props) => {
+export const OverviewTotalOrder = (props) => {
   const { value, sx } = props;
 
   return (
@@ -26,13 +17,12 @@ export const OverviewTasksProgress = (props) => {
           <Stack spacing={1}>
             <Typography
               color="text.secondary"
-              gutterBottom
               variant="overline"
             >
-              Task Progress
+              Total order
             </Typography>
             <Typography variant="h4">
-              {value}%
+              {value}
             </Typography>
           </Stack>
           <Avatar
@@ -43,22 +33,16 @@ export const OverviewTasksProgress = (props) => {
             }}
           >
             <SvgIcon>
-              <ListBulletIcon />
+              <CurrencyDollarIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
-        <Box sx={{ mt: 3 }}>
-          <LinearProgress
-            value={value}
-            variant="determinate"
-          />
-        </Box>
       </CardContent>
     </Card>
   );
 };
 
-OverviewTasksProgress.propTypes = {
-  value: PropTypes.number.isRequired,
+OverviewTotalOrder.propTypes = {
+  value: PropTypes.string,
   sx: PropTypes.object
 };
