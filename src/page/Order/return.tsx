@@ -23,6 +23,8 @@ const OrderReturn: React.FunctionComponent = () => {
 
   const { data: order = [] } = useGetAllOrderQuery();
 
+  console.log(dataPayment);
+
   useEffect(() => {
     if (initialRenderRef.current) {
       initialRenderRef.current = false;
@@ -78,7 +80,7 @@ const OrderReturn: React.FunctionComponent = () => {
                         Order Status:
                       </p>
                       <p className="order-return__list__item__input">
-                        On Processing
+                        {dataPayment?.status}
                       </p>
                     </div>
                   </div>
@@ -86,7 +88,7 @@ const OrderReturn: React.FunctionComponent = () => {
               </div>
             </div>
             <div>
-              <h2 className="text-second-color">Shipment Details</h2>
+              <h2 className="text-second-color">Shipping Details</h2>
               <div className="order-info__form">
                 <div className="flex flex-wrap justify-between gap-y-3 p-5 rounded-[24px] mb-6">
                   <div className="sm:w-full w-[49%]">

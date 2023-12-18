@@ -98,17 +98,25 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({
                               Quantity: {item?.amount}
                             </div>
                           </div>
-                          <div className="sidebar-cart__item--price flex-shrink-0">
-                            <div className="sidebar-cart__item--price--new">
-                              ${item?.price}
+                          {item?.sale == 0 ? (
+                            <div className="sidebar-cart__item--price flex-shrink-0">
+                              <div className="sidebar-cart__item--price--new">
+                                ${item?.price}
+                              </div>
                             </div>
-                            <div className="sidebar-cart__item--price--old">
-                              ${item?.price}
+                          ) : (
+                            <div className="sidebar-cart__item--price flex-shrink-0">
+                              <div className="sidebar-cart__item--price--new">
+                                ${item?.price}
+                              </div>
+                              <div className="sidebar-cart__item--price--old">
+                                ${item?.price}
+                              </div>
+                              <div className="sidebar-cart__item--price--percent">
+                                {item?.sale}%
+                              </div>
                             </div>
-                            <div className="sidebar-cart__item--price--percent">
-                              -16.6%
-                            </div>
-                          </div>
+                          )}
                         </div>
                       ))}
                       {/* <div className="sidebar-cart__item">

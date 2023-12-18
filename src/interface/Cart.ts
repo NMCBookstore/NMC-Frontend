@@ -5,6 +5,7 @@ export interface Cart {
   cart_id: number;
   book_id: number;
   book_name: string;
+  sale: number;
   author: string;
   amount: number;
   image: string;

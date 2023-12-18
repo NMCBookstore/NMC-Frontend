@@ -27,12 +27,12 @@ const ArticleList: React.FunctionComponent = () => {
     { name: "Kids share their thoughts about banned books with NPR", img: articleImg, des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids." },
     { name: "Kids share their thoughts about banned books with NPR", img: articleImg, des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids." }];
     const { data: wishlist = [] } = useGetWishlistQuery();
-    const productList: Product[] = [{ id: 1, name: "Build the life you want", description: "Arthur c. brooks oprah winfrey", price: 300, salePrice: 0, rating: 3, image: [productItem] },
-    { id: 2, name: "Section with number 2", description: "Arthur c. brooks oprah winfrey", price: 300, salePrice: 200, rating: 4, image: [productItem] },
-    { id: 3, name: "Section with number 3", description: "Arthur c. brooks oprah winfrey", price: 200.10, salePrice: 150, rating: 4, image: [productItem] },
-    { id: 4, name: "Section with number 4", description: "Arthur c. brooks oprah winfrey", price: 100, salePrice: 0, rating: 5, image: [productItem] },
-    { id: 5, name: "Section with number 5", description: "Arthur c. brooks oprah winfrey", price: 50.50, salePrice: 40.5, rating: 2, image: [productItem] },
-    { id: 6, name: "Section with number 6", description: "Arthur c. brooks oprah winfrey", price: 300, salePrice: 200, rating: 4, image: [productItem] }];
+    // const productList: Product[] = [{ id: 1, name: "Build the life you want", description: "Arthur c. brooks oprah winfrey", price: 300, salePrice: 0, rating: 3, image: [productItem] },
+    // { id: 2, name: "Section with number 2", description: "Arthur c. brooks oprah winfrey", price: 300, salePrice: 200, rating: 4, image: [productItem] },
+    // { id: 3, name: "Section with number 3", description: "Arthur c. brooks oprah winfrey", price: 200.10, salePrice: 150, rating: 4, image: [productItem] },
+    // { id: 4, name: "Section with number 4", description: "Arthur c. brooks oprah winfrey", price: 100, salePrice: 0, rating: 5, image: [productItem] },
+    // { id: 5, name: "Section with number 5", description: "Arthur c. brooks oprah winfrey", price: 50.50, salePrice: 40.5, rating: 2, image: [productItem] },
+    // { id: 6, name: "Section with number 6", description: "Arthur c. brooks oprah winfrey", price: 300, salePrice: 200, rating: 4, image: [productItem] }];
 
     const articleList2: articleItem[] = [{ name: "Kids share their thoughts about banned books with NPR", img: articleImg, des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids." },
     { name: "The 10 Most Challenged Books of 2022-2023", img: articleImg, des: "Parents and politicians are trying to pull books off shelves at a record-setting pace." },
@@ -111,11 +111,11 @@ const ArticleList: React.FunctionComponent = () => {
                         You may also like
                     </h2>
                     <div className="product-detail__recommend__list">
-                        <Slider {...productListSettings}>
+                        {/* <Slider {...productListSettings}>
                             {productList.map((item) => (
                                 <ProductItem key={item?.id} itemDetail={item} wishlistItem={wishlist}></ProductItem>
                             ))}
-                        </Slider>
+                        </Slider> */}
                     </div>
                 </div>
             </section>

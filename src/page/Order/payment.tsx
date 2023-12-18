@@ -7,7 +7,10 @@ import OrderBill from "../../component/OrderBill";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { selectCurrentCardID } from "../../features/cart/cartSlice";
+import {
+  selectCurrentCardID,
+  selectCurrentUserNote,
+} from "../../features/cart/cartSlice";
 import { useCreateOrderMutation } from "../../services/order/orderAPI";
 import PaypalCheckoutButton from "./PaypalCheckoutButton";
 import { useNavigate } from "react-router-dom";
@@ -37,6 +40,8 @@ const OrderPayment: React.FunctionComponent = () => {
   const [isPaymentInfoComplete, setIsPaymentInfoComplete] = useState(false);
 
   const totalCartIdArr = useSelector(selectCurrentCardID);
+  const userNote = useSelector(selectCurrentUserNote);
+
   const [createOrder] = useCreateOrderMutation();
 
   const handleCardElementChange = (event: any) => {
@@ -77,7 +82,7 @@ const OrderPayment: React.FunctionComponent = () => {
           to_address: "test address hihi",
           total_shipping: 30000,
           email: userInfo?.email,
-          note: "test note",
+          note: userNote,
           status: "success",
         });
         if ("data" in response) {
@@ -130,14 +135,18 @@ const OrderPayment: React.FunctionComponent = () => {
                   )}
                 </form>
                 <h3 className="mb-3">Or You Can Use</h3>
-                <PaypalCheckoutButton userInfo={userInfo} totalCartIdArr={totalCartIdArr}/>
+                <PaypalCheckoutButton
+                  userInfo={userInfo}
+                  totalCartIdArr={totalCartIdArr}
+                  userNote={userNote}
+                />
               </div>
               <div className="order-info__form__btn flex justify-between items-center">
                 <a href="javascript:history.back()">Return</a>
               </div>
             </div>
             <div>
-              <h2 className="text-second-color">Shipment Details</h2>
+              <h2 className="text-second-color">Shipping Details</h2>
               <div className="order-info__form">
                 <div className="flex flex-wrap justify-between gap-y-3 p-5 rounded-[24px] mb-6">
                   <div className="sm:w-full w-[49%]">
@@ -145,7 +154,7 @@ const OrderPayment: React.FunctionComponent = () => {
                       <span className="input-group-text align-items-start">
                         <i className="bdx-user inline-flex items-center"></i>
                       </span>
-                      <p className="form-control">Full Name</p>
+                      <p className="form-control">{userInfo?.full_name}</p>
                     </div>
                   </div>
                   <div className="sm:w-full w-[49%]">
@@ -153,7 +162,7 @@ const OrderPayment: React.FunctionComponent = () => {
                       <span className="input-group-text align-items-start">
                         <i className="bdx-phone inline-flex items-center"></i>
                       </span>
-                      <p className="form-control">Phone Number</p>
+                      <p className="form-control">{userInfo?.phone_number}</p>
                     </div>
                   </div>
                   <div className="w-full">
@@ -161,7 +170,7 @@ const OrderPayment: React.FunctionComponent = () => {
                       <span className="input-group-text align-items-start">
                         <i className="bdx-email inline-flex items-center"></i>
                       </span>
-                      <p className="form-control">Email</p>
+                      <p className="form-control">{userInfo?.email}</p>
                     </div>
                   </div>
                   <div className="w-full">
@@ -177,10 +186,7 @@ const OrderPayment: React.FunctionComponent = () => {
                       <span className="input-group-text align-items-start">
                         <i className="bdx-note inline-flex items-center"></i>
                       </span>
-                      <p className="form-control">
-                        Your note content Your note content Your note content
-                        Your note content Your note content Your note content
-                      </p>
+                      <p className="form-control">{userNote}</p>
                     </div>
                   </div>
                 </div>

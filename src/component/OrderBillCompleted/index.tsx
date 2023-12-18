@@ -42,13 +42,25 @@ const OrderBillCompleted: React.FunctionComponent<OrderCompleted> = ({
                 </div>
               </div>
             </div>
-            <div className="order-bill__item--price flex-shrink-0">
-              <div className="order-bill__item--price--new">{item?.price}$</div>
-              <div className="order-bill__item--price--old">{item?.price}$</div>
-              <div className="order-bill__item--price--percent">
-                {item?.salePrice}%
+            {item?.sale == 0 ? (
+              <div className="order-bill__item--price flex-shrink-0">
+                <div className="order-bill__item--price--new">
+                  {item?.price}$
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="order-bill__item--price flex-shrink-0">
+                <div className="order-bill__item--price--new">
+                  {item?.price}$
+                </div>
+                <div className="order-bill__item--price--old">
+                  {item?.price}$
+                </div>
+                <div className="order-bill__item--price--percent">
+                  {item?.sale}%
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>
