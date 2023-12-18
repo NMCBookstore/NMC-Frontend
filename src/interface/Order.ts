@@ -15,6 +15,8 @@ export interface Order {
   cart_ids: number[];
   to_address: string;
   total_shipping: number;
+  email: string;
+  note: string;
   sub_total: number;
   status: string;
   books: Product[];

@@ -239,13 +239,13 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
                       >
                         District<span>*</span>
                       </label>
-                      <Combobox defaultValue={addressDetail?.district_id}>
+                      <Combobox defaultValue={addressDetail?.district}>
                         <div className="relative w-full md:grow">
                           <div className="relative md:grow border border-[#BFBFBF] border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
                             <Combobox.Input
                               className="w-full md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize  bg-[transparent] focus:outline-none"
                               displayValue={(district: District) =>
-                                district?.name ||String(addressDetail?.district_id)
+                                district?.name ||String(addressDetail?.district)
                               }
                               placeholder="Select or search district..."
                               onChange={(event) => setQuery(event.target.value)}

@@ -299,6 +299,7 @@ const EditProfileComponent: React.FunctionComponent = () => {
                         name="Email"
                         placeholder="abc@gmail.com"
                         value={userInfo?.email}
+                        disabled
                       />
                     </div>
                     <div className="text-left mb-4">

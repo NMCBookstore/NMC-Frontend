@@ -9,6 +9,7 @@ const order = book.injectEndpoints({
         method: "POST",
         body: order,
       }),
+      invalidatesTags: ["CartItems"],
     }),
     getAllOrder: builder.query<Order[], void>({
       query: () => {

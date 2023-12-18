@@ -20,6 +20,7 @@
     "@types/react-redux": "^7.1.27",
     "axios": "^1.6.2",
     "firebase": "^10.5.2",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",

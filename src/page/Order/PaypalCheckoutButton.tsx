@@ -7,11 +7,20 @@ import {
 import { useCreateOrderMutation } from "../../services/order/orderAPI";
 import { useSelector } from "react-redux";
 import { selectCurrentCardID } from "../../features/cart/cartSlice";
+import { useNavigate } from "react-router-dom";
+import { User } from "../../interface/User";
 
-const PaypalCheckoutButton = () => {
+interface PaypalCheckout {
+  userInfo: User
+  totalCartIdArr: number[]
+}
+
+const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
+  userInfo, 
+  totalCartIdArr
+}) => {
   const [createOrder] = useCreateOrderMutation();
-  const totalCartIdArr = useSelector(selectCurrentCardID);
-
+  const navigate = useNavigate()
   return (
     <PayPalButtons
       style={{
@@ -40,10 +49,13 @@ const PaypalCheckoutButton = () => {
           cart_ids: totalCartIdArr,
           to_address: "test address hihi",
           total_shipping: 30000,
+          email: userInfo?.email,
+          note: "test note",
           status: "success",
         });
-        if(response) {
-          
+        if("data" in response) {
+          console.log("have data in paypal")
+          navigate("/user/order/return", { state: { data: response.data } });
         }
       }}
     />
