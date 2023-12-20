@@ -1,4 +1,3 @@
-import { GoogleLogin } from "@react-oauth/google";
 import { lazy } from "react";
 import { RouteObject } from "react-router-dom";
 /**** Layout *****/
@@ -18,6 +17,7 @@ const ArticleDetail = lazy(() => import("./page/Article/detail"));
 const ProductList = lazy(() => import("./page/Product"));
 const Profile = lazy(() => import("./page/Profile"));
 const Wishlist = lazy(() => import("./page/WishList"));
+const VerifiedEmail = lazy(() => import("./page/Profile/VerifyEmail"));
 
 /**** Protected User Routes *****/
 const RequireAuth = lazy(() => import("./features/auth/RequireAuth"));
@@ -44,6 +44,7 @@ const RouterConfig: RouteObject[] = [
       { path: "*", element: <NotFound /> },
       { path: "/product/:id", element: <ProductDetails /> },
       { path: "/login/oauth/google", element: <LoginGoogle /> },
+      { path: "verified_email", element: <VerifiedEmail /> },
     ],
   },
 

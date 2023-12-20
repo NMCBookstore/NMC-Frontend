@@ -8,7 +8,9 @@ import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import {
+  clearNoteAndAddressInfo,
   selectCurrentCardID,
+  selectCurrentUserAddress,
   selectCurrentUserNote,
 } from "../../features/cart/cartSlice";
 import { useCreateOrderMutation } from "../../services/order/orderAPI";
@@ -16,6 +18,7 @@ import PaypalCheckoutButton from "./PaypalCheckoutButton";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../features/auth/authSlice";
 import { User } from "../../interface/User";
+import { useDispatch } from "react-redux";
 
 const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
   iconStyle: "solid",
@@ -38,9 +41,11 @@ const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
 
 const OrderPayment: React.FunctionComponent = () => {
   const [isPaymentInfoComplete, setIsPaymentInfoComplete] = useState(false);
+  const dispatch = useDispatch();
 
   const totalCartIdArr = useSelector(selectCurrentCardID);
   const userNote = useSelector(selectCurrentUserNote);
+  const userAddress = useSelector(selectCurrentUserAddress);
 
   const [createOrder] = useCreateOrderMutation();
 
@@ -48,6 +53,10 @@ const OrderPayment: React.FunctionComponent = () => {
     setIsPaymentInfoComplete(event.complete);
   };
   const userInfo = useSelector(selectCurrentUser) as User;
+
+  const handleClearInfo = () => {
+    dispatch(clearNoteAndAddressInfo());
+  };
 
   const navigate = useNavigate();
 
@@ -79,14 +88,14 @@ const OrderPayment: React.FunctionComponent = () => {
         const response = await createOrder({
           payment_id: id,
           cart_ids: totalCartIdArr,
-          to_address: "test address hihi",
+          to_address: userAddress,
           total_shipping: 30000,
           email: userInfo?.email,
           note: userNote,
           status: "success",
         });
         if ("data" in response) {
-          console.log("have dataaaaa");
+          handleClearInfo();
           navigate("/user/order/return", { state: { data: response.data } });
         }
       } catch (error) {
@@ -139,6 +148,7 @@ const OrderPayment: React.FunctionComponent = () => {
                   userInfo={userInfo}
                   totalCartIdArr={totalCartIdArr}
                   userNote={userNote}
+                  userAddress={userAddress}
                 />
               </div>
               <div className="order-info__form__btn flex justify-between items-center">

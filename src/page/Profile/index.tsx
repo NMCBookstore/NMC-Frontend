@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../../features/auth/authSlice";
 import {
   useDeleteAddressMutation,
-  useListAddressQuery,
+  useGetListAddressQuery,
 } from "../../services/address/addressAPI";
 import { useGetListCitiesQuery } from "../../services/address/citiesAPI";
 import { useGetListDistrictQuery } from "../../services/address/districtAPI";
@@ -60,7 +60,7 @@ const Profile: React.FunctionComponent = () => {
     },
   ];
   const userInfo = useSelector(selectCurrentUser);
-  const { data: userAddress } = useListAddressQuery();
+  const { data: userAddress } = useGetListAddressQuery();
   const [deleteAddress] = useDeleteAddressMutation();
   const { data: order, isLoading: orderLoading } = useGetAllOrderQuery();
   console.log(order);

@@ -11,7 +11,11 @@ import {
 import { isValidImage } from "../../utils/helper";
 import toast from "react-hot-toast";
 import { User } from "../../interface/User";
-import { useUpdateUserMutation } from "../../services/user/userAPI";
+import {
+  useGetUserQuery,
+  useSendVerifyEmailMutation,
+  useUpdateUserMutation,
+} from "../../services/user/userAPI";
 import { useDispatch } from "react-redux";
 
 interface Person {
@@ -25,6 +29,9 @@ const people: Person[] = [
 ];
 
 const EditProfileComponent: React.FunctionComponent = () => {
+  const { data: userData } = useGetUserQuery();
+  console.log(userData)
+
   const user = useSelector(selectCurrentUser) as User;
   const [userInfo, setUserInfo] = useState(user);
   const token = useSelector(selectCurrentAccessToken);
@@ -69,8 +76,8 @@ const EditProfileComponent: React.FunctionComponent = () => {
     const formData = new FormData();
     formData.append("full_name", userInfo.full_name);
     formData.append("phone_number", userInfo.phone_number);
-    formData.append("age", userInfo.age.toString())
-    formData.append("sex", userInfo.sex)
+    formData.append("age", userInfo.age.toString());
+    formData.append("sex", userInfo.sex);
     if (avatar) {
       formData.append("image", avatar);
     }
@@ -96,6 +103,23 @@ const EditProfileComponent: React.FunctionComponent = () => {
       toast.error("Update failed");
     }
   };
+
+  //Send verify email
+  const [sendEmail] = useSendVerifyEmailMutation();
+  
+  const sendVerifyEmail = async () => {
+    const v = await sendEmail() ;
+    if ("data" in v) {
+      toast("Please check your email", {
+        icon: "📬",
+        style: {
+          borderRadius: "10px",
+          background: "#fff",
+          color: "#333",
+        },
+      });
+    }
+  }
 
   function closeModal() {
     setIsOpen(false);
@@ -266,7 +290,12 @@ const EditProfileComponent: React.FunctionComponent = () => {
                                         }`
                                       }
                                       value={person}
-                                      onClick={() => setUserInfo({...userInfo, sex: String(person.id)})}
+                                      onClick={() =>
+                                        setUserInfo({
+                                          ...userInfo,
+                                          sex: String(person.id),
+                                        })
+                                      }
                                     >
                                       {({ selected, active }) => (
                                         <>
@@ -301,6 +330,13 @@ const EditProfileComponent: React.FunctionComponent = () => {
                         value={userInfo?.email}
                         disabled
                       />
+                      {userData?.is_email_verified ? (
+                        <button disabled>Your email has been verified</button>
+                      ) : (
+                        <button  onClick={sendVerifyEmail}>
+                          Your email is not verified, click here to verify
+                        </button>
+                      )}
                     </div>
                     <div className="text-left mb-4">
                       <label

@@ -1,16 +1,22 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import OrderBill from "../../component/OrderBill";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import Breadcrumb from "../../component/Breadcrumb";
-import { useSelector } from "react-redux";
+import OrderBill from "../../component/OrderBill";
 import { selectCurrentUser } from "../../features/auth/authSlice";
-import { useDispatch } from "react-redux";
-import { setNoteInfo } from "../../features/cart/cartSlice";
+import { setAddressInfo, setNoteInfo } from "../../features/cart/cartSlice";
+import { useGetListAddressQuery } from "../../services/address/addressAPI";
+import toast from "react-hot-toast";
 
 const OrderInfo: React.FunctionComponent = () => {
   const pathAfterDomain = window.location.pathname;
 
+  const { data: address = [] } = useGetListAddressQuery();
+
+  const [userAddress, setUserAddress] = useState("");
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const user = useSelector(selectCurrentUser);
 
@@ -18,6 +24,21 @@ const OrderInfo: React.FunctionComponent = () => {
 
   const handleNote = () => {
     dispatch(setNoteInfo(note));
+  };
+
+  const handleAddress = () => {
+    dispatch(setAddressInfo(userAddress));
+  };
+
+  const handleNext = (e: any) => {
+    e.preventDefault();
+    handleNote();
+    if (userAddress) {
+      handleAddress();
+      navigate("/user/order/payment");
+    } else {
+      toast.error("You must provide an address");
+    }
   };
 
   return (
@@ -76,11 +97,25 @@ const OrderInfo: React.FunctionComponent = () => {
                     <span className="input-group-text align-items-start">
                       <i className="bdx-location inline-flex items-center"></i>
                     </span>
-                    <input
-                      type="text"
+                    <select
                       className="form-control"
-                      placeholder="Address"
-                    ></input>
+                      onClick={(e) =>
+                        setUserAddress((e.target as HTMLSelectElement).value)
+                      }
+                    >
+                      <option disabled selected value="">
+                        Choose an address
+                      </option>
+                      {address?.map((item, index) => (
+                        <React.Fragment key={index}>
+                          <option
+                            value={`${item.address}, ${item.district}, ${item.city}`}
+                          >
+                            {`${item.address}, ${item.district}, ${item.city}`}
+                          </option>
+                        </React.Fragment>
+                      ))}
+                    </select>
                   </div>
                 </div>
                 <div className="w-full">
@@ -98,10 +133,14 @@ const OrderInfo: React.FunctionComponent = () => {
               </div>
               <div className="order-info__form__btn flex justify-between items-center">
                 <a href="javascript:history.back()">Return</a>
-                <Link to="/user/order/payment" onClick={handleNote}>
+                <button
+                  onClick={(e) => {
+                    handleNext(e);
+                  }}
+                >
                   Accept
                   <i className="bdx-cart"></i>
-                </Link>
+                </button>
               </div>
             </form>
           </div>

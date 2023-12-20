@@ -23,7 +23,7 @@ const address = book.injectEndpoints({
       }),
       providesTags: ["AddressItems"],
     }),
-    listAddress: builder.query<Address[], void>({
+    getListAddress: builder.query<Address[], void>({
       query: () => ({
         method: "GET",
         url: `users/addresses/`,
@@ -58,7 +58,7 @@ const address = book.injectEndpoints({
 export const {
   useCreateAddressMutation,
   useGetAddressDetailQuery,
-  useListAddressQuery,
+  useGetListAddressQuery,
   useDeleteAddressMutation,
   useUpdateAddressMutation,
 } = address;

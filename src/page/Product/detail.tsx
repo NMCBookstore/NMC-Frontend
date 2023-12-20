@@ -27,6 +27,7 @@ const ProductDetail: React.FunctionComponent = () => {
 
   const { data: wishlist = [] } = useGetWishlistQuery();
   const { data: books, isFetching } = useGetProductDetailsQuery(Number(id));
+
   let dataCountBook = document.getElementById("inputId") as HTMLInputElement;
   function incrementCount() {
     dataCountBook.value = String(Number(dataCountBook.value) + 1);
@@ -38,6 +39,12 @@ const ProductDetail: React.FunctionComponent = () => {
         ? String(Number(dataCountBook.value) - 1)
         : String(1);
   }
+
+  const [reviewLength, setReviewLength] = useState<number | null>(null);
+
+  const handleReviewLengthChange = (length: number) => {
+    setReviewLength(length);
+  };
 
   const [addWishList] = useAddToWishlistMutation();
 
@@ -59,8 +66,8 @@ const ProductDetail: React.FunctionComponent = () => {
       book_id: Number(id),
       amount: Number(dataCountBook.value),
     });
-    if ("data" in v){
-      toast.success("Added to your cart")
+    if ("data" in v) {
+      toast.success("Added to your cart");
     }
   };
 
@@ -240,7 +247,11 @@ const ProductDetail: React.FunctionComponent = () => {
                   </div>
                   <span className="mx-3 text-gray">|</span>
                   <p className="product-detail__item__heading__rate__note">
-                    <span>{books?.rating}</span> (<span>1080</span> reviews)
+                    <span>{books?.rating}</span> (
+                    {reviewLength !== null && (
+                      <span>{reviewLength ? reviewLength : 0}</span>
+                    )}{" "}
+                    reviews)
                   </p>
                 </div>
               </div>
@@ -248,14 +259,19 @@ const ProductDetail: React.FunctionComponent = () => {
                 <p className="product-detail__item__info__price">
                   $ <span>{books?.price}</span>
                 </p>
-                <div className="product-detail__item__info__discount">
-                  <p className="product-detail__item__info__discount__oldprice">
-                    $ <span>10.99</span>
-                  </p>
-                  <p className="product-detail__item__info__discount__percent">
-                    Save <span>10</span> %
-                  </p>
-                </div>
+                {books?.sale === 0 ? (
+                  <div></div>
+                ) : (
+                  <div className="product-detail__item__info__discount">
+                    <p className="product-detail__item__info__discount__oldprice">
+                      $ <span>10.99</span>
+                    </p>
+                    <p className="product-detail__item__info__discount__percent">
+                      Save <span>{books?.sale}</span> %
+                    </p>
+                  </div>
+                )}
+
                 <div className="product-detail__item__info__quantity">
                   <p className="product-detail__item__info__quantity__title">
                     Amount:
@@ -361,11 +377,14 @@ const ProductDetail: React.FunctionComponent = () => {
                     </div>
                     <span className="mx-3 text-gray">|</span>
                     <p className="product-detail__content__review__heading__note">
-                      <span>5.0 </span>(<span>1080</span> reviews)
+                      <span>5.0 </span>(<span>{reviewLength}</span> reviews)
                     </p>
                   </div>
                 </div>
-                <ReviewList id={id}></ReviewList>
+                <ReviewList
+                  id={id}
+                  onReviewLengthChange={handleReviewLengthChange}
+                ></ReviewList>
               </div>
             </div>
             <div className="w-[25%]">
