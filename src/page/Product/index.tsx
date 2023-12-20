@@ -1,13 +1,11 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import Slider from "react-slick";
-import { articleImg, productItem } from "../../assets/img";
-import { productListSettings } from "../../common/CarouselSetting";
+import { articleImg } from "../../assets/img";
 import BreadcrumbConponent from "../../component/Breadcrumb";
 import Marquee from "../../component/Marquee";
 import NotiHome from "../../component/NotiHome";
 import ProductItem from "../../component/ProductItem";
 import { articleItem } from "../../interface";
-import { AllProduct, Product } from "../../interface/Product";
+import { AllProduct } from "../../interface/Product";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 
 import { Combobox, Transition } from "@headlessui/react";
@@ -17,7 +15,6 @@ import ProductPagination from "../../component/Pagination/AllProductPagination/P
 import { Genres } from "../../interface/Genres";
 import { useGetSearchQuery } from "../../services/Search/searchAPI";
 import { useGetGenresQuery } from "../../services/genres/genresAPI";
-import { useGetAllProductsQuery } from "../../services/product/productAPI";
 
 interface PriceFilter {
   key: string;
@@ -50,7 +47,7 @@ const ProductList: React.FunctionComponent = () => {
       : 0,
     max_price: !isNaN(parseInt(searchParams.get("max_price") ?? ""))
       ? parseInt(searchParams.get("max_price") ?? "")
-      : 500,
+      : 5000,
   };
 
   if (searchParams.get("text") !== null) {
@@ -87,7 +84,6 @@ const ProductList: React.FunctionComponent = () => {
     }
   }, [isLoading, genresData]);
 
-  const [select, setSelect] = useState<Genres>(genres[0]);
   const [query, setQuery] = useState<string>("");
 
   const debouncedSetQuery = debounce((newQuery) => {
@@ -95,7 +91,7 @@ const ProductList: React.FunctionComponent = () => {
     if (newQuery === "") {
       setQuery("");
     }
-  }, 300); // Khoảng thời gian debounce
+  }, 100); // Khoảng thời gian debounce
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newQuery = event.target.value;
@@ -106,14 +102,17 @@ const ProductList: React.FunctionComponent = () => {
   const handleGenresChange = (idGenre: any) => {
     searchInfo["page_id"] = 1;
     setGenre(idGenre);
-    if (idGenre) {
-      searchInfo["genres_id"] = idGenre;
-    } else {
+    if (
+      searchInfo.hasOwnProperty("genres_id") &&
+      searchInfo.genres_id === idGenre
+    ) {
       delete searchInfo.genres_id;
+    } else {
+      searchInfo["genres_id"] = idGenre;
     }
+
     setGenreID(searchInfo["genres_id"] ?? 0);
     setSearchParams(searchInfo as any);
-    console.log(genre);
   };
 
   const handlePriceChange = (item: PriceFilter) => {
@@ -133,8 +132,6 @@ const ProductList: React.FunctionComponent = () => {
   const handlePagination = (pageNum: number, pageSize: number) => {
     searchInfo["page_id"] = pageNum;
     searchInfo["page_size"] = pageSize;
-    delete searchInfo.min_price;
-    delete searchInfo.max_price;
     setSearchParams(searchInfo as any);
   };
 
@@ -164,6 +161,29 @@ const ProductList: React.FunctionComponent = () => {
         .slice(0, 50);
     }
   }, [query, genres, genresData]);
+
+  const [displayGenre, setDisplayGenre] = useState<null | string>(null);
+
+  const handleKeyPress = (event: any) => {
+    if (event.key === "Enter") {
+      const selectedGenreId = filterGenres.find(
+        (genre) => genre.name === event.target.value
+      )?.id;
+      console.log(selectedGenreId);
+    }
+  };
+
+  useEffect(() => {
+    if (searchInfo.genres_id) {
+      // Lấy và thiết lập giá trị hiển thị tương ứng với genres_id
+      const selectedGenre = filterGenres.find(
+        (genre) => genre.id === searchInfo.genres_id
+      );
+      setDisplayGenre(selectedGenre?.name ?? null);
+    } else {
+      setDisplayGenre(null);
+    }
+  }, [searchInfo.genres_id, filterGenres]);
 
   const showSideBar = useRef(false);
   const elementRef = useRef<HTMLDivElement>(null);
@@ -200,244 +220,6 @@ const ProductList: React.FunctionComponent = () => {
   window.addEventListener("resize", overWrite);
   const { data: wishlist = [] } = useGetWishlistQuery();
 
-  // const productList: Product[] = [
-  //   {
-  //     id: 1,
-  //     name: "Build the life you want",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 0,
-  //     rating: 3,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Section with number 2",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Section with number 3",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 200.1,
-  //     salePrice: 150,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Section with number 4",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 100,
-  //     salePrice: 0,
-  //     rating: 5,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Section with number 5",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 50.5,
-  //     salePrice: 40.5,
-  //     rating: 2,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Section with number 6",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 7,
-  //     name: "Build the life you want",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 0,
-  //     rating: 3,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 8,
-  //     name: "Section with number 2",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 9,
-  //     name: "Section with number 3",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 200.1,
-  //     salePrice: 150,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 10,
-  //     name: "Section with number 4",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 100,
-  //     salePrice: 0,
-  //     rating: 5,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 11,
-  //     name: "Section with number 5",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 50.5,
-  //     salePrice: 40.5,
-  //     rating: 2,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 12,
-  //     name: "Section with number 6",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 13,
-  //     name: "Section with number 5",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 50.5,
-  //     salePrice: 40.5,
-  //     rating: 2,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 14,
-  //     name: "Section with number 6",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 15,
-  //     name: "Build the life you want",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 0,
-  //     rating: 3,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 16,
-  //     name: "Section with number 2",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 17,
-  //     name: "Section with number 3",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 200.1,
-  //     salePrice: 150,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 18,
-  //     name: "Section with number 4",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 100,
-  //     salePrice: 0,
-  //     rating: 5,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 19,
-  //     name: "Section with number 5",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 50.5,
-  //     salePrice: 40.5,
-  //     rating: 2,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 20,
-  //     name: "Section with number 6",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  // ];
-  // const productList2: Product[] = [
-  //   {
-  //     id: 1,
-  //     name: "Build the life you want",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 0,
-  //     rating: 3,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Section with number 2",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Section with number 3",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 200.1,
-  //     salePrice: 150,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Section with number 4",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 100,
-  //     salePrice: 0,
-  //     rating: 5,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Section with number 5",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 50.5,
-  //     salePrice: 40.5,
-  //     rating: 2,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Section with number 6",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  // ];
   const articleList: articleItem[] = [
     {
       name: "Kids share their thoughts about banned books with NPR",
@@ -715,13 +497,13 @@ const ProductList: React.FunctionComponent = () => {
                 <div className="relative md:grow border border-primary border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
                   <Combobox.Input
                     className="w-fit md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize text-primary bg-[transparent] font-semibold focus:outline-none"
-                    displayValue={(genre: Genres) => genre?.name}
+                    displayValue={(genre: Genres) =>
+                      genre?.name ?  genre.name : 'null'
+                    }
                     placeholder="Search genres..."
                     onChange={handleInputChange}
                     onKeyDown={(event) => {
-                      if (event.key === "Enter") {
-                        console.log("Enter key pressed");
-                      }
+                      handleKeyPress(event);
                     }}
                   />
                   <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pb-6 rotate-[-90deg]">
@@ -776,6 +558,7 @@ const ProductList: React.FunctionComponent = () => {
                 className="px-[24px] w-full h-full rounded-full shadow-md"
                 type="text"
                 placeholder="Search by Title, Author, ISBN or Keywords"
+                defaultValue={searchInfo.text}
                 onChange={(e) => {
                   // setText(e.target.value);
                   handleTextSearch(e);

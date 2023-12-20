@@ -1,24 +1,32 @@
-import {
-  PayPalButtons
-} from "@paypal/react-paypal-js";
+import { PayPalButtons } from "@paypal/react-paypal-js";
 import React from "react";
+import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { User } from "../../interface/User";
 import { useCreateOrderMutation } from "../../services/order/orderAPI";
+import { clearNoteAndAddressInfo } from "../../features/cart/cartSlice";
 
 interface PaypalCheckout {
-  userInfo: User
-  totalCartIdArr: number[]
-  userNote: string
+  userInfo: User;
+  totalCartIdArr: number[];
+  userNote: string;
+  userAddress: string;
 }
 
 const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
-  userInfo, 
+  userInfo,
   totalCartIdArr,
-  userNote
+  userNote,
+  userAddress,
 }) => {
   const [createOrder] = useCreateOrderMutation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleClearInfo = () => {
+    dispatch(clearNoteAndAddressInfo());
+  };
   return (
     <PayPalButtons
       style={{
@@ -45,17 +53,19 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
         const response = await createOrder({
           payment_id: id,
           cart_ids: totalCartIdArr,
-          to_address: "test address hihi",
+          to_address: userAddress,
           total_shipping: 30000,
           email: userInfo?.email,
           note: userNote,
           status: "success",
         });
-        if("data" in response) {
-          console.log("have data in paypal")
+        if ("data" in response) {
+          console.log("have data in paypal");
+          handleClearInfo();
           navigate("/user/order/return", { state: { data: response.data } });
         }
       }}
+      onError={() => toast.error("You have cancelled your payment")}
     />
   );
 };

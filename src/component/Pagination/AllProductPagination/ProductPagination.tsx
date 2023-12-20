@@ -73,7 +73,7 @@ const ProductPagination: React.FunctionComponent<PaginationProps> = memo(
             );
           })}
           {current < total && (
-            <button onClick={() => handlePageClick(current + 1)}>Next</button>
+            <button onClick={() => handlePageClick(current + 1)}> Next</button>
           )}
         </div>
       );

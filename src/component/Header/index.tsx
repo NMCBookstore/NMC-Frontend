@@ -94,7 +94,6 @@ const Header: React.FunctionComponent = () => {
             type="text"
             placeholder="Search by Title, Author, ISBN or Keywords"
             defaultValue={searchParams.get("text")?? "" ? searchParams.get("text")?? "" : text}
-            value={text}
             onChange={(e) => { setText(e.target.value) }}
           />
           <i
