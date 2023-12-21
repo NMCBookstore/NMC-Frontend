@@ -7,6 +7,7 @@ export interface Transaction {
   orders_id: number;
   reviewed: boolean;
   total: number;
+  created_at: string;
 }
 
 export interface Order {

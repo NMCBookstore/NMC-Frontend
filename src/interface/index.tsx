@@ -10,6 +10,7 @@ export interface categoryItem {
   name: string;
   img: string;
   color: number;
+  link: string;
 }
 
 export interface articleItem {

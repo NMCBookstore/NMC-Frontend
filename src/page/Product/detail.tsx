@@ -28,6 +28,8 @@ const ProductDetail: React.FunctionComponent = () => {
   const { data: wishlist = [] } = useGetWishlistQuery();
   const { data: books, isFetching } = useGetProductDetailsQuery(Number(id));
 
+  console.log(books);
+
   let dataCountBook = document.getElementById("inputId") as HTMLInputElement;
   function incrementCount() {
     dataCountBook.value = String(Number(dataCountBook.value) + 1);
@@ -82,63 +84,6 @@ const ProductDetail: React.FunctionComponent = () => {
       btnShow.style.setProperty("opacity", `0`);
     }
   };
-
-  // const productList: Product[] = [
-  //   {
-  //     id: 1,
-  //     name: "Build the life you want",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 0,
-  //     rating: 3,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "Section with number 2",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "Section with number 3",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 200.1,
-  //     salePrice: 150,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "Section with number 4",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 100,
-  //     salePrice: 0,
-  //     rating: 5,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 5,
-  //     name: "Section with number 5",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 50.5,
-  //     salePrice: 40.5,
-  //     rating: 2,
-  //     image: [productItem],
-  //   },
-  //   {
-  //     id: 6,
-  //     name: "Section with number 6",
-  //     description: "Arthur c. brooks oprah winfrey",
-  //     price: 300,
-  //     salePrice: 200,
-  //     rating: 4,
-  //     image: [productItem],
-  //   },
-  // ];
   const articleList: articleItem[] = [
     {
       name: "Kids share their thoughts about banned books with NPR",
@@ -239,11 +184,16 @@ const ProductDetail: React.FunctionComponent = () => {
                 </p>
                 <div className="product-detail__item__heading__rate">
                   <div className="product-detail__item__heading__rate__start">
-                    <i className="bdx-start-fill"></i>
-                    <i className="bdx-start-fill"></i>
-                    <i className="bdx-start-fill"></i>
-                    <i className="bdx-start-fill"></i>
-                    <i className="bdx-start-fill"></i>
+                    {[...Array(5)].map((_, index) => (
+                      <i
+                        key={index}
+                        className={
+                          index < Number(books?.rating)
+                            ? "bdx-start-fill"
+                            : "bdx-star"
+                        }
+                      ></i>
+                    ))}
                   </div>
                   <span className="mx-3 text-gray">|</span>
                   <p className="product-detail__item__heading__rate__note">
@@ -256,20 +206,31 @@ const ProductDetail: React.FunctionComponent = () => {
                 </div>
               </div>
               <div className="product-detail__item__info">
-                <p className="product-detail__item__info__price">
-                  $ <span>{books?.price}</span>
-                </p>
                 {books?.sale === 0 ? (
-                  <div></div>
+                  <p className="product-detail__item__info__price">
+                    $ <span>{books?.price}</span>
+                  </p>
                 ) : (
-                  <div className="product-detail__item__info__discount">
-                    <p className="product-detail__item__info__discount__oldprice">
-                      $ <span>10.99</span>
+                  <>
+                    <p className="product-detail__item__info__price">
+                      ${" "}
+                      <span>
+                        {" "}
+                        {(
+                          Number(books?.price) *
+                          (1 - Number(books?.sale) / 100)
+                        ).toFixed(2)}
+                      </span>
                     </p>
-                    <p className="product-detail__item__info__discount__percent">
-                      Save <span>{books?.sale}</span> %
-                    </p>
-                  </div>
+                    <div className="product-detail__item__info__discount">
+                      <p className="product-detail__item__info__discount__oldprice">
+                        $ <span>{books?.price}</span>
+                      </p>
+                      <p className="product-detail__item__info__discount__percent">
+                        Save <span>{books?.sale}</span> %
+                      </p>
+                    </div>
+                  </>
                 )}
 
                 <div className="product-detail__item__info__quantity">
@@ -369,15 +330,21 @@ const ProductDetail: React.FunctionComponent = () => {
                   <h2>Reviews</h2>
                   <div>
                     <div className="product-detail__content__review__heading__start">
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
+                      {[...Array(5)].map((_, index) => (
+                        <i
+                          key={index}
+                          className={
+                            index < Number(books?.rating)
+                              ? "bdx-start-fill"
+                              : "bdx-star"
+                          }
+                        ></i>
+                      ))}
                     </div>
                     <span className="mx-3 text-gray">|</span>
                     <p className="product-detail__content__review__heading__note">
-                      <span>5.0 </span>(<span>{reviewLength}</span> reviews)
+                      <span>{books?.rating} </span>(
+                      <span>{reviewLength ? reviewLength : 0}</span> reviews)
                     </p>
                   </div>
                 </div>

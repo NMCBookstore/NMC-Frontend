@@ -8,6 +8,7 @@ import {
   useGetCartQuery,
   useUpdateCartMutation,
 } from "../../services/cart/cartAPI";
+import toast from "react-hot-toast";
 
 const CartIndex: React.FunctionComponent = () => {
   const totalItemPrice = useSelector(selectCurrentTotalCartValue);
@@ -98,7 +99,9 @@ const CartIndex: React.FunctionComponent = () => {
                         <div className="table-price">
                           <p className="table-price__new">{item?.price}$</p>
                           <p className="table-price__old">{item?.price}$</p>
-                          <p className="table-price__discount">-{item?.sale}%</p>
+                          <p className="table-price__discount">
+                            -{item?.sale}%
+                          </p>
                         </div>
                       )}
                     </td>
@@ -157,10 +160,17 @@ const CartIndex: React.FunctionComponent = () => {
               </p>
               <div className="cart-info__bottom__btn d-flex justify-content-between align-items-center">
                 <a href="javascript:history.back()">Return</a>
-                <Link to="/user/order/info">
-                  Accept
-                  <i className="bdx-cart"></i>
-                </Link>
+                {data?.length && data?.length > 0 ? (
+                  <Link to="/user/order/info">
+                    Accept
+                    <i className="bdx-cart"></i>
+                  </Link>
+                ) : (
+                  <Link to="/user/cart" onClick={() => toast.error("You have to purchase book first !")}>
+                    Accept
+                    <i className="bdx-cart"></i>
+                  </Link>
+                )}
               </div>
             </div>
           </div>

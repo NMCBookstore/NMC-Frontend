@@ -9,13 +9,17 @@ import {
 import "./style.scss";
 import { useAddToCartMutation } from "../../services/cart/cartAPI";
 import toast from "react-hot-toast";
+import { lazyLoading } from "../../assets/img";
 
 interface ProductItemProps {
   itemDetail: Product;
   wishlistItem: Wishlist[];
 }
 const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   const [addToCart] = useAddToCartMutation();
+  console.log(props)
 
   const [addWishList, { isSuccess: addWishListSuccess, isError }] =
     useAddToWishlistMutation();
@@ -36,7 +40,6 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
   const wishlistId = findWishlistIds();
 
   const handleClick = () => {
-    // console.log(`navigate to ${props.itemDetail?.id}`);
     navigate(`/product/${props.itemDetail?.id}`);
   };
 
@@ -45,7 +48,7 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
     if ("error" in v) {
       toast.error("Add to cart failed");
     } else {
-      toast.success("Added to your carttt");
+      toast.success("Added to your cart");
     }
   };
 
@@ -70,7 +73,10 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
             <img
               src={props.itemDetail.image[0]}
               alt={props.itemDetail.image[0]}
+              style={{ display: imageLoaded ? "block" : "none" }}
+              onLoad={() => setImageLoaded(true)}
             />
+            {!imageLoaded && <img src={lazyLoading} />}
           </div>
           <h3 onClick={handleClick} className="product-item__title webkitbox-2">
             {props.itemDetail.name}
@@ -96,7 +102,7 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
             ))}
           </div>
           <div className="product-item__control">
-            {props.itemDetail.sale > 0 && (
+            {/* {props.itemDetail.sale !== 0 && (
               <div>
                 <p className="product-item__control__old-price">
                   ${props.itemDetail?.sale}
@@ -105,11 +111,23 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
                   {props.itemDetail?.price}$
                 </p>
               </div>
-            )}
-            {props.itemDetail.sale === 0 && (
+            )} */}
+            {props.itemDetail.sale === 0 ? (
               <div>
                 <p className="product-item__control__price">
                   ${props.itemDetail?.price}
+                </p>
+              </div>
+            ) : (
+              <div>
+                <p className="product-item__control__old-price">
+                  ${props.itemDetail?.price}
+                </p>
+                <p className="product-item__control__price">
+                  {(
+                    props.itemDetail?.price *
+                    (1 - props?.itemDetail.sale/100)
+                  ).toFixed(2)}
                 </p>
               </div>
             )}
@@ -127,17 +145,9 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
               )}
             </div>
           </div>
-          {props.itemDetail?.sale > 0 && (
+          {props.itemDetail?.sale !== 0 && (
             <p className="product-item__discount">
-              <span>
-                -
-                {(
-                  ((props.itemDetail?.price - props.itemDetail?.sale) /
-                    props.itemDetail?.price) *
-                  100
-                ).toFixed(0)}
-                %
-              </span>
+              <span>-{props?.itemDetail?.sale}%</span>
             </p>
           )}
         </div>

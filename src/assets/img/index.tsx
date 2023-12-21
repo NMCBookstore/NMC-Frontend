@@ -21,6 +21,8 @@ export { default as avatarUser } from "./avatar_user.png";
 export { default as avatarProfile } from "./user_avatar.jpg";
 export { default as defaultAvatar } from "./defaultAvatar.png";
 export { default as cartEmpty } from "./cartEmpty.png";
+export { default as lazyLoading } from "./lazyload.gif";
+
 
 
 

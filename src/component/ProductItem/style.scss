@@ -19,9 +19,15 @@
     }
 
     &__img {
+        overflow: hidden;
         margin-bottom: 18px;
         aspect-ratio: 396/595;
         max-height: 286px;
+        img{
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
     }
 
     &__title {
