@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { avatarUser, logo } from "../../assets/img";
 import Pagination from "../Pagination/ReviewPagination/Pagination";
-import { useGetReviewQuery } from "../../services/review/reviewAPI";
+import {
+  useAddLikeReviewMutation,
+  useGetReviewQuery,
+} from "../../services/review/reviewAPI";
+import { format } from "date-fns";
+import toast from "react-hot-toast";
+
 interface ReviewListProps {
   id: string | undefined;
   onReviewLengthChange: (length: number) => void;
@@ -17,6 +23,18 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({
     page_id: page.id,
     page_size: page.size,
   });
+  console.log(reviewData);
+
+  const [addLikeReview] = useAddLikeReviewMutation();
+
+  const handleAddLikeReview = (username: string, id_review: number) => {
+    const v = addLikeReview({ username: username, reviewID: id_review });
+    console.log(username, id_review)
+    if ("data" in v) {
+      toast.success("You've like this review");
+    }
+  };
+
   const reviewLength = Number(reviewData?.reviews?.length);
   useEffect(() => {
     if (reviewLength !== null) {
@@ -37,7 +55,7 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({
                       {item?.username}
                     </p>
                     <p className="review__item__heading__left__user__date">
-                      {item?.created_at}
+                      at {format(new Date(item?.created_at), "dd/MM/yyyy")}
                     </p>
                   </div>
                   <div className="review__item__heading__left__info">
@@ -70,7 +88,11 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({
                   <div className="review__item__heading__right__help">
                     <p>Helpful?</p>
                     <div className="review__item__heading__right__help__behavior">
-                      <button>
+                      <button
+                        onClick={() =>
+                          handleAddLikeReview(item?.username, item?.id)
+                        }
+                      >
                         <i className="bdx-arrow-2"></i>yes
                       </button>
                       <button>

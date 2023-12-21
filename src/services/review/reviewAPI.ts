@@ -8,9 +8,15 @@ const review = book.injectEndpoints({
       query: ({ book_id, page_id, page_size }) => ({
         url: `reviews/${book_id}?page_id=${page_id}&page_size=${page_size}`,
       }),
+    }),
+    addLikeReview: builder.mutation<Review, {username: string, reviewID: number}>({
+      query: () => ({
+        method: "POST",
+        url: `reviews/action/like`
+      })
     })
   }),
   overrideExisting: false,
 });
 
-export const { useGetReviewQuery } = review;
+export const { useGetReviewQuery, useAddLikeReviewMutation } = review;

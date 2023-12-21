@@ -6,6 +6,8 @@ export interface Review {
   comments: string;
   rating: number;
   created_at: string;
+  like: number;
+  dislike: number;
 }
 
 export interface ReviewResponse {

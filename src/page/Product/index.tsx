@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { articleImg } from "../../assets/img";
+import { articleImg, lazyLoading } from "../../assets/img";
 import BreadcrumbConponent from "../../component/Breadcrumb";
 import Marquee from "../../component/Marquee";
 import NotiHome from "../../component/NotiHome";
@@ -62,7 +62,10 @@ const ProductList: React.FunctionComponent = () => {
     searchInfo.rating = parseInt(searchParams.get("rating") ?? "");
   }
 
-  const { data: allProduct } = useGetSearchQuery(searchInfo);
+  const { data: allProduct, isLoading: allProductLoading } =
+    useGetSearchQuery(searchInfo);
+
+  console.log(allProduct);
 
   const [isDataReady, setIsDataReady] = useState(false);
 
@@ -169,7 +172,11 @@ const ProductList: React.FunctionComponent = () => {
       const selectedGenreId = filterGenres.find(
         (genre) => genre.name === event.target.value
       )?.id;
-      console.log(selectedGenreId);
+      searchInfo["page_id"] = 1;
+      setGenre(String(selectedGenreId));
+      searchInfo["genres_id"] = selectedGenreId;
+      setGenreID(searchInfo["genres_id"] ?? 0);
+      setSearchParams(searchInfo as any);
     }
   };
 
@@ -497,12 +504,10 @@ const ProductList: React.FunctionComponent = () => {
                 <div className="relative md:grow border border-primary border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
                   <Combobox.Input
                     className="w-fit md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize text-primary bg-[transparent] font-semibold focus:outline-none"
-                    displayValue={(genre: Genres) =>
-                      genre?.name ?  genre.name : 'null'
-                    }
+                    displayValue={(genre: Genres) => genre?.name}
                     placeholder="Search genres..."
                     onChange={handleInputChange}
-                    onKeyDown={(event) => {
+                    onKeyUp={(event) => {
                       handleKeyPress(event);
                     }}
                   />
@@ -570,7 +575,11 @@ const ProductList: React.FunctionComponent = () => {
           </div>
           <div className="row gap-y-[24px] sm:gap-y-[8px]">
             {/* here is all item */}
-            {allProduct?.books ? (
+            {allProductLoading ? (
+              <>
+                <img src={lazyLoading} />
+              </>
+            ) : allProduct?.books ? (
               allProduct.books.map((item) => (
                 <div className="sm:w-[50%] md:w-[33.33%] w-[25%] product-list__handle-sidebar__items__detail">
                   <ProductItem

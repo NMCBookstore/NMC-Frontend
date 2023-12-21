@@ -20,6 +20,7 @@ import {
 import { useGetListCitiesQuery } from "../../services/address/citiesAPI";
 import { useGetListDistrictQuery } from "../../services/address/districtAPI";
 import { useGetAllOrderQuery } from "../../services/order/orderAPI";
+import { format } from "date-fns";
 
 const Profile: React.FunctionComponent = () => {
   const articleList: articleItem[] = [
@@ -128,7 +129,8 @@ const Profile: React.FunctionComponent = () => {
                   <p className="profile__user__right__item">
                     Gender:{" "}
                     <span>
-                      {renderGenderText(String(userInfo?.sex))
+                      {String(userInfo?.sex) !== "" &&
+                      renderGenderText(String(userInfo?.sex))
                         ? renderGenderText(String(userInfo?.sex))
                         : "You haven't set your gender"}
                     </span>
@@ -256,7 +258,13 @@ const Profile: React.FunctionComponent = () => {
                       Order Number: <span>{item?.id}</span>
                     </h3>
                     <p>
-                      Create at: <span>9-12-2023</span>
+                      Create at:{" "}
+                      <span>
+                        {format(
+                          new Date(item?.transactions?.[0]?.created_at),
+                          "dd/MM/yyyy"
+                        )}
+                      </span>
                     </p>
                   </div>
                   <table className="table" key={index}>
