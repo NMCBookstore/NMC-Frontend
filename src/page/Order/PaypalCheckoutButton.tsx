@@ -10,6 +10,7 @@ import { clearNoteAndAddressInfo } from "../../features/cart/cartSlice";
 interface PaypalCheckout {
   userInfo: User;
   totalCartIdArr: number[];
+  totalPrice: number;
   userNote: string;
   userAddress: string;
 }
@@ -17,6 +18,7 @@ interface PaypalCheckout {
 const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
   userInfo,
   totalCartIdArr,
+  totalPrice,
   userNote,
   userAddress,
 }) => {
@@ -41,10 +43,13 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
           purchase_units: [
             {
               amount: {
-                value: "100",
+                value: String(totalPrice),
               },
             },
           ],
+          application_context: {
+            shipping_preference: "NO_SHIPPING",
+          },
         });
       }}
       onApprove={async (data, actions) => {

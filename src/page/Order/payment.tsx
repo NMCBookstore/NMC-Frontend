@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import {
   clearNoteAndAddressInfo,
   selectCurrentCardID,
+  selectCurrentTotalCartValue,
   selectCurrentUserAddress,
   selectCurrentUserNote,
 } from "../../features/cart/cartSlice";
@@ -46,6 +47,7 @@ const OrderPayment: React.FunctionComponent = () => {
   const totalCartIdArr = useSelector(selectCurrentCardID);
   const userNote = useSelector(selectCurrentUserNote);
   const userAddress = useSelector(selectCurrentUserAddress);
+  const totalPrice = useSelector(selectCurrentTotalCartValue);
 
   const [createOrder] = useCreateOrderMutation();
 
@@ -147,6 +149,7 @@ const OrderPayment: React.FunctionComponent = () => {
                 <PaypalCheckoutButton
                   userInfo={userInfo}
                   totalCartIdArr={totalCartIdArr}
+                  totalPrice={totalPrice}
                   userNote={userNote}
                   userAddress={userAddress}
                 />

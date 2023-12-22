@@ -97,8 +97,15 @@ const CartIndex: React.FunctionComponent = () => {
                         </div>
                       ) : (
                         <div className="table-price">
-                          <p className="table-price__new">{item?.price}$</p>
-                          <p className="table-price__old">{item?.price}$</p>
+                          <p className="table-price__new">
+                            {" "}
+                            {(
+                              Number(item?.price) *
+                              (1 - Number(item?.sale) / 100)
+                            ).toFixed(2)}
+                            $
+                          </p>
+                          <p className="table-price__old">{item?.price}</p>
                           <p className="table-price__discount">
                             -{item?.sale}%
                           </p>
@@ -141,7 +148,13 @@ const CartIndex: React.FunctionComponent = () => {
                     {/* Total value of 1 items */}
                     <td data-th="Order Value">
                       <p className="table-sumprice">
-                        {(item?.price * item.amount).toFixed(2)}$
+                        {item?.sale === 0
+                          ? `${(item?.price * item.amount).toFixed(2)}$`
+                          : `${(
+                              Number(item?.price) *
+                              (1 - Number(item?.sale) / 100) *
+                              item?.amount
+                            ).toFixed(2)}`}
                       </p>
                     </td>
                   </tr>
@@ -166,7 +179,12 @@ const CartIndex: React.FunctionComponent = () => {
                     <i className="bdx-cart"></i>
                   </Link>
                 ) : (
-                  <Link to="/user/cart" onClick={() => toast.error("You have to purchase book first !")}>
+                  <Link
+                    to="/user/cart"
+                    onClick={() =>
+                      toast.error("You have to purchase book first !")
+                    }
+                  >
                     Accept
                     <i className="bdx-cart"></i>
                   </Link>

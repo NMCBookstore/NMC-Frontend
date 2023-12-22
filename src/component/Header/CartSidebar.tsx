@@ -107,7 +107,12 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({
                           ) : (
                             <div className="sidebar-cart__item--price flex-shrink-0">
                               <div className="sidebar-cart__item--price--new">
-                                ${item?.price}
+                                $
+                                {(
+                                  Number(item?.price) *
+                                  (1 - Number(item?.sale) / 100) *
+                                  item?.amount
+                                ).toFixed(2)}
                               </div>
                               <div className="sidebar-cart__item--price--old">
                                 ${item?.price}
@@ -119,26 +124,6 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({
                           )}
                         </div>
                       ))}
-                      {/* <div className="sidebar-cart__item">
-                                            <div className="sidebar-cart__item--action">
-                                                <button className="sidebar-cart__item--action--btn btn-delete">
-                                                    <i className="bdx-close"></i>
-                                                </button>
-                                            </div>
-                                            <div className="sidebar-cart__item--img flex-shrink-0">
-                                                <img className="" src={productItem} alt="san phẩm" />
-                                            </div>
-                                            <div className="sidebar-cart__item--desc flex-grow-1">
-                                                <div className="sidebar-cart__item--desc--title">Build the life you want 2</div>
-                                                <div className="sidebar-cart__item--desc--attribute">Arthur c. brooks oprah winfrey</div>
-                                                <div className="sidebar-cart__item--desc--quantity">Quantity: 01</div>
-                                            </div>
-                                            <div className="sidebar-cart__item--price flex-shrink-0">
-                                                <div className="sidebar-cart__item--price--new">$250</div>
-                                                <div className="sidebar-cart__item--price--old">$300</div>
-                                                <div className="sidebar-cart__item--price--percent">-16.6%</div>
-                                            </div>
-                                        </div> */}
                     </div>
                     <div className="sidebar-cart__footer">
                       <div className="sidebar-cart__footer--bill">
