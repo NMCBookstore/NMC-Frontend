@@ -6,11 +6,11 @@ import WatchList from './WatchList';
 import UserList from '../../../content/applications/Transactions/UserList';
 
 
-function DashboardCrypto() {
+function DashBoard() {
   return (
     <>
       <Helmet>
-        <title>Crypto Dashboard</title>
+        <title>NMC Bookstore Management</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />
@@ -35,4 +35,4 @@ function DashboardCrypto() {
   );
 }
 
-export default DashboardCrypto;
+export default DashBoard;

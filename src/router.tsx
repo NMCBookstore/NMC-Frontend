@@ -1,43 +1,42 @@
-import { Suspense, lazy } from 'react';
-import { RouteObject } from 'react-router';
-
+import { lazy } from 'react';
+import { RouteObject } from 'react-router-dom';
 import SidebarLayout from 'src/layouts/SidebarLayout';
-
-import SuspenseLoader from 'src/components/SuspenseLoader';
-
-const Loader = (Component) => (props) =>
-  (
-    <Suspense fallback={<SuspenseLoader />}>
-      <Component {...props} />
-    </Suspense>
-  );
 
 // Pages
 
-const Overview = Loader(lazy(() => import('src/content/overview')));
-
+const Overview = lazy(() => import('src/content/overview'));
+const LoginPage = lazy(() => import('src/content/pages/LoginPage/LoginPage'));
 // Dashboards
 
-const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
+const Crypto = lazy(() => import('src/content/dashboards/Crypto'));
+// const RequireAuth = lazy(() => import('./features/auth/RequireAuth'));
 
 // Status
 
-const Status404 = Loader(
-  lazy(() => import('src/content/pages/Status/Status404'))
-);
+const Status404 = lazy(() => import('src/content/pages/Status/Status404'));
 
 const routes: RouteObject[] = [
+  {
+    path: '/login',
+    element: <LoginPage />
+  },
   {
     path: '',
     element: <SidebarLayout />,
     children: [
       {
-        path: '/',
-        element: <Crypto />
-      },
-      {
-        path: '*',
-        element: <Status404 />
+        // element: <RequireAuth />,
+        children: [
+          {
+            path: '/',
+            element: <Crypto />
+          },
+
+          {
+            path: '*',
+            element: <Status404 />
+          }
+        ]
       }
     ]
   }

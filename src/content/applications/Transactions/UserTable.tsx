@@ -27,17 +27,29 @@ import {
 
 import Label from 'src/components/Label';
 import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
+import { User, EmailVerify } from 'src/models/User';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
+import { useListUserQuery } from 'src/services/user/userAPI';
 
 interface RecentOrdersTableProps {
   className?: string;
   cryptoOrders: CryptoOrder[];
 }
 
+//New one
+interface RecentUserTableProps {
+  className?: string;
+  user: User[];
+}
+
 interface Filters {
   status?: CryptoOrderStatus;
+}
+//New one
+interface FiltersEmail {
+  status?: EmailVerify;
 }
 
 const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
@@ -61,6 +73,24 @@ const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
   return <Label color={color}>{text}</Label>;
 };
 
+//New one
+const getEmailStatusLabel = (emailStatus: EmailVerify): JSX.Element => {
+  const map = {
+    not_verified: {
+      text: 'Not verified',
+      color: 'error'
+    },
+    verified: {
+      text: 'Verified',
+      color: 'success'
+    }
+  };
+
+  const { text, color }: any = map[emailStatus];
+
+  return <Label color={color}>{text}</Label>;
+};
+
 const applyFilters = (
   cryptoOrders: CryptoOrder[],
   filters: Filters
@@ -76,6 +106,19 @@ const applyFilters = (
   });
 };
 
+//New one
+const applyEmailFilters = (user: User[], filters: FiltersEmail): User[] => {
+  return user.filter((item) => {
+    let matches = true;
+
+    if (filters.status && item.is_email_verified !== filters.status) {
+      matches = false;
+    }
+
+    return matches;
+  });
+};
+
 const applyPagination = (
   cryptoOrders: CryptoOrder[],
   page: number,
@@ -84,8 +127,21 @@ const applyPagination = (
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
+//New one
+const applyUserPagination = (
+  user: User[],
+  page: number,
+  limit: number
+): User[] => {
+  return user.slice(page * limit, page * limit + limit);
+};
+
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
+    []
+  );
+
+  const [selectedUser, setSelectedUser] = useState<number[]>(
     []
   );
   const selectedBulkActions = selectedCryptoOrders.length > 0;
@@ -113,6 +169,8 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       name: 'Failed'
     }
   ];
+
+  const { data: listUser = [] } = useListUserQuery();
 
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -227,23 +285,23 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder) => {
-              const isCryptoOrderSelected = selectedCryptoOrders.includes(
-                cryptoOrder.id
+            {listUser.map((item) => {
+              const isCryptoOrderSelected = selectedUser.includes(
+                (item?.id)
               );
               return (
                 <TableRow
                   hover
-                  key={cryptoOrder.id}
+                  key={item?.id}
                   selected={isCryptoOrderSelected}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
                       checked={isCryptoOrderSelected}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
-                      }
+                      // onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                      //   handleSelectOneCryptoOrder(event, item.id)
+                      // }
                       value={isCryptoOrderSelected}
                     />
                   </TableCell>
@@ -255,7 +313,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderDetails}
+                      {item?.phone_number}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -266,7 +324,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.orderID}
+                      {item?.sex}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -277,7 +335,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.sourceName}
+                      {item?.username}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -288,12 +346,13 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
-                      {cryptoOrder.cryptoCurrency}
+                      {item?.email}
+                      {/* {cryptoOrder.cryptoCurrency} */}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    {getStatusLabel(cryptoOrder.status)}
+                    {/* {getStatusLabel(cryptoOrder.status)} */}
+                    {item?.is_email_verified}
                   </TableCell>
                   <TableCell align="right">
                     <Tooltip title="Delete Order" arrow>
