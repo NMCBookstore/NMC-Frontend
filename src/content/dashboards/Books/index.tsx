@@ -1,17 +1,16 @@
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Container, Grid } from '@mui/material';
-import WatchList from './WatchList';
-import UserList from '../../../content/applications/Transactions/UserList';
-import OrderList from '../../../content/applications/Transactions/OrderList';
+import { Grid, Container } from '@mui/material';
+import Footer from 'src/components/Footer';
 
+import BooksList from './BooksList';
 
-function DashBoard() {
+function Books() {
   return (
     <>
       <Helmet>
-        <title>NMC Bookstore Management</title>
+        <title>Books List</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />
@@ -22,21 +21,16 @@ function DashBoard() {
           direction="row"
           justifyContent="center"
           alignItems="stretch"
-          spacing={4}
+          spacing={3}
         >
           <Grid item xs={12}>
-            <WatchList />
-          </Grid>
-          <Grid item xs={12}>
-            <OrderList />
-          </Grid>
-          <Grid item xs={12}>
-            <UserList />
+            <BooksList />
           </Grid>
         </Grid>
       </Container>
+      <Footer />
     </>
   );
 }
 
-export default DashBoard;
+export default Books;
