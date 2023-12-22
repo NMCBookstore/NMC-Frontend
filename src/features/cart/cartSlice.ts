@@ -47,6 +47,16 @@ export const selectCurrentUserAddress = (state: RootState) =>
 export const selectCurrentTotalCartValue = createSelector(
   [selectCurrentCartProduct],
   (items) => {
-    return items.reduce((total, item) => total + item.price * item.amount, 0);
+    return items.reduce((total, item) => {
+      if (item.sale === 0) {
+        return total + item.price * item.amount;
+      } else if (item.sale !== 0) {
+        return (
+          total +
+          Number(item?.price) * (1 - Number(item?.sale) / 100) * item?.amount
+        );
+      }
+      return total;
+    }, 0);
   }
 );

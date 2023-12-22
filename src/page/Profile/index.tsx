@@ -309,15 +309,29 @@ const Profile: React.FunctionComponent = () => {
                             </td>
                             {/* Product price */}
                             <td data-th="Price">
-                              <div className="table-price">
-                                <p className="table-price__new">
-                                  {bookItem?.price}$
-                                </p>
-                                <p className="table-price__old">
-                                  {bookItem?.price}$
-                                </p>
-                                <p className="table-price__discount">-10%</p>
-                              </div>
+                              {bookItem?.sale === 0 ? (
+                                <div className="table-price">
+                                  <p className="table-price__new">
+                                    {bookItem?.price}$
+                                  </p>
+                                </div>
+                              ) : (
+                                <div className="table-price">
+                                  <p className="table-price__new">
+                                    {(
+                                      Number(bookItem?.price) *
+                                      (1 - Number(bookItem?.sale) / 100)
+                                    ).toFixed(2)}
+                                    $
+                                  </p>
+                                  <p className="table-price__old">
+                                    {bookItem?.price}$
+                                  </p>
+                                  <p className="table-price__discount">
+                                    -{bookItem?.sale}%
+                                  </p>
+                                </div>
+                              )}
                             </td>
                             {/* Product quantity */}
                             <td data-th="Quantity">
@@ -325,7 +339,11 @@ const Profile: React.FunctionComponent = () => {
                             </td>
                             {/* Total value of 1 item */}
                             <td data-th="Order Value">
-                              <p className="table-sumprice">{total}$</p>
+                              {bookItem?.sale === 0 ? (
+                                <p className="table-sumprice">{total}$</p>
+                              ) : (
+                                <p className="table-sumprice">{total}$</p>
+                              )}
                             </td>
                           </tr>
                         );
