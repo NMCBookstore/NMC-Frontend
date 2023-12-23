@@ -4,12 +4,12 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 
 // Pages
 
-const Overview = lazy(() => import('src/content/overview'));
 const LoginPage = lazy(() => import('src/content/pages/LoginPage/LoginPage'));
 // Dashboards
 
-const Crypto = lazy(() => import('src/content/dashboards/Revenue'));
-// const RequireAuth = lazy(() => import('./features/auth/RequireAuth'));
+const Crypto = lazy(() => import('src/content/dashboards/Crypto'));
+const Books = lazy(() => import('src/content/dashboards/Books'));
+const RequireAuth = lazy(() => import('src/features/auth/RequireAuth'));
 
 // Status
 
@@ -25,13 +25,16 @@ const routes: RouteObject[] = [
     element: <SidebarLayout />,
     children: [
       {
-        // element: <RequireAuth />,
+        element: <RequireAuth />,
         children: [
           {
             path: '/',
             element: <Crypto />
           },
-
+          {
+            path: 'books',
+            element: <Books />
+          },
           {
             path: '*',
             element: <Status404 />
