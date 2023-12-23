@@ -8,7 +8,7 @@ const Overview = lazy(() => import('src/content/overview'));
 const LoginPage = lazy(() => import('src/content/pages/LoginPage/LoginPage'));
 // Dashboards
 
-const Crypto = lazy(() => import('src/content/dashboards/Crypto'));
+const Crypto = lazy(() => import('src/content/dashboards/Revenue'));
 // const RequireAuth = lazy(() => import('./features/auth/RequireAuth'));
 
 // Status
