@@ -8,7 +8,9 @@ export interface User {
   sex: string;
   phone_number: string;
   role: string;
-  is_email_verified: string;
+  rank: number;
+  created_at: string;
+  is_email_verified: EmailVerify;
 }
 
-export type EmailVerify = 'verified' | 'Not verified';
+export type EmailVerify = true | false;

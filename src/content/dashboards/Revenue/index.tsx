@@ -3,8 +3,7 @@ import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import WatchList from './WatchList';
-import UserList from '../../../content/applications/Transactions/UserList';
-import OrderList from '../../../content/applications/Transactions/OrderList';
+import UserList from '../../applications/Transactions/UserList';
 
 
 function DashBoard() {
@@ -26,9 +25,6 @@ function DashBoard() {
         >
           <Grid item xs={12}>
             <WatchList />
-          </Grid>
-          <Grid item xs={12}>
-            <OrderList />
           </Grid>
           <Grid item xs={12}>
             <UserList />

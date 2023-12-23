@@ -14,7 +14,7 @@ const RequireAuth: FC = () => {
     }
   }, [dispatch, navigate, token]);
 
-  return token ? <Outlet /> : null;
+  return token ? (Outlet as any) : null;
 };
 
 export default RequireAuth;

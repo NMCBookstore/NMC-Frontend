@@ -352,6 +352,75 @@ function WatchListRow() {
             />
           </Box>
         </Box>
+        <Box
+          sx={{
+            width: '100%',
+            p: 3
+          }}
+        >
+          <Box
+            display="flex"
+            alignItems="flex-start"
+            justifyContent="space-between"
+          >
+            <Box display="flex" alignItems="center">
+              <AvatarWrapper>
+                <img
+                  alt="ADA"
+                  src="/static/images/placeholders/logo/cardano.png"
+                />
+              </AvatarWrapper>
+              <Box>
+                <Typography variant="h4" noWrap>
+                  Cardano
+                </Typography>
+                <Typography variant="subtitle1" noWrap>
+                  ADA
+                </Typography>
+              </Box>
+            </Box>
+            <Label color="secondary">24h</Label>
+          </Box>
+          <Box
+            mt={3}
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'flex-start'
+              }}
+            >
+              <Typography
+                variant="h2"
+                sx={{
+                  pr: 1
+                }}
+              >
+                $23.00
+              </Typography>
+              <Text color="error">
+                <b>-0.33%</b>
+              </Text>
+            </Box>
+            <TrendingFlatTwoToneIcon
+              sx={{
+                color: `${theme.colors.warning.main}`
+              }}
+            />
+          </Box>
+          <Box pt={2}>
+            <Chart
+              options={Box1Options}
+              series={Box3Data}
+              type="line"
+              height={100}
+            />
+          </Box>
+        </Box>
       </Stack>
       <Divider />
       <CardActions
