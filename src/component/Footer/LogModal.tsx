@@ -8,6 +8,7 @@ import { redirect, useNavigate } from "react-router-dom";
 import { RootState } from "../../app/store";
 import {
   close,
+  forgotpassword,
   login,
   loginStart,
   signup,
@@ -20,6 +21,7 @@ import {
 import { useGetCartQuery } from "../../services/cart/cartAPI";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 import { avatarProfile } from "../../assets/img";
+import { useSendForgotPasswordEmailMutation } from "../../services/user/userAPI";
 
 const BdxLogModal: React.FunctionComponent = () => {
   const showLog = useSelector((state: RootState) => state.auth.status);
@@ -33,9 +35,15 @@ const BdxLogModal: React.FunctionComponent = () => {
 
   const [executeSignup, { isLoading: signUpLoading }] = useSignUpMutation();
 
+  const [executeForgotPassword] = useSendForgotPasswordEmailMutation();
+
   const [values, setValues] = useState({
     username: "",
     password: "",
+  });
+
+  const [emailForgot, setEmailForgot] = useState({
+    forgotEmail: "",
   });
 
   const [signUpValue, setSignUpValue] = useState({
@@ -53,29 +61,16 @@ const BdxLogModal: React.FunctionComponent = () => {
     }
   }, [showLog]);
 
-  // const googleLogin = useGoogleLogin({
-  //   flow: "auth-code",
-  //   scope: "profile email",
-
-  //   onSuccess: async (codeResponse) => {
-  //     console.log(codeResponse);
-  //     const tokens = await fetch(
-  //       `http://localhost:8080/login/oauth/google?code=${codeResponse.code}`
-  //     );
-  //     console.log(tokens);
-  //   },
-  //   onError: (errorResponse) => console.log(errorResponse),
-  // });
-
   const googleLogin = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/login/oauth/google_url");
-      console.log(response)
+      const response = await axios.get(
+        "http://localhost:8080/login/oauth/google_url"
+      );
       const url = response?.data?.url;
-      console.log(url)
+      console.log(url);
       if (url) {
         window.location.href = url; // Redirect to the specified URL
-        console.log(url)
+        console.log(url);
       } else {
         console.log("Invalid URL");
       }
@@ -116,8 +111,18 @@ const BdxLogModal: React.FunctionComponent = () => {
       toast.error("Signup failed !");
     }
   };
-  const handleSubmitPassword = () => {
-    console.log("my forgotpassword");
+  const handleSubmitPassword = async () => {
+    const v = await executeForgotPassword({ email: emailForgot.forgotEmail });
+    if ("data" in v) {
+      toast("Please check your email", {
+        icon: "📬",
+        style: {
+          borderRadius: "10px",
+          background: "#fff",
+          color: "#333",
+        },
+      });
+    }
   };
   return (
     <Transition.Root show={showLog === "none" ? false : true} as={Fragment}>
@@ -166,7 +171,13 @@ const BdxLogModal: React.FunctionComponent = () => {
                         Welcome to NMC Bookstore!
                       </p>
                       <div className="mt-2">
-                        <div className="text-left mb-4">
+                        <div
+                          style={{
+                            display:
+                              showLog !== "forgotpassword" ? "block" : "none",
+                          }}
+                          className="text-left mb-4"
+                        >
                           <label
                             className="block text-[16px] leading-normal mb-2"
                             htmlFor="name"
@@ -215,7 +226,35 @@ const BdxLogModal: React.FunctionComponent = () => {
                             />
                           </div>
                         )}
-                        <div className="text-left">
+                        {showLog === "forgotpassword" && (
+                          <div className="text-left mb-4">
+                            <label
+                              className="block text-[16px] leading-normal mb-2"
+                              htmlFor="name"
+                            >
+                              Email<span>*</span>
+                            </label>
+                            <input
+                              className="rounded-full border-[1px] border-[#BFBFBF] border-solid px-4 py-3 w-full"
+                              type="text"
+                              name="email"
+                              placeholder="example@gmail.com"
+                              onChange={(e) =>
+                                setEmailForgot({
+                                  ...emailForgot,
+                                  forgotEmail: e.target.value,
+                                })
+                              }
+                            />
+                          </div>
+                        )}
+                        <div
+                          style={{
+                            display:
+                              showLog !== "forgotpassword" ? "block" : "none",
+                          }}
+                          className="text-left"
+                        >
                           <label
                             className="block text-[16px] leading-normal mb-2"
                             htmlFor="password"
@@ -248,7 +287,6 @@ const BdxLogModal: React.FunctionComponent = () => {
                 </div>
                 <div className="mb-4">
                   <button
-                    // type="submit"
                     className="w-full py-3 px-6 block uppercase bg-orange-orange-4 hover:bg-orange-orange-6 rounded-full mb-4"
                     disabled={isLoading}
                     onClick={() => {
@@ -263,49 +301,35 @@ const BdxLogModal: React.FunctionComponent = () => {
                   >
                     {showLog === "login" && "Login"}
                     {showLog === "signup" && "Sign Up"}
-                    {showLog === "forgotpassword" && "Submit"}
+                    {showLog === "forgotpassword" && "Send email"}
                   </button>
                   <button
                     type="button"
                     className="w-full py-3 px-6 block border-[1px] border-[#262626] border-solid rounded-[12px]"
                     onClick={() => {
-                        googleLogin();
+                      googleLogin();
+                    }}
+                    style={{
+                      display: showLog !== "forgotpassword" ? "block" : "none",
                     }}
                   >
                     {showLog === "login" && "Log in with Google"}
                     {showLog === "signup" && "Sign up with Google"}
                   </button>
-
-                  {/* <GoogleLogin
-                    onSuccess={googleLogin}
-                    onError={() => {
-                      console.log("Login Failed");
-                    }}
-                    text="continue_with"
-                    shape="circle"
-                  /> */}
-                  {/* <button
-                    type="button"
-                    className="w-full py-3 px-6 block border-[1px] border-[#262626] border-solid rounded-[12px]"
-                    onClick={() => {
-                      if (showLog === "login") {
-                        googleLogin();
-                      }
-                    }}
-                  >
-                    {showLog === "login" && "Log in with Google"}
-                    {showLog === "signup" && "Sign up with Google"}
-                  </button> */}
                 </div>
 
                 <div className="flex flex-col items-center">
-                  <button className="w-fit leading-normal mb-4 underline-offset-2 underline">
+                  <button
+                    onClick={() => dispatch(forgotpassword())}
+                    className="w-fit leading-normal mb-4 underline-offset-2 underline"
+                  >
                     Forgot your password?
                   </button>
                   <div>
                     <span className="mr-2">
                       {showLog === "login" && "Don't have an account?"}
                       {showLog === "signup" && "Already have an account?"}
+                      {showLog === "forgotpassword" && "Or"}
                     </span>
                     <button
                       className="underline-offset-2 underline"
@@ -314,11 +338,14 @@ const BdxLogModal: React.FunctionComponent = () => {
                           dispatch(signup());
                         } else if (showLog === "signup") {
                           dispatch(login());
+                        } else if (showLog === "forgotpassword") {
+                          dispatch(login());
                         }
                       }}
                     >
                       {showLog === "login" && "Sign up"}
                       {showLog === "signup" && "Log in"}
+                      {showLog === "forgotpassword" && "Log in"}
                     </button>
                   </div>
                 </div>

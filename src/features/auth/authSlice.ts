@@ -23,6 +23,9 @@ const authSlice = createSlice({
     signup: (state) => {
       state.status = "signup";
     },
+    forgotpassword: (state) => {
+      state.status = "forgotpassword";
+    },
     close: (state) => {
       state.status = "none";
     },
@@ -47,7 +50,7 @@ const authSlice = createSlice({
     },
   },
 });
-export const { setCredentials, loginStart, logout, login, signup, close } =
+export const { setCredentials, loginStart, logout, login, forgotpassword,signup, close } =
   authSlice.actions;
 
 export default authSlice.reducer;

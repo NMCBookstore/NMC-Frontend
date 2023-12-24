@@ -35,6 +35,27 @@ const user = book.injectEndpoints({
         url: `users/send_verify_email`,
       }),
     }),
+    sendForgotPasswordEmail: builder.mutation<User, { email: string }>({
+      query: (email) => {
+        return {
+          method: "POST",
+          url: `forgot_password`,
+          body: email,
+        };
+      },
+    }),
+    resetPassword: builder.mutation<
+      User,
+      { id: any; reset_code: any; password: any }
+    >({
+      query: ({ id, reset_code, password }) => {
+        return {
+          url: `reset_password`,
+          method: "PUT",
+          body: { id, reset_code, password },
+        };
+      },
+    }),
   }),
   overrideExisting: false,
 });
@@ -45,4 +66,6 @@ export const {
   useGetUserRankQuery,
   useVerifiedEmailQuery,
   useSendVerifyEmailMutation,
+  useSendForgotPasswordEmailMutation,
+  useResetPasswordMutation,
 } = user;
