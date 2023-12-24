@@ -18,6 +18,9 @@ const ProductList = lazy(() => import("./page/Product"));
 const Profile = lazy(() => import("./page/Profile"));
 const Wishlist = lazy(() => import("./page/WishList"));
 const VerifiedEmail = lazy(() => import("./page/Profile/VerifyEmail"));
+const VerifyForgotPassword = lazy(
+  () => import("./page/Profile/VerifyForgotPassword")
+);
 
 /**** Protected User Routes *****/
 const RequireAuth = lazy(() => import("./features/auth/RequireAuth"));
@@ -45,6 +48,7 @@ const RouterConfig: RouteObject[] = [
       { path: "/product/:id", element: <ProductDetails /> },
       { path: "/login/oauth/google", element: <LoginGoogle /> },
       { path: "verified_email", element: <VerifiedEmail /> },
+      { path: "reset_password", element: <VerifyForgotPassword /> },
     ],
   },
 
