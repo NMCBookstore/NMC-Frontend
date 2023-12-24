@@ -1,130 +1,85 @@
-import { FC, ChangeEvent, useState } from 'react';
-import { format } from 'date-fns';
-import numeral from 'numeral';
-import PropTypes from 'prop-types';
 import {
-  Tooltip,
-  Divider,
   Box,
-  FormControl,
-  InputLabel,
   Card,
+  CardHeader,
   Checkbox,
+  Divider,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TablePagination,
   TableRow,
-  TableContainer,
-  Select,
-  MenuItem,
+  Tooltip,
   Typography,
-  useTheme,
-  CardHeader
+  useTheme
 } from '@mui/material';
+import PropTypes from 'prop-types';
+import { ChangeEvent, FC, useState } from 'react';
 
-import Label from 'src/components/Label';
-import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
-import { User, EmailVerify } from 'src/models/User';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { format } from 'date-fns';
+import Label from 'src/components/Label';
+import { EmailVerify, User } from 'src/models/User';
 import BulkActions from './BulkActions';
-import { useListUserQuery } from 'src/services/user/userAPI';
 
-interface RecentOrdersTableProps {
+interface UserTableProps {
   className?: string;
-  cryptoOrders: CryptoOrder[];
+  userInfo: User[];
 }
-
-//New one
-interface RecentUserTableProps {
-  className?: string;
-  user: User[];
-}
-
-interface Filters {
-  status?: CryptoOrderStatus;
-}
-//New one
 interface FiltersEmail {
-  status?: EmailVerify;
+  emailStatus?: EmailVerify;
 }
-
-const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
-  const map = {
-    failed: {
-      text: 'Failed',
-      color: 'error'
-    },
-    completed: {
-      text: 'Completed',
-      color: 'success'
-    },
-    pending: {
-      text: 'Pending',
-      color: 'warning'
-    }
-  };
-
-  const { text, color }: any = map[cryptoOrderStatus];
-
-  return <Label color={color}>{text}</Label>;
-};
 
 //New one
 const getEmailStatusLabel = (emailStatus: EmailVerify): JSX.Element => {
   const map = {
-    not_verified: {
+    false: {
       text: 'Not verified',
       color: 'error'
     },
-    verified: {
+    true: {
       text: 'Verified',
       color: 'success'
     }
   };
 
-  const { text, color }: any = map[emailStatus];
+  const statusKey = emailStatus.toString();
 
-  return <Label color={color}>{text}</Label>;
-};
+  if (map.hasOwnProperty(statusKey)) {
+    const { text, color } = map[statusKey];
+    return <Label color={color}>{text}</Label>;
+  }
 
-const applyFilters = (
-  cryptoOrders: CryptoOrder[],
-  filters: Filters
-): CryptoOrder[] => {
-  return cryptoOrders.filter((cryptoOrder) => {
-    let matches = true;
-
-    if (filters.status && cryptoOrder.status !== filters.status) {
-      matches = false;
-    }
-
-    return matches;
-  });
+  // Xử lý trường hợp emailStatus không tồn tại trong map
+  return <Label color="error">Unknown</Label>;
 };
 
 //New one
-const applyEmailFilters = (user: User[], filters: FiltersEmail): User[] => {
-  return user.filter((item) => {
-    let matches = true;
+const applyEmailFilters = (
+  user: User[] | undefined,
+  filters: FiltersEmail
+): User[] => {
+  return (
+    user?.filter((item) => {
+      let matches = true;
 
-    if (filters.status && item.is_email_verified !== filters.status) {
-      matches = false;
-    }
+      if (
+        filters.emailStatus &&
+        item.is_email_verified.toString() === filters.emailStatus.toString()
+      ) {
+        matches = false;
+      }
 
-    return matches;
-  });
-};
-
-const applyPagination = (
-  cryptoOrders: CryptoOrder[],
-  page: number,
-  limit: number
-): CryptoOrder[] => {
-  return cryptoOrders.slice(page * limit, page * limit + limit);
+      return matches;
+    }) || []
+  );
 };
 
 //New one
@@ -136,77 +91,64 @@ const applyUserPagination = (
   return user.slice(page * limit, page * limit + limit);
 };
 
-const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
-  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
-    []
-  );
+const UserTable: FC<UserTableProps> = ({ userInfo }) => {
+  //New one
+  const [selectUser, setSelectedUser] = useState<string[]>([]);
 
-  const [selectedUser, setSelectedUser] = useState<number[]>(
-    []
-  );
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
+  // New one
+  const selectBulkUserActions = selectUser.length > 0;
+
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
-  const [filters, setFilters] = useState<Filters>({
-    status: null
+
+  //New one
+  const [emailFilters, setEmailFilters] = useState<FiltersEmail>({
+    emailStatus: null
   });
 
   const statusOptions = [
     {
-      id: 'all',
-      name: 'All'
+      id: 'false',
+      name: 'Verified'
     },
     {
-      id: 'completed',
-      name: 'Completed'
-    },
-    {
-      id: 'pending',
-      name: 'Pending'
-    },
-    {
-      id: 'failed',
-      name: 'Failed'
+      id: 'true',
+      name: 'Not verified'
     }
   ];
 
-  const { data: listUser = [] } = useListUserQuery();
-
-  const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
+  //New one
+  const handleEmailStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
 
     if (e.target.value !== 'all') {
       value = e.target.value;
     }
 
-    setFilters((prevFilters) => ({
+    setEmailFilters((prevFilters) => ({
       ...prevFilters,
-      status: value
+      emailStatus: value
     }));
   };
 
-  const handleSelectAllCryptoOrders = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setSelectedCryptoOrders(
-      event.target.checked
-        ? cryptoOrders.map((cryptoOrder) => cryptoOrder.id)
-        : []
+  //New one
+  const handleSelectAllUser = (event: ChangeEvent<HTMLInputElement>): void => {
+    setSelectedUser(
+      event.target.checked ? userInfo.map((item) => item?.username) : []
     );
   };
 
-  const handleSelectOneCryptoOrder = (
+  //New one
+  const handleSelectOneUser = (
     event: ChangeEvent<HTMLInputElement>,
-    cryptoOrderId: string
+    userName: string
   ): void => {
-    if (!selectedCryptoOrders.includes(cryptoOrderId)) {
-      setSelectedCryptoOrders((prevSelected) => [
-        ...prevSelected,
-        cryptoOrderId
-      ]);
+    console.log('user id', userName);
+    if (!selectUser.includes(userName)) {
+      setSelectedUser((prevSelected) => [...prevSelected, userName]);
     } else {
-      setSelectedCryptoOrders((prevSelected) =>
-        prevSelected.filter((id) => id !== cryptoOrderId)
+      setSelectedUser((prevSelected) =>
+        prevSelected.filter((id) => id !== userName)
       );
     }
   };
@@ -219,40 +161,44 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
-  const paginatedCryptoOrders = applyPagination(
-    filteredCryptoOrders,
-    page,
-    limit
-  );
-  const selectedSomeCryptoOrders =
-    selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < cryptoOrders.length;
-  const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === cryptoOrders.length;
+  //New one
+  const filteredUser = applyEmailFilters(userInfo, emailFilters);
+
+  //New one
+  const paginatedUser = applyUserPagination(filteredUser, page, limit);
+
+  //New one
+  const selectedSomeUser =
+    selectUser.length > 0 && selectUser.length < userInfo.length;
+
+  //New one
+  const selectAllUser = selectUser.length === userInfo?.length;
   const theme = useTheme();
 
   return (
     <Card>
-      {selectedBulkActions && (
+      {selectBulkUserActions && (
         <Box flex={1} p={2}>
           <BulkActions />
         </Box>
       )}
-      {!selectedBulkActions && (
+      {!selectBulkUserActions && (
         <CardHeader
           action={
             <Box width={150}>
               <FormControl fullWidth variant="outlined">
-                <InputLabel>Status</InputLabel>
+                <InputLabel>Email status</InputLabel>
                 <Select
-                  value={filters.status || 'all'}
-                  onChange={handleStatusChange}
+                  value={emailFilters.emailStatus}
+                  onChange={handleEmailStatusChange}
                   label="Status"
                   autoWidth
                 >
                   {statusOptions.map((statusOption) => (
-                    <MenuItem key={statusOption.id} value={statusOption.id}>
+                    <MenuItem
+                      key={String(statusOption.id)}
+                      value={String(statusOption.id)}
+                    >
                       {statusOption.name}
                     </MenuItem>
                   ))}
@@ -271,61 +217,33 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
-                  checked={selectedAllCryptoOrders}
-                  indeterminate={selectedSomeCryptoOrders}
-                  onChange={handleSelectAllCryptoOrders}
+                  checked={selectAllUser}
+                  indeterminate={selectedSomeUser}
+                  onChange={handleSelectAllUser}
                 />
               </TableCell>
               <TableCell>User Name</TableCell>
               <TableCell>Rank</TableCell>
               <TableCell>Email</TableCell>
-              <TableCell align="right">Created At</TableCell>
               <TableCell align="right">Email Verified</TableCell>
+              <TableCell align="right">Created At</TableCell>
               <TableCell align="right">ACTIONS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {listUser.map((item) => {
-              const isCryptoOrderSelected = selectedUser.includes(
-                (item?.id)
-              );
+            {paginatedUser.map((item) => {
+              const isUserSelected = selectUser.includes(item?.username);
               return (
-                <TableRow
-                  hover
-                  key={item?.id}
-                  selected={isCryptoOrderSelected}
-                >
+                <TableRow hover key={item?.id} selected={isUserSelected}>
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
-                      checked={isCryptoOrderSelected}
-                      // onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                      //   handleSelectOneCryptoOrder(event, item.id)
-                      // }
-                      value={isCryptoOrderSelected}
+                      checked={isUserSelected}
+                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                        handleSelectOneUser(event, item?.username)
+                      }
+                      value={isUserSelected}
                     />
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {item?.phone_number}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography
-                      variant="body1"
-                      fontWeight="bold"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
-                      {item?.sex}
-                    </Typography>
                   </TableCell>
                   <TableCell>
                     <Typography
@@ -338,7 +256,18 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       {item?.username}
                     </Typography>
                   </TableCell>
-                  <TableCell align="right">
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {item?.rank}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
                     <Typography
                       variant="body1"
                       fontWeight="bold"
@@ -347,12 +276,23 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       noWrap
                     >
                       {item?.email}
+                    </Typography>
+                  </TableCell>
+                  <TableCell align="right">
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {getEmailStatusLabel(item?.is_email_verified)}
                       {/* {cryptoOrder.cryptoCurrency} */}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
                     {/* {getStatusLabel(cryptoOrder.status)} */}
-                    {item?.is_email_verified}
+                    {format(new Date(item?.created_at), 'dd/MM/yyyy')}
                   </TableCell>
                   <TableCell align="right">
                     <Tooltip title="Delete Order" arrow>
@@ -377,7 +317,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredCryptoOrders.length}
+          count={filteredUser?.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}
@@ -389,12 +329,12 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   );
 };
 
-RecentOrdersTable.propTypes = {
-  cryptoOrders: PropTypes.array.isRequired
+UserTable.propTypes = {
+  userInfo: PropTypes.array.isRequired
 };
 
-RecentOrdersTable.defaultProps = {
-  cryptoOrders: []
+UserTable.defaultProps = {
+  userInfo: []
 };
 
-export default RecentOrdersTable;
+export default UserTable;
