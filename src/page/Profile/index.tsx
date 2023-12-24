@@ -1,26 +1,23 @@
-import React, { useState } from "react";
-import Marquee from "../../component/Marquee";
-import { articleImg, avatarProfile, productItem } from "../../assets/img";
 import { Tab } from "@headlessui/react";
-import { articleItem } from "../../interface";
-import AddressComponent from "../../component/Profile/AddAdress";
-import EditProfileComponent from "../../component/Profile/EditProfile";
-import EditAddressComponent from "../../component/Profile/EditAddess";
-import ChangePasswordComponent from "../../component/Profile/ChangePassword";
-import AddBlogComponent from "../../component/Profile/AddBog";
-import { productListToReviewSettings } from "../../common/CarouselSetting";
-import Slider from "react-slick";
-import AddReviewComponent from "../../component/Profile/AddReview";
+import { format } from "date-fns";
+import React from "react";
 import { useSelector } from "react-redux";
+import Slider from "react-slick";
+import { articleImg, productItem } from "../../assets/img";
+import { productListToReviewSettings } from "../../common/CarouselSetting";
+import Marquee from "../../component/Marquee";
+import AddressComponent from "../../component/Profile/AddAdress";
+import AddBlogComponent from "../../component/Profile/AddBog";
+import AddReviewComponent from "../../component/Profile/AddReview";
+import ChangePasswordComponent from "../../component/Profile/ChangePassword";
+import EditProfileComponent from "../../component/Profile/EditProfile";
 import { selectCurrentUser } from "../../features/auth/authSlice";
+import { articleItem } from "../../interface";
 import {
   useDeleteAddressMutation,
   useGetListAddressQuery,
 } from "../../services/address/addressAPI";
-import { useGetListCitiesQuery } from "../../services/address/citiesAPI";
-import { useGetListDistrictQuery } from "../../services/address/districtAPI";
 import { useGetAllOrderQuery } from "../../services/order/orderAPI";
-import { format } from "date-fns";
 import { useGetUserRankQuery } from "../../services/user/userAPI";
 
 const Profile: React.FunctionComponent = () => {
@@ -69,21 +66,9 @@ const Profile: React.FunctionComponent = () => {
     email: String(userInfo?.email),
   });
 
-  const [idCity, setIdCity] = useState<number | null>(0);
-  const [idDistrict, setIdDistrict] = useState<number | null>(0);
-  const { data: citiesData = [] } = useGetListCitiesQuery();
-  const { data: districtData = [] } = useGetListDistrictQuery(idCity, {
-    skip: !idCity,
-  });
   const addressAmount = Number(userAddress?.length);
   const orderAmount = Number(order?.length) ? Number(order?.length) : 0;
   const userGender = userInfo?.sex;
-
-  const genderTextMap = {
-    "0": "Male",
-    "1": "Female",
-    "2": "Other",
-  };
 
   const renderGenderText = (userGender: string) => {
     if (userGender === "1") {
@@ -176,15 +161,6 @@ const Profile: React.FunctionComponent = () => {
                         </p>
                       </div>
                       <div>
-                        {/* <EditAddressComponent
-                          citiesData={citiesData}
-                          districtData={districtData}
-                          idCity={idCity}
-                          idDistrict={idDistrict}
-                          setIdCity={setIdCity}
-                          setIdDistrict={setIdDistrict}
-                          addressId={item?.id}
-                        /> */}
                         <AddressComponent
                           mode={"update"}
                           amountAddress={Number(addressAmount)}
