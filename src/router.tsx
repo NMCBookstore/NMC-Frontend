@@ -7,7 +7,7 @@ import SidebarLayout from 'src/layouts/SidebarLayout';
 const LoginPage = lazy(() => import('src/content/pages/LoginPage/LoginPage'));
 // Dashboards
 
-const Crypto = lazy(() => import('src/content/dashboards/Crypto'));
+const Revenue = lazy(() => import('src/content/dashboards/Revenue'));
 const Books = lazy(() => import('src/content/dashboards/Books'));
 const RequireAuth = lazy(() => import('src/features/auth/RequireAuth'));
 
@@ -29,7 +29,7 @@ const routes: RouteObject[] = [
         children: [
           {
             path: '/',
-            element: <Crypto />
+            element: <Revenue />
           },
           {
             path: 'books',
