@@ -8,6 +8,7 @@ export interface Review {
   created_at: string;
   like: number;
   dislike: number;
+  is_like: boolean
 }
 
 export interface ReviewResponse {

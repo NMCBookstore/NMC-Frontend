@@ -15,6 +15,7 @@ export interface Product {
   rating: number;
   genres?: Genres;
   subgenres?: Subgenres;
+  is_deleted: boolean;
 }
 
 export interface AllProduct {

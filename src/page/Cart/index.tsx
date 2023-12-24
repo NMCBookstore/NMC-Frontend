@@ -154,7 +154,7 @@ const CartIndex: React.FunctionComponent = () => {
                               Number(item?.price) *
                               (1 - Number(item?.sale) / 100) *
                               item?.amount
-                            ).toFixed(2)}`}
+                            ).toFixed(2)}$`}
                       </p>
                     </td>
                   </tr>

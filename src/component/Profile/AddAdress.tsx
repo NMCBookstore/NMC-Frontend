@@ -1,34 +1,24 @@
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { City, District } from "../../interface/Address";
+import { Address, City, District } from "../../interface/Address";
 import {
   useCreateAddressMutation,
   useGetAddressDetailQuery,
 } from "../../services/address/addressAPI";
+import { useGetListCitiesQuery } from "../../services/address/citiesAPI";
+import { useGetListDistrictQuery } from "../../services/address/districtAPI";
 
 interface AddressProps {
   mode: string;
   addressId?: number;
   amountAddress: number;
-  citiesData: City[];
-  districtData: District[];
-  idCity: number | null;
-  idDistrict: number | null;
-  setIdCity: React.Dispatch<React.SetStateAction<number | null>>;
-  setIdDistrict: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
   mode,
   addressId,
   amountAddress,
-  citiesData,
-  districtData,
-  idCity,
-  idDistrict,
-  setIdCity,
-  setIdDistrict,
 }) => {
   let [isOpen, setIsOpen] = useState(false);
   const cancelButtonRef = useRef(null);
@@ -49,19 +39,33 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
       : setIsOpen(true);
   };
 
-  const [select, setSelect] = useState<City>(citiesData[0]);
-  const [district, setDistrict] = useState<District>(districtData[0]);
   const [query, setQuery] = useState<string>("");
 
-  const [inputNewAddress, setInputNewAddress] = useState<string>("");
+  const [idCity, setIdCity] = useState<number | null>(0);
+  const [idDistrict, setIdDistrict] = useState<number | null>(0);
+  const { data: citiesData = [] } = useGetListCitiesQuery();
+  const { data: districtData = [] } = useGetListDistrictQuery(idCity, {
+    skip: !idCity,
+  });
 
+  const [inputNewAddress, setInputNewAddress] = useState<string>("");
   const [addAddress, { isError, isLoading }] = useCreateAddressMutation();
   const { data: addressDetail, isFetching } = useGetAddressDetailQuery(
     Number(addressId)
   );
-  
+
+  const [address, setAddress] = useState<Address>();
+
+  useEffect(() => {
+    setAddress(addressDetail);
+    setIdCity(Number(addressDetail?.city_id));
+  }, [isFetching]);
+
   const commonCity = citiesData?.filter(
     (item) => item.id === addressDetail?.city_id
+  )?.[0]?.name;
+  const commonDistrict = districtData?.filter(
+    (item) => item.id === addressDetail?.district_id
   )?.[0]?.name;
 
   const commonCityId = citiesData?.filter(
@@ -239,13 +243,13 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
                       >
                         District<span>*</span>
                       </label>
-                      <Combobox defaultValue={addressDetail?.district}>
+                      <Combobox defaultValue={commonDistrict}>
                         <div className="relative w-full md:grow">
                           <div className="relative md:grow border border-[#BFBFBF] border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
                             <Combobox.Input
                               className="w-full md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize  bg-[transparent] focus:outline-none"
                               displayValue={(district: District) =>
-                                district?.name ||String(addressDetail?.district)
+                                district?.name || commonDistrict
                               }
                               placeholder="Select or search district..."
                               onChange={(event) => setQuery(event.target.value)}

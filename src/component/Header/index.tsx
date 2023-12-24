@@ -67,7 +67,6 @@ const Header: React.FunctionComponent = () => {
       dispatch(login());
     }
   };
-  console.log(text)
 
   const handleTextSearch = () => {
     console.log("clicked");

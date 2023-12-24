@@ -23,19 +23,25 @@ const search = book.injectEndpoints({
         min_price,
         max_price,
         rating,
-      }) =>
-        // `searchs?page_id=${page_id}&page_size=${page_size}${
-        //   text ? "&text=" + text : ""
-        // }${genres_id ? "&genres_id=" + genres_id : ""}${
-        //   min_price ? "&min_price=" + min_price : ""
-        // }&max_price=${max_price}${rating ? "&rating=" + rating : ""}`,
-        `searchs?page_id=${page_id}&page_size=${page_size}${
+      }) => ({
+        url: `searchs?page_id=${page_id}&page_size=${page_size}${
           text ? "&text=" + text : ""
         }${genres_id ? "&genres_id=" + genres_id : ""}${
           min_price ? "&min_price=" + min_price : ""
         }${max_price ? "&max_price=" + max_price : ""}${
           rating ? "&rating=" + rating : ""
         }`,
+      }),
+      transformResponse: (response: AllProduct) => {
+        const productNotDeleted = response.books.filter(
+          (item) => !item.is_deleted
+        );
+        console.log(productNotDeleted)
+        return {
+          ...response,
+          books: productNotDeleted,
+        };
+      },
     }),
   }),
   overrideExisting: false,

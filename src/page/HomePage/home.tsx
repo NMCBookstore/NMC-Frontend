@@ -81,6 +81,7 @@ const HomePage: React.FunctionComponent = () => {
   const { data: getNewProduct = [] } = useGetTopNewProductQuery();
   const { data: wishlist = [] } = useGetWishlistQuery();
 
+  console.log("getNewProduct; ", getNewProduct);
   const articleList: articleItem[] = [
     {
       name: "Kids share their thoughts about banned books with NPR",

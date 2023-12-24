@@ -1,4 +1,5 @@
-import { User } from "../../interface/User";
+import { url } from "inspector";
+import { Rank, User } from "../../interface/User";
 import { book } from "../Base/baseAPI";
 
 const user = book.injectEndpoints({
@@ -17,8 +18,13 @@ const user = book.injectEndpoints({
         };
       },
     }),
-    verifiedEmail : builder.query<User, {email_id: any, secret_code:any}>({
-      query: ({email_id, secret_code}) => ({
+    getUserRank: builder.query<Rank, { email: string }>({
+      query: ({ email }) => ({
+        url: `/users/rank?Email=${email}`,
+      }),
+    }),
+    verifiedEmail: builder.query<User, { email_id: any; secret_code: any }>({
+      query: ({ email_id, secret_code }) => ({
         method: "GET",
         url: `verify_email?email_id=${email_id}&secret_code=${secret_code}`,
       }),
@@ -36,6 +42,7 @@ const user = book.injectEndpoints({
 export const {
   useGetUserQuery,
   useUpdateUserMutation,
+  useGetUserRankQuery,
   useVerifiedEmailQuery,
   useSendVerifyEmailMutation,
 } = user;

@@ -4,9 +4,12 @@ import Pagination from "../Pagination/ReviewPagination/Pagination";
 import {
   useAddLikeReviewMutation,
   useGetReviewQuery,
+  useListLikeReviewQuery,
 } from "../../services/review/reviewAPI";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../features/auth/authSlice";
 
 interface ReviewListProps {
   id: string | undefined;
@@ -23,17 +26,21 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({
     page_id: page.id,
     page_size: page.size,
   });
-  console.log(reviewData);
 
-  const [addLikeReview] = useAddLikeReviewMutation();
+  console.log("reviewData: ", reviewData);
 
-  const handleAddLikeReview = (username: string, id_review: number) => {
-    const v = addLikeReview({ username: username, reviewID: id_review });
-    console.log(username, id_review)
-    if ("data" in v) {
-      toast.success("You've like this review");
-    }
+  const userName = useSelector(selectCurrentUser);
+
+  const [addReview] = useAddLikeReviewMutation();
+  // const {data: likeReview} = useListLikeReviewQuery({username: userName?.username, reviewID: })
+
+  const handleLikeReview = (review_id: number) => {
+    const v = addReview({
+      username: String(userName?.username),
+      reviewID: review_id,
+    });
   };
+
 
   const reviewLength = Number(reviewData?.reviews?.length);
   useEffect(() => {
@@ -88,11 +95,7 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({
                   <div className="review__item__heading__right__help">
                     <p>Helpful?</p>
                     <div className="review__item__heading__right__help__behavior">
-                      <button
-                        onClick={() =>
-                          handleAddLikeReview(item?.username, item?.id)
-                        }
-                      >
+                      <button onClick={() => handleLikeReview(item?.id)}>
                         <i className="bdx-arrow-2"></i>yes
                       </button>
                       <button>

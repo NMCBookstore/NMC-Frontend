@@ -19,7 +19,6 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   const [addToCart] = useAddToCartMutation();
-  console.log(props)
 
   const [addWishList, { isSuccess: addWishListSuccess, isError }] =
     useAddToWishlistMutation();

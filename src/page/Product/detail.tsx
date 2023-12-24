@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Fancybox from "../../component/Fancybox/Fancy";
 import Carousel from "../../component/Fancybox/Carousel";
 
-import { articleImg, avatarUser, productItem } from "../../assets/img";
+import { articleImg, avatarUser, lazyLoading, productItem } from "../../assets/img";
 import Marquee from "../../component/Marquee";
 import BreadcrumbConponent from "../../component/Breadcrumb";
 import { productBaner } from "../../assets/img";
@@ -25,10 +25,21 @@ import ReviewList from "../../component/Review";
 const ProductDetail: React.FunctionComponent = () => {
   const { id } = useParams();
 
-  const { data: wishlist = [] } = useGetWishlistQuery();
-  const { data: books, isFetching } = useGetProductDetailsQuery(Number(id));
+  const [books, setBook] = useState<Product>();
 
-  console.log(books);
+  const { data: wishlist = [] } = useGetWishlistQuery();
+  const {
+    data: bookData,
+    isFetching,
+    isLoading,
+  } = useGetProductDetailsQuery(Number(id));
+
+  useEffect(() => {
+    if (!isLoading && bookData) {
+      // Xử lý dữ liệu books khi có dữ liệu mới từ API
+      setBook(bookData);
+    }
+  }, [isLoading, bookData]);
 
   let dataCountBook = document.getElementById("inputId") as HTMLInputElement;
   function incrementCount() {
@@ -162,17 +173,23 @@ const ProductDetail: React.FunctionComponent = () => {
                     },
                   }}
                 >
-                  {books?.image.map((item, index) => (
-                    <div
-                      key={index}
-                      className="f-carousel__slide"
-                      data-thumb-src={item}
-                      data-fancybox="gallery"
-                      data-src={item}
-                    >
-                      <img alt="" data-lazy-src={item} />
+                  {isLoading ? (
+                    <div>
+                      <img src={lazyLoading}/>
                     </div>
-                  ))}
+                  ) : (
+                    books?.image.map((item, index) => (
+                      <div
+                        key={index}
+                        className="f-carousel__slide"
+                        data-thumb-src={item}
+                        data-fancybox="gallery"
+                        data-src={item}
+                      >
+                        <img alt="" data-lazy-src={item} />
+                      </div>
+                    ))
+                  )}
                 </Carousel>
               </Fancybox>
             </div>

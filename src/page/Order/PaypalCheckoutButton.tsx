@@ -43,7 +43,7 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
           purchase_units: [
             {
               amount: {
-                value: String(totalPrice),
+                value: String(totalPrice.toFixed(2)),
               },
             },
           ],

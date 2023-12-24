@@ -30,7 +30,6 @@ const people: Person[] = [
 
 const EditProfileComponent: React.FunctionComponent = () => {
   const { data: userData } = useGetUserQuery();
-  console.log(userData)
 
   const user = useSelector(selectCurrentUser) as User;
   const [userInfo, setUserInfo] = useState(user);
@@ -41,7 +40,6 @@ const EditProfileComponent: React.FunctionComponent = () => {
 
   let [isOpen, setIsOpen] = useState(false);
   const [idGender, setIdGender] = useState(1);
-  console.log(idGender);
 
   const cancelButtonRef = useRef(null);
 

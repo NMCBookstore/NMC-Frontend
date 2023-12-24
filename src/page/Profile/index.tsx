@@ -21,6 +21,7 @@ import { useGetListCitiesQuery } from "../../services/address/citiesAPI";
 import { useGetListDistrictQuery } from "../../services/address/districtAPI";
 import { useGetAllOrderQuery } from "../../services/order/orderAPI";
 import { format } from "date-fns";
+import { useGetUserRankQuery } from "../../services/user/userAPI";
 
 const Profile: React.FunctionComponent = () => {
   const articleList: articleItem[] = [
@@ -64,7 +65,9 @@ const Profile: React.FunctionComponent = () => {
   const { data: userAddress } = useGetListAddressQuery();
   const [deleteAddress] = useDeleteAddressMutation();
   const { data: order, isLoading: orderLoading } = useGetAllOrderQuery();
-  console.log(order);
+  const { data: userRank } = useGetUserRankQuery({
+    email: String(userInfo?.email),
+  });
 
   const [idCity, setIdCity] = useState<number | null>(0);
   const [idDistrict, setIdDistrict] = useState<number | null>(0);
@@ -107,13 +110,13 @@ const Profile: React.FunctionComponent = () => {
                   {userInfo?.full_name}
                 </h1>
                 <p>
-                  Level: <span>Normalx</span>
+                  Level: <span>{userRank?.rank}</span>
                 </p>
                 <p>
-                  Review: <span>100x</span>
+                  Review: <span>{userRank?.review}</span>
                 </p>
                 <p>
-                  Vote: <span>100x</span>
+                  Vote: <span>{userRank?.vote}</span>
                 </p>
               </div>
               <div className="w-[66.66%] profile__user__right">
@@ -184,12 +187,6 @@ const Profile: React.FunctionComponent = () => {
                         /> */}
                         <AddressComponent
                           mode={"update"}
-                          citiesData={citiesData}
-                          districtData={districtData}
-                          idCity={idCity}
-                          idDistrict={idDistrict}
-                          setIdCity={setIdCity}
-                          setIdDistrict={setIdDistrict}
                           amountAddress={Number(addressAmount)}
                           addressId={item?.id}
                         />
@@ -203,12 +200,6 @@ const Profile: React.FunctionComponent = () => {
 
                   <AddressComponent
                     mode={"create"}
-                    citiesData={citiesData}
-                    districtData={districtData}
-                    idCity={idCity}
-                    idDistrict={idDistrict}
-                    setIdCity={setIdCity}
-                    setIdDistrict={setIdDistrict}
                     amountAddress={Number(addressAmount)}
                   />
                 </div>
@@ -252,7 +243,7 @@ const Profile: React.FunctionComponent = () => {
             <Tab.Panel>
               {/* Order list panel */}
               {order?.map((item, index) => (
-                <div className="order-item">
+                <div key={index} className="order-item">
                   <div className="order-item__heading">
                     <h3>
                       Order Number: <span>{item?.id}</span>
@@ -260,10 +251,12 @@ const Profile: React.FunctionComponent = () => {
                     <p>
                       Create at:{" "}
                       <span>
-                        {format(
-                          new Date(item?.transactions?.[0]?.created_at),
-                          "dd/MM/yyyy"
-                        )}
+                        {item?.transactions?.[0]?.created_at
+                          ? format(
+                              new Date(item.transactions[0].created_at),
+                              "dd/MM/yyyy"
+                            )
+                          : "Loading..."}
                       </span>
                     </p>
                   </div>
@@ -446,13 +439,16 @@ const Profile: React.FunctionComponent = () => {
               {/* Review panel */}
               <div className="WaitingReview">
                 <Slider {...productListToReviewSettings}>
-                  {order?.map((item, index) => (
-                    <div key={index} className="product_hover">
-                      {item.books.map((book, index) => (
+                  {order?.map((item, orderIndex) =>
+                    item.books.map((book, bookIndex) => (
+                      <div
+                        key={`${orderIndex}-${bookIndex}`}
+                        className="product_hover"
+                      >
                         <div className="bg-white product-item">
                           <div className="flex flex-col items-center">
                             <div className="product-item__img">
-                              <img src={book?.image[0]} alt={"img-product"} />
+                              <img src={book?.image[0]} alt="img-product" />
                             </div>
                             <h3 className="product-item__title webkitbox-2">
                               {book?.name}
@@ -463,13 +459,13 @@ const Profile: React.FunctionComponent = () => {
                           </div>
                           <div className="w-full">
                             <div className="product-item__control">
-                              <AddReviewComponent></AddReviewComponent>
+                              <AddReviewComponent />
                             </div>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  ))}
+                      </div>
+                    ))
+                  )}
                 </Slider>
               </div>
             </Tab.Panel>
