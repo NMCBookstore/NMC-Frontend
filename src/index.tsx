@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ import { Toaster } from 'react-hot-toast';
 import { Suspense } from 'react';
 import SuspenseLoader from './components/SuspenseLoader';
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById('root')).render(
   <HelmetProvider>
     <Provider store={store}>
       <SidebarProvider>
@@ -28,8 +28,7 @@ ReactDOM.render(
         </BrowserRouter>
       </SidebarProvider>
     </Provider>
-  </HelmetProvider>,
-  document.getElementById('root')
+  </HelmetProvider>
 );
 
 serviceWorker.unregister();

@@ -102,10 +102,10 @@ function PageHeader() {
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
         <Typography variant="h3" component="h3" gutterBottom>
-          Books List
+          Genres List
         </Typography>
         <Typography variant="subtitle2">
-          {user.name}, these are your books
+          {user.name}, these are your Genres
         </Typography>
       </Grid>
       <Grid item>
@@ -126,7 +126,7 @@ function PageHeader() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h3" component="h2">
-            Add Book
+            Add Genres
           </Typography>
           <form onSubmit={FileUploadSubmit}>
             <FormControl fullWidth>

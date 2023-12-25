@@ -224,10 +224,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/dashboards/messenger"
+                  to="/genres"
                   startIcon={<MmsTwoToneIcon />}
                 >
-                  Messenger
+                  Genres
                 </Button>
               </ListItem>
             </List>
