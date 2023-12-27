@@ -29,7 +29,7 @@ const RequireAuth = lazy(() => import("./features/auth/RequireAuth"));
 const RequireCartItem = lazy(() => import("./features/cart/RequireCart"));
 
 /**** 404 page *****/
-const NotFound = lazy(() => import("./page/error"));
+const NotFound = lazy(() => import("./page/Error"));
 
 const HomePage = lazy(() => import("./page/HomePage/home"));
 
