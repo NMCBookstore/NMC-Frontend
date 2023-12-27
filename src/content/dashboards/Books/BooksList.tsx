@@ -139,7 +139,7 @@ function BooksList() {
 
   return (
     <Card>
-      <BooksListTable cryptoOrders={cryptoOrders} />
+      <BooksListTable  />
     </Card>
   );
 }

@@ -18,6 +18,9 @@ import {
   useGetQuarterRevenueQuery,
   useGetYearRevenueQuery
 } from 'src/services/revenue/revenueAPI';
+import TrendingDownTwoToneIcon from '@mui/icons-material/TrendingDownTwoTone';
+import TrendingUpTwoToneIcon from '@mui/icons-material/TrendingUpTwoTone';
+import TrendingFlatTwoToneIcon from '@mui/icons-material/TrendingFlatTwoTone';
 import { useEffect } from 'react';
 import { format, parseISO, isValid } from 'date-fns';
 
@@ -61,129 +64,184 @@ function WatchListColumn() {
   const { data: yearRevenue, isFetching: yearRevenueFetching } =
     useGetYearRevenueQuery();
 
-  console.log('yearRevenue: ', yearRevenue);
-
-  const combinedRevenue = [
+  const combinedRevenue: any[] = [
     { type: 'daily', data: dayRevenue },
     { type: 'monthly', data: monthRevenue },
     { type: 'quarterly', data: quarterRevenue },
     { type: 'yearly', data: yearRevenue }
   ];
 
-  const chartOptions: ApexOptions = {
-    series: combinedRevenue.map((revenue) => ({
-      name: revenue.type,
-      data: revenue.data
-        ?.map((item) => Number(item.sum_revenue).toFixed(2))
-        .map(Number)
-    })),
-
-    chart: {
-      background: 'transparent',
-      toolbar: {
-        show: true
-      },
-      sparkline: {
-        enabled: true
-      },
-      zoom: {
-        enabled: true
-      }
-    },
-    fill: {
-      gradient: {
-        shade: 'light',
-        type: 'vertical',
-        shadeIntensity: 0.1,
-        inverseColors: false,
-        opacityFrom: 0.8,
-        opacityTo: 0,
-        stops: [0, 100]
-      }
-    },
-    colors: [theme.colors.primary.main],
-    dataLabels: {
-      enabled: false
-    },
-    theme: {
-      mode: theme.palette.mode
-    },
-    stroke: {
-      show: true,
-      colors: [theme.colors.primary.main],
-      width: 3
-    },
-    legend: {
-      show: true
-    },
-    labels: combinedRevenue.flatMap((revenue) =>
-      revenue.data?.map((item) => item.time_revenue)
-    ),
-    xaxis: {
-      labels: {
-        show: true
-      },
-      axisBorder: {
-        show: false
-      },
-      axisTicks: {
-        show: false
-      },
-      categories: combinedRevenue.flatMap((revenue) =>
-        revenue.data?.map((item) => item.time_revenue)
-      )
-    },
-    yaxis: {
-      show: false,
-      tickAmount: 5
-    },
-    tooltip: {
-      x: {
-        show: true
-      },
-      y: {
-        title: {
-          formatter: function () {
-            return 'Price: $';
-          }
+  const handleLabel = (props: any[]) => {
+    const chartOptional: ApexOptions = {
+      chart: {
+        background: 'transparent',
+        toolbar: {
+          show: true
+        },
+        sparkline: {
+          enabled: true
+        },
+        zoom: {
+          enabled: true
         }
       },
-      marker: {
+      fill: {
+        gradient: {
+          shade: 'light',
+          type: 'vertical',
+          shadeIntensity: 0.1,
+          inverseColors: false,
+          opacityFrom: 0.8,
+          opacityTo: 0,
+          stops: [0, 100]
+        }
+      },
+      colors: [theme.colors.primary.main],
+      dataLabels: {
+        enabled: false
+      },
+      theme: {
+        mode: theme.palette.mode
+      },
+      stroke: {
+        show: true,
+        colors: [theme.colors.primary.main],
+        width: 3
+      },
+      legend: {
+        show: true
+      },
+      labels: props?.map((item) => item?.time_revenue),
+      xaxis: {
+        type: 'category',
+        labels: {
+          show: true
+        },
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        }
+      },
+      yaxis: {
+        show: false,
+        tickAmount: 5
+      },
+      tooltip: {
+        x: {
+          show: true
+        },
+        y: {
+          title: {
+            formatter: function () {
+              return 'Price: $';
+            }
+          }
+        },
+        marker: {
+          show: true
+        }
+      },
+      grid: {
         show: true
       }
-    },
-    grid: {
-      show: true
-    }
+    };
+    return chartOptional;
   };
-  const chart1Data = [
-    {
-      name: 'Day Revenue',
-      data: dayRevenue?.map((item) => item.sum_revenue)
-    }
-  ];
-  const chart2Data = [
-    {
-      name: 'Month Revenue',
-      data: monthRevenue?.map((item) => item?.sum_revenue)
-    }
-  ];
-  const chart3Data = [
-    {
-      name: 'Quarter Revenue',
-      data: quarterRevenue?.map((item) => item?.sum_revenue)
-    }
-  ];
-  const chart4Data = [
-    {
-      name: 'Year Revenue',
-      data: yearRevenue?.map((item) => item?.sum_revenue)
-    }
-  ];
+  const chartOption = handleLabel(dayRevenue);
+  const chartOption2 = handleLabel(monthRevenue);
+  const chartOption3 = handleLabel(quarterRevenue);
+  const chartOption4 = handleLabel(yearRevenue);
+  //   // series: combinedRevenue.map((revenue) => ({
+  //   //   name: revenue.type,
+  //   //   data: revenue.data?.map((item) => item?.sum_revenue)
+  //   // })),
 
-  const monthlyRevenue = combinedRevenue.find(
-    (revenue) => revenue.type === 'monthly'
-  );
+  //   chart: {
+  //     background: 'transparent',
+  //     toolbar: {
+  //       show: true
+  //     },
+  //     sparkline: {
+  //       enabled: true
+  //     },
+  //     zoom: {
+  //       enabled: true
+  //     }
+  //   },
+  //   fill: {
+  //     gradient: {
+  //       shade: 'light',
+  //       type: 'vertical',
+  //       shadeIntensity: 0.1,
+  //       inverseColors: false,
+  //       opacityFrom: 0.8,
+  //       opacityTo: 0,
+  //       stops: [0, 100]
+  //     }
+  //   },
+  //   colors: [theme.colors.primary.main],
+  //   dataLabels: {
+  //     enabled: false
+  //   },
+  //   theme: {
+  //     mode: theme.palette.mode
+  //   },
+  //   stroke: {
+  //     show: true,
+  //     colors: [theme.colors.primary.main],
+  //     width: 3
+  //   },
+  //   legend: {
+  //     show: true
+  //   },
+  //   labels: combinedRevenue.flatMap((revenue) =>
+  //     revenue.data?.map((item) => item.time_revenue)
+  //   ),
+  //   xaxis: {
+  //     type: 'category',
+  //     labels: {
+  //       show: true
+  //     },
+  //     axisBorder: {
+  //       show: false
+  //     },
+  //     axisTicks: {
+  //       show: false
+  //     },
+  //     categories: combinedRevenue.flatMap((revenue) =>
+  //       revenue.data?.map((item) => item.time_revenue)
+  //     )
+  //   },
+  //   yaxis: {
+  //     show: false,
+  //     tickAmount: 5
+  //   },
+  //   tooltip: {
+  //     x: {
+  //       show: true
+  //     },
+  //     y: {
+  //       title: {
+  //         formatter: function () {
+  //           return 'Price: $';
+  //         }
+  //       }
+  //     },
+  //     marker: {
+  //       show: true
+  //     }
+  //   },
+  //   grid: {
+  //     show: true
+  //   }
+  // };
+
+  const chartData = combinedRevenue.map((revenue) => ({
+    name: revenue.type,
+    data: revenue.data?.map((item) => Number(item.sum_revenue).toFixed(2))
+  }));
 
   //Value of sum day revenue
   const dayRevenueSum =
@@ -248,6 +306,27 @@ function WatchListColumn() {
       Number(previousQuarterRevenueSum)) *
     100;
 
+  //Value of sum year revenue
+  const yearRevenueSum =
+    yearRevenue &&
+    yearRevenue.length > 0 &&
+    !isNaN(yearRevenue[yearRevenue.length - 1]?.sum_revenue)
+      ? `${yearRevenue[yearRevenue.length - 1]?.sum_revenue}`
+      : 'N/A';
+  const previousYearRevenueSum =
+    yearRevenue &&
+    yearRevenue.length > 0 &&
+    !isNaN(yearRevenue[yearRevenue.length - 2]?.sum_revenue)
+      ? `${yearRevenue[yearRevenue.length - 2]?.sum_revenue}`
+      : 'N/A';
+  const amountYearDiffenrence =
+    Number(yearRevenueSum) - Number(previousYearRevenueSum);
+
+  const percentageYearDifference =
+    ((Number(yearRevenueSum) - Number(previousYearRevenueSum)) /
+      Number(previousYearRevenueSum)) *
+    100;
+
   return (
     <Grid
       container
@@ -301,7 +380,6 @@ function WatchListColumn() {
                 ${Number(dayRevenueSum).toFixed(2)}
               </Typography>
               <Text color={percentageDayDifference < 0 ? 'error' : 'success'}>
-                {percentageDayDifference < 0 ? '-' : '+'}
                 <b>{percentageDayDifference.toFixed(2)}%</b>
               </Text>
             </Box>
@@ -313,7 +391,6 @@ function WatchListColumn() {
               }}
             >
               <Label color={amountDayDiffenrence < 0 ? 'error' : 'success'}>
-                {amountDayDiffenrence < 0 ? '-' : '+'}
                 {amountDayDiffenrence.toFixed(2)}$
               </Label>
               <Typography
@@ -328,8 +405,8 @@ function WatchListColumn() {
             </Box>
           </Box>
           <Chart
-            options={chartOptions}
-            series={chart1Data}
+            options={chartOption}
+            series={[chartData[0]]}
             type="area"
             height={200}
           />
@@ -406,8 +483,8 @@ function WatchListColumn() {
             </Box>
           </Box>
           <Chart
-            options={{ ...chartOptions }}
-            series={chart2Data}
+            options={chartOption2}
+            series={[chartData[1]]}
             type="area"
             height={200}
           />
@@ -458,7 +535,7 @@ function WatchListColumn() {
                 <b>
                   {percentageQuarterDifference.toFixed(2)
                     ? percentageQuarterDifference.toFixed(2)
-                    : 'Not have data'}
+                    : 'No data'}
                   %
                 </b>
               </Text>
@@ -486,8 +563,8 @@ function WatchListColumn() {
             </Box>
           </Box>
           <Chart
-            options={chartOptions}
-            series={chart3Data}
+            options={chartOption3}
+            series={[chartData[2]]}
             type="area"
             height={200}
           />
@@ -505,18 +582,12 @@ function WatchListColumn() {
             }}
           >
             <Box display="flex" alignItems="center">
-              <AvatarWrapper>
-                <img
-                  alt="BTC"
-                  src="/static/images/placeholders/logo/bitcoin.png"
-                />
-              </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Bitcoin
+                  Year revenue
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  BTC
+                  Revenue of the year
                 </Typography>
               </Box>
             </Box>
@@ -535,10 +606,16 @@ function WatchListColumn() {
                   mb: 1
                 }}
               >
-                $56,475.99
+                ${Number(yearRevenueSum).toFixed(2)}
               </Typography>
-              <Text color="success">
-                <b>+12.5%</b>
+              <Text color={percentageYearDifference < 0 ? 'error' : 'success'}>
+                {percentageYearDifference < 0 ? '-' : '+'}
+                <b>
+                  {percentageYearDifference
+                    ? percentageYearDifference.toFixed(2)
+                    : 'No data'}
+                  %
+                </b>
               </Text>
             </Box>
             <Box
@@ -548,7 +625,13 @@ function WatchListColumn() {
                 justifyContent: 'flex-start'
               }}
             >
-              <Label color="success">+$500</Label>
+              <Label color={amountYearDiffenrence < 0 ? 'error' : 'success'}>
+                {amountYearDiffenrence < 0 ? '-' : '+'}
+                {amountYearDiffenrence
+                  ? amountYearDiffenrence.toFixed(2)
+                  : 'No data'}
+                $
+              </Label>
               <Typography
                 variant="body2"
                 color="text.secondary"
@@ -556,13 +639,13 @@ function WatchListColumn() {
                   pl: 1
                 }}
               >
-                last 24h
+                last year
               </Typography>
             </Box>
           </Box>
           <Chart
-            options={chartOptions}
-            series={chart4Data}
+            options={chartOption4}
+            series={[chartData[3]]}
             type="area"
             height={200}
           />

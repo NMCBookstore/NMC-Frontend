@@ -2,6 +2,7 @@ import { Card } from '@mui/material';
 import { CryptoOrder } from 'src/models/crypto_order';
 import RecentOrdersTable from './OrderTable';
 import { subDays } from 'date-fns';
+import { useGetListOrderQuery } from 'src/services/order/orderAPI';
 
 function RecentOrders() {
   const cryptoOrders: CryptoOrder[] = [
@@ -137,6 +138,8 @@ function RecentOrders() {
     }
   ];
 
+  const { data } = useGetListOrderQuery({ page_id: 1, page_size: 24 });
+  console.log('order: ', data);
   return (
     <Card>
       <RecentOrdersTable cryptoOrders={cryptoOrders} />

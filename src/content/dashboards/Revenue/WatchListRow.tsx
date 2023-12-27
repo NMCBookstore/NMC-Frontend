@@ -157,22 +157,16 @@ function WatchListRow() {
             justifyContent="space-between"
           >
             <Box display="flex" alignItems="center">
-              <AvatarWrapper>
-                <img
-                  alt="BTC"
-                  src="/static/images/placeholders/logo/bitcoin.png"
-                />
-              </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Bitcoin
+                  Books
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  BTC
+                  Total amount of books
                 </Typography>
               </Box>
             </Box>
-            <Label color="secondary">24h</Label>
+            <Label color="secondary">now</Label>
           </Box>
           <Box
             mt={3}
@@ -193,26 +187,11 @@ function WatchListRow() {
                   pr: 1
                 }}
               >
-                $56,475.99
+                1500
               </Typography>
-              <Text color="success">
-                <b>+12.5%</b>
-              </Text>
             </Box>
-            <TrendingUpTwoToneIcon
-              sx={{
-                color: `${theme.colors.success.main}`
-              }}
-            />
           </Box>
-          <Box pt={2}>
-            <Chart
-              options={Box1Options}
-              series={Box1Data}
-              type="line"
-              height={100}
-            />
-          </Box>
+          <Box pt={2}></Box>
         </Box>
         <Box
           sx={{
@@ -226,22 +205,16 @@ function WatchListRow() {
             justifyContent="space-between"
           >
             <Box display="flex" alignItems="center">
-              <AvatarWrapper>
-                <img
-                  alt="ETH"
-                  src="/static/images/placeholders/logo/ethereum.png"
-                />
-              </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Ethereum
+                  Genres
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  ETH
+                  Total amount of genres
                 </Typography>
               </Box>
             </Box>
-            <Label color="secondary">24h</Label>
+            <Label color="secondary">now</Label>
           </Box>
           <Box
             mt={3}
@@ -262,26 +235,11 @@ function WatchListRow() {
                   pr: 1
                 }}
               >
-                $1,968.00
+                1500
               </Typography>
-              <Text color="error">
-                <b>-3.24%</b>
-              </Text>
             </Box>
-            <TrendingDownTwoToneIcon
-              sx={{
-                color: `${theme.colors.error.main}`
-              }}
-            />
           </Box>
-          <Box pt={2}>
-            <Chart
-              options={Box1Options}
-              series={Box2Data}
-              type="line"
-              height={100}
-            />
-          </Box>
+          <Box pt={2}></Box>
         </Box>
         <Box
           sx={{
@@ -295,22 +253,16 @@ function WatchListRow() {
             justifyContent="space-between"
           >
             <Box display="flex" alignItems="center">
-              <AvatarWrapper>
-                <img
-                  alt="ADA"
-                  src="/static/images/placeholders/logo/cardano.png"
-                />
-              </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Cardano
+                  User
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  ADA
+                  Total of user
                 </Typography>
               </Box>
             </Box>
-            <Label color="secondary">24h</Label>
+            <Label color="secondary">now</Label>
           </Box>
           <Box
             mt={3}
@@ -331,26 +283,11 @@ function WatchListRow() {
                   pr: 1
                 }}
               >
-                $23.00
+                5600
               </Typography>
-              <Text color="error">
-                <b>-0.33%</b>
-              </Text>
             </Box>
-            <TrendingFlatTwoToneIcon
-              sx={{
-                color: `${theme.colors.warning.main}`
-              }}
-            />
           </Box>
-          <Box pt={2}>
-            <Chart
-              options={Box1Options}
-              series={Box3Data}
-              type="line"
-              height={100}
-            />
-          </Box>
+          <Box pt={2}></Box>
         </Box>
         <Box
           sx={{
@@ -364,22 +301,16 @@ function WatchListRow() {
             justifyContent="space-between"
           >
             <Box display="flex" alignItems="center">
-              <AvatarWrapper>
-                <img
-                  alt="ADA"
-                  src="/static/images/placeholders/logo/cardano.png"
-                />
-              </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
-                  Cardano
+                  Orders
                 </Typography>
                 <Typography variant="subtitle1" noWrap>
-                  ADA
+                  Total of orders
                 </Typography>
               </Box>
             </Box>
-            <Label color="secondary">24h</Label>
+            <Label color="secondary">now</Label>
           </Box>
           <Box
             mt={3}
@@ -400,30 +331,15 @@ function WatchListRow() {
                   pr: 1
                 }}
               >
-                $23.00
+                1200
               </Typography>
-              <Text color="error">
-                <b>-0.33%</b>
-              </Text>
             </Box>
-            <TrendingFlatTwoToneIcon
-              sx={{
-                color: `${theme.colors.warning.main}`
-              }}
-            />
           </Box>
-          <Box pt={2}>
-            <Chart
-              options={Box1Options}
-              series={Box3Data}
-              type="line"
-              height={100}
-            />
-          </Box>
+          <Box pt={2}></Box>
         </Box>
       </Stack>
       <Divider />
-      <CardActions
+      {/* <CardActions
         disableSpacing
         sx={{
           p: 3,
@@ -432,7 +348,7 @@ function WatchListRow() {
         }}
       >
         <Button variant="outlined">View more assets</Button>
-      </CardActions>
+      </CardActions> */}
     </Card>
   );
 }

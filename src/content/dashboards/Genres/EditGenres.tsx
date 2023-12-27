@@ -1,22 +1,22 @@
 import {
-  Typography,
-  Button,
-  Grid,
-  TextField,
-  Autocomplete,
-  FormControl,
   Box,
-  Modal
+  Button,
+  FormControl,
+  Grid,
+  IconButton,
+  Modal,
+  TextField,
+  Typography
 } from '@mui/material';
 
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import React, { useState } from 'react';
-import shortid from 'shortid';
+import { Edit } from '@mui/icons-material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from 'src/features/auth/authSlice';
-import { useCreateGenresMutation } from 'src/services/genres/genresAPI';
+import React, { FC, useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
+import {
+  useCreateGenresMutation,
+  useUpdateGenresMutation
+} from 'src/services/genres/genresAPI';
 
 const style = {
   overflow: 'auto',
@@ -32,19 +32,31 @@ const style = {
   boxShadow: 24,
   p: 4
 };
-function PageHeader() {
-  const user = useSelector(selectCurrentUser);
+
+interface EditGenre {
+  genreId: number;
+  genreName: string;
+}
+
+const EditGenres: FC<EditGenre> = ({ genreId, genreName }) => {
   const [openAdd, setOpenAdd] = React.useState(false);
-  const handleOpenAdd = () => setOpenAdd(true);
+  const handleOpenAdd = () => {
+    console.log('genreId', genreId, genreName);
+    setOpenAdd(true);
+  };
   const handleCloseAdd = () => setOpenAdd(false);
 
-  const [name, setName] = useState('');
+  const [genreInfo, setGenreInfo] = useState(genreName);
 
-  const [createGenres, { isLoading }] = useCreateGenresMutation();
+  const [updateGenres, { isLoading }] = useUpdateGenresMutation();
+
+  useEffect(() => {
+    setGenreInfo(genreName);
+  }, []);
 
   const handleCreateGenres = async (e: any) => {
     e.preventDefault();
-    const v = await createGenres(name);
+    const v = await updateGenres({ id: genreId, name: genreInfo });
     if ('data' in v) {
       toast.success('Create new genres success !');
       handleCloseAdd();
@@ -54,22 +66,9 @@ function PageHeader() {
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
-        <Typography variant="h3" component="h3" gutterBottom>
-          Genres List
-        </Typography>
-        <Typography variant="subtitle2">
-          {user.username}, these are your Genres
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Button
-          sx={{ mt: { xs: 2, md: 0 } }}
-          variant="contained"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-          onClick={handleOpenAdd}
-        >
-          Create genres
-        </Button>
+        <IconButton onClick={handleOpenAdd}>
+          <Edit fontSize="small" />
+        </IconButton>
       </Grid>
       <Modal
         open={openAdd}
@@ -79,7 +78,7 @@ function PageHeader() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h3" component="h2">
-            Add Genres
+            Edit Genres
           </Typography>
           <form onSubmit={(e) => handleCreateGenres(e)}>
             <FormControl fullWidth>
@@ -92,10 +91,11 @@ function PageHeader() {
               >
                 <Grid item xs={12} md={12} my={3}>
                   <TextField
+                    defaultValue={genreName}
                     label="Genre name"
                     placeholder="Genres name"
                     fullWidth
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setGenreInfo(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -108,11 +108,10 @@ function PageHeader() {
                 <Button
                   variant="contained"
                   size="large"
-                  endIcon={<AddCircleOutlineIcon />}
                   disabled={isLoading}
                   type="submit"
                 >
-                  Create Genres
+                  Update Genres
                 </Button>
               </Box>
             </FormControl>
@@ -121,6 +120,6 @@ function PageHeader() {
       </Modal>
     </Grid>
   );
-}
+};
 
-export default PageHeader;
+export default EditGenres;

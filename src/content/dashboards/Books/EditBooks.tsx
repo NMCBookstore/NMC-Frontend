@@ -6,20 +6,27 @@ import {
   Autocomplete,
   FormControl,
   Box,
-  Modal
+  Modal,
+  IconButton
 } from '@mui/material';
 import { debounce } from 'lodash';
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import React, { useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import shortid from 'shortid';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Editor } from '@tinymce/tinymce-react';
 import { useGetGenresQuery } from 'src/services/genres/genresAPI';
 import { Genres } from 'src/models/Genres';
-import { useCreateProductMutation } from 'src/services/product/productAPI';
+import {
+  useCreateProductMutation,
+  useGetProductDetailsQuery,
+  useUpdateProductMutation
+} from 'src/services/product/productAPI';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
 import { selectCurrentUser } from 'src/features/auth/authSlice';
+import { Edit } from '@mui/icons-material';
+import { Product } from 'src/models/Product';
 
 const style = {
   overflow: 'auto',
@@ -35,10 +42,17 @@ const style = {
   boxShadow: 24,
   p: 4
 };
-function PageHeader() {
-  const user = useSelector(selectCurrentUser)
+
+interface EditBook {
+  bookId: number;
+}
+
+const EditBooks: FC<EditBook> = ({ bookId }) => {
+  const user = useSelector(selectCurrentUser);
   const [openAdd, setOpenAdd] = React.useState(false);
-  const handleOpenAdd = () => setOpenAdd(true);
+  const handleOpenAdd = () => {
+    setOpenAdd(true);
+  };
   const handleCloseAdd = () => setOpenAdd(false);
   const [selectedFile, setSelectedFiles] = useState([]);
   const { data: genresData = [], isLoading } = useGetGenresQuery();
@@ -46,28 +60,23 @@ function PageHeader() {
   const [imageFile, setImageFile] = useState<File[]>([]);
   const [genresID, setGenresID] = useState<number[]>([]);
 
+  const [editorState, setEditorState] = useState('');
+  const [selectedImage, setSelectedImage] = useState([]);
+
+  const { data, isLoading: bookLoading } = useGetProductDetailsQuery(bookId);
+  const [bookInfo, setBookInfo] = useState(data);
+
   useEffect(() => {
-    if (!isLoading && genresData.length > 0) {
+    if (!isLoading && !bookLoading && genresData.length > 0) {
       setGenres(genresData);
     }
-  }, [isLoading, genresData]);
-
-  const [query, setQuery] = useState<string>('');
-
-  const debouncedSetQuery = debounce((newQuery) => {
-    setQuery(newQuery);
-    if (newQuery === '') {
-      setQuery('');
-    }
-  }, 100); // Khoảng thời gian debounce
-
-  const handleInputChange = (event: any) => {
-    const newQuery = event.target.value;
-    console.log('newQuery: ', newQuery);
-    debouncedSetQuery(newQuery);
-  };
-
-  const genresName = genres?.map((item) => item?.name);
+    const des = bookInfo?.description
+      .replace(/\\n/g, '<br/>')
+      .replace(/\\/g, '');
+    setBookInfo(data);
+    setSelectedImage(data?.image);
+    setEditorState(des);
+  }, [bookLoading, isLoading, genresData]);
 
   const filesizes = (bytes, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
@@ -105,7 +114,6 @@ function PageHeader() {
     }
   };
 
-
   const DeleteSelectFile = (id) => {
     if (window.confirm('Are you sure you want to delete this Image?')) {
       const result = selectedFile.filter((data) => data.id !== id);
@@ -127,80 +135,82 @@ function PageHeader() {
     }
   };
 
-  const [editorContent, setEditorContent] = useState('');
+  const handleDeleteLocalImage = (e, index, image) => {
+    if (window.confirm('Are you sure you want to delete this Image?')) {
+      setSelectedImage(selectedImage.filter((e) => e !== image));
+      const imageCloud = bookInfo?.image.filter((e) => e !== image);
+      setBookInfo({
+        ...bookInfo,
+        image: imageCloud
+      });
+      if (JSON.stringify(bookInfo?.image) == JSON.stringify(imageCloud)) {
+        setSelectedFiles(
+          selectedFile &&
+            selectedFile.filter(
+              (item) => item !== selectedFile[index - imageCloud.length]
+            )
+        );
+      }
+    } else {
+      // alert('No');
+    }
+  };
 
   const handleEditorChange = (content, editor) => {
-    setEditorContent(content);
+    setEditorState(content);
   };
 
   const handleGenresChange = (event, option: Genres[]) => {
     if (option.length > 0) {
       setGenresID(option.map((item) => item?.id));
+      setBookInfo({ ...bookInfo, genres: option });
     } else {
       setGenresID([]);
+      setBookInfo({ ...bookInfo, genres: option });
     }
   };
 
-  const [bookInfo, setBookInfo] = useState({
-    name: '',
-    price: '',
-    author: '',
-    publisher: '',
-    sale: '',
-    quantity: ''
-  });
+  //Update book
+  const [updateBook] = useUpdateProductMutation();
 
-  //Create product
-
-  const [createBook, { isLoading: isBookLoading }] = useCreateProductMutation();
-
-  const handleCreateBook = async () => {
+  const handleUpdateBook = async () => {
     const formData = new FormData();
-    formData.append('description', editorContent);
-    formData.append('name', bookInfo.name);
-    formData.append('author', bookInfo.author);
-    formData.append('price', bookInfo.price);
-    formData.append('publisher', bookInfo.publisher);
-    formData.append('quantity', bookInfo.quantity);
-    formData.append('sale', bookInfo.sale);
+
+    formData.append('id', String(bookId));
+    formData.append('name', bookInfo?.name);
+    formData.append('price', String(bookInfo?.price));
+    bookInfo?.image.forEach((element) => {
+      formData.append('image', element);
+    });
+    imageFile.forEach((element) => {
+      formData.append('files', element);
+    });
+    formData.append('description', editorState);
+    formData.append('author', bookInfo?.author);
+    formData.append('publisher', bookInfo?.publisher);
+    formData.append('quantity', String(bookInfo?.quantity));
     genresID.forEach((item) => {
       formData.append('genres_id', String(item));
-    });
-    imageFile.forEach((file) => {
-      formData.append('image', file);
     });
 
     formData.forEach((value, key) => {
       console.log(key, value);
     });
 
-    const v = await createBook(formData);
+    const v = await updateBook(formData);
     if ('data' in v) {
-      toast.success('New book created !');
+      toast.success('Book updated !');
     } else if ('error' in v) {
-      toast.error('Cannot create new book');
+      toast.error('Cannot update book');
     }
   };
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
       <Grid item>
-        <Typography variant="h3" component="h3" gutterBottom>
-          Books List
-        </Typography>
-        <Typography variant="subtitle2">
-          {user?.username}, these are your books
-        </Typography>
-      </Grid>
-      <Grid item>
-        <Button
-          sx={{ mt: { xs: 2, md: 0 } }}
-          variant="contained"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-          onClick={handleOpenAdd}
-        >
-          Create books
-        </Button>
+        <IconButton onClick={handleOpenAdd}>
+          <Edit fontSize="small" />
+        </IconButton>
       </Grid>
       <Modal
         open={openAdd}
@@ -210,7 +220,7 @@ function PageHeader() {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h3" component="h2">
-            Add Book
+            Edit book
           </Typography>
           <form onSubmit={FileUploadSubmit}>
             <FormControl fullWidth>
@@ -243,7 +253,7 @@ function PageHeader() {
                             </div>
                           </div>
                           <div className="kb-attach-box mb-3">
-                            {selectedFile.map((data, index) => {
+                            {selectedFile.map((item, index) => {
                               const {
                                 id,
                                 filename,
@@ -251,7 +261,7 @@ function PageHeader() {
                                 fileimage,
                                 datetime,
                                 filesize
-                              } = data;
+                              } = item;
                               return (
                                 <div className="file-atc-box" key={id}>
                                   {filename.match(
@@ -295,6 +305,37 @@ function PageHeader() {
                                 </div>
                               );
                             })}
+                            {selectedImage?.map((item, index) => {
+                              return (
+                                <div className="file-atc-box" key={item}>
+                                  {
+                                    <div className="file-image">
+                                      <img src={item} alt="" />
+                                    </div>
+                                  }
+                                  <div className="file-detail">
+                                    <div className="file-actions">
+                                      <button
+                                        type="button"
+                                        className="file-action-btn"
+                                        onClick={(e) =>
+                                          handleDeleteLocalImage(e, index, item)
+                                        }
+                                      >
+                                        Delete
+                                      </button>
+                                      <a
+                                        href={item}
+                                        className="file-action-btn"
+                                        download={item}
+                                      >
+                                        Download
+                                      </a>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
                           </div>
                         </div>
                       </div>
@@ -311,9 +352,11 @@ function PageHeader() {
               >
                 <Grid item xs={12} md={6}>
                   <TextField
+                    InputLabelProps={{ shrink: true }}
                     label="Book Name"
                     placeholder="Name of the book"
                     fullWidth
+                    value={bookInfo?.name}
                     onChange={(e) =>
                       setBookInfo({ ...bookInfo, name: e.target.value })
                     }
@@ -321,9 +364,11 @@ function PageHeader() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
+                    InputLabelProps={{ shrink: true }}
                     label="Author"
                     placeholder="Author"
                     fullWidth
+                    value={bookInfo?.author}
                     onChange={(e) =>
                       setBookInfo({ ...bookInfo, author: e.target.value })
                     }
@@ -331,9 +376,11 @@ function PageHeader() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
+                    InputLabelProps={{ shrink: true }}
                     label="Publisher"
                     placeholder="Publisher"
                     fullWidth
+                    value={bookInfo?.publisher}
                     onChange={(e) =>
                       setBookInfo({ ...bookInfo, publisher: e.target.value })
                     }
@@ -341,14 +388,16 @@ function PageHeader() {
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
+                    InputLabelProps={{ shrink: true }}
                     label="Total amount"
                     type="number"
                     placeholder="Amount of book"
                     fullWidth
+                    value={bookInfo?.quantity}
                     onChange={(e) =>
                       setBookInfo({
                         ...bookInfo,
-                        quantity: e.target.value
+                        quantity: Number(e.target.value)
                       })
                     }
                   />
@@ -364,8 +413,17 @@ function PageHeader() {
                       typeof option === 'string' ? option : option.name
                     }
                     renderInput={(params) => (
-                      <TextField {...params} label="Genres" />
+                      <TextField
+                        InputLabelProps={{ shrink: true }}
+                        {...params}
+                        label="Genres"
+                      />
                     )}
+                    value={
+                      bookInfo?.genres && genres
+                        ? bookInfo.genres.map((item) => genres[item.id - 1])
+                        : []
+                    }
                     onChange={(event, option: any[]) =>
                       handleGenresChange(event, option)
                     }
@@ -375,27 +433,22 @@ function PageHeader() {
 
                 <Grid item xs={12} md={6}>
                   <TextField
+                    InputLabelProps={{ shrink: true }}
                     label="Price"
                     type="number"
                     placeholder="Price of book"
                     fullWidth
-                    onChange={(e) =>
-                      setBookInfo({
-                        ...bookInfo,
-                        price: e.target.value
-                      })
-                    }
+                    value={bookInfo?.price}
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
                   <TextField
+                    InputLabelProps={{ shrink: true }}
                     label="Sale Percent"
                     type="number"
                     placeholder="Sale percent"
                     fullWidth
-                    onChange={(e) =>
-                      setBookInfo({ ...bookInfo, sale: e.target.value })
-                    }
+                    value={bookInfo?.sale}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -416,6 +469,7 @@ function PageHeader() {
                           Promise.reject('See docs to implement AI Assistant')
                         )
                     }}
+                    initialValue={bookInfo?.description}
                     onEditorChange={handleEditorChange}
                   />
                 </Grid>
@@ -430,11 +484,10 @@ function PageHeader() {
                   variant="contained"
                   size="large"
                   endIcon={<AddCircleOutlineIcon />}
-                  type="submit"
-                  disabled={isBookLoading}
-                  onClick={() => handleCreateBook()}
+                  //   type="submit"
+                  onClick={handleUpdateBook}
                 >
-                  {isBookLoading ? 'Creating...' : 'Create Book'}
+                  Update Book
                 </Button>
               </Box>
             </FormControl>
@@ -443,6 +496,6 @@ function PageHeader() {
       </Modal>
     </Grid>
   );
-}
+};
 
-export default PageHeader;
+export default EditBooks;
