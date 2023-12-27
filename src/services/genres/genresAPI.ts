@@ -7,6 +7,10 @@ const genres = book.injectEndpoints({
       query: () => ({
         url: `genres/`,
       }),
+      transformResponse: (response: Genres[]) => {
+        const genresNotDeleted = response.filter((item) => !item.is_deleted);
+        return genresNotDeleted;
+      },
     }),
     getGenresById: builder.query<Genres, number>({
       query: (id) => `genres/${id}`,
@@ -15,6 +19,4 @@ const genres = book.injectEndpoints({
   overrideExisting: false,
 });
 
-export const {
-  useGetGenresQuery,
-} = genres;
+export const { useGetGenresQuery } = genres;
