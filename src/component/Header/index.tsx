@@ -92,7 +92,7 @@ const Header: React.FunctionComponent = () => {
             className="w-full px-[24px] h-4/5 rounded-full"
             type="text"
             placeholder="Search by Title, Author, ISBN or Keywords"
-            defaultValue={searchParams.get("text")?? "" ? searchParams.get("text")?? "" : text}
+            defaultValue={searchParams.get("text") ?? "" ? searchParams.get("text") ?? "" : text}
             onChange={(e) => { setText(e.target.value) }}
           />
           <i
@@ -158,7 +158,7 @@ const Header: React.FunctionComponent = () => {
             </Transition.Root>
           </div>
           <div className="flex">
-            <p
+            <div
               onClick={handleToWishlistPage}
               className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
             >
@@ -171,7 +171,7 @@ const Header: React.FunctionComponent = () => {
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
                 Wishlist
               </p>
-            </p>
+            </div>
           </div>
           <div className="flex">
             <div
@@ -190,8 +190,8 @@ const Header: React.FunctionComponent = () => {
             </div>
           </div>
           <div className="flex relative subMenu-btn">
-            <p
-            onClick={() => handleToLoginPage()}
+            <div
+              onClick={() => handleToLoginPage()}
               className="flex flex-col items-center justify-center cursor-pointer hover-text-orange-orange-4-header"
             >
               <div className="relative">
@@ -214,7 +214,7 @@ const Header: React.FunctionComponent = () => {
               <p className="text-[#fff] text-[14px] uppercase block sm:hidden">
                 Account
               </p>
-            </p>
+            </div>
             <div className="absolute top-full subMenu z-[100]">
               <ul>
                 <li>

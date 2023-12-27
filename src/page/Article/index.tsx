@@ -69,8 +69,8 @@ const ArticleList: React.FunctionComponent = () => {
                     <p>Many different themes and experiences</p>
                 </div>
                 <div className="row article__list">
-                    {articleList.map((item) => (
-                        <div className="w-[25%] lg:w-[33.3%] md:w-[50%] article__list__item">
+                    {articleList.map((item,index) => (
+                        <div key={index} className="w-[25%] lg:w-[33.3%] md:w-[50%] article__list__item">
                             <div className="article__list__item__img">
                                 <img src={item.img} alt={item.name} />
                             </div>

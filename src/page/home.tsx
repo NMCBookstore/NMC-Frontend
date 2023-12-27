@@ -32,7 +32,7 @@ const HomePage: React.FunctionComponent = () => {
             </div>
             <Slider {...settings}>
                 {banner.map((item, index) => (
-                    <div className="banner bg-[#FBF4EA] pt-[84px] pb-[100px]">
+                    <div key={index} className="banner bg-[#FBF4EA] pt-[84px] pb-[100px]">
                         <div className="mx-auto container-nmc px-3">
                             <div className="w-[60%] lg:w-[70%] flex flex-col justify-center">
                                 <p className="mb-2 text-[20px] font-semibold" >Welcome to the NMC Bookstore</p>

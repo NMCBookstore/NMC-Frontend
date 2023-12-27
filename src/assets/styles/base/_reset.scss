@@ -133,3 +133,50 @@ body {
         margin-top: 76px;
     }
 }
+.cart-empty{
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    img{
+        max-width: 300px;
+    }
+    h2{
+        text-transform: capitalize;
+        margin-top: 24px;
+        color: $primary;
+        text-align: center;
+    }
+    a{
+        margin-top: 24px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        background-color: $orange-orange-4;
+        color: $primary;
+        transition: all 0.3s;
+        font-weight: 600;
+        &:hover{
+            background-color: $orange-orange-6;
+        }
+    }
+}
+.emptyData{
+    display: flex;
+    justify-content: center;
+    img{
+        max-width: 300px;
+    }
+}
+textarea{
+    border-radius: 4px;
+    outline: 2px solid $primary !important;
+}
+.rating{
+    margin-bottom: 16px;
+    font-size: 24px;
+    color: $orange-orange-6;
+}
+.modal__title{
+    font-size: 32px;
+    color: $primary;
+}

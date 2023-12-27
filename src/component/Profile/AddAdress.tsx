@@ -184,7 +184,7 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
                         type="text"
                         name="adress"
                         placeholder="Your address"
-                        defaultValue={String(address?.address)}
+                        defaultValue={address ? String(address?.address) : ""}
                         onChange={(e) => setInputNewAddress(e.target.value)}
                       />
                     </div>

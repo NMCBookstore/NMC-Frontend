@@ -1,9 +1,12 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useRef, useState } from "react";
 import { Editor } from '@tinymce/tinymce-react';
+import StarRating from "./Rating";
 const AddReviewComponent: React.FunctionComponent = () => {
-    let [isOpen, setIsOpen] = useState(false)
+    let [isOpen, setIsOpen] = useState(false);
     const cancelButtonRef = useRef(null);
+    let [starNumber, setStarNumber] = useState(0);
+    
 
 
     function closeModal() {
@@ -13,6 +16,10 @@ const AddReviewComponent: React.FunctionComponent = () => {
     function openModal() {
         setIsOpen(true)
     }
+
+    const handleRatingChange = (newRating: number) => {
+        setStarNumber(newRating);
+    };
     return (
         <div className="profile__user__right__adress">
             <button
@@ -51,26 +58,12 @@ const AddReviewComponent: React.FunctionComponent = () => {
                                 <Dialog.Panel className="w-full lg:max-w-[100vw] max-w-[80vw] min-w-[50vw] transform rounded-2xl bg-white sm:px-4 p-10 text-left align-middle shadow-xl transition-all">
                                     <Dialog.Title
                                         as="h3"
-                                        className="mb-4"
+                                        className="mb-4 modal__title"
                                     >
                                         Add You Review
                                     </Dialog.Title>
-                                    <Editor
-                                        apiKey='fjo87umyn28bhlog6ey9ym0j3av357syryjwrnyltl215r8u'
-                                        init={{
-                                            plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
-                                            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-                                            tinycomments_mode: 'embedded',
-                                            tinycomments_author: 'Author name',
-                                            mergetags_list: [
-                                                { value: 'First.Name', title: 'First Name' },
-                                                { value: 'Email', title: 'Email' },
-                                            ],
-                                            ai_request: ( respondWith:any) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-                                        }}
-                                        initialValue="Welcome to TinyMCE!"
-                                    />
-
+                                    <StarRating outOf={5} onChange={handleRatingChange} />
+                                    <textarea className="w-full sm:px-3 p-6" rows={10}></textarea>
                                     <div className="mt-8">
                                         <button
                                             type="button"

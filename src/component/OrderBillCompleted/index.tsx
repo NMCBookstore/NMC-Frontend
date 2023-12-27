@@ -25,7 +25,7 @@ const OrderBillCompleted: React.FunctionComponent<OrderCompleted> = ({
       <h2>Your order details</h2>
       <div className="order-bill__list">
         {matchedOrder?.books.map((item, index) => (
-          <div className="order-bill__item">
+          <div key={index} className="order-bill__item">
             <div className="flex gap-3">
               <div className="order-bill__item--img flex-shrink-0">
                 <img src={item?.image[0]} alt="img-logo" />

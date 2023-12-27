@@ -3,61 +3,23 @@ import { format } from "date-fns";
 import React from "react";
 import { useSelector } from "react-redux";
 import Slider from "react-slick";
-import { articleImg, productItem } from "../../assets/img";
+import { articleImg, cartEmpty, cartEmpty2, emptyData, productItem } from "../../assets/img";
 import { productListToReviewSettings } from "../../common/CarouselSetting";
 import Marquee from "../../component/Marquee";
 import AddressComponent from "../../component/Profile/AddAdress";
-import AddBlogComponent from "../../component/Profile/AddBog";
 import AddReviewComponent from "../../component/Profile/AddReview";
 import ChangePasswordComponent from "../../component/Profile/ChangePassword";
 import EditProfileComponent from "../../component/Profile/EditProfile";
 import { selectCurrentUser } from "../../features/auth/authSlice";
-import { articleItem } from "../../interface";
 import {
   useDeleteAddressMutation,
   useGetListAddressQuery,
 } from "../../services/address/addressAPI";
 import { useGetAllOrderQuery } from "../../services/order/orderAPI";
 import { useGetUserRankQuery } from "../../services/user/userAPI";
+import { Link } from "react-router-dom";
 
 const Profile: React.FunctionComponent = () => {
-  const articleList: articleItem[] = [
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "The 10 Most Challenged Books of 2022-2023",
-      img: articleImg,
-      des: "Parents and politicians are trying to pull books off shelves at a record-setting pace.",
-    },
-    {
-      name: "Hanoi Book Festival returns to capital city",
-      img: articleImg,
-      des: "The Hanoi Book Festival has returned for the bookworms in the pedestrian zone by Hoan Kiem (Sword) Lake in the capital city on October 6-8th",
-    },
-    {
-      name: "5 New Books You Should Read That You Won't Find in Business School",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "5 New Books You Should Read That You Won't Find in Business School",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-  ];
   const userInfo = useSelector(selectCurrentUser);
   const { data: userAddress, isLoading: addressLoading } =
     useGetListAddressQuery();
@@ -66,11 +28,12 @@ const Profile: React.FunctionComponent = () => {
   const { data: userRank } = useGetUserRankQuery({
     email: String(userInfo?.email),
   });
-
+  let waitingList = order?.flatMap(obj => obj.books);
+  
   const addressAmount = Number(userAddress?.length);
   const orderAmount = Number(order?.length) ? Number(order?.length) : 0;
   const userGender = userInfo?.sex;
-
+  
   const renderGenderText = (userGender: string) => {
     if (userGender === "1") {
       return "Male";
@@ -120,7 +83,7 @@ const Profile: React.FunctionComponent = () => {
                       Gender:{" "}
                       <span>
                         {String(userInfo?.sex) !== "" &&
-                        renderGenderText(String(userInfo?.sex))
+                          renderGenderText(String(userInfo?.sex))
                           ? renderGenderText(String(userInfo?.sex))
                           : "You haven't set your gender"}
                       </span>
@@ -151,7 +114,7 @@ const Profile: React.FunctionComponent = () => {
                     ) : (
                       <p>Delivery Address:</p>
                     )}
-                    {userAddress?.map((item, index) => (
+                    {userAddress?.length ? userAddress.map((item, index) => (
                       <div
                         key={index}
                         className="profile__user__right__adress__item"
@@ -174,7 +137,12 @@ const Profile: React.FunctionComponent = () => {
                           ></i>
                         </div>
                       </div>
-                    ))}
+                    ))
+                      :
+                      <div className="emptyData">
+                        <img src={emptyData} alt="emptyData" />
+                      </div>
+                    }
                     <AddressComponent
                       mode={"create"}
                       amountAddress={Number(addressAmount)}
@@ -187,39 +155,16 @@ const Profile: React.FunctionComponent = () => {
           <Tab.Group>
             <Tab.List className="tab-lable-list">
               <Tab>
-                <p className="tab-lable">Blog List</p>
-              </Tab>
-              <Tab>
                 <p className="tab-lable">Order List</p>
-              </Tab>
-              <Tab>
-                <p className="tab-lable">To be received</p>
               </Tab>
               <Tab>
                 <p className="tab-lable">Awaiting Review</p>
               </Tab>
             </Tab.List>
             <Tab.Panels className="bg-[#fcfcfc] py-8 px-6 tab-list">
-              {/* Blog Panel */}
-              <Tab.Panel>
-                <div className="profile__blog flex flex-wrap">
-                  {articleList.slice(0, 6).map((item, index) => (
-                    <div key={index} className="profile__blog__item">
-                      <div className="profile__blog__item__img">
-                        <img src={item.img} alt={item.name} />
-                      </div>
-                      <div className="profile__blog__item__content">
-                        <h3 className="text-[#262626]">{item.name}</h3>
-                        <p>{item.des}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <AddBlogComponent></AddBlogComponent>
-              </Tab.Panel>
               <Tab.Panel>
                 {/* Order list panel */}
-                {order?.map((item, index) => (
+                {order?.length ? order.map((item, index) => (
                   <div key={index} className="order-item">
                     <div className="order-item__heading">
                       <h3>
@@ -230,9 +175,9 @@ const Profile: React.FunctionComponent = () => {
                         <span>
                           {item?.transactions?.[0]?.created_at
                             ? format(
-                                new Date(item.transactions[0].created_at),
-                                "dd/MM/yyyy"
-                              )
+                              new Date(item.transactions[0].created_at),
+                              "dd/MM/yyyy"
+                            )
                             : "Loading..."}
                         </span>
                       </p>
@@ -334,116 +279,91 @@ const Profile: React.FunctionComponent = () => {
                       </div>
                     </div>
                   </div>
-                ))}
-              </Tab.Panel>
-              <Tab.Panel>
-                {Array.from({ length: 5 }, (_, index) => (
-                  <div className="order-item received">
-                    <div className="order-item__heading">
-                      <h3>
-                        Order Number: <span>1</span>
-                      </h3>
-                      <p>
-                        Create at: <span>9-12-2023</span>
-                      </p>
-                    </div>
-                    <table className="table" key={index}>
-                      <thead>
-                        <tr>
-                          <th scope="col">Product</th>
-                          <th scope="col">Price</th>
-                          <th scope="col">Quantity</th>
-                          <th scope="col">Order Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {Array.from({ length: 3 }, (_, index) => (
-                          <tr key={index}>
-                            {/* Delete button */}
-                            {/* Product info */}
-                            <td data-th="Product">
-                              <div className="product-img shrink-0">
-                                <a href="" target="_blank">
-                                  <img src={productItem} alt="img-banner"></img>
-                                </a>
-                              </div>
-                              <div>
-                                <p>
-                                  <a href={`/product/`} target="_blank">
-                                    Jujutsu Kaisen, Vol. 20
-                                  </a>
-                                </p>
-                                <p>by: Bùi Đình Xuân</p>
-                              </div>
-                            </td>
-                            {/* Product price */}
-                            <td data-th="Price">
-                              <div className="table-price">
-                                <p className="table-price__new">100$</p>
-                                <p className="table-price__old">300$</p>
-                                <p className="table-price__discount">-10%</p>
-                              </div>
-                            </td>
-                            {/* Product quantity */}
-                            <td data-th="Quantity">
-                              <p>1</p>
-                            </td>
-                            {/* Total value of 1 items */}
-                            <td data-th="Order Value">
-                              <p className="table-sumprice">100$</p>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <div className="md:w-full w-[30%] ms-auto pr-5">
-                      <div className="cart-info__bottom">
-                        <p className="cart-info__bottom__noting">
-                          *Shipping fee included
-                        </p>
-                        <p className="cart-info__bottom__sum">
-                          <span className="text-uppercase">
-                            Total order value
-                          </span>
-                          <span>500$</span>
-                        </p>
-                      </div>
-                    </div>
+                ))
+                  :
+                  <div className="cart-empty">
+                    <img src={cartEmpty} alt="empty" />
+                    <h2>
+                      There are no orders yet
+                    </h2>
+                    <Link to="/product/all?page_id=1&page_size=24">Buy Now</Link>
                   </div>
-                ))}
+                }
               </Tab.Panel>
               <Tab.Panel>
                 {/* Review panel */}
                 <div className="WaitingReview">
-                  <Slider {...productListToReviewSettings}>
-                    {order?.map((item, orderIndex) =>
-                      item.books.map((book, bookIndex) => (
-                        <div
-                          key={`${orderIndex}-${bookIndex}`}
-                          className="product_hover"
-                        >
-                          <div className="bg-white product-item">
-                            <div className="flex flex-col items-center">
-                              <div className="product-item__img">
-                                <img src={book?.image[0]} alt="img-product" />
+                  {
+                    waitingList?.length ?
+                      <>
+                      {
+                        waitingList?.length > 5 ? 
+                        <Slider {...productListToReviewSettings}>
+                          {waitingList.map((book, bookIndex) =>
+                              <div
+                                key={`${bookIndex}`}
+                                className="product_hover"
+                              >
+                                <div className="bg-white product-item">
+                                  <div className="flex flex-col items-center">
+                                    <div className="product-item__img">
+                                      <img src={book?.image[0]} alt="img-product" />
+                                    </div>
+                                    <h3 className="product-item__title webkitbox-2">
+                                      {book?.name}
+                                    </h3>
+                                    <p className="product-item__des webkitbox-2">
+                                      by: {book?.author}
+                                    </p>
+                                  </div>
+                                  <div className="w-full">
+                                    <div className="product-item__control">
+                                      <AddReviewComponent />
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                              <h3 className="product-item__title webkitbox-2">
-                                {book?.name}
-                              </h3>
-                              <p className="product-item__des webkitbox-2">
-                                by: {book?.author}
-                              </p>
-                            </div>
-                            <div className="w-full">
-                              <div className="product-item__control">
-                                <AddReviewComponent />
+                          )}
+                        </Slider>
+                        :
+                        <div className="product-review__special">
+                          {waitingList?.map((book, bookIndex) =>
+                              <div
+                                key={`${bookIndex}`}
+                                className="product_hover"
+                              >
+                                <div className="bg-white product-item">
+                                  <div className="flex flex-col items-center">
+                                    <div className="product-item__img">
+                                      <img src={book?.image[0]} alt="img-product" />
+                                    </div>
+                                    <h3 className="product-item__title webkitbox-2">
+                                      {book?.name}
+                                    </h3>
+                                    <p className="product-item__des webkitbox-2">
+                                      by: {book?.author}
+                                    </p>
+                                  </div>
+                                  <div className="w-full">
+                                    <div className="product-item__control">
+                                      <AddReviewComponent />
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                          </div>
+                          )}
                         </div>
-                      ))
-                    )}
-                  </Slider>
+                      }
+                      </>
+                      :
+                      <div className="cart-empty">
+                        <img src={cartEmpty2} alt="empty" />
+                        <h2>
+                          You haven't bought our book yet
+                        </h2>
+                        <Link to="/product/all?page_id=1&page_size=24">Buy Now</Link>
+                      </div>
+                  }
                 </div>
               </Tab.Panel>
             </Tab.Panels>
