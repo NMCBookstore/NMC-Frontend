@@ -5,6 +5,7 @@ import { Address, City, District } from "../../interface/Address";
 import {
   useCreateAddressMutation,
   useGetAddressDetailQuery,
+  useUpdateAddressMutation,
 } from "../../services/address/addressAPI";
 import { useGetListCitiesQuery } from "../../services/address/citiesAPI";
 import { useGetListDistrictQuery } from "../../services/address/districtAPI";
@@ -50,6 +51,8 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
 
   const [inputNewAddress, setInputNewAddress] = useState<string>("");
   const [addAddress, { isError, isLoading }] = useCreateAddressMutation();
+  const [updateAddress, { isLoading: updateAddressLoading }] =
+    useUpdateAddressMutation();
   const { data: addressDetail, isFetching } = useGetAddressDetailQuery(
     Number(addressId)
   );
@@ -68,10 +71,6 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
     (item) => item.id === addressDetail?.district_id
   )?.[0]?.name;
 
-  const commonCityId = citiesData?.filter(
-    (item) => item.id === addressDetail?.city_id
-  )?.[0]?.id;
-
   const handleCreateAddress = async () => {
     const v = await addAddress({
       address: inputNewAddress,
@@ -83,6 +82,23 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
     } else {
       toast.success("Address created");
       closeModal();
+    }
+  };
+
+  const handleUpdateAddress = async () => {
+    console.log(addressId, inputNewAddress, idCity, idDistrict);
+    const v = await updateAddress({
+      id: Number(addressId),
+      address: String(inputNewAddress),
+      city_id: Number(idCity),
+      district_id: Number(idDistrict),
+    });
+
+    if ("data" in v) {
+      toast.success("Address updated !");
+      closeModal()
+    } else if ("error" in v) {
+      toast.error("Update address failed");
     }
   };
 
@@ -303,14 +319,25 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
                   </div>
 
                   <div className="mt-8">
-                    <button
-                      type="button"
-                      className="w-full py-3 px-6 block rounded-[12px] bg-orange-orange-4 hover:bg-orange-orange-6 focus:outline-none"
-                      disabled={isLoading}
-                      onClick={handleCreateAddress}
-                    >
-                      {isLoading ? "Creating Address..." : "Add Address"}
-                    </button>
+                    {mode === "create" ? (
+                      <button
+                        type="button"
+                        className="w-full py-3 px-6 block rounded-[12px] bg-orange-orange-4 hover:bg-orange-orange-6 focus:outline-none"
+                        disabled={isLoading}
+                        onClick={handleCreateAddress}
+                      >
+                        {isLoading ? "Creating Address..." : "Add Address"}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="w-full py-3 px-6 block rounded-[12px] bg-orange-orange-4 hover:bg-orange-orange-6 focus:outline-none"
+                        // disabled={isLoading}
+                        onClick={handleUpdateAddress}
+                      >
+                        Update Address
+                      </button>
+                    )}
                   </div>
                   <button
                     className="btn-close absolute top-10 right-10 z-11 focus-visible:outline-0"
