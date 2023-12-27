@@ -18,7 +18,6 @@ const address = book.injectEndpoints({
     }),
     getAddressDetail: builder.query<Address, number>({
       query: (id) => ({
-        method: "GET",
         url: `users/addresses/${id}`,
       }),
       providesTags: ["AddressItems"],
@@ -30,7 +29,7 @@ const address = book.injectEndpoints({
       }),
       providesTags: ["AddressItems"],
     }),
-    updateAddress: builder.mutation({
+    updateAddress: builder.mutation<Address, {id: number, address: string, district_id: number, city_id: number}>({
       query: ({ id, address, district_id, city_id }) => {
         return {
           method: "PUT",
