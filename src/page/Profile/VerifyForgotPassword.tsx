@@ -31,21 +31,19 @@ const VerifyForgotPassword = () => {
   };
 
   return (
-    <div className="profile bg-[#fbf4ea] mt-[76px]">
+    <div className=" bg-[#fbf4ea] mt-[76px]">
       <Marquee></Marquee>
       <div className="mx-auto px-3 container-nmc">
-        <div className="profile__user">
+        <div className="profile__user page-resetpassword">
           <div>
             <div className="row">
-              <div className="w-[66.66%] profile__user__right">
-                <div className="profile__user__right__adress">
-                  Your email has been verified
-                </div>
-                <div className="profile__user__right__adress">
-                  Please change your password below
-                </div>
+              <div className="w-full">
+                <h1>Change your password here</h1>
               </div>
-              <div className="w-[66.66%] profile__user__right">
+              <div className="w-full mb-6">
+                <label>
+                  Your new password
+                </label>
                 <input
                   className="rounded-full border-[1px] border-[#BFBFBF] border-solid px-4 py-3 w-full shadow-md"
                   type="password"
@@ -55,7 +53,10 @@ const VerifyForgotPassword = () => {
                   }
                 />
               </div>
-              <div className="w-[66.66%] profile__user__right">
+              <div className="w-full mb-6">
+                <label>
+                  Confirm your new password
+                </label>
                 <input
                   className="rounded-full border-[1px] border-[#BFBFBF] border-solid px-4 py-3 w-full shadow-md"
                   type="password"
@@ -65,7 +66,7 @@ const VerifyForgotPassword = () => {
                   }
                 />
               </div>
-              <div className="w-[66.66%] profile__user__right">
+              <div className="w-full">
                 <button
                   type="button"
                   className="w-full py-3 px-6 block rounded-[12px] bg-orange-orange-4 hover:bg-orange-orange-6 focus:outline-none"

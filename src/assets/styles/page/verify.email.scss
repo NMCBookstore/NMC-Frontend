@@ -1,0 +1,43 @@
+.page{
+    &__verify-email{
+        padding: 24px 16px;
+        &__content{
+            padding: 48px 24px !important;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            align-items: center;
+            img{
+                max-width: 300px;
+                margin-bottom: 12px;
+            }
+            h1{
+                color: $accent;
+                margin-bottom: 24px;
+            }
+            p{
+                margin-bottom: 16px;
+                font-size: 24px;
+                color: $primary;
+                font-weight: 500;
+            }
+            a{
+                margin-top: 16px;
+                background-color: $orange-orange-4;
+                color: #262626;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-weight: 600;
+                transition: all 0.3s;
+                &:hover{
+                    background-color: $orange-orange-6;
+                }
+            }
+            &.success{
+                h1{
+                    color: #1bc474;
+                }
+            }
+        }
+    }
+}

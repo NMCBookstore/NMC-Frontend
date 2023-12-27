@@ -63,7 +63,7 @@ const AddReviewComponent: React.FunctionComponent = () => {
                                         Add You Review
                                     </Dialog.Title>
                                     <StarRating outOf={5} onChange={handleRatingChange} />
-                                    <textarea className="w-full sm:px-3 p-6" rows={10}></textarea>
+                                    <textarea className="w-full sm:px-3 p-6 textarea_edit" rows={10}></textarea>
                                     <div className="mt-8">
                                         <button
                                             type="button"

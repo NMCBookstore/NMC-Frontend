@@ -5,6 +5,7 @@
         display: flex;
         justify-content: end;
         &__sidebar{
+            overflow: scroll;
             position: absolute;
             z-index: 10;
             display: flex;
@@ -21,7 +22,7 @@
             @include max-width-1280{
                 top: 0px;
                 width: 300px;
-                height: 100vh;
+                height: calc(100vh - 76px);
                 left: -300px;
                 border-radius: 0px;
                 border-top: none;
@@ -79,13 +80,11 @@
                         span{
                             &:first-child{
                                 display: inline-block;
-                                margin-right: 12px;
-                                width: 108px;
-                            }
-                            &:last-child{
                                 color: $primary;
                                 font-weight: 600;
                                 text-transform: capitalize;
+                                margin-right: 12px;
+                                width: 108px;
                             }
                         }
                     }
@@ -135,6 +134,8 @@
         }
         &__items{
             position: relative;
+            flex: 1;
+            min-height: 780px;
             @include max-width-1280{
                 max-width: unset;
             }
@@ -148,7 +149,6 @@
                 max-width: calc(((1440px * 75)/100 )) !important;
             }
             &__detail{
-
                 @include max-width-425{
                     padding-left: 4px;
                     padding-right: 4px;

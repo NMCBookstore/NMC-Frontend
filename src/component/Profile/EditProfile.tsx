@@ -65,12 +65,13 @@ const EditProfileComponent: React.FunctionComponent = () => {
   };
 
   //Update user info
+  // const 
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [updateProfile, { isLoading }] = useUpdateUserMutation();
 
   const handleUpdateInfo = async (e: any) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append("full_name", userInfo.full_name);
     formData.append("phone_number", userInfo.phone_number);
@@ -106,6 +107,9 @@ const EditProfileComponent: React.FunctionComponent = () => {
   const [sendEmail] = useSendVerifyEmailMutation();
   
   const sendVerifyEmail = async () => {
+    if (buttonRef.current) {
+      buttonRef.current.disabled = true;
+    }
     const v = await sendEmail() ;
     if ("data" in v) {
       toast("Please check your email", {
@@ -331,7 +335,7 @@ const EditProfileComponent: React.FunctionComponent = () => {
                       {userData?.is_email_verified ? (
                         <button disabled>Your email has been verified</button>
                       ) : (
-                        <button  onClick={sendVerifyEmail}>
+                        <button ref={buttonRef} onClick={sendVerifyEmail} className="verify-email">
                           Your email is not verified, click here to verify
                         </button>
                       )}

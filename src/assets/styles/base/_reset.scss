@@ -167,7 +167,7 @@ body {
         max-width: 300px;
     }
 }
-textarea{
+.textarea_edit{
     border-radius: 4px;
     outline: 2px solid $primary !important;
 }
@@ -179,4 +179,12 @@ textarea{
 .modal__title{
     font-size: 32px;
     color: $primary;
+}
+.verify-email{
+    margin-top: 12px;
+    font-size: 14px;
+    color: $accent;
+    &:disabled{
+        color: gray;
+    }
 }

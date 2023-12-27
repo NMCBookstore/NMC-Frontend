@@ -24,6 +24,8 @@ export { default as cartEmpty } from "./cartEmpty.png";
 export { default as cartEmpty2 } from "./cart_empty_2.png";
 export { default as lazyLoading } from "./lazyload.gif";
 export { default as emptyData } from "./emptyData.png";
+export { default as errorImg } from "./error.jpg";
+export { default as successImg } from "./success.jpg";
 
 
 

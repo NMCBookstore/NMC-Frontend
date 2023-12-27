@@ -20,13 +20,14 @@
         box-shadow: 0px 4px 6px 3px rgba(255, 202, 65, 0.1), 0px 12px 16px -4px rgba(255, 202, 65, 0.08);
         }
         .input-group{
-            display: flex;
+            display: flex;  
             border-radius: 12px;
             padding:0px 12px;
             align-items: center;
             background: white;
-            input,textarea{
+            select,input,textarea{
                 flex-grow: 1;
+                max-width: calc(100% - 24px);
             }
             .input-group-text {
                 i {
@@ -48,7 +49,6 @@
     
             &:has(.form-control:focus) {
                 .input-group-text, .form-control {
-                    color: $orange-orange-4;
                     border-color: $orange-orange-4;
                 }
             }

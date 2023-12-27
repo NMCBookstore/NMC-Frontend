@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { articleImg, lazyLoading } from "../../assets/img";
+import { articleImg, cartEmpty2, lazyLoading } from "../../assets/img";
 import BreadcrumbConponent from "../../component/Breadcrumb";
 import Marquee from "../../component/Marquee";
 import NotiHome from "../../component/NotiHome";
@@ -226,44 +226,6 @@ const ProductList: React.FunctionComponent = () => {
   };
   window.addEventListener("resize", overWrite);
   const { data: wishlist = [] } = useGetWishlistQuery();
-
-  const articleList: articleItem[] = [
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "The 10 Most Challenged Books of 2022-2023",
-      img: articleImg,
-      des: "Parents and politicians are trying to pull books off shelves at a record-setting pace.",
-    },
-    {
-      name: "Hanoi Book Festival returns to capital city",
-      img: articleImg,
-      des: "The Hanoi Book Festival has returned for the bookworms in the pedestrian zone by Hoan Kiem (Sword) Lake in the capital city on October 6-8th",
-    },
-    {
-      name: "5 New Books You Should Read That You Won't Find in Business School",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "5 New Books You Should Read That You Won't Find in Business School",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-  ];
   const priceFilter: PriceFilter[] = [
     { key: "none", value: "None" },
     { key: "over5000", value: "> 50$", minPrice: 50, maxPrice: Infinity },
@@ -285,10 +247,10 @@ const ProductList: React.FunctionComponent = () => {
             <h2 className="product-list__handle-sidebar__sidebar__heading">
               sort by
             </h2>
-            {/* <div className="product-list__handle-sidebar__sidebar__item"> */}
+            <div className="product-list__handle-sidebar__sidebar__item">
             <h3>price</h3>
-            {/* <div className="product-list__handle-sidebar__sidebar__item__price"> */}
-            {priceFilter.map((item) => (
+            <div className="product-list__handle-sidebar__sidebar__item__price">
+            {priceFilter.map((item,index) => (
               <div key={item.key}>
                 <input
                   className="product-list__handle-sidebar__sidebar__item__price__input"
@@ -296,16 +258,17 @@ const ProductList: React.FunctionComponent = () => {
                   type="radio"
                   value={item.value}
                   name="sortPrice"
+                  checked={index === 0 ? true : false}
                   onClick={() => handlePriceChange(item)}
                 />
                 <label htmlFor={`#${item.key}`}>{item.value}</label>
               </div>
             ))}
-            {/* </div> */}
-            {/* </div> */}
-            {/* <div className="product-list__handle-sidebar__sidebar__item"> */}
+            </div>
+            </div>
+            <div className="product-list__handle-sidebar__sidebar__item">
             <h3>name</h3>
-            {/* <div className="product-list__handle-sidebar__sidebar__item__name"> */}
+            <div className="product-list__handle-sidebar__sidebar__item__name">
             <div>
               <label>
                 <input
@@ -323,160 +286,191 @@ const ProductList: React.FunctionComponent = () => {
                 Name Z-A
               </label>
             </div>
-            {/* </div> */}
-            {/* </div> */}
-            {/* <div className="product-list__handle-sidebar__sidebar__item"> */}
+            </div>
+            </div>
+            <div className="product-list__handle-sidebar__sidebar__item">
             <h3>Sort</h3>
-            {/* <div className="product-list__handle-sidebar__sidebar__item__name"> */}
+            <div className="product-list__handle-sidebar__sidebar__item__name">
             <div>
               <label>
                 <input
                   type="radio"
                   value="option1"
                   checked={true}
-                  name="sortPrice"
+                  name="sortPriceAZ"
+                />
+                None
+              </label>
+            </div>
+            <div>
+              <label>
+                <input
+                  type="radio"
+                  value="option1"
+                  name="sortPriceAZ"
                 />
                 Price Low To High
               </label>
             </div>
             <div>
               <label>
-                <input type="radio" value="option2" name="sortPrice" />
+                <input type="radio" value="option2" name="sortPriceAZ" />
                 Price High To Low
               </label>
             </div>
-            {/* </div> */}
-            {/* </div> */}
+            </div>
+            </div>
             <div className="product-list__handle-sidebar__sidebar__item">
               <h3>rating</h3>
               <div className="product-list__handle-sidebar__sidebar__item__rate">
-                <div>
-                  <input id="5start" type="checkbox" hidden />
-                  <label htmlFor="5start">
-                    <span>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                    </span>
+                <div className="flex"
+                  onClick={() => {
+                    searchInfo["page_id"] = 1;
+                    setRating(5);
+                    if (searchInfo.hasOwnProperty("rating")) {
+                      delete searchInfo.rating;
+                    } else {
+                      searchInfo.rating = 5;
+                    }
+                    setSearchParams(searchInfo as any);
+                  }}
+                >
+                  <input className="mr-2" id="none" type="radio" name="star-option" checked={true}/>
+                  <label htmlFor="none">
                     <span
-                      onClick={() => {
-                        searchInfo["page_id"] = 1;
-                        setRating(5);
-                        if (searchInfo.hasOwnProperty("rating")) {
-                          delete searchInfo.rating;
-                        } else {
-                          searchInfo.rating = 5;
-                        }
-                        setSearchParams(searchInfo as any);
-                      }}
+                    >
+                      None
+                    </span>
+                  </label>
+                </div>
+                <div className="flex"
+                  onClick={() => {
+                    searchInfo["page_id"] = 1;
+                    setRating(5);
+                    if (searchInfo.hasOwnProperty("rating")) {
+                      delete searchInfo.rating;
+                    } else {
+                      searchInfo.rating = 5;
+                    }
+                    setSearchParams(searchInfo as any);
+                  }}
+                >
+                  <input className="mr-2" id="5start" type="radio" name="star-option" />
+                  <label htmlFor="5start">
+                    <span
                     >
                       Five stars
                     </span>
+                    <span>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                    </span>
                   </label>
                 </div>
-                <div>
-                  <input id="4start" type="checkbox" hidden />
+                <div className="flex"
+                  onClick={() => {
+                    searchInfo["page_id"] = 1;
+                    setRating(4);
+                    if (searchInfo.hasOwnProperty("rating")) {
+                      delete searchInfo.rating;
+                    } else {
+                      searchInfo.rating = 4;
+                    }
+                    setSearchParams(searchInfo as any);
+                  }}
+                >
+                  <input className="mr-2" id="4start" type="radio" name="star-option" />
                   <label htmlFor="4start">
                     <span>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-star"></i>
-                    </span>
-                    <span
-                      onClick={() => {
-                        searchInfo["page_id"] = 1;
-                        setRating(4);
-                        if (searchInfo.hasOwnProperty("rating")) {
-                          delete searchInfo.rating;
-                        } else {
-                          searchInfo.rating = 4;
-                        }
-                        setSearchParams(searchInfo as any);
-                      }}
-                    >
                       Four stars
                     </span>
+                    <span>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-star"></i>
+                    </span>
                   </label>
                 </div>
-                <div>
-                  <input id="3start" type="checkbox" hidden />
+                <div className="flex"
+                  onClick={() => {
+                    searchInfo["page_id"] = 1;
+                    setRating(3);
+                    if (searchInfo.hasOwnProperty("rating")) {
+                      delete searchInfo.rating;
+                    } else {
+                      searchInfo.rating = 3;
+                    }
+                    setSearchParams(searchInfo as any);
+                  }}
+                >
+                  <input className="mr-2" id="3start" type="radio" name="star-option" />
                   <label htmlFor="3start">
                     <span>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-star"></i>
-                      <i className="bdx-star"></i>
-                    </span>
-                    <span
-                      onClick={() => {
-                        searchInfo["page_id"] = 1;
-                        setRating(3);
-                        if (searchInfo.hasOwnProperty("rating")) {
-                          delete searchInfo.rating;
-                        } else {
-                          searchInfo.rating = 3;
-                        }
-                        setSearchParams(searchInfo as any);
-                      }}
-                    >
                       Three stars
                     </span>
+                    <span>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-star"></i>
+                      <i className="bdx-star"></i>
+                    </span>
                   </label>
                 </div>
-                <div>
-                  <input id="2start" type="checkbox" hidden />
+                <div className="flex"
+                  onClick={() => {
+                    searchInfo["page_id"] = 1;
+                    setRating(2);
+                    if (searchInfo.hasOwnProperty("rating")) {
+                      delete searchInfo.rating;
+                    } else {
+                      searchInfo.rating = 2;
+                    }
+                    setSearchParams(searchInfo as any);
+                  }}
+                >
+                  <input className="mr-2" id="2start" type="radio" name="star-option" />
                   <label htmlFor="2start">
                     <span>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-start-fill"></i>
-                      <i className="bdx-star"></i>
-                      <i className="bdx-star"></i>
-                      <i className="bdx-star"></i>
-                    </span>
-                    <span
-                      onClick={() => {
-                        searchInfo["page_id"] = 1;
-                        setRating(2);
-                        if (searchInfo.hasOwnProperty("rating")) {
-                          delete searchInfo.rating;
-                        } else {
-                          searchInfo.rating = 2;
-                        }
-                        setSearchParams(searchInfo as any);
-                      }}
-                    >
                       Two stars
+                    </span>
+                    <span>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-start-fill"></i>
+                      <i className="bdx-star"></i>
+                      <i className="bdx-star"></i>
+                      <i className="bdx-star"></i>
                     </span>
                   </label>
                 </div>
-                <div>
-                  <input id="1start" type="checkbox" hidden />
+                <div className="flex"
+                  onClick={() => {
+                    searchInfo["page_id"] = 1;
+                    setRating(1);
+                    if (searchInfo.hasOwnProperty("rating")) {
+                      delete searchInfo.rating;
+                    } else {
+                      searchInfo.rating = 1;
+                    }
+                    setSearchParams(searchInfo as any);
+                  }}
+                >
+                  <input className="mr-2" id="1start" type="radio" name="star-option" />
                   <label htmlFor="1start">
+                    <span>
+                      One stars
+                    </span>
                     <span>
                       <i className="bdx-start-fill"></i>
                       <i className="bdx-star"></i>
                       <i className="bdx-star"></i>
                       <i className="bdx-star"></i>
                       <i className="bdx-star"></i>
-                    </span>
-                    <span
-                      onClick={() => {
-                        searchInfo["page_id"] = 1;
-                        setRating(1);
-                        if (searchInfo.hasOwnProperty("rating")) {
-                          delete searchInfo.rating;
-                        } else {
-                          searchInfo.rating = 1;
-                        }
-                        setSearchParams(searchInfo as any);
-                      }}
-                    >
-                      One stars
                     </span>
                   </label>
                 </div>
@@ -573,7 +567,7 @@ const ProductList: React.FunctionComponent = () => {
               <i className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"></i>
             </div>
           </div>
-          <div className="row gap-y-[24px] sm:gap-y-[8px]">
+          <div className={`row gap-y-[24px] sm:gap-y-[8px] ${ allProduct?.books ? "" : "w-full" }`}>
             {/* here is all item */}
             {allProductLoading ? (
               <>
@@ -590,8 +584,9 @@ const ProductList: React.FunctionComponent = () => {
                 </div>
               ))
             ) : (
-              <div className="row gap-y-[24px] sm:gap-y-[8px]">
-                <p>No books available</p>
+              <div className="cart-empty w-full">
+                <img src={cartEmpty2} alt="emptyData" />
+                <h2>Can't Found Product</h2>
               </div>
             )}
           </div>
@@ -622,30 +617,6 @@ const ProductList: React.FunctionComponent = () => {
           </div>
         </div>
       </section>
-      <div className="bg-[#FFE8AD] blog">
-        <div className="mx-auto px-3 container-nmc py-[60px] sm:py-[40px]">
-          <i className="bdx-book text-primary text-[32px] flex justify-center"></i>
-          <h2 className="text-primary text-center mb-10 sm:mb-4">Our Blog</h2>
-          <div className="blog_list row mb-8 sm:mb-6 gap-y-6">
-            {articleList.slice(0, 6).map((item, index) => (
-              <div key={index} className="blog_list_item md:w-[100%] w-[50%]">
-                <div className="blog_list_item_img">
-                  <img src={item.img} alt={item.name} />
-                </div>
-                <div className="blog_list_item_content">
-                  <h3 className="text-[#262626]">{item.name}</h3>
-                  <p>{item.des}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center">
-            <button className="px-6 py-3 sm:px-4 sm:py-2 uppercase rounded-xl border border-primary border-solid sm:text-[12px]">
-              View All
-            </button>
-          </div>
-        </div>
-      </div>
       <NotiHome></NotiHome>
     </div>
   );
