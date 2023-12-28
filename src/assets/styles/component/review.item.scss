@@ -150,9 +150,11 @@
                         }
                         &.liked{
                             background-color: #1ba538 !important;
+                            color: white;
                         }
                         &.dislike{
                             background-color: $accent !important;
+                            color: white;
                         }
                     }
                 }
