@@ -81,35 +81,6 @@ const HomePage: React.FunctionComponent = () => {
   const { data: getNewProduct = [] } = useGetTopNewProductQuery();
   const { data: wishlist = [] } = useGetWishlistQuery();
 
-  console.log("getNewProduct; ", getNewProduct);
-  const articleList: articleItem[] = [
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "The 10 Most Challenged Books of 2022-2023",
-      img: articleImg,
-      des: "Parents and politicians are trying to pull books off shelves at a record-setting pace.",
-    },
-    {
-      name: "Hanoi Book Festival returns to capital city",
-      img: articleImg,
-      des: "The Hanoi Book Festival has returned for the bookworms in the pedestrian zone by Hoan Kiem (Sword) Lake in the capital city on October 6-8th",
-    },
-    {
-      name: "5 New Books You Should Read That You Won't Find in Business School",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-  ];
-
   return (
     <div className="bg-[#FBF4EA] mt-[76px]">
       <Marquee></Marquee>
@@ -317,31 +288,7 @@ const HomePage: React.FunctionComponent = () => {
           ))}
         </Slider>
       </div>
-      <div className="bg-[#FFE8AD] blog">
-        <div className="mx-auto px-3 container-nmc py-[60px] sm:py-[40px]">
-          <i className="bdx-book text-primary text-[32px] flex justify-center"></i>
-          <h2 className="text-primary text-center mb-10 sm:mb-4">Our Blog</h2>
-          <div className="home_blog_list mb-8 sm:mb-6">
-            {articleList.slice(0, 4).map((item, index) => (
-              <div key={index} className="home_blog_list_item">
-                <div className="home_blog_list_item_img">
-                  <img src={item.img} alt={item.name} />
-                </div>
-                <div className="home_blog_list_item_content">
-                  <h3 className="text-[#262626]">{item.name}</h3>
-                  <p>{item.des}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center">
-            <button className="px-6 py-3 sm:px-4 sm:py-2 uppercase rounded-xl border border-primary border-solid sm:text-[12px]">
-              Read more
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="services">
+      <div className="services bg-[#fcfcfc]">
         <div className="mx-auto px-3 container-nmc">
           <div className="mx-[-12px] py-10 sm:py-6 servicesCarousel">
             <Slider {...servicesCarousel}>

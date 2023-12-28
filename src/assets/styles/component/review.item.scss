@@ -148,6 +148,12 @@
                                 transform: rotate(90deg);
                             }
                         }
+                        &.liked{
+                            background-color: #1ba538 !important;
+                        }
+                        &.dislike{
+                            background-color: $accent !important;
+                        }
                     }
                 }
 
