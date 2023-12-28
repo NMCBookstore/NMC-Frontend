@@ -1,25 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Fancybox from "../../component/Fancybox/Fancy";
 import Carousel from "../../component/Fancybox/Carousel";
-
-import {
-  articleImg,
-  avatarUser,
-  lazyLoading,
-  productItem,
-} from "../../assets/img";
 import Marquee from "../../component/Marquee";
 import BreadcrumbConponent from "../../component/Breadcrumb";
 import { productBaner } from "../../assets/img";
 import { Product } from "../../interface/Product";
-import Slider from "react-slick";
-import { productListSettings } from "../../common/CarouselSetting";
-import ProductItem from "../../component/ProductItem";
 import {
   useAddToWishlistMutation,
   useGetWishlistQuery,
 } from "../../services/wishlist/wishlistAPI";
-import { articleItem } from "../../interface";
 import NotiHome from "../../component/NotiHome";
 import { useParams } from "react-router-dom";
 import { useGetProductDetailsQuery } from "../../services/product/productAPI";
@@ -33,6 +22,7 @@ const ProductDetail: React.FunctionComponent = () => {
   const [books, setBook] = useState<Product>();
 
   const { data: wishlist = [] } = useGetWishlistQuery();
+
   const {
     data: bookData,
     isFetching,
@@ -100,43 +90,6 @@ const ProductDetail: React.FunctionComponent = () => {
       btnShow.style.setProperty("opacity", `0`);
     }
   };
-  const articleList: articleItem[] = [
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "The 10 Most Challenged Books of 2022-2023",
-      img: articleImg,
-      des: "Parents and politicians are trying to pull books off shelves at a record-setting pace.",
-    },
-    {
-      name: "Hanoi Book Festival returns to capital city",
-      img: articleImg,
-      des: "The Hanoi Book Festival has returned for the bookworms in the pedestrian zone by Hoan Kiem (Sword) Lake in the capital city on October 6-8th",
-    },
-    {
-      name: "5 New Books You Should Read That You Won't Find in Business School",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "5 New Books You Should Read That You Won't Find in Business School",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-    {
-      name: "Kids share their thoughts about banned books with NPR",
-      img: articleImg,
-      des: "We've heard from parents, authors, activists and other adults about banned books. But we haven't heard much from kids.",
-    },
-  ];
   return (
     <div className="product-detail bg-[#F9EEDE] mt-[76px]">
       <Marquee></Marquee>
@@ -399,30 +352,6 @@ const ProductDetail: React.FunctionComponent = () => {
           </div>
         </div>
       </section>
-      {/* <div className="bg-[#FFE8AD] blog">
-        <div className="mx-auto px-3 container-nmc py-[60px] sm:py-[40px]">
-          <i className="bdx-book text-primary text-[32px] flex justify-center"></i>
-          <h2 className="text-primary text-center mb-10 sm:mb-4">Our Blog</h2>
-          <div className="blog_list row mb-8 sm:mb-6 gap-y-6">
-            {articleList.slice(0, 6).map((item, index) => (
-              <div key={index} className="blog_list_item md:w-[100%] w-[50%]">
-                <div className="blog_list_item_img">
-                  <img src={item.img} alt={item.name} />
-                </div>
-                <div className="blog_list_item_content">
-                  <h3 className="text-[#262626]">{item.name}</h3>
-                  <p>{item.des}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="flex justify-center">
-            <button className="px-6 py-3 sm:px-4 sm:py-2 uppercase rounded-xl border border-primary border-solid sm:text-[12px]">
-              View All
-            </button>
-          </div>
-        </div>
-      </div> */}
       <NotiHome></NotiHome>
     </div>
   );

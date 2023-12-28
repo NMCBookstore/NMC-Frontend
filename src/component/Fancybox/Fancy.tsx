@@ -1,18 +1,17 @@
-import React, { useRef, useEffect, PropsWithChildren } from "react";
-
+import React, { useRef, useEffect, PropsWithChildren, memo } from "react";
 import { Fancybox as NativeFancybox } from "@fancyapps/ui";
 import "@fancyapps/ui/dist/fancybox/fancybox.css";
-
 import type { OptionsType } from "@fancyapps/ui/types/Fancybox/options";
 
 interface Props {
   delegate?: string;
   options?: Partial<OptionsType>;
   imageLength: number;
+  children: React.ReactNode; // Add children property
 }
 
-function Fancybox(props: PropsWithChildren<Props>) {
-  const containerRef = useRef(null);
+const Fancybox: React.FC<PropsWithChildren<Props>> = memo((props) => {
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -26,7 +25,7 @@ function Fancybox(props: PropsWithChildren<Props>) {
       NativeFancybox.unbind(container);
       NativeFancybox.close();
     };
-  });
+  }, [props.delegate, props.options]);
 
   return (
     <div
@@ -38,6 +37,6 @@ function Fancybox(props: PropsWithChildren<Props>) {
       {props.children}
     </div>
   );
-}
+});
 
 export default Fancybox;

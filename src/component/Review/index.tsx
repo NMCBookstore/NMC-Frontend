@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { avatarUser, logo } from "../../assets/img";
 import Pagination from "../Pagination/ReviewPagination/Pagination";
 import {
@@ -16,7 +16,7 @@ interface ReviewListProps {
   id: string | undefined;
   onReviewLengthChange: (length: number) => void;
 }
-const ReviewList: React.FunctionComponent<ReviewListProps> = ({
+const ReviewList: React.FunctionComponent<ReviewListProps> = memo(({
   id,
   onReviewLengthChange,
 }) => {
@@ -30,7 +30,6 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({
     page_id: page.id,
     page_size: page.size,
   });
-  console.log(reviewData);
 
   const userName = useSelector(selectCurrentUser);
 
@@ -148,6 +147,6 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({
       />
     </>
   );
-};
+});
 
 export default ReviewList;
