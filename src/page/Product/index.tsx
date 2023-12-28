@@ -248,102 +248,96 @@ const ProductList: React.FunctionComponent = () => {
               sort by
             </h2>
             <div className="product-list__handle-sidebar__sidebar__item">
-            <h3>price</h3>
-            <div className="product-list__handle-sidebar__sidebar__item__price">
-            {priceFilter.map((item,index) => (
-              <div key={item.key}>
-                <input
-                  className="product-list__handle-sidebar__sidebar__item__price__input"
-                  id={item.key}
-                  type="radio"
-                  value={item.value}
-                  name="sortPrice"
-                  checked={index === 0 ? true : false}
-                  onClick={() => handlePriceChange(item)}
-                />
-                <label htmlFor={`#${item.key}`}>{item.value}</label>
+              <h3>price</h3>
+              <div className="product-list__handle-sidebar__sidebar__item__price">
+                {priceFilter.map((item, index) => (
+                  <div key={item.key}>
+                    <input
+                      className="product-list__handle-sidebar__sidebar__item__price__input"
+                      id={item.key}
+                      type="radio"
+                      value={item.value}
+                      name="sortPrice"
+                      checked={index === 0 ? true : false}
+                      onClick={() => handlePriceChange(item)}
+                    />
+                    <label htmlFor={`#${item.key}`}>{item.value}</label>
+                  </div>
+                ))}
               </div>
-            ))}
-            </div>
             </div>
             <div className="product-list__handle-sidebar__sidebar__item">
-            <h3>name</h3>
-            <div className="product-list__handle-sidebar__sidebar__item__name">
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="option1"
-                  checked={true}
-                  name="sortName"
-                />
-                Name A-Z
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="radio" value="option2" name="sortName" />
-                Name Z-A
-              </label>
-            </div>
-            </div>
+              <h3>name</h3>
+              <div className="product-list__handle-sidebar__sidebar__item__name">
+                <div>
+                  <label>
+                    <input
+                      type="radio"
+                      value="option1"
+                      checked={true}
+                      name="sortName"
+                    />
+                    Name A-Z
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input type="radio" value="option2" name="sortName" />
+                    Name Z-A
+                  </label>
+                </div>
+              </div>
             </div>
             <div className="product-list__handle-sidebar__sidebar__item">
-            <h3>Sort</h3>
-            <div className="product-list__handle-sidebar__sidebar__item__name">
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="option1"
-                  checked={true}
-                  name="sortPriceAZ"
-                />
-                None
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="option1"
-                  name="sortPriceAZ"
-                />
-                Price Low To High
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="radio" value="option2" name="sortPriceAZ" />
-                Price High To Low
-              </label>
-            </div>
-            </div>
+              <h3>Sort</h3>
+              <div className="product-list__handle-sidebar__sidebar__item__name">
+                <div>
+                  <label>
+                    <input
+                      type="radio"
+                      value="option1"
+                      checked={true}
+                      name="sortPriceAZ"
+                    />
+                    None
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input type="radio" value="option1" name="sortPriceAZ" />
+                    Price Low To High
+                  </label>
+                </div>
+                <div>
+                  <label>
+                    <input type="radio" value="option2" name="sortPriceAZ" />
+                    Price High To Low
+                  </label>
+                </div>
+              </div>
             </div>
             <div className="product-list__handle-sidebar__sidebar__item">
               <h3>rating</h3>
               <div className="product-list__handle-sidebar__sidebar__item__rate">
-                <div className="flex"
+                <div
+                  className="flex"
                   onClick={() => {
-                    searchInfo["page_id"] = 1;
-                    setRating(5);
-                    if (searchInfo.hasOwnProperty("rating")) {
-                      delete searchInfo.rating;
-                    } else {
-                      searchInfo.rating = 5;
-                    }
-                    setSearchParams(searchInfo as any);
+                    delete searchInfo.rating;
                   }}
                 >
-                  <input className="mr-2" id="none" type="radio" name="star-option" checked={true}/>
+                  <input
+                    className="mr-2"
+                    id="none"
+                    type="radio"
+                    name="star-option"
+                    checked={true}
+                  />
                   <label htmlFor="none">
-                    <span
-                    >
-                      None
-                    </span>
+                    <span>None</span>
                   </label>
                 </div>
-                <div className="flex"
+                <div
+                  className="flex"
                   onClick={() => {
                     searchInfo["page_id"] = 1;
                     setRating(5);
@@ -355,12 +349,14 @@ const ProductList: React.FunctionComponent = () => {
                     setSearchParams(searchInfo as any);
                   }}
                 >
-                  <input className="mr-2" id="5start" type="radio" name="star-option" />
+                  <input
+                    className="mr-2"
+                    id="5start"
+                    type="radio"
+                    name="star-option"
+                  />
                   <label htmlFor="5start">
-                    <span
-                    >
-                      Five stars
-                    </span>
+                    <span>Five stars</span>
                     <span>
                       <i className="bdx-start-fill"></i>
                       <i className="bdx-start-fill"></i>
@@ -370,7 +366,8 @@ const ProductList: React.FunctionComponent = () => {
                     </span>
                   </label>
                 </div>
-                <div className="flex"
+                <div
+                  className="flex"
                   onClick={() => {
                     searchInfo["page_id"] = 1;
                     setRating(4);
@@ -382,11 +379,14 @@ const ProductList: React.FunctionComponent = () => {
                     setSearchParams(searchInfo as any);
                   }}
                 >
-                  <input className="mr-2" id="4start" type="radio" name="star-option" />
+                  <input
+                    className="mr-2"
+                    id="4start"
+                    type="radio"
+                    name="star-option"
+                  />
                   <label htmlFor="4start">
-                    <span>
-                      Four stars
-                    </span>
+                    <span>Four stars</span>
                     <span>
                       <i className="bdx-start-fill"></i>
                       <i className="bdx-start-fill"></i>
@@ -396,7 +396,8 @@ const ProductList: React.FunctionComponent = () => {
                     </span>
                   </label>
                 </div>
-                <div className="flex"
+                <div
+                  className="flex"
                   onClick={() => {
                     searchInfo["page_id"] = 1;
                     setRating(3);
@@ -408,11 +409,14 @@ const ProductList: React.FunctionComponent = () => {
                     setSearchParams(searchInfo as any);
                   }}
                 >
-                  <input className="mr-2" id="3start" type="radio" name="star-option" />
+                  <input
+                    className="mr-2"
+                    id="3start"
+                    type="radio"
+                    name="star-option"
+                  />
                   <label htmlFor="3start">
-                    <span>
-                      Three stars
-                    </span>
+                    <span>Three stars</span>
                     <span>
                       <i className="bdx-start-fill"></i>
                       <i className="bdx-start-fill"></i>
@@ -422,7 +426,8 @@ const ProductList: React.FunctionComponent = () => {
                     </span>
                   </label>
                 </div>
-                <div className="flex"
+                <div
+                  className="flex"
                   onClick={() => {
                     searchInfo["page_id"] = 1;
                     setRating(2);
@@ -434,11 +439,14 @@ const ProductList: React.FunctionComponent = () => {
                     setSearchParams(searchInfo as any);
                   }}
                 >
-                  <input className="mr-2" id="2start" type="radio" name="star-option" />
+                  <input
+                    className="mr-2"
+                    id="2start"
+                    type="radio"
+                    name="star-option"
+                  />
                   <label htmlFor="2start">
-                    <span>
-                      Two stars
-                    </span>
+                    <span>Two stars</span>
                     <span>
                       <i className="bdx-start-fill"></i>
                       <i className="bdx-start-fill"></i>
@@ -448,7 +456,8 @@ const ProductList: React.FunctionComponent = () => {
                     </span>
                   </label>
                 </div>
-                <div className="flex"
+                <div
+                  className="flex"
                   onClick={() => {
                     searchInfo["page_id"] = 1;
                     setRating(1);
@@ -460,11 +469,14 @@ const ProductList: React.FunctionComponent = () => {
                     setSearchParams(searchInfo as any);
                   }}
                 >
-                  <input className="mr-2" id="1start" type="radio" name="star-option" />
+                  <input
+                    className="mr-2"
+                    id="1start"
+                    type="radio"
+                    name="star-option"
+                  />
                   <label htmlFor="1start">
-                    <span>
-                      One stars
-                    </span>
+                    <span>One stars</span>
                     <span>
                       <i className="bdx-start-fill"></i>
                       <i className="bdx-star"></i>
@@ -567,7 +579,11 @@ const ProductList: React.FunctionComponent = () => {
               <i className="bdx-search flex items-center absolute text-[20px] text-[#595959] right-[24px] cursor-pointer"></i>
             </div>
           </div>
-          <div className={`row gap-y-[24px] sm:gap-y-[8px] ${ allProduct?.books ? "" : "w-full" }`}>
+          <div
+            className={`row gap-y-[24px] sm:gap-y-[8px] ${
+              allProduct?.books ? "" : "w-full"
+            }`}
+          >
             {/* here is all item */}
             {allProductLoading ? (
               <>

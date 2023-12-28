@@ -38,7 +38,7 @@ const OrderBillCompleted: React.FunctionComponent<OrderCompleted> = ({
                   {item?.author}
                 </div>
                 <div className="order-bill__item--desc--quantity">
-                  Quantity: {item?.quantity}
+                  Quantity: {dataPayment?.sub_amount}
                 </div>
               </div>
             </div>
@@ -51,7 +51,11 @@ const OrderBillCompleted: React.FunctionComponent<OrderCompleted> = ({
             ) : (
               <div className="order-bill__item--price flex-shrink-0">
                 <div className="order-bill__item--price--new">
-                  {item?.price}$
+                  {(
+                    Number(item?.price) *
+                    (1 - Number(item?.sale) / 100)
+                  ).toFixed(2)}
+                  $
                 </div>
                 <div className="order-bill__item--price--old">
                   {item?.price}$
@@ -69,7 +73,7 @@ const OrderBillCompleted: React.FunctionComponent<OrderCompleted> = ({
           <p className="order-bill__footer--note">*Shipping fee included</p>
           <div className="order-bill__footer--sum d-flex justify-content-between align-items-center">
             <div>Total order value:</div>
-            <p>{matchedOrder?.sub_total}$</p>
+            <p>{matchedOrder?.sub_total.toFixed(2)}$</p>
           </div>
         </div>
       </div>

@@ -4,31 +4,50 @@ import { book } from "../Base/baseAPI";
 
 const review = book.injectEndpoints({
   endpoints: (builder) => ({
+    addReview: builder.mutation<
+      Review,
+      { book_id: number; comments: string; rating: number }
+    >({
+      query: ({ book_id, comments, rating }) => ({
+        method: "POST",
+        url: `users/reviews/${book_id}`,
+        body: { book_id, comments, rating },
+      }),
+      invalidatesTags: ["ReviewItems"],
+    }),
+
     getReview: builder.query<
       ReviewResponse,
-      { book_id: number; page_id: number; page_size: number }
+      { book_id: number; username: string; page_id: number; page_size: number }
     >({
-      query: ({ book_id, page_id, page_size }) => ({
-        url: `reviews/${book_id}?page_id=${page_id}&page_size=${page_size}`,
+      query: ({ book_id, username, page_id, page_size }) => ({
+        url: `reviews/${book_id}?username=${username}&page_id=${page_id}&page_size=${page_size}`,
       }),
+      providesTags: ["ReviewItems"],
     }),
-    addLikeReview: builder.mutation<
-      Review,
-      { username: string; reviewID: number }
-    >({
-      query: ({ username, reviewID }) => ({
+
+    addLikeReview: builder.mutation<Review, { reviewID: number }>({
+      query: ({ reviewID }) => ({
         method: "GET",
-        url: `users/reviews/action/like?Username=${username}&ReviewId=${reviewID}`,
+        url: `users/reviews/action/like?ReviewId=${reviewID}`,
       }),
+      invalidatesTags: ["ReviewItems"],
     }),
-    listLikeReview: builder.query<
-      Review,
-      { username: string; reviewID: number }
-    >({
-      query: ({ username, reviewID }) => ({
+
+    addDislikeReview: builder.mutation<Review, { reviewID: number }>({
+      query: ({ reviewID }) => ({
         method: "GET",
-        url: `users/reviews/like?Username=${username}&ReviewId=${reviewID}`,
+        url: `users/reviews/action/dislike?ReviewId=${reviewID}`,
       }),
+      invalidatesTags: ["ReviewItems"],
+    }),
+
+    addReportReview: builder.mutation<Review, number>({
+      query: (reviewID) => ({
+        method: "POST",
+        url: `users/reviews/action/report/${reviewID}`,
+      }),
+      invalidatesTags: ["ReviewItems"],
     }),
   }),
   overrideExisting: false,
@@ -37,5 +56,7 @@ const review = book.injectEndpoints({
 export const {
   useGetReviewQuery,
   useAddLikeReviewMutation,
-  useListLikeReviewQuery,
+  useAddReviewMutation,
+  useAddReportReviewMutation,
+  useAddDislikeReviewMutation,
 } = review;

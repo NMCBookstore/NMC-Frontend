@@ -399,7 +399,7 @@ const ProductDetail: React.FunctionComponent = () => {
           </div>
         </div>
       </section>
-      <div className="bg-[#FFE8AD] blog">
+      {/* <div className="bg-[#FFE8AD] blog">
         <div className="mx-auto px-3 container-nmc py-[60px] sm:py-[40px]">
           <i className="bdx-book text-primary text-[32px] flex justify-center"></i>
           <h2 className="text-primary text-center mb-10 sm:mb-4">Our Blog</h2>
@@ -422,7 +422,7 @@ const ProductDetail: React.FunctionComponent = () => {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
       <NotiHome></NotiHome>
     </div>
   );

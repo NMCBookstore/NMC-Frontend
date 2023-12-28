@@ -120,7 +120,7 @@ const OrderReturn: React.FunctionComponent = () => {
                       <span className="input-group-text align-items-start">
                         <i className="bdx-location inline-flex items-center"></i>
                       </span>
-                      <p className="form-control">Address</p>
+                      <p className="form-control">{dataPayment?.to_address}</p>
                     </div>
                   </div>
                   <div className="w-full">
@@ -128,9 +128,7 @@ const OrderReturn: React.FunctionComponent = () => {
                       <span className="input-group-text align-items-start">
                         <i className="bdx-note inline-flex items-center"></i>
                       </span>
-                      <p className="form-control">
-                        Your note content Your note content Your note content
-                        Your note content Your note content Your note content
+                      <p className="form-control">{dataPayment?.note ? dataPayment?.note : "You have no note" }
                       </p>
                     </div>
                   </div>

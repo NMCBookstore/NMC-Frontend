@@ -3,7 +3,13 @@ import { format } from "date-fns";
 import React from "react";
 import { useSelector } from "react-redux";
 import Slider from "react-slick";
-import { articleImg, cartEmpty, cartEmpty2, emptyData, productItem } from "../../assets/img";
+import {
+  articleImg,
+  cartEmpty,
+  cartEmpty2,
+  emptyData,
+  productItem,
+} from "../../assets/img";
 import { productListToReviewSettings } from "../../common/CarouselSetting";
 import Marquee from "../../component/Marquee";
 import AddressComponent from "../../component/Profile/AddAdress";
@@ -28,12 +34,12 @@ const Profile: React.FunctionComponent = () => {
   const { data: userRank } = useGetUserRankQuery({
     email: String(userInfo?.email),
   });
-  let waitingList = order?.flatMap(obj => obj.books);
-  
+  let waitingList = order?.flatMap((obj) => obj.books);
+
   const addressAmount = Number(userAddress?.length);
   const orderAmount = Number(order?.length) ? Number(order?.length) : 0;
   const userGender = userInfo?.sex;
-  
+
   const renderGenderText = (userGender: string) => {
     if (userGender === "1") {
       return "Male";
@@ -83,7 +89,7 @@ const Profile: React.FunctionComponent = () => {
                       Gender:{" "}
                       <span>
                         {String(userInfo?.sex) !== "" &&
-                          renderGenderText(String(userInfo?.sex))
+                        renderGenderText(String(userInfo?.sex))
                           ? renderGenderText(String(userInfo?.sex))
                           : "You haven't set your gender"}
                       </span>
@@ -114,35 +120,36 @@ const Profile: React.FunctionComponent = () => {
                     ) : (
                       <p>Delivery Address:</p>
                     )}
-                    {userAddress?.length ? userAddress.map((item, index) => (
-                      <div
-                        key={index}
-                        className="profile__user__right__adress__item"
-                      >
-                        <div>
-                          <p>{item?.address}</p>
-                          <p>
-                            {item?.district}, {item?.city}
-                          </p>
+                    {userAddress?.length ? (
+                      userAddress.map((item, index) => (
+                        <div
+                          key={index}
+                          className="profile__user__right__adress__item"
+                        >
+                          <div>
+                            <p>{item?.address}</p>
+                            <p>
+                              {item?.district}, {item?.city}
+                            </p>
+                          </div>
+                          <div>
+                            <AddressComponent
+                              mode={"update"}
+                              amountAddress={Number(addressAmount)}
+                              addressId={item?.id}
+                            />
+                            <i
+                              onClick={() => handleDeleteAddress([item?.id])}
+                              className="bdx-close"
+                            ></i>
+                          </div>
                         </div>
-                        <div>
-                          <AddressComponent
-                            mode={"update"}
-                            amountAddress={Number(addressAmount)}
-                            addressId={item?.id}
-                          />
-                          <i
-                            onClick={() => handleDeleteAddress([item?.id])}
-                            className="bdx-close"
-                          ></i>
-                        </div>
-                      </div>
-                    ))
-                      :
+                      ))
+                    ) : (
                       <div className="emptyData">
                         <img src={emptyData} alt="emptyData" />
                       </div>
-                    }
+                    )}
                     <AddressComponent
                       mode={"create"}
                       amountAddress={Number(addressAmount)}
@@ -164,206 +171,209 @@ const Profile: React.FunctionComponent = () => {
             <Tab.Panels className="bg-[#fcfcfc] py-8 px-6 tab-list">
               <Tab.Panel>
                 {/* Order list panel */}
-                {order?.length ? order.map((item, index) => (
-                  <div key={index} className="order-item">
-                    <div className="order-item__heading">
-                      <h3>
-                        Order Number: <span>{item?.id}</span>
-                      </h3>
-                      <p>
-                        Create at:{" "}
-                        <span>
-                          {item?.transactions?.[0]?.created_at
-                            ? format(
-                              new Date(item.transactions[0].created_at),
-                              "dd/MM/yyyy"
-                            )
-                            : "Loading..."}
-                        </span>
-                      </p>
-                    </div>
-                    <table className="table" key={index}>
-                      <thead>
-                        <tr>
-                          <th scope="col">Product</th>
-                          <th scope="col">Price</th>
-                          <th scope="col">Quantity</th>
-                          <th scope="col">Order Value</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {item?.books.map((bookItem, bookIndex) => {
-                          const transaction = item.transactions.find(
-                            (t) => t.books_id === bookItem.id
-                          );
-                          const amount = transaction ? transaction.amount : 0;
-                          const total = transaction ? transaction.total : 0;
-                          return (
-                            <tr key={bookIndex}>
-                              {/* Product info */}
-                              <td data-th="Product">
-                                <div className="product-img shrink-0">
-                                  <a href="" target="_blank">
-                                    <img
-                                      src={String(bookItem?.image[0])}
-                                      alt="img-banner"
-                                    ></img>
-                                  </a>
-                                </div>
-                                <div>
-                                  <p>
-                                    <a href={`/product/`} target="_blank">
-                                      {bookItem?.name}
-                                    </a>
-                                  </p>
-                                  <p>
-                                    by:
-                                    {bookItem?.author}
-                                  </p>
-                                </div>
-                              </td>
-                              {/* Product price */}
-                              <td data-th="Price">
-                                {bookItem?.sale === 0 ? (
-                                  <div className="table-price">
-                                    <p className="table-price__new">
-                                      {bookItem?.price}$
-                                    </p>
-                                  </div>
-                                ) : (
-                                  <div className="table-price">
-                                    <p className="table-price__new">
-                                      {(
-                                        Number(bookItem?.price) *
-                                        (1 - Number(bookItem?.sale) / 100)
-                                      ).toFixed(2)}
-                                      $
-                                    </p>
-                                    <p className="table-price__old">
-                                      {bookItem?.price}$
-                                    </p>
-                                    <p className="table-price__discount">
-                                      -{bookItem?.sale}%
-                                    </p>
-                                  </div>
-                                )}
-                              </td>
-                              {/* Product quantity */}
-                              <td data-th="Quantity">
-                                <p>{amount}</p>
-                              </td>
-                              {/* Total value of 1 item */}
-                              <td data-th="Order Value">
-                                {bookItem?.sale === 0 ? (
-                                  <p className="table-sumprice">{total}$</p>
-                                ) : (
-                                  <p className="table-sumprice">{total}$</p>
-                                )}
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                    <div className="md:w-full w-[25%] ms-auto">
-                      <div className="cart-info__bottom">
-                        <p className="cart-info__bottom__noting">
-                          *Shipping fee included
-                        </p>
-                        <p className="cart-info__bottom__sum">
-                          <span className="text-uppercase">
-                            Total order value
+                {order?.length ? (
+                  order.map((item, index) => (
+                    <div key={index} className="order-item">
+                      <div className="order-item__heading">
+                        <h3>
+                          Order Number: <span>{item?.id}</span>
+                        </h3>
+                        <p>
+                          Create at:{" "}
+                          <span>
+                            {item?.transactions?.[0]?.created_at
+                              ? format(
+                                  new Date(item.transactions[0].created_at),
+                                  "dd/MM/yyyy"
+                                )
+                              : "Loading..."}
                           </span>
-                          <span>{item?.sub_total.toFixed(2)}$</span>
                         </p>
                       </div>
+                      <table className="table" key={index}>
+                        <thead>
+                          <tr>
+                            <th scope="col">Product</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                            <th scope="col">Order Value</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {item?.books.map((bookItem, bookIndex) => {
+                            const transaction = item.transactions.find(
+                              (t) => t.books_id === bookItem.id
+                            );
+                            const amount = transaction ? transaction.amount : 0;
+                            const total = transaction ? transaction.total : 0;
+                            return (
+                              <tr key={bookIndex}>
+                                {/* Product info */}
+                                <td data-th="Product">
+                                  <div className="product-img shrink-0">
+                                    <a href="" target="_blank">
+                                      <img
+                                        src={String(bookItem?.image[0])}
+                                        alt="img-banner"
+                                      ></img>
+                                    </a>
+                                  </div>
+                                  <div>
+                                    <p>
+                                      <a href={`/product/`} target="_blank">
+                                        {bookItem?.name}
+                                      </a>
+                                    </p>
+                                    <p>
+                                      by:
+                                      {bookItem?.author}
+                                    </p>
+                                  </div>
+                                </td>
+                                {/* Product price */}
+                                <td data-th="Price">
+                                  {bookItem?.sale === 0 ? (
+                                    <div className="table-price">
+                                      <p className="table-price__new">
+                                        {bookItem?.price}$
+                                      </p>
+                                    </div>
+                                  ) : (
+                                    <div className="table-price">
+                                      <p className="table-price__new">
+                                        {(
+                                          Number(bookItem?.price) *
+                                          (1 - Number(bookItem?.sale) / 100)
+                                        ).toFixed(2)}
+                                        $
+                                      </p>
+                                      <p className="table-price__old">
+                                        {bookItem?.price}$
+                                      </p>
+                                      <p className="table-price__discount">
+                                        -{bookItem?.sale}%
+                                      </p>
+                                    </div>
+                                  )}
+                                </td>
+                                {/* Product quantity */}
+                                <td data-th="Quantity">
+                                  <p>{amount}</p>
+                                </td>
+                                {/* Total value of 1 item */}
+                                <td data-th="Order Value">
+                                  {bookItem?.sale === 0 ? (
+                                    <p className="table-sumprice">{total}$</p>
+                                  ) : (
+                                    <p className="table-sumprice">{total}$</p>
+                                  )}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                      <div className="md:w-full w-[25%] ms-auto">
+                        <div className="cart-info__bottom">
+                          <p className="cart-info__bottom__noting">
+                            *Shipping fee included
+                          </p>
+                          <p className="cart-info__bottom__sum">
+                            <span className="text-uppercase">
+                              Total order value
+                            </span>
+                            <span>{item?.sub_total.toFixed(2)}$</span>
+                          </p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))
-                  :
+                  ))
+                ) : (
                   <div className="cart-empty">
                     <img src={cartEmpty} alt="empty" />
-                    <h2>
-                      There are no orders yet
-                    </h2>
-                    <Link to="/product/all?page_id=1&page_size=24">Buy Now</Link>
+                    <h2>There are no orders yet</h2>
+                    <Link to="/product/all?page_id=1&page_size=24">
+                      Buy Now
+                    </Link>
                   </div>
-                }
+                )}
               </Tab.Panel>
               <Tab.Panel>
                 {/* Review panel */}
                 <div className="WaitingReview">
-                  {
-                    waitingList?.length ?
-                      <>
-                      {
-                        waitingList?.length > 5 ? 
+                  {waitingList?.length ? (
+                    <>
+                      {waitingList?.length > 5 ? (
                         <Slider {...productListToReviewSettings}>
-                          {waitingList.map((book, bookIndex) =>
-                              <div
-                                key={`${bookIndex}`}
-                                className="product_hover"
-                              >
-                                <div className="bg-white product-item">
-                                  <div className="flex flex-col items-center">
-                                    <div className="product-item__img">
-                                      <img src={book?.image[0]} alt="img-product" />
-                                    </div>
-                                    <h3 className="product-item__title webkitbox-2">
-                                      {book?.name}
-                                    </h3>
-                                    <p className="product-item__des webkitbox-2">
-                                      by: {book?.author}
-                                    </p>
+                          {waitingList.map((book, bookIndex) => (
+                            <div key={`${bookIndex}`} className="product_hover">
+                              <div className="bg-white product-item">
+                                <div className="flex flex-col items-center">
+                                  <div className="product-item__img">
+                                    <img
+                                      src={book?.image[0]}
+                                      alt="img-product"
+                                    />
                                   </div>
-                                  <div className="w-full">
-                                    <div className="product-item__control">
-                                      <AddReviewComponent />
-                                    </div>
+                                  <h3 className="product-item__title webkitbox-2">
+                                    {book?.name}
+                                  </h3>
+                                  <p className="product-item__des webkitbox-2">
+                                    by: {book?.author}
+                                  </p>
+                                </div>
+                                <div className="w-full">
+                                  <div className="product-item__control">
+                                    <AddReviewComponent
+                                      bookId={Number(book?.id)}
+                                    />
                                   </div>
                                 </div>
                               </div>
-                          )}
+                            </div>
+                          ))}
                         </Slider>
-                        :
+                      ) : (
                         <div className="product-review__special">
-                          {waitingList?.map((book, bookIndex) =>
-                              <div
-                                key={`${bookIndex}`}
-                                className="product_hover"
-                              >
-                                <div className="bg-white product-item">
-                                  <div className="flex flex-col items-center">
-                                    <div className="product-item__img">
-                                      <img src={book?.image[0]} alt="img-product" />
-                                    </div>
-                                    <h3 className="product-item__title webkitbox-2">
-                                      {book?.name}
-                                    </h3>
-                                    <p className="product-item__des webkitbox-2">
-                                      by: {book?.author}
-                                    </p>
+                          {waitingList?.map((book, bookIndex) => (
+                            <div key={`${bookIndex}`} className="product_hover">
+                              <div className="bg-white product-item">
+                                <div className="flex flex-col items-center">
+                                  <div className="product-item__img">
+                                    <img
+                                      src={book?.image[0]}
+                                      alt="img-product"
+                                    />
                                   </div>
-                                  <div className="w-full">
-                                    <div className="product-item__control">
-                                      <AddReviewComponent />
-                                    </div>
+                                  <h3 className="product-item__title webkitbox-2">
+                                    {book?.name}
+                                  </h3>
+                                  <p className="product-item__des webkitbox-2">
+                                    by: {book?.author}
+                                  </p>
+                                </div>
+                                <div className="w-full">
+                                  <div className="product-item__control">
+                                    <AddReviewComponent
+                                      bookId={Number(book?.id)}
+                                    />
                                   </div>
                                 </div>
                               </div>
-                          )}
+                            </div>
+                          ))}
                         </div>
-                      }
-                      </>
-                      :
-                      <div className="cart-empty">
-                        <img src={cartEmpty2} alt="empty" />
-                        <h2>
-                          You haven't bought our book yet
-                        </h2>
-                        <Link to="/product/all?page_id=1&page_size=24">Buy Now</Link>
-                      </div>
-                  }
+                      )}
+                    </>
+                  ) : (
+                    <div className="cart-empty">
+                      <img src={cartEmpty2} alt="empty" />
+                      <h2>You haven't bought our book yet</h2>
+                      <Link to="/product/all?page_id=1&page_size=24">
+                        Buy Now
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </Tab.Panel>
             </Tab.Panels>

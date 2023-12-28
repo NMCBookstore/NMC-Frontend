@@ -32,16 +32,16 @@ const search = book.injectEndpoints({
           rating ? "&rating=" + rating : ""
         }`,
       }),
-      transformResponse: (response: AllProduct) => {
-        const productNotDeleted = response.books.filter(
-          (item) => !item.is_deleted
-        );
-        console.log(productNotDeleted)
-        return {
-          ...response,
-          books: productNotDeleted,
-        };
-      },
+      // transformResponse: (response: AllProduct) => {
+      //   const productNotDeleted = response.books.filter(
+      //     (item) => !item.is_deleted
+      //   );
+      //   console.log(productNotDeleted)
+      //   return {
+      //     ...response,
+      //     books: productNotDeleted,
+      //   };
+      // },
     }),
   }),
   overrideExisting: false,

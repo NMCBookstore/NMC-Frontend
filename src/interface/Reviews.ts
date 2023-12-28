@@ -8,7 +8,8 @@ export interface Review {
   created_at: string;
   like: number;
   dislike: number;
-  is_like: boolean
+  is_like: boolean;
+  is_dislike: boolean;
 }
 
 export interface ReviewResponse {

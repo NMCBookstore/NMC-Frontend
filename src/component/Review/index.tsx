@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { avatarUser, logo } from "../../assets/img";
 import Pagination from "../Pagination/ReviewPagination/Pagination";
 import {
+  useAddDislikeReviewMutation,
   useAddLikeReviewMutation,
+  useAddReportReviewMutation,
   useGetReviewQuery,
-  useListLikeReviewQuery,
 } from "../../services/review/reviewAPI";
 import { format } from "date-fns";
 import toast from "react-hot-toast";
@@ -21,26 +22,44 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({
 }) => {
   const [page, setPage] = useState({ id: 1, size: 5 });
 
+  const userInfo = useSelector(selectCurrentUser);
+
   const { data: reviewData } = useGetReviewQuery({
     book_id: Number(id),
+    username: String(userInfo?.username),
     page_id: page.id,
     page_size: page.size,
   });
-
-  console.log("reviewData: ", reviewData);
+  console.log(reviewData);
 
   const userName = useSelector(selectCurrentUser);
 
-  const [addReview] = useAddLikeReviewMutation();
+  const [addLikeReview] = useAddLikeReviewMutation();
+
+  const [addDislikeReview] = useAddDislikeReviewMutation();
+
+  const [addReportReview] = useAddReportReviewMutation();
+
   // const {data: likeReview} = useListLikeReviewQuery({username: userName?.username, reviewID: })
 
-  const handleLikeReview = (review_id: number) => {
-    const v = addReview({
-      username: String(userName?.username),
+  const handleLikeReview = async (review_id: number) => {
+    const v = await addLikeReview({
       reviewID: review_id,
     });
   };
 
+  const handleDislikeReview = async (review_id: number) => {
+    const v = await addDislikeReview({
+      reviewID: review_id,
+    });
+  };
+
+  const handleReportReview = async (review_id: number) => {
+    const v = await addReportReview(review_id);
+    if("data" in v){
+      toast.success("You've report this")
+    }
+  };
 
   const reviewLength = Number(reviewData?.reviews?.length);
   useEffect(() => {
@@ -62,60 +81,62 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = ({
                       {item?.username}
                     </p>
                     <p className="review__item__heading__left__user__date">
-                      at {format(new Date(item?.created_at), "dd/MM/yyyy")}
+                      at{" "}
+                      {item?.created_at
+                        ? format(new Date(item?.created_at), "dd/MM/yyyy")
+                        : "a"}
                     </p>
                   </div>
                   <div className="review__item__heading__left__info">
                     <div className="review__item__heading__left__info__sumary">
-                      <p>
-                        Reviews: <span>1075</span>
-                      </p>
-                      <p>
-                        Votes: <span>347</span>
-                      </p>
+                      <p>{item?.comments}</p>
                     </div>
-                    <div className="review__item__heading__left__info__datail">
-                      <p>
-                        Rate:
-                        <span>
-                          <i className="bdx-start-fill"></i>
-                          <i className="bdx-start-fill"></i>
-                          <i className="bdx-start-fill"></i>
-                          <i className="bdx-start-fill"></i>
-                          <i className="bdx-start-fill"></i>
-                        </span>
-                      </p>
-                      <p>
-                        Vote in this review: <span>10</span>
-                      </p>
-                    </div>
+                    <div className="review__item__heading__left__info__datail"></div>
                   </div>
                 </div>
                 <div className="review__item__heading__right">
                   <div className="review__item__heading__right__help">
-                    <p>Helpful?</p>
+                    {/* <p>Helpful?</p> */}
                     <div className="review__item__heading__right__help__behavior">
-                      <button onClick={() => handleLikeReview(item?.id)}>
-                        <i className="bdx-arrow-2"></i>yes
-                      </button>
-                      <button>
-                        <i className="bdx-arrow-2"></i>no
-                      </button>
+                      {item?.is_like ? (
+                        <button
+                          className="liked"
+                          onClick={() => handleLikeReview(item?.id)}
+                        >
+                          <i className="bdx-arrow-2"></i>yes
+                        </button>
+                      ) : (
+                        <button onClick={() => handleLikeReview(item?.id)}>
+                          <i className="bdx-arrow-2"></i>yes
+                        </button>
+                      )}
+
+                      {item?.is_dislike ? (
+                        <button
+                          className="dislike"
+                          onClick={() => handleDislikeReview(item?.id)}
+                        >
+                          <i className="bdx-arrow-2"></i>no
+                        </button>
+                      ) : (
+                        <button onClick={() => handleDislikeReview(item?.id)}>
+                          <i className="bdx-arrow-2"></i>no
+                        </button>
+                      )}
                     </div>
                   </div>
                   <div className="review__item__heading__right__spam">
                     <p>Spam?</p>
-                    <button>
+                    <button onClick={() => handleReportReview(item?.id)}>
                       <span>
-                        <i className="bdx-close"></i>Report
+                        <i className="bdx-close"></i>
+                        Report
                       </span>
                     </button>
                   </div>
                 </div>
               </div>
-              <div>
-                <p>{item?.comments}</p>
-              </div>
+              <div></div>
             </div>
           ))}
       </div>

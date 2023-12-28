@@ -5,13 +5,13 @@ const product = book.injectEndpoints({
   endpoints: (builder) => ({
     getProductDetails: builder.query<Product, number>({
       query: (id) => `books/${id}`,
-      // transformResponse: (response: Product) => {
-      //   if (response && response.is_deleted === false) {
-      //     console.log("response: ", response);
-      //   }
-      //   console.log("response2: ", response.id);
-      //   return response;
-      // },
+      transformResponse: (response: Product) => {
+        if (response && response.is_deleted === true) {
+          console.log("book is deleted");
+        }
+        console.log("response2: ", response.id);
+        return response;
+      },
     }),
 
     getAllProducts: builder.query<
@@ -31,6 +31,27 @@ const product = book.injectEndpoints({
         return productNotDeleted;
       },
     }),
+    getTopBestProduct: builder.query<Product[], void>({
+      query: () => ({
+        url: `books/the_best`,
+      }),
+      transformResponse: (response: Product[]) => {
+        const productNotDeleted = response.filter((item) => !item.is_deleted);
+        return productNotDeleted;
+      },
+    }),
+    getBookByGenres: builder.query<
+      Product[],
+      { genre_id: number; limit: number }
+    >({
+      query: ({ genre_id, limit }) => ({
+        url: `books/list_book_follow_genre?genre_id=${genre_id}&limit=${limit}`,
+      }),
+      // transformResponse: (response: Product[]) => {
+      //   const productNotDeleted = response.filter((item) => !item.is_deleted);
+      //   return productNotDeleted;
+      // },
+    }),
   }),
   overrideExisting: false,
 });
@@ -39,4 +60,6 @@ export const {
   useGetProductDetailsQuery,
   useGetTopNewProductQuery,
   useGetAllProductsQuery,
+  useGetBookByGenresQuery,
+  useGetTopBestProductQuery,
 } = product;

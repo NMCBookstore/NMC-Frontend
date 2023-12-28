@@ -63,6 +63,6 @@ export const book = createApi({
   reducerPath: "bookApi",
   baseQuery: baseQueryWithReauth,
   refetchOnMountOrArgChange: true,
-  tagTypes: ["WishlistItems", "CartItems", "AddressItems"],
+  tagTypes: ["WishlistItems", "CartItems", "AddressItems", "ReviewItems"],
   endpoints: () => ({}),
 });

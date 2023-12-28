@@ -99,9 +99,26 @@ const WishListComponent: React.FunctionComponent = () => {
                     </td>
                     <td data-th="Price">
                       <div className="table-price">
-                        <p className="table-price__new">{item?.book.price}$</p>
-                        <p className="table-price__old">{item?.book.price}$</p>
-                        <p className="table-price__discount">-10%</p>
+                      {item?.book.sale === 0 ? (
+                        <div className="table-price">
+                          <p className="table-price__new">{item?.book.price}$</p>
+                        </div>
+                      ) : (
+                        <div className="table-price">
+                          <p className="table-price__new">
+                            {" "}
+                            {(
+                              Number(item?.book.price) *
+                              (1 - Number(item?.book.sale) / 100)
+                            ).toFixed(2)}
+                            $
+                          </p>
+                          <p className="table-price__old">{item?.book.price}</p>
+                          <p className="table-price__discount">
+                            -{item?.book.sale}%
+                          </p>
+                        </div>
+                      )}
                       </div>
                     </td>
                     <td data-th="Quantity">

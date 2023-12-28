@@ -30,7 +30,11 @@ import {
   logoclcspkt,
 } from "../../assets/img";
 import { useGetSubGenresQuery } from "../../services/subgenres/subgenresAPI";
-import { useGetTopNewProductQuery } from "../../services/product/productAPI";
+import {
+  useGetBookByGenresQuery,
+  useGetTopBestProductQuery,
+  useGetTopNewProductQuery,
+} from "../../services/product/productAPI";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 import NotiHome from "../../component/NotiHome";
 
@@ -79,6 +83,11 @@ const HomePage: React.FunctionComponent = () => {
   const [id, setId] = useState(1);
   const { data } = useGetSubGenresQuery(id);
   const { data: getNewProduct = [] } = useGetTopNewProductQuery();
+  const { data: getBookByGenres = [] } = useGetBookByGenresQuery({
+    genre_id: 2,
+    limit: 6,
+  });
+  const { data: getTopBestProduct = [] } = useGetTopBestProductQuery();
   const { data: wishlist = [] } = useGetWishlistQuery();
 
   return (
@@ -204,7 +213,7 @@ const HomePage: React.FunctionComponent = () => {
           </div>
           <div className="productList-tworows">
             <Slider {...productTabsListSettings}>
-              {getNewProduct.map((item) => (
+              {getTopBestProduct.map((item) => (
                 <ProductItem
                   key={item?.id}
                   itemDetail={item}
@@ -241,7 +250,7 @@ const HomePage: React.FunctionComponent = () => {
           </p>
         </div>
         <Slider {...productListSettings}>
-          {getNewProduct.map((item) => (
+          {getBookByGenres.map((item) => (
             <ProductItem
               key={item?.id}
               itemDetail={item}
@@ -260,7 +269,7 @@ const HomePage: React.FunctionComponent = () => {
           </p>
         </div>
         <Slider {...productListSettings}>
-          {getNewProduct.map((item) => (
+          {getBookByGenres.map((item) => (
             <ProductItem
               key={item?.id}
               itemDetail={item}
@@ -279,7 +288,7 @@ const HomePage: React.FunctionComponent = () => {
           </p>
         </div>
         <Slider {...productListSettings}>
-          {getNewProduct.map((item) => (
+          {getBookByGenres.map((item) => (
             <ProductItem
               key={item?.id}
               itemDetail={item}
