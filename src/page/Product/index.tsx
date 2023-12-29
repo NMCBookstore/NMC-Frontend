@@ -1,13 +1,10 @@
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
-import { articleImg, cartEmpty2, lazyLoading } from "../../assets/img";
-import BreadcrumbConponent from "../../component/Breadcrumb";
+import { cartEmpty2, lazyLoading } from "../../assets/img";
 import Marquee from "../../component/Marquee";
 import NotiHome from "../../component/NotiHome";
 import ProductItem from "../../component/ProductItem";
-import { articleItem } from "../../interface";
 import { AllProduct } from "../../interface/Product";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
-
 import { Combobox, Transition } from "@headlessui/react";
 import { debounce } from "lodash";
 import { useSearchParams } from "react-router-dom";
@@ -21,6 +18,11 @@ interface PriceFilter {
   value: string;
   minPrice?: number;
   maxPrice?: number;
+}
+
+interface OrderFilter {
+  key: string;
+  value: string;
 }
 
 const ProductList: React.FunctionComponent = () => {
@@ -84,7 +86,8 @@ const ProductList: React.FunctionComponent = () => {
     searchParams.get("genres_id") ? searchParams.get("genres_id") : 0
   );
   const [rating, setRating] = useState(0);
-  const [sortName, setSortName] = useState(false);
+  const [activeSort, setActiveSort] = useState([0, 0, 0, 0]);
+
 
   useEffect(() => {
     if (!isLoading && genresData.length > 0) {
@@ -124,7 +127,7 @@ const ProductList: React.FunctionComponent = () => {
     setSearchParams(searchInfo as any);
   };
 
-  const handlePriceChange = (item: PriceFilter) => {
+  const handlePriceChange = (item: PriceFilter,index: number) => {
     const newSearchInfo = { ...searchInfo };
 
     if (item.key === "none") {
@@ -134,9 +137,21 @@ const ProductList: React.FunctionComponent = () => {
       newSearchInfo.min_price = item?.minPrice;
       newSearchInfo.max_price = item?.maxPrice;
     }
-
+    setActiveSort(prevState => {
+      const newState = [...prevState]; // Tạo một bản sao mới của state hiện tại
+      newState[0] = index; // Thay đổi giá trị tại vị trí index
+      return newState; // Trả về state mới
+    });
     setSearchParams(newSearchInfo as any);
   };
+
+  const handleStateChange = (stateValue: number, index: number) => {
+    setActiveSort(prevState => {
+      const newState = [...prevState]; // Tạo một bản sao mới của state hiện tại
+      newState[stateValue] = index; // Thay đổi giá trị tại vị trí index
+      return newState; // Trả về state mới
+    });
+  }
 
   const handlePagination = (pageNum: number, pageSize: number) => {
     searchInfo["page_id"] = pageNum;
@@ -238,13 +253,27 @@ const ProductList: React.FunctionComponent = () => {
     { key: "nomal", value: "10 - 50$", minPrice: 10, maxPrice: 50 },
     { key: "under100", value: "<10", minPrice: 0, maxPrice: 10 },
   ];
+  const nameFilter: OrderFilter[] = [
+    { key: "Name A-Z", value: "option1" },
+    { key: "Name Z-A", value: "option2" },
+  ];
+  const sortFilter: OrderFilter[] = [
+    { key: "none", value: "None" },
+    { key: "Price Low To High", value: "option1" },
+    { key: "Name Z-A", value: "option2" },
+  ];
+  const rateFilter: OrderFilter[] = [
+    { key: "none", value: "None" },
+    { key: "Below 5 stars", value: "5" },
+    { key: "Below 4 stars", value: "4" },
+    { key: "Below 3 stars", value: "3" },
+    { key: "Below 2 stars", value: "2" },
+    { key: "Below 1 stars", value: "1" },
+  ];
   return (
     <div className="bg-[#F9EEDE] mt-[76px] product-list" id="block-product">
       <Marquee></Marquee>
-      <div className="mx-auto px-3 container-nmc">
-        <BreadcrumbConponent></BreadcrumbConponent>
-      </div>
-      <div className="container-nmc px-3 mx-auto product-list__handle-sidebar mb-12">
+      <div className="container-nmc py-8 px-3 mx-auto product-list__handle-sidebar mb-12">
         <div>
           <div
             ref={elementRef}
@@ -260,14 +289,14 @@ const ProductList: React.FunctionComponent = () => {
                   <div key={item.key}>
                     <input
                       className="product-list__handle-sidebar__sidebar__item__price__input"
-                      id={item.key}
+                      id={`sortPrice-${item.key}`}
                       type="radio"
                       value={item.value}
                       name="sortPrice"
-                      checked={index === 0 ? true : false}
-                      onClick={() => handlePriceChange(item)}
+                      checked={index === activeSort[0] ? true : false}
+                      onClick={() => handlePriceChange(item,index)}
                     />
-                    <label htmlFor={`#${item.key}`}>{item.value}</label>
+                    <label htmlFor={`#sortPrice-${item.key}`} onClick={() => handlePriceChange(item,index)}>{item.value}</label>
                   </div>
                 ))}
               </div>
@@ -275,89 +304,97 @@ const ProductList: React.FunctionComponent = () => {
             <div className="product-list__handle-sidebar__sidebar__item">
               <h3>name</h3>
               <div className="product-list__handle-sidebar__sidebar__item__name">
-                <div
-                  onClick={() => {
-                    searchInfo["page_id"] = 1;
-                    // setRating(5);
-                    searchInfo.name_sort_asc = "true";
-                    setSearchParams(searchInfo as any);
-                    console.log(searchInfo)
-                  }}
-                >
-                  <label>
-                    <input
-                      type="radio"
-                      value="option1"
-                      checked={true}
-                      name="sortName"
-                    />
-                    Name A-Z
-                  </label>
-                </div>
-                <div
-                  onClick={() => {
-                    searchInfo["page_id"] = 1;
-                    searchInfo.name_sort_asc = "false";
-                    setSearchParams(searchInfo as any);
-                    console.log("searchInfo2",searchInfo)
-                  }}
-                >
-                  <label>
-                    <input type="radio" value="option2" name="sortName" />
-                    Name Z-A
-                  </label>
-                </div>
+                {nameFilter.map((item, index) => (
+                  <div
+                    onClick={() => {
+                      searchInfo["page_id"] = 1;
+                      // setRating(5);
+                      searchInfo.name_sort_asc = "true";
+                      setSearchParams(searchInfo as any);
+                      handleStateChange(1,index);
+                    }}
+                  >
+                    <label>
+                      <input
+                        type="radio"
+                        value={item.value}
+                        checked={index === activeSort[1] ? true : false}
+                        name="sortName"
+                      />
+                      {item.key}
+                    </label>
+                  </div>
+                ))}
               </div>
             </div>
-            <div className="product-list__handle-sidebar__sidebar__item">
+            {/* <div className="product-list__handle-sidebar__sidebar__item">
               <h3>Sort</h3>
               <div className="product-list__handle-sidebar__sidebar__item__name">
-                <div>
-                  <label>
-                    <input
-                      type="radio"
-                      value="option1"
-                      checked={true}
-                      name="sortPriceAZ"
-                    />
-                    None
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    <input type="radio" value="option1" name="sortPriceAZ" />
-                    Price Low To High
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    <input type="radio" value="option2" name="sortPriceAZ" />
-                    Price High To Low
-                  </label>
-                </div>
+                {sortFilter.map((item, index) => (
+                  <div>
+                    <label>
+                      <input
+                        type="radio"
+                        value={item.value}
+                        checked={index === activeSort[2] ? true : false}
+                        name="sortFilter"
+                      />
+                      {item.key}
+                    </label>
+                  </div>
+                ))}
               </div>
-            </div>
+            </div> */}
             <div className="product-list__handle-sidebar__sidebar__item">
               <h3>rating</h3>
               <div className="product-list__handle-sidebar__sidebar__item__rate">
+              {rateFilter.map((item, index) => (
                 <div
                   className="flex"
                   onClick={() => {
-                    delete searchInfo.rating;
+                    if(Number(item.value) === 0){
+                      delete searchInfo.rating;
+                      handleStateChange(3,index);
+                    }
+                    else{
+                      searchInfo["page_id"] = 1;
+                      if (searchInfo.hasOwnProperty("rating")) {
+                        delete searchInfo.rating;
+                      } else {
+                        searchInfo.rating = Number(item.value);
+                      }
+                      setSearchParams(searchInfo as any);
+                      handleStateChange(3,index);
+                    }
                   }}
                 >
                   <input
                     className="mr-2"
-                    id="none"
                     type="radio"
                     name="star-option"
-                    checked={true}
+                    checked={index === activeSort[3] ? true : false}
                   />
-                  <label htmlFor="none">
-                    <span>None</span>
+                  <label>
+                    <span>{item.key}</span>
+                    { 
+                      Number(item.value) > 0 && 
+                      <span>
+                        {[...Array(5)].map((_, index) => (
+                        <i
+                          key={index}
+                          className={
+                            index < Number(item.value)
+                              ? "bdx-start-fill"
+                              : "bdx-star"
+                          }
+                        ></i>
+                        ))}
+                      </span>
+                    }
                   </label>
                 </div>
-                <div
+              ))}
+                {/* <div
                   className="flex"
                   onClick={() => {
                     searchInfo["page_id"] = 1;
@@ -481,7 +518,6 @@ const ProductList: React.FunctionComponent = () => {
                   className="flex"
                   onClick={() => {
                     searchInfo["page_id"] = 1;
-                    // setRating(1);
                     if (searchInfo.hasOwnProperty("rating")) {
                       delete searchInfo.rating;
                     } else {
@@ -506,7 +542,7 @@ const ProductList: React.FunctionComponent = () => {
                       <i className="bdx-star"></i>
                     </span>
                   </label>
-                </div>
+                </div> */}
               </div>
             </div>
             <button onClick={() => handleClick()}>Close</button>
@@ -559,8 +595,7 @@ const ProductList: React.FunctionComponent = () => {
                         <Combobox.Option
                           key={item.id}
                           className={({ active }) =>
-                            `relative cursor-default select-none py-2 px-6 rounded-xl ${
-                              active ? "bg-primary text-white" : "text-primary"
+                            `relative cursor-default select-none py-2 px-6 rounded-xl ${active ? "bg-primary text-white" : "text-primary"
                             }`
                           }
                           value={item}
@@ -569,9 +604,8 @@ const ProductList: React.FunctionComponent = () => {
                           {({ selected, active }) => (
                             <>
                               <span
-                                className={`block leading-[24px] truncate ${
-                                  selected ? "font-semibold" : "font-medium"
-                                }`}
+                                className={`block leading-[24px] truncate ${selected ? "font-semibold" : "font-medium"
+                                  }`}
                               >
                                 {item.name}
                               </span>
@@ -601,9 +635,8 @@ const ProductList: React.FunctionComponent = () => {
             </div>
           </div>
           <div
-            className={`row gap-y-[24px] sm:gap-y-[8px] ${
-              allProduct?.books ? "" : "w-full"
-            }`}
+            className={`row gap-y-[24px] sm:gap-y-[8px] ${allProduct?.books ? "" : "w-full"
+              }`}
           >
             {/* here is all item */}
             {allProductLoading ? (

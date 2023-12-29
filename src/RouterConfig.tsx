@@ -13,7 +13,6 @@ const OrderReturn = lazy(() => import("./page/Order/return"));
 const Cart = lazy(() => import("./page/Cart"));
 const CartDemo = lazy(() => import("./page/Cart"));
 const ProductDetails = lazy(() => import("./page/Product/detail"));
-const ArticleDetail = lazy(() => import("./page/Article/detail"));
 const ProductList = lazy(() => import("./page/Product"));
 const Profile = lazy(() => import("./page/Profile"));
 const Wishlist = lazy(() => import("./page/WishList"));
@@ -42,7 +41,6 @@ const RouterConfig: RouteObject[] = [
     children: [
       { path: "/", element: <HomePage /> },
       { path: "/product/all", element: <ProductList /> },
-      { path: "/article/detail", element: <ArticleDetail /> },
       { path: "/cartdemo", element: <CartDemo /> },
       { path: "*", element: <NotFound /> },
       { path: "/product/:id", element: <ProductDetails /> },

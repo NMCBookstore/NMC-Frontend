@@ -1,20 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
-import Fancybox from "../../component/Fancybox/Fancy";
-import Carousel from "../../component/Fancybox/Carousel";
-import Marquee from "../../component/Marquee";
-import BreadcrumbConponent from "../../component/Breadcrumb";
+import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 import { productBaner } from "../../assets/img";
+import Carousel from "../../component/Fancybox/Carousel";
+import Fancybox from "../../component/Fancybox/Fancy";
+import Marquee from "../../component/Marquee";
+import NotiHome from "../../component/NotiHome";
+import ReviewList from "../../component/Review";
 import { Product } from "../../interface/Product";
+import { useAddToCartMutation } from "../../services/cart/cartAPI";
+import { useGetProductDetailsQuery } from "../../services/product/productAPI";
 import {
   useAddToWishlistMutation,
   useGetWishlistQuery,
 } from "../../services/wishlist/wishlistAPI";
-import NotiHome from "../../component/NotiHome";
-import { useParams } from "react-router-dom";
-import { useGetProductDetailsQuery } from "../../services/product/productAPI";
-import { useAddToCartMutation } from "../../services/cart/cartAPI";
-import toast from "react-hot-toast";
-import ReviewList from "../../component/Review";
 
 const ProductDetail: React.FunctionComponent = () => {
   const { id } = useParams();

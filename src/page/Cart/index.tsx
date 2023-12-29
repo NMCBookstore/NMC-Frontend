@@ -1,6 +1,6 @@
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import Breadcrumb from "../../component/Breadcrumb";
 import Marquee from "../../component/Marquee";
 import { selectCurrentTotalCartValue } from "../../features/cart/cartSlice";
 import {
@@ -8,7 +8,7 @@ import {
   useGetCartQuery,
   useUpdateCartMutation,
 } from "../../services/cart/cartAPI";
-import toast from "react-hot-toast";
+import { cartEmpty, cartEmpty2 } from "../../assets/img";
 
 const CartIndex: React.FunctionComponent = () => {
   const totalItemPrice = useSelector(selectCurrentTotalCartValue);
@@ -46,121 +46,128 @@ const CartIndex: React.FunctionComponent = () => {
     <div className="mt-[76px] bg-[#FBF4EA]">
       <Marquee></Marquee>
       <div className="container-nmc mx-auto pb-8">
-        <Breadcrumb></Breadcrumb>
         <h1 className="text-orange-orange-6 px-3 flex items-center justify-center mb-3 py-4">
           <i className="bdx-cart-fill inline-flex items-center"></i>{" "}
           <span>My Cart</span>
         </h1>
         <div className="cart-info__block">
           <div className="cart-info__table">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th scope="col">Product</th>
-                  <th scope="col">Price</th>
-                  <th scope="col">Quantity</th>
-                  <th scope="col">Order Value</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data?.map((item, index) => (
-                  <tr key={item?.book_id}>
-                    {/* Delete button */}
-                    <td className="btn-delete">
-                      <i
-                        onClick={() => handleDeleteCartItem([item?.cart_id])}
-                        className="bdx-close"
-                      ></i>
-                    </td>
-                    {/* Product info */}
-                    <td data-th="Product">
-                      <div className="product-img shrink-0">
-                        <a href={`/product/${item?.book_id}`} target="_blank">
-                          <img src={item?.image} alt="img-banner"></img>
-                        </a>
-                      </div>
-                      <div>
-                        <p>
-                          <a href={`/product/${item?.book_id}`} target="_blank">
-                            {item?.book_name}
-                          </a>
-                        </p>
-                        <p>{item?.author}</p>
-                      </div>
-                    </td>
-                    {/* Product price */}
-                    <td data-th="Price">
-                      {item?.sale === 0 ? (
-                        <div className="table-price">
-                          <p className="table-price__new">{item?.price}$</p>
-                        </div>
-                      ) : (
-                        <div className="table-price">
-                          <p className="table-price__new">
-                            {" "}
-                            {(
-                              Number(item?.price) *
-                              (1 - Number(item?.sale) / 100)
-                            ).toFixed(2)}
-                            $
-                          </p>
-                          <p className="table-price__old">{item?.price}</p>
-                          <p className="table-price__discount">
-                            -{item?.sale}%
-                          </p>
-                        </div>
-                      )}
-                    </td>
-                    {/* Product quantity */}
-                    <td data-th="Quantity">
-                      <div className="qty-input">
-                        <button
-                          className="qty-count qty-count--minus"
-                          data-action="minus"
-                          type="button"
-                          onClick={() =>
-                            decrementCount(item?.cart_id, item?.amount)
-                          }
-                        >
-                          -
-                        </button>
-                        <input
-                          className="product-qty"
-                          type="number"
-                          name="product-qty"
-                          min="0"
-                          max="100"
-                          value={item?.amount}
-                        ></input>
-                        <button
-                          className="qty-count qty-count--add"
-                          data-action="add"
-                          type="button"
-                          onClick={() => {
-                            incrementCount(item.cart_id, item.amount);
-                          }}
-                        >
-                          +
-                        </button>
-                      </div>
-                    </td>
-                    {/* Total value of 1 items */}
-                    <td data-th="Order Value">
-                      <p className="table-sumprice">
-                        {item?.sale === 0
-                          ? `${(item?.price * item.amount).toFixed(2)}$`
-                          : `${(
-                              Number(item?.price) *
-                              (1 - Number(item?.sale) / 100) *
-                              item?.amount
-                            ).toFixed(2)}$`}
-                      </p>
-                    </td>
+            {
+              data?.length ? 
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Order Value</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {data?.map((item, index) => (
+                    <tr key={item?.book_id}>
+                      {/* Delete button */}
+                      <td className="btn-delete">
+                        <i
+                          onClick={() => handleDeleteCartItem([item?.cart_id])}
+                          className="bdx-close"
+                        ></i>
+                      </td>
+                      {/* Product info */}
+                      <td data-th="Product">
+                        <div className="product-img shrink-0">
+                          <a href={`/product/${item?.book_id}`} target="_blank">
+                            <img src={item?.image} alt="img-banner"></img>
+                          </a>
+                        </div>
+                        <div>
+                          <p>
+                            <a href={`/product/${item?.book_id}`} target="_blank">
+                              {item?.book_name}
+                            </a>
+                          </p>
+                          <p>{item?.author}</p>
+                        </div>
+                      </td>
+                      {/* Product price */}
+                      <td data-th="Price">
+                        {item?.sale === 0 ? (
+                          <div className="table-price">
+                            <p className="table-price__new">{item?.price}$</p>
+                          </div>
+                        ) : (
+                          <div className="table-price">
+                            <p className="table-price__new">
+                              {" "}
+                              {(
+                                Number(item?.price) *
+                                (1 - Number(item?.sale) / 100)
+                              ).toFixed(2)}
+                              $
+                            </p>
+                            <p className="table-price__old">{item?.price}</p>
+                            <p className="table-price__discount">
+                              -{item?.sale}%
+                            </p>
+                          </div>
+                        )}
+                      </td>
+                      {/* Product quantity */}
+                      <td data-th="Quantity">
+                        <div className="qty-input">
+                          <button
+                            className="qty-count qty-count--minus"
+                            data-action="minus"
+                            type="button"
+                            onClick={() =>
+                              decrementCount(item?.cart_id, item?.amount)
+                            }
+                          >
+                            -
+                          </button>
+                          <input
+                            className="product-qty"
+                            type="number"
+                            name="product-qty"
+                            min="0"
+                            max="100"
+                            value={item?.amount}
+                          ></input>
+                          <button
+                            className="qty-count qty-count--add"
+                            data-action="add"
+                            type="button"
+                            onClick={() => {
+                              incrementCount(item.cart_id, item.amount);
+                            }}
+                          >
+                            +
+                          </button>
+                        </div>
+                      </td>
+                      {/* Total value of 1 items */}
+                      <td data-th="Order Value">
+                        <p className="table-sumprice">
+                          {item?.sale === 0
+                            ? `${(item?.price * item.amount).toFixed(2)}$`
+                            : `${(
+                                Number(item?.price) *
+                                (1 - Number(item?.sale) / 100) *
+                                item?.amount
+                              ).toFixed(2)}$`}
+                        </p>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              :
+              <div className="cart-empty">
+                <h2 className="mb-6">There is no item yet</h2>
+                <img src={cartEmpty2} alt="empty" />
+              </div>
+            }
           </div>
           <div className="md:w-full w-[25%] ms-auto">
             <div className="cart-info__bottom">

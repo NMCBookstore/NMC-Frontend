@@ -1,12 +1,11 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import Breadcrumb from "../../component/Breadcrumb";
+import { useNavigate } from "react-router-dom";
 import OrderBill from "../../component/OrderBill";
 import { selectCurrentUser } from "../../features/auth/authSlice";
 import { setAddressInfo, setNoteInfo } from "../../features/cart/cartSlice";
 import { useGetListAddressQuery } from "../../services/address/addressAPI";
-import toast from "react-hot-toast";
 
 const OrderInfo: React.FunctionComponent = () => {
   const pathAfterDomain = window.location.pathname;
@@ -44,7 +43,6 @@ const OrderInfo: React.FunctionComponent = () => {
   return (
     <div className="order-info mt-[76px]">
       <div className="container-nmc mx-auto">
-        <Breadcrumb></Breadcrumb>
         <div className="flex flex-wrap lg:mx-0 mx-[-12px]">
           <div className="md:w-full w-[50%] px-3 md:mb-6">
             <h1>Shipping Details</h1>

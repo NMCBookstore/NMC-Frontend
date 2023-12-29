@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { selectCurrentTotalCartValue } from "../../features/cart/cartSlice";
 import { Cart } from "../../interface/Cart";
 import { useDeleteCartItemMutation } from "../../services/cart/cartAPI";
+import { cartEmpty } from "../../assets/img";
 
 interface ChildProps {
   showCart: boolean;
@@ -68,7 +69,7 @@ const CartSidebar: React.FunctionComponent<ChildProps> = memo(({
                       </Dialog.Title>
                     </div>
                     <div className="mt-6 flex-1 px-4">
-                      {cartItem.map((item, index) => (
+                      { cartItem.length > 0 ? cartItem.map((item, index) => (
                         <div key={index} className="sidebar-cart__item">
                           <div className="sidebar-cart__item--action">
                             <button className="sidebar-cart__item--action--btn btn-delete">
@@ -123,7 +124,13 @@ const CartSidebar: React.FunctionComponent<ChildProps> = memo(({
                             </div>
                           )}
                         </div>
-                      ))}
+                      ))
+                      :
+                      <div className="cart-empty">
+                        <img src={cartEmpty} alt="empty" />
+                        <h2>There is no item yet</h2>
+                      </div>
+                      }
                     </div>
                     <div className="sidebar-cart__footer">
                       <div className="sidebar-cart__footer--bill">

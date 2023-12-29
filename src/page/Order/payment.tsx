@@ -1,12 +1,13 @@
 import { StripeCardElementOptions } from "@stripe/stripe-js";
 import { useState } from "react";
 import { jcb, mastercard, visa } from "../../assets/img";
-import Breadcrumb from "../../component/Breadcrumb";
 import OrderBill from "../../component/OrderBill";
 
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { selectCurrentUser } from "../../features/auth/authSlice";
 import {
   clearNoteAndAddressInfo,
   selectCurrentCardID,
@@ -14,12 +15,9 @@ import {
   selectCurrentUserAddress,
   selectCurrentUserNote,
 } from "../../features/cart/cartSlice";
+import { User } from "../../interface/User";
 import { useCreateOrderMutation } from "../../services/order/orderAPI";
 import PaypalCheckoutButton from "./PaypalCheckoutButton";
-import { useNavigate } from "react-router-dom";
-import { selectCurrentUser } from "../../features/auth/authSlice";
-import { User } from "../../interface/User";
-import { useDispatch } from "react-redux";
 
 const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
   iconStyle: "solid",
@@ -112,7 +110,6 @@ const OrderPayment: React.FunctionComponent = () => {
   return (
     <div className="order-info order-payment mt-[76px]">
       <div className="container-nmc mx-auto">
-        <Breadcrumb></Breadcrumb>
         <div className="flex flex-wrap lg:mx-0 mx-[-12px]">
           <div className="md:w-full w-[50%] px-3 md:mb-6">
             <div className="mb-10">

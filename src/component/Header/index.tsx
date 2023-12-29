@@ -202,6 +202,7 @@ const Header: React.FunctionComponent = () => {
                       width: "22px",
                       height: "22px",
                       borderRadius: "50%",
+                      objectFit:"cover"
                     }}
                     src={user?.image}
                   ></img>

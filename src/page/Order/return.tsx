@@ -1,13 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import OrderBill from "../../component/OrderBill";
-import Breadcrumb from "../../component/Breadcrumb";
-import { orderReturn } from "../../assets/img";
-import { useSelector } from "react-redux";
-import { selectCurrentUser } from "../../features/auth/authSlice";
 import toast from "react-hot-toast";
-import { useGetAllOrderQuery } from "../../services/order/orderAPI";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { orderReturn } from "../../assets/img";
 import OrderBillCompleted from "../../component/OrderBillCompleted";
+import { selectCurrentUser } from "../../features/auth/authSlice";
+import { useGetAllOrderQuery } from "../../services/order/orderAPI";
 
 const OrderReturn: React.FunctionComponent = () => {
   const pathAfterDomain = window.location.pathname;
@@ -41,7 +39,6 @@ const OrderReturn: React.FunctionComponent = () => {
   return (
     <div className="order-info order-payment order-return mt-[76px]">
       <div className="container-nmc mx-auto">
-        <Breadcrumb></Breadcrumb>
         <div className="w-full flex justify-center mb-8 order-return__img">
           <img className="" src={orderReturn} alt="orderReturn" />
         </div>
