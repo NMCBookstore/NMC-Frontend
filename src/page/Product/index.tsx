@@ -34,6 +34,7 @@ const ProductList: React.FunctionComponent = () => {
     | "max_price"
     | "text"
     | "genres_id"
+    | "name_sort_asc"
     | "rating"
   > = {
     page_id: !isNaN(parseInt(searchParams.get("page_id") ?? "")) // Provide a default value using the nullish coalescing operator
@@ -55,17 +56,21 @@ const ProductList: React.FunctionComponent = () => {
   }
 
   if (searchParams.get("genres_id") !== null) {
-    searchInfo.genres_id = parseFloat(searchParams.get("genres_id") ?? "");
+    searchInfo.genres_id = parseInt(searchParams.get("genres_id") ?? "");
   }
 
   if (searchParams.get("rating") !== null) {
     searchInfo.rating = parseInt(searchParams.get("rating") ?? "");
   }
 
-  const { data: allProduct, isLoading: allProductLoading } =
-    useGetSearchQuery(searchInfo);
+  if (searchParams.get("name_sort_asc") !== null) {
+    searchInfo.name_sort_asc = searchParams.get("name_sort_asc") ?? "";
+  }
 
-  console.log(allProduct);
+  const { data: allProduct, isLoading: allProductLoading } = useGetSearchQuery(
+    searchInfo,
+    // { refetchOnMountOrArgChange: true }
+  );
 
   const [isDataReady, setIsDataReady] = useState(false);
 
@@ -79,6 +84,7 @@ const ProductList: React.FunctionComponent = () => {
     searchParams.get("genres_id") ? searchParams.get("genres_id") : 0
   );
   const [rating, setRating] = useState(0);
+  const [sortName, setSortName] = useState(false);
 
   useEffect(() => {
     if (!isLoading && genresData.length > 0) {
@@ -269,7 +275,15 @@ const ProductList: React.FunctionComponent = () => {
             <div className="product-list__handle-sidebar__sidebar__item">
               <h3>name</h3>
               <div className="product-list__handle-sidebar__sidebar__item__name">
-                <div>
+                <div
+                  onClick={() => {
+                    searchInfo["page_id"] = 1;
+                    // setRating(5);
+                    searchInfo.name_sort_asc = "true";
+                    setSearchParams(searchInfo as any);
+                    console.log(searchInfo)
+                  }}
+                >
                   <label>
                     <input
                       type="radio"
@@ -280,7 +294,14 @@ const ProductList: React.FunctionComponent = () => {
                     Name A-Z
                   </label>
                 </div>
-                <div>
+                <div
+                  onClick={() => {
+                    searchInfo["page_id"] = 1;
+                    searchInfo.name_sort_asc = "false";
+                    setSearchParams(searchInfo as any);
+                    console.log("searchInfo2",searchInfo)
+                  }}
+                >
                   <label>
                     <input type="radio" value="option2" name="sortName" />
                     Name Z-A
@@ -340,7 +361,7 @@ const ProductList: React.FunctionComponent = () => {
                   className="flex"
                   onClick={() => {
                     searchInfo["page_id"] = 1;
-                    setRating(5);
+                    // setRating(5);
                     if (searchInfo.hasOwnProperty("rating")) {
                       delete searchInfo.rating;
                     } else {
@@ -460,7 +481,7 @@ const ProductList: React.FunctionComponent = () => {
                   className="flex"
                   onClick={() => {
                     searchInfo["page_id"] = 1;
-                    setRating(1);
+                    // setRating(1);
                     if (searchInfo.hasOwnProperty("rating")) {
                       delete searchInfo.rating;
                     } else {

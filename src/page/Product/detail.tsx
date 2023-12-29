@@ -97,7 +97,7 @@ const ProductDetail: React.FunctionComponent = () => {
     <div className="product-detail bg-[#F9EEDE] mt-[76px]">
       <Marquee></Marquee>
       <div className="mx-auto px-3 container-nmc">
-        <BreadcrumbConponent></BreadcrumbConponent>
+        {/* <BreadcrumbConponent></BreadcrumbConponent> */}
       </div>
       {!isLoading && (
         <section className="mx-auto px-3 container-nmc pt-8 pb-[100px]">

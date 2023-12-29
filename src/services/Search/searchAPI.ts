@@ -13,6 +13,7 @@ const search = book.injectEndpoints({
         min_price?: number;
         max_price?: number;
         rating?: number;
+        name_sort_asc?: string;
       }
     >({
       query: ({
@@ -23,25 +24,25 @@ const search = book.injectEndpoints({
         min_price,
         max_price,
         rating,
+        name_sort_asc,
       }) => ({
         url: `searchs?page_id=${page_id}&page_size=${page_size}${
           text ? "&text=" + text : ""
         }${genres_id ? "&genres_id=" + genres_id : ""}${
           min_price ? "&min_price=" + min_price : ""
         }${max_price ? "&max_price=" + max_price : ""}${
-          rating ? "&rating=" + rating : ""
-        }`,
+          name_sort_asc ? "&name_sort_asc=" + name_sort_asc : ""
+        }${rating ? "&rating=" + rating : ""}`,
       }),
-      // transformResponse: (response: AllProduct) => {
-      //   const productNotDeleted = response.books.filter(
-      //     (item) => !item.is_deleted
-      //   );
-      //   console.log(productNotDeleted)
-      //   return {
-      //     ...response,
-      //     books: productNotDeleted,
-      //   };
-      // },
+      transformResponse: (response: AllProduct) => {
+        const productNotDeleted = response?.books.filter(
+          (item) => !item.is_deleted
+        );
+        return {
+          ...response,
+          books: productNotDeleted,
+        };
+      },
     }),
   }),
   overrideExisting: false,
