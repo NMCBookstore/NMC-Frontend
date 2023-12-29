@@ -27,5 +27,6 @@ export interface AllProduct {
   min_price?: number;
   max_price?: number;
   rating?: number;
+  name_sort_asc?: string;
   books: Product[];
 }

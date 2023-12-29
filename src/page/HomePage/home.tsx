@@ -84,7 +84,19 @@ const HomePage: React.FunctionComponent = () => {
   const { data } = useGetSubGenresQuery(id);
   const { data: getNewProduct = [] } = useGetTopNewProductQuery();
   const { data: getBookByGenres = [] } = useGetBookByGenresQuery({
-    genre_id: 2,
+    genre_id: 981,
+    limit: 6,
+  });
+  const { data: getBookByGenres3 = [] } = useGetBookByGenresQuery({
+    genre_id: 4,
+    limit: 6,
+  });
+  const { data: getBookByGenres4 = [] } = useGetBookByGenresQuery({
+    genre_id: 528,
+    limit: 6,
+  });
+  const { data: getBookByGenres5 = [] } = useGetBookByGenresQuery({
+    genre_id: 15,
     limit: 6,
   });
   const { data: getTopBestProduct = [] } = useGetTopBestProductQuery();
@@ -242,7 +254,7 @@ const HomePage: React.FunctionComponent = () => {
       </div>
       <div className="mx-auto px-3 container-nmc productList-carousel md:mb-[40px] mb-[100px]">
         <div className="flex mb-6 justify-between">
-          <h2 className="text-primary">Fiction</h2>
+          <h2 className="text-primary">Thrillers</h2>
           <p className="text-primary flex items-center">
             {" "}
             <span>View all</span>{" "}
@@ -261,7 +273,7 @@ const HomePage: React.FunctionComponent = () => {
       </div>
       <div className="mx-auto px-3 container-nmc productList-carousel md:mb-[40px] mb-[100px]">
         <div className="flex mb-6 justify-between">
-          <h2 className="text-primary">Non-Fiction</h2>
+          <h2 className="text-primary">Bedtime</h2>
           <p className="text-primary flex items-center">
             {" "}
             <span>View all</span>{" "}
@@ -269,7 +281,7 @@ const HomePage: React.FunctionComponent = () => {
           </p>
         </div>
         <Slider {...productListSettings}>
-          {getBookByGenres.map((item) => (
+          {getBookByGenres3.map((item) => (
             <ProductItem
               key={item?.id}
               itemDetail={item}
@@ -280,7 +292,7 @@ const HomePage: React.FunctionComponent = () => {
       </div>
       <div className="mx-auto px-3 container-nmc productList-carousel dots-bottom md:mb-[40px] mb-[60px]">
         <div className="flex mb-6 justify-between">
-          <h2 className="text-primary">Children’s</h2>
+          <h2 className="text-primary">Horror</h2>
           <p className="text-primary flex items-center">
             {" "}
             <span>View all</span>{" "}
@@ -288,7 +300,7 @@ const HomePage: React.FunctionComponent = () => {
           </p>
         </div>
         <Slider {...productListSettings}>
-          {getBookByGenres.map((item) => (
+          {getBookByGenres4.map((item) => (
             <ProductItem
               key={item?.id}
               itemDetail={item}

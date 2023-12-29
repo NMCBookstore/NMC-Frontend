@@ -29,7 +29,7 @@ const ProductPagination: React.FunctionComponent<PaginationProps> = memo(
     };
 
     const renderPagination = () => {
-      const paginationRange = 2; // Number of pagination buttons
+      const paginationRange = 4; // Number of pagination buttons
 
       const pages = [];
       let startPage = Math.max(1, current - paginationRange);
