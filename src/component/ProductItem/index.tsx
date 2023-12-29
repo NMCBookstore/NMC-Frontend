@@ -114,13 +114,13 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
             {props.itemDetail.sale === 0 ? (
               <div>
                 <p className="product-item__control__price">
-                  ${props.itemDetail?.price}
+                  ${props.itemDetail?.price.toFixed(2)}
                 </p>
               </div>
             ) : (
               <div>
                 <p className="product-item__control__old-price">
-                  ${props.itemDetail?.price}
+                  ${props.itemDetail?.price.toFixed(2)}
                 </p>
                 <p className="product-item__control__price">
                   {(

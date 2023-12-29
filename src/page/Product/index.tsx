@@ -12,6 +12,14 @@ import ProductPagination from "../../component/Pagination/AllProductPagination/P
 import { Genres } from "../../interface/Genres";
 import { useGetSearchQuery } from "../../services/Search/searchAPI";
 import { useGetGenresQuery } from "../../services/genres/genresAPI";
+import {
+  useGetRcmBookForUserQuery,
+  useGetRcmBookQuery,
+} from "../../services/product/productAPI";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../features/auth/authSlice";
+import Slider from "react-slick";
+import { productListSettings } from "../../common/CarouselSetting";
 
 interface PriceFilter {
   key: string;
@@ -26,6 +34,8 @@ interface OrderFilter {
 }
 
 const ProductList: React.FunctionComponent = () => {
+  const user = useSelector(selectCurrentUser);
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   let searchInfo: Pick<
@@ -70,11 +80,15 @@ const ProductList: React.FunctionComponent = () => {
   }
 
   const { data: allProduct, isLoading: allProductLoading } = useGetSearchQuery(
-    searchInfo,
+    searchInfo
     // { refetchOnMountOrArgChange: true }
   );
 
   const [isDataReady, setIsDataReady] = useState(false);
+
+  const { data: rcmUser, isLoading: rcmUserLoading } = useGetRcmBookForUserQuery({
+    username: String(user?.username),
+  });
 
   const { data: genresData = [], isLoading } = useGetGenresQuery();
   const [genres, setGenres] = useState<Genres[]>([]);
@@ -87,7 +101,6 @@ const ProductList: React.FunctionComponent = () => {
   );
   const [rating, setRating] = useState(0);
   const [activeSort, setActiveSort] = useState([0, 0, 0, 0]);
-
 
   useEffect(() => {
     if (!isLoading && genresData.length > 0) {
@@ -127,7 +140,7 @@ const ProductList: React.FunctionComponent = () => {
     setSearchParams(searchInfo as any);
   };
 
-  const handlePriceChange = (item: PriceFilter,index: number) => {
+  const handlePriceChange = (item: PriceFilter, index: number) => {
     const newSearchInfo = { ...searchInfo };
 
     if (item.key === "none") {
@@ -137,7 +150,7 @@ const ProductList: React.FunctionComponent = () => {
       newSearchInfo.min_price = item?.minPrice;
       newSearchInfo.max_price = item?.maxPrice;
     }
-    setActiveSort(prevState => {
+    setActiveSort((prevState) => {
       const newState = [...prevState]; // Tạo một bản sao mới của state hiện tại
       newState[0] = index; // Thay đổi giá trị tại vị trí index
       return newState; // Trả về state mới
@@ -146,12 +159,12 @@ const ProductList: React.FunctionComponent = () => {
   };
 
   const handleStateChange = (stateValue: number, index: number) => {
-    setActiveSort(prevState => {
+    setActiveSort((prevState) => {
       const newState = [...prevState]; // Tạo một bản sao mới của state hiện tại
       newState[stateValue] = index; // Thay đổi giá trị tại vị trí index
       return newState; // Trả về state mới
     });
-  }
+  };
 
   const handlePagination = (pageNum: number, pageSize: number) => {
     searchInfo["page_id"] = pageNum;
@@ -294,9 +307,14 @@ const ProductList: React.FunctionComponent = () => {
                       value={item.value}
                       name="sortPrice"
                       checked={index === activeSort[0] ? true : false}
-                      onClick={() => handlePriceChange(item,index)}
+                      onClick={() => handlePriceChange(item, index)}
                     />
-                    <label htmlFor={`#sortPrice-${item.key}`} onClick={() => handlePriceChange(item,index)}>{item.value}</label>
+                    <label
+                      htmlFor={`#sortPrice-${item.key}`}
+                      onClick={() => handlePriceChange(item, index)}
+                    >
+                      {item.value}
+                    </label>
                   </div>
                 ))}
               </div>
@@ -311,7 +329,7 @@ const ProductList: React.FunctionComponent = () => {
                       // setRating(5);
                       searchInfo.name_sort_asc = "true";
                       setSearchParams(searchInfo as any);
-                      handleStateChange(1,index);
+                      handleStateChange(1, index);
                     }}
                   >
                     <label>
@@ -348,52 +366,50 @@ const ProductList: React.FunctionComponent = () => {
             <div className="product-list__handle-sidebar__sidebar__item">
               <h3>rating</h3>
               <div className="product-list__handle-sidebar__sidebar__item__rate">
-              {rateFilter.map((item, index) => (
-                <div
-                  className="flex"
-                  onClick={() => {
-                    if(Number(item.value) === 0){
-                      delete searchInfo.rating;
-                      handleStateChange(3,index);
-                    }
-                    else{
-                      searchInfo["page_id"] = 1;
-                      if (searchInfo.hasOwnProperty("rating")) {
+                {rateFilter.map((item, index) => (
+                  <div
+                    className="flex"
+                    onClick={() => {
+                      if (Number(item.value) === 0) {
                         delete searchInfo.rating;
+                        handleStateChange(3, index);
                       } else {
-                        searchInfo.rating = Number(item.value);
+                        searchInfo["page_id"] = 1;
+                        if (searchInfo.hasOwnProperty("rating")) {
+                          delete searchInfo.rating;
+                        } else {
+                          searchInfo.rating = Number(item.value);
+                        }
+                        setSearchParams(searchInfo as any);
+                        handleStateChange(3, index);
                       }
-                      setSearchParams(searchInfo as any);
-                      handleStateChange(3,index);
-                    }
-                  }}
-                >
-                  <input
-                    className="mr-2"
-                    type="radio"
-                    name="star-option"
-                    checked={index === activeSort[3] ? true : false}
-                  />
-                  <label>
-                    <span>{item.key}</span>
-                    { 
-                      Number(item.value) > 0 && 
-                      <span>
-                        {[...Array(5)].map((_, index) => (
-                        <i
-                          key={index}
-                          className={
-                            index < Number(item.value)
-                              ? "bdx-start-fill"
-                              : "bdx-star"
-                          }
-                        ></i>
-                        ))}
-                      </span>
-                    }
-                  </label>
-                </div>
-              ))}
+                    }}
+                  >
+                    <input
+                      className="mr-2"
+                      type="radio"
+                      name="star-option"
+                      checked={index === activeSort[3] ? true : false}
+                    />
+                    <label>
+                      <span>{item.key}</span>
+                      {Number(item.value) > 0 && (
+                        <span>
+                          {[...Array(5)].map((_, index) => (
+                            <i
+                              key={index}
+                              className={
+                                index < Number(item.value)
+                                  ? "bdx-start-fill"
+                                  : "bdx-star"
+                              }
+                            ></i>
+                          ))}
+                        </span>
+                      )}
+                    </label>
+                  </div>
+                ))}
                 {/* <div
                   className="flex"
                   onClick={() => {
@@ -595,7 +611,8 @@ const ProductList: React.FunctionComponent = () => {
                         <Combobox.Option
                           key={item.id}
                           className={({ active }) =>
-                            `relative cursor-default select-none py-2 px-6 rounded-xl ${active ? "bg-primary text-white" : "text-primary"
+                            `relative cursor-default select-none py-2 px-6 rounded-xl ${
+                              active ? "bg-primary text-white" : "text-primary"
                             }`
                           }
                           value={item}
@@ -604,8 +621,9 @@ const ProductList: React.FunctionComponent = () => {
                           {({ selected, active }) => (
                             <>
                               <span
-                                className={`block leading-[24px] truncate ${selected ? "font-semibold" : "font-medium"
-                                  }`}
+                                className={`block leading-[24px] truncate ${
+                                  selected ? "font-semibold" : "font-medium"
+                                }`}
                               >
                                 {item.name}
                               </span>
@@ -635,8 +653,9 @@ const ProductList: React.FunctionComponent = () => {
             </div>
           </div>
           <div
-            className={`row gap-y-[24px] sm:gap-y-[8px] ${allProduct?.books ? "" : "w-full"
-              }`}
+            className={`row gap-y-[24px] sm:gap-y-[8px] ${
+              allProduct?.books ? "" : "w-full"
+            }`}
           >
             {/* here is all item */}
             {allProductLoading ? (
@@ -675,15 +694,15 @@ const ProductList: React.FunctionComponent = () => {
             You may also like
           </h2>
           <div className="product-detail__recommend__list">
-            {/* <Slider {...productListSettings}>
-              {productList2.map((item) => (
+            <Slider {...productListSettings}>
+              {!rcmUserLoading && rcmUser?.map((item) => (
                 <ProductItem
                   key={item?.id}
                   itemDetail={item}
                   wishlistItem={wishlist}
                 ></ProductItem>
               ))}
-            </Slider> */}
+            </Slider>
           </div>
         </div>
       </section>
