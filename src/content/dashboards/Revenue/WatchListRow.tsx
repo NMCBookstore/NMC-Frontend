@@ -18,6 +18,11 @@ import type { ApexOptions } from 'apexcharts';
 import TrendingDownTwoToneIcon from '@mui/icons-material/TrendingDownTwoTone';
 import TrendingUpTwoToneIcon from '@mui/icons-material/TrendingUpTwoTone';
 import TrendingFlatTwoToneIcon from '@mui/icons-material/TrendingFlatTwoTone';
+import { useListTotalUserNumberQuery } from 'src/services/user/userAPI';
+import { useEffect, useState } from 'react';
+import { useGetGenresQuery } from 'src/services/genres/genresAPI';
+import { useGetAllProductsQuery } from 'src/services/product/productAPI';
+import { useGetAllOrderQuery } from 'src/services/order/orderAPI';
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -50,92 +55,30 @@ const AvatarWrapper = styled(Avatar)(
 function WatchListRow() {
   const theme = useTheme();
 
-  const Box1Options: ApexOptions = {
-    chart: {
-      animations: {
-        enabled: false
-      },
-      background: 'transparent',
-      toolbar: {
-        show: false
-      },
-      sparkline: {
-        enabled: true
-      },
-      zoom: {
-        enabled: false
-      }
-    },
-    labels: [
-      'Monday',
-      'Tueday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday'
-    ],
-    stroke: {
-      curve: 'smooth',
-      colors: [theme.colors.primary.main],
-      width: 2
-    },
-    yaxis: {
-      show: false
-    },
-    colors: [theme.colors.primary.main],
-    grid: {
-      padding: {
-        top: 10,
-        right: 5,
-        bottom: 10,
-        left: 5
-      }
-    },
-    theme: {
-      mode: theme.palette.mode
-    },
-    tooltip: {
-      fixed: {
-        enabled: true
-      },
-      x: {
-        show: true
-      },
-      y: {
-        title: {
-          formatter: function () {
-            return 'Price: $';
-          }
-        }
-      },
-      marker: {
-        show: false
-      }
-    }
-  };
+  const [numberUser, setNumberUser] = useState<number>(0);
+  const [numberGenres, setNumberGenres] = useState<number>(0);
+  const [numberBooks, setNumberBooks] = useState<number>(0);
+  const [numberOrders, setNumberOrders] = useState<number>(0);
 
-  const Box1Data = [
-    {
-      name: 'Bitcoin',
-      data: [55.701, 57.598, 48.607, 46.439, 58.755, 46.978, 58.16]
-    }
-  ];
+  const { data: totalUser } = useListTotalUserNumberQuery();
+  const { data: totalGenres } = useGetGenresQuery();
+  const { data: totalBooks } = useGetAllProductsQuery();
+  const { data: totalOrders } = useGetAllOrderQuery();
 
-  const Box2Data = [
-    {
-      name: 'Ethereum',
-      data: [1.854, 1.873, 1.992, 2.009, 1.909, 1.942, 1.884]
-    }
-  ];
+  useEffect(() => {
+    setNumberUser(totalUser?.length);
+    setNumberGenres(totalGenres?.length);
+    setNumberBooks(totalBooks?.length);
+    setNumberOrders(totalOrders?.length);
+  }, [totalUser, totalGenres, numberBooks, numberOrders]);
 
-  const Box3Data = [
-    {
-      name: 'Cardano',
-      data: [13, 16, 14, 18, 8, 11, 20]
-    }
-  ];
-
+  console.log(
+    'totalUser: ',
+    numberUser,
+    numberGenres,
+    numberBooks,
+    numberOrders
+  );
   return (
     <Card>
       <Stack
@@ -187,7 +130,7 @@ function WatchListRow() {
                   pr: 1
                 }}
               >
-                1500
+                {numberUser}
               </Typography>
             </Box>
           </Box>
@@ -235,7 +178,7 @@ function WatchListRow() {
                   pr: 1
                 }}
               >
-                1500
+                {numberGenres}
               </Typography>
             </Box>
           </Box>
@@ -283,7 +226,7 @@ function WatchListRow() {
                   pr: 1
                 }}
               >
-                5600
+                {numberUser}
               </Typography>
             </Box>
           </Box>
@@ -331,7 +274,7 @@ function WatchListRow() {
                   pr: 1
                 }}
               >
-                1200
+                {numberOrders}
               </Typography>
             </Box>
           </Box>
@@ -339,16 +282,6 @@ function WatchListRow() {
         </Box>
       </Stack>
       <Divider />
-      {/* <CardActions
-        disableSpacing
-        sx={{
-          p: 3,
-          display: 'flex',
-          justifyContent: 'center'
-        }}
-      >
-        <Button variant="outlined">View more assets</Button>
-      </CardActions> */}
     </Card>
   );
 }

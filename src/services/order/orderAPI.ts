@@ -10,9 +10,14 @@ const order = book.injectEndpoints({
       query: ({ page_id, page_size }) => ({
         url: `admin/orders?page_id=${page_id}&page_size=${page_size}`
       })
+    }),
+    getAllOrder: builder.query<Order[], void>({
+      query: () => ({
+        url: `/admin/orders/all_orders`
+      })
     })
   }),
   overrideExisting: false
 });
 
-export const { useGetListOrderQuery } = order;
+export const { useGetListOrderQuery, useGetAllOrderQuery } = order;

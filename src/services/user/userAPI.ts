@@ -7,9 +7,17 @@ const user = book.injectEndpoints({
       query: () => ({
         url: `admin/users/`
       })
+    }),
+    listTotalUserNumber: builder.query<User[], void>({
+      query: () => {
+        return {
+          method: 'GET',
+          url: `admin/users/`
+        };
+      }
     })
   }),
   overrideExisting: false
 });
 
-export const { useListUserQuery } = user;
+export const { useListUserQuery, useListTotalUserNumberQuery } = user;

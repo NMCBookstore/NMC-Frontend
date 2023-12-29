@@ -14,7 +14,7 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import React, { FC, useEffect, useState } from 'react';
 import shortid from 'shortid';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { Editor } from '@tinymce/tinymce-react';
+import { Editor, IAllProps } from '@tinymce/tinymce-react';
 import { useGetGenresQuery } from 'src/services/genres/genresAPI';
 import { Genres } from 'src/models/Genres';
 import {
@@ -51,6 +51,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
   const user = useSelector(selectCurrentUser);
   const [openAdd, setOpenAdd] = React.useState(false);
   const handleOpenAdd = () => {
+    console.log(bookId);
     setOpenAdd(true);
   };
   const handleCloseAdd = () => setOpenAdd(false);
@@ -67,16 +68,16 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
   const [bookInfo, setBookInfo] = useState(data);
 
   useEffect(() => {
-    if (!isLoading && !bookLoading && genresData.length > 0) {
+    if (!isLoading && !bookLoading) {
       setGenres(genresData);
     }
-    const des = bookInfo?.description
-      .replace(/\\n/g, '<br/>')
-      .replace(/\\/g, '');
+
+    setGenresID(data?.genres.map((item) => item.id));
     setBookInfo(data);
     setSelectedImage(data?.image);
+    const des = data?.description.replace(/\\n/g, '<br/>').replace(/\\/g, '');
     setEditorState(des);
-  }, [bookLoading, isLoading, genresData]);
+  }, [bookLoading, isLoading, data, genresData]);
 
   const filesizes = (bytes, decimals = 2) => {
     if (bytes === 0) return '0 Bytes';
@@ -125,8 +126,6 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
 
   const FileUploadSubmit = async (e) => {
     e.preventDefault();
-
-    // form reset on submit
     e.target.reset();
     if (selectedFile.length > 0) {
       setSelectedFiles([]);
@@ -156,7 +155,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
     }
   };
 
-  const handleEditorChange = (content, editor) => {
+  const handleEditorChange = (content) => {
     setEditorState(content);
   };
 
@@ -188,8 +187,10 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
     formData.append('description', editorState);
     formData.append('author', bookInfo?.author);
     formData.append('publisher', bookInfo?.publisher);
+    formData.append('sale', String(bookInfo?.sale));
     formData.append('quantity', String(bookInfo?.quantity));
-    genresID.forEach((item) => {
+
+    genresID?.forEach((item) => {
       formData.append('genres_id', String(item));
     });
 
@@ -197,6 +198,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
       console.log(key, value);
     });
 
+    console.log('genresID', genresID);
     const v = await updateBook(formData);
     if ('data' in v) {
       toast.success('Book updated !');
@@ -356,7 +358,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     label="Book Name"
                     placeholder="Name of the book"
                     fullWidth
-                    value={bookInfo?.name}
+                    defaultValue={bookInfo?.name}
                     onChange={(e) =>
                       setBookInfo({ ...bookInfo, name: e.target.value })
                     }
@@ -393,7 +395,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     type="number"
                     placeholder="Amount of book"
                     fullWidth
-                    value={bookInfo?.quantity}
+                    defaultValue={bookInfo?.quantity}
                     onChange={(e) =>
                       setBookInfo({
                         ...bookInfo,
@@ -424,7 +426,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                         ? bookInfo.genres.map((item) => genres[item.id - 1])
                         : []
                     }
-                    onChange={(event, option: any[]) =>
+                    onChange={(event, option: Genres[]) =>
                       handleGenresChange(event, option)
                     }
                     fullWidth
@@ -438,7 +440,13 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     type="number"
                     placeholder="Price of book"
                     fullWidth
-                    value={bookInfo?.price}
+                    defaultValue={bookInfo?.price}
+                    onChange={(e) =>
+                      setBookInfo({
+                        ...bookInfo,
+                        price: Number(e.target.value)
+                      })
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -448,7 +456,13 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     type="number"
                     placeholder="Sale percent"
                     fullWidth
-                    value={bookInfo?.sale}
+                    defaultValue={bookInfo?.sale}
+                    onChange={(e) =>
+                      setBookInfo({
+                        ...bookInfo,
+                        sale: Number(e.target.value)
+                      })
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -469,7 +483,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                           Promise.reject('See docs to implement AI Assistant')
                         )
                     }}
-                    initialValue={bookInfo?.description}
+                    initialValue={editorState}
                     onEditorChange={handleEditorChange}
                   />
                 </Grid>

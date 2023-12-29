@@ -12,12 +12,9 @@ const product = book.injectEndpoints({
       }),
       invalidatesTags: ['Product']
     }),
-    getAllProducts: builder.query<
-      AllProduct,
-      { page_id: number; page_size: number }
-    >({
-      query: ({ page_id, page_size }) => ({
-        url: `books/?page_id=${page_id}&page_size=${page_size}`
+    getAllProducts: builder.query<Product[], void>({
+      query: () => ({
+        url: `/admin/books/all_books`
       }),
       providesTags: ['Product']
     }),

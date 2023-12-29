@@ -11,6 +11,8 @@ const Revenue = lazy(() => import('src/content/dashboards/Revenue'));
 const Books = lazy(() => import('src/content/dashboards/Books'));
 const Genres = lazy(() => import('src/content/dashboards/Genres'));
 const RequireAuth = lazy(() => import('src/features/auth/RequireAuth'));
+const Order = lazy(() => import('src/content/dashboards/Order'));
+const Reviews = lazy(() => import('src/content/dashboards/Reviews'));
 
 // Status
 
@@ -22,7 +24,7 @@ const routes: RouteObject[] = [
     element: <LoginPage />
   },
   {
-    path: '',
+    path: '/',
     element: <SidebarLayout />,
     children: [
       {
@@ -33,13 +35,18 @@ const routes: RouteObject[] = [
             element: <Revenue />
           },
           {
-            path: 'books',
+            path: '/books',
             element: <Books />
           },
           {
-            path: 'genres',
+            path: '/genres',
             element: <Genres />
           },
+          {
+            path: '/orders',
+            element: <Order />
+          },
+          { path: '/reviews', element: <Reviews /> },
           {
             path: '*',
             element: <Status404 />

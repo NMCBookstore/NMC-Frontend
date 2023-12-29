@@ -138,8 +138,8 @@ function RecentOrders() {
     }
   ];
 
-  const { data } = useGetListOrderQuery({ page_id: 1, page_size: 24 });
-  console.log('order: ', data);
+  // const { data } = useGetListOrderQuery({ page_id: 1, page_size: 24 });
+  // console.log('order: ', data);
   return (
     <Card>
       <RecentOrdersTable cryptoOrders={cryptoOrders} />
