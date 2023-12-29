@@ -85,9 +85,12 @@ const ProductDetail: React.FunctionComponent = () => {
     if (element) {
       const height = showFullContent.current ? element.offsetHeight : 0;
       const content = document.getElementById("showMain") as HTMLElement;
-      const btnShow = document.getElementById("btnShow") as HTMLElement;
+      const btnShow = document.getElementById("btnShow") as HTMLButtonElement;
       content.style.setProperty("max-height", `${height}px`);
       btnShow.style.setProperty("opacity", `0`);
+      setTimeout(() => {
+        btnShow.style.setProperty("display", 'none');
+      }, 300);
     }
   };
   return (

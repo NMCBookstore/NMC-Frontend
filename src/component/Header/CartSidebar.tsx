@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
+import React, { Fragment, memo } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectCurrentTotalCartValue } from "../../features/cart/cartSlice";
@@ -12,7 +12,7 @@ interface ChildProps {
   cartItem: Cart[];
 }
 
-const CartSidebar: React.FunctionComponent<ChildProps> = ({
+const CartSidebar: React.FunctionComponent<ChildProps> = memo(({
   showCart,
   setshowCart,
   cartItem,
@@ -160,6 +160,6 @@ const CartSidebar: React.FunctionComponent<ChildProps> = ({
       </Dialog>
     </Transition.Root>
   );
-};
+});
 
 export default CartSidebar;
