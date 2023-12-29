@@ -70,7 +70,7 @@ function WatchListRow() {
     setNumberGenres(totalGenres?.length);
     setNumberBooks(totalBooks?.length);
     setNumberOrders(totalOrders?.length);
-  }, [totalUser, totalGenres, numberBooks, numberOrders]);
+  }, [totalUser, totalGenres, numberBooks, totalOrders]);
 
   console.log(
     'totalUser: ',
