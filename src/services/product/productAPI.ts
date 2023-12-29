@@ -52,6 +52,16 @@ const product = book.injectEndpoints({
       //   return productNotDeleted;
       // },
     }),
+    getRcmBook: builder.query<Product[], { name: string; size: number }>({
+      query: ({ name, size }) => ({
+        url: `/books/recommend?name${name}=&size=${size}`,
+      }),
+    }),
+    getRcmBookForUser: builder.query<Product[], { username: string }>({
+      query: ({ username }) => ({
+        url: `/just_for_you?username=${username}`,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -62,4 +72,6 @@ export const {
   useGetAllProductsQuery,
   useGetBookByGenresQuery,
   useGetTopBestProductQuery,
+  useGetRcmBookQuery,
+  useGetRcmBookForUserQuery,
 } = product;
