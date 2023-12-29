@@ -64,7 +64,7 @@ const ProductDetail: React.FunctionComponent = () => {
   const [addToCart] = useAddToCartMutation();
 
   const { data: rcm = [], isLoading: isRcmLoading } = useGetRcmBookQuery({
-    name: String(books?.name),
+    name: String(bookData?.name),
     size: 6,
   });
 
