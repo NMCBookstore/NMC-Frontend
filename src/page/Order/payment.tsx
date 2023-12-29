@@ -188,7 +188,7 @@ const OrderPayment: React.FunctionComponent = () => {
                       <span className="input-group-text align-items-start">
                         <i className="bdx-location inline-flex items-center"></i>
                       </span>
-                      <p className="form-control">Address</p>
+                      <p className="form-control">{userAddress}</p>
                     </div>
                   </div>
                   <div className="w-full">

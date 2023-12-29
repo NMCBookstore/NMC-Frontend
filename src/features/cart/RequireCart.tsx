@@ -6,7 +6,7 @@ import { selectCurrentCartProduct } from "./cartSlice";
 const RequireCart = () => {
   const totalInCart = useSelector(selectCurrentCartProduct);
 
-  const numberItem = totalInCart.length;
+  const numberItem = totalInCart?.length;
 
   const location = useLocation();
 

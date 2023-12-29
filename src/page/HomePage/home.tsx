@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Slider from "react-slick";
 
@@ -41,6 +41,9 @@ import NotiHome from "../../component/NotiHome";
 const HomePage: React.FunctionComponent = () => {
   const banner = [bannerImg, logospkt, logoclcspkt, logo];
   const midlebanner = [midleBanner, midleBanner, midleBanner];
+
+  const navigate = useNavigate()
+
   const cate: categoryItem[] = [
     {
       name: "Shop all",
@@ -209,17 +212,17 @@ const HomePage: React.FunctionComponent = () => {
               <i className="bdx-like ml-2 text-accent inline-flex items-center"></i>{" "}
             </h2>
             <div className="lg:hidden">
-              <span className="cursor-pointer px-6 border-r border-[#BFBFBF] border-solid font-semibold text-primary relative before:absolute before:bottom-[-10%] before:left-[50%] before:h-0.5 before:translate-x-[-50%] before:w-[50%] before:bg-primary">
+              <span onClick={() => navigate("/product/all?page_id=1&page_size=24")} className="cursor-pointer px-6 border-r border-[#BFBFBF] border-solid font-semibold text-primary relative before:absolute before:bottom-[-10%] before:left-[50%] before:h-0.5 before:translate-x-[-50%] before:w-[50%] before:bg-primary">
                 All
               </span>
-              <span className="cursor-pointer px-6 border-r border-[#BFBFBF] border-solid text-[#595959] hover:text-primary">
-                Fiction
+              <span onClick={() => navigate("/product/all?page_id=1&page_size=24&min_price=0&max_price=5000&genres_id=27")} className="cursor-pointer px-6 border-r border-[#BFBFBF] border-solid text-[#595959] hover:text-primary">
+              Womens Biography
               </span>
-              <span className="cursor-pointer px-6 border-r border-[#BFBFBF] border-solid text-[#595959] hover:text-primary">
-                Non-Fiction
+              <span onClick={() => navigate("/product/all?page_id=1&page_size=24&min_price=0&max_price=5000&genres_id=258")} className="cursor-pointer px-6 border-r border-[#BFBFBF] border-solid text-[#595959] hover:text-primary">
+                Computer
               </span>
-              <span className="cursor-pointer pl-6 text-[#595959] hover:text-primary">
-                Children’s
+              <span onClick={() => navigate("/product/all?page_id=1&page_size=24&min_price=0&max_price=5000&genres_id=331")} className="cursor-pointer pl-6 text-[#595959] hover:text-primary">
+                Economic
               </span>
             </div>
           </div>
@@ -257,7 +260,7 @@ const HomePage: React.FunctionComponent = () => {
           <h2 className="text-primary">Thrillers</h2>
           <p className="text-primary flex items-center">
             {" "}
-            <span>View all</span>{" "}
+            <span onClick={() => navigate("/product/all?page_id=1&page_size=24")}>View all</span>{" "}
             <i className="bdx-arrow-2 ml-2 flex items-center"></i>
           </p>
         </div>
@@ -276,7 +279,7 @@ const HomePage: React.FunctionComponent = () => {
           <h2 className="text-primary">Bedtime</h2>
           <p className="text-primary flex items-center">
             {" "}
-            <span>View all</span>{" "}
+            <span onClick={() => navigate("/product/all?page_id=1&page_size=24")} >View all</span>{" "}
             <i className="bdx-arrow-2 ml-2 flex items-center"></i>
           </p>
         </div>
@@ -295,7 +298,7 @@ const HomePage: React.FunctionComponent = () => {
           <h2 className="text-primary">Horror</h2>
           <p className="text-primary flex items-center">
             {" "}
-            <span>View all</span>{" "}
+            <span onClick={() => navigate("/product/all?page_id=1&page_size=24")}>View all</span>{" "}
             <i className="bdx-arrow-2 ml-2 flex items-center"></i>
           </p>
         </div>
