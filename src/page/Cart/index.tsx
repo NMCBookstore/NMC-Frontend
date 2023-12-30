@@ -9,9 +9,11 @@ import {
   useUpdateCartMutation,
 } from "../../services/cart/cartAPI";
 import { cartEmpty, cartEmpty2 } from "../../assets/img";
+import { selectCurrentUser } from "../../features/auth/authSlice";
 
 const CartIndex: React.FunctionComponent = () => {
   const totalItemPrice = useSelector(selectCurrentTotalCartValue);
+  const user = useSelector(selectCurrentUser);
 
   const { data } = useGetCartQuery();
 
@@ -52,8 +54,7 @@ const CartIndex: React.FunctionComponent = () => {
         </h1>
         <div className="cart-info__block">
           <div className="cart-info__table">
-            {
-              data?.length ? 
+            {data?.length ? (
               <table className="table">
                 <thead>
                   <tr>
@@ -83,7 +84,10 @@ const CartIndex: React.FunctionComponent = () => {
                         </div>
                         <div>
                           <p>
-                            <a href={`/product/${item?.book_id}`} target="_blank">
+                            <a
+                              href={`/product/${item?.book_id}`}
+                              target="_blank"
+                            >
                               {item?.book_name}
                             </a>
                           </p>
@@ -162,12 +166,12 @@ const CartIndex: React.FunctionComponent = () => {
                   ))}
                 </tbody>
               </table>
-              :
+            ) : (
               <div className="cart-empty">
                 <h2 className="mb-6">There is no item yet</h2>
                 <img src={cartEmpty2} alt="empty" />
               </div>
-            }
+            )}
           </div>
           <div className="md:w-full w-[25%] ms-auto">
             <div className="cart-info__bottom">
@@ -180,7 +184,9 @@ const CartIndex: React.FunctionComponent = () => {
               </p>
               <div className="cart-info__bottom__btn d-flex justify-content-between align-items-center">
                 <a href="javascript:history.back()">Return</a>
-                {data?.length && data?.length > 0 ? (
+                {data?.length &&
+                data?.length > 0 &&
+                user?.phone_number !== "" ? (
                   <Link to="/user/order/info">
                     Accept
                     <i className="bdx-cart"></i>
@@ -188,9 +194,15 @@ const CartIndex: React.FunctionComponent = () => {
                 ) : (
                   <Link
                     to="/user/cart"
-                    onClick={() =>
-                      toast.error("You have to purchase book first !")
-                    }
+                    onClick={() => {
+                      if (user?.phone_number === "")
+                        toast.error(
+                          "You have to fill your profile information !"
+                        );
+                      else {
+                        toast.error("You have to purchase book first !");
+                      }
+                    }}
                   >
                     Accept
                     <i className="bdx-cart"></i>

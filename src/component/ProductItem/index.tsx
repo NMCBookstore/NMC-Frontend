@@ -80,9 +80,12 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
           <h3 onClick={handleClick} className="product-item__title webkitbox-2">
             {props.itemDetail.name}
           </h3>
-          <p className="product-item__des webkitbox-2">
-            {props.itemDetail.description}
-          </p>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: String(props.itemDetail.description),
+            }}
+            className="product-item__des webkitbox-2"
+          ></p>
         </div>
         <div className="w-full">
           <div
@@ -125,7 +128,7 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
                 <p className="product-item__control__price">
                   {(
                     props.itemDetail?.price *
-                    (1 - props?.itemDetail.sale/100)
+                    (1 - props?.itemDetail.sale / 100)
                   ).toFixed(2)}
                 </p>
               </div>

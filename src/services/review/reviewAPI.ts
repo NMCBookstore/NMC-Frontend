@@ -23,6 +23,15 @@ const review = book.injectEndpoints({
       query: ({ book_id, username, page_id, page_size }) => ({
         url: `reviews/${book_id}?username=${username}&page_id=${page_id}&page_size=${page_size}`,
       }),
+      // transformResponse: (response: ReviewResponse) => {
+      //   const productNotDeleted = response?.reviews.filter(
+      //     (item) => !item.is_deleted
+      //   );
+      //   return {
+      //     ...response,
+      //     reviews: productNotDeleted,
+      //   };
+      // },
       providesTags: ["ReviewItems"],
     }),
 

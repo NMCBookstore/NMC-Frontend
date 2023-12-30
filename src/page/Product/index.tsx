@@ -86,9 +86,10 @@ const ProductList: React.FunctionComponent = () => {
 
   const [isDataReady, setIsDataReady] = useState(false);
 
-  const { data: rcmUser, isLoading: rcmUserLoading } = useGetRcmBookForUserQuery({
-    username: String(user?.username),
-  });
+  const { data: rcmUser, isLoading: rcmUserLoading } =
+    useGetRcmBookForUserQuery({
+      username: String(user?.username),
+    });
 
   const { data: genresData = [], isLoading } = useGetGenresQuery();
   const [genres, setGenres] = useState<Genres[]>([]);
@@ -177,7 +178,6 @@ const ProductList: React.FunctionComponent = () => {
     const newSearchInfo = { ...searchInfo };
     newSearchInfo.text = event.target.value;
     setSearchParams(newSearchInfo as any);
-    console.log("search clicked and text: ", event.target.value);
   }, 300);
 
   const handleTextSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -267,8 +267,8 @@ const ProductList: React.FunctionComponent = () => {
     { key: "under100", value: "<10", minPrice: 0, maxPrice: 10 },
   ];
   const nameFilter: OrderFilter[] = [
-    { key: "Name A-Z", value: "option1" },
-    { key: "Name Z-A", value: "option2" },
+    { key: "Name A-Z", value: "true" },
+    { key: "Name Z-A", value: "false" },
   ];
   const sortFilter: OrderFilter[] = [
     { key: "none", value: "None" },
@@ -283,6 +283,51 @@ const ProductList: React.FunctionComponent = () => {
     { key: "Below 2 stars", value: "2" },
     { key: "Below 1 stars", value: "1" },
   ];
+
+  const renderProducts = () => {
+    if (allProductLoading) {
+      return (
+        <>
+          <img src={lazyLoading} />
+        </>
+      );
+    } else if (allProduct?.books) {
+      return (
+        <>
+          {allProduct.books.map((item) => {
+            if (item?.is_deleted == true) {
+              console.log("first");
+              return (
+                <div className="cart-empty w-full" key={item?.id}>
+                  <img src={cartEmpty2} alt="emptyData" />
+                  <h2>Can't Found Product</h2>
+                </div>
+              );
+            }
+            return (
+              <div
+                className="sm:w-[50%] md:w-[33.33%] w-[25%] product-list__handle-sidebar__items__detail"
+                key={item?.id}
+              >
+                <ProductItem
+                  itemDetail={item}
+                  wishlistItem={wishlist}
+                ></ProductItem>
+              </div>
+            );
+          })}
+        </>
+      );
+    } else {
+      return (
+        <div className="cart-empty w-full">
+          <img src={cartEmpty2} alt="emptyData" />
+          <h2>Can't Found Product</h2>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className="bg-[#F9EEDE] mt-[76px] product-list" id="block-product">
       <Marquee></Marquee>
@@ -326,8 +371,7 @@ const ProductList: React.FunctionComponent = () => {
                   <div
                     onClick={() => {
                       searchInfo["page_id"] = 1;
-                      // setRating(5);
-                      searchInfo.name_sort_asc = "true";
+                      searchInfo.name_sort_asc = item.value;
                       setSearchParams(searchInfo as any);
                       handleStateChange(1, index);
                     }}
@@ -370,16 +414,13 @@ const ProductList: React.FunctionComponent = () => {
                   <div
                     className="flex"
                     onClick={() => {
-                      if (Number(item.value) === 0) {
+                      if (Number(item.value) == 0) {
                         delete searchInfo.rating;
+                        console.log("Aaaa");
                         handleStateChange(3, index);
                       } else {
                         searchInfo["page_id"] = 1;
-                        if (searchInfo.hasOwnProperty("rating")) {
-                          delete searchInfo.rating;
-                        } else {
-                          searchInfo.rating = Number(item.value);
-                        }
+                        searchInfo.rating = Number(item.value);
                         setSearchParams(searchInfo as any);
                         handleStateChange(3, index);
                       }
@@ -509,26 +550,7 @@ const ProductList: React.FunctionComponent = () => {
             }`}
           >
             {/* here is all item */}
-            {allProductLoading ? (
-              <>
-                <img src={lazyLoading} />
-              </>
-            ) : allProduct?.books ? (
-              allProduct.books.map((item) => (
-                <div className="sm:w-[50%] md:w-[33.33%] w-[25%] product-list__handle-sidebar__items__detail">
-                  <ProductItem
-                    key={item?.id}
-                    itemDetail={item}
-                    wishlistItem={wishlist}
-                  ></ProductItem>
-                </div>
-              ))
-            ) : (
-              <div className="cart-empty w-full">
-                <img src={cartEmpty2} alt="emptyData" />
-                <h2>Can't Found Product</h2>
-              </div>
-            )}
+            {renderProducts()}
           </div>
           <ProductPagination
             total={Number(allProduct?.total_page)}
@@ -546,13 +568,14 @@ const ProductList: React.FunctionComponent = () => {
           </h2>
           <div className="product-detail__recommend__list">
             <Slider {...productListSettings}>
-              {!rcmUserLoading && rcmUser?.map((item) => (
-                <ProductItem
-                  key={item?.id}
-                  itemDetail={item}
-                  wishlistItem={wishlist}
-                ></ProductItem>
-              ))}
+              {!rcmUserLoading &&
+                rcmUser?.map((item) => (
+                  <ProductItem
+                    key={item?.id}
+                    itemDetail={item}
+                    wishlistItem={wishlist}
+                  ></ProductItem>
+                ))}
             </Slider>
           </div>
         </div>
