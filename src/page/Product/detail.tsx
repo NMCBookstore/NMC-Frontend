@@ -107,11 +107,8 @@ const ProductDetail: React.FunctionComponent = () => {
   return (
     <div className="product-detail bg-[#F9EEDE] mt-[76px]">
       <Marquee></Marquee>
-      <div className="mx-auto px-3 container-nmc">
-        {/* <BreadcrumbConponent></BreadcrumbConponent> */}
-      </div>
       {!isLoading && (
-        <section className="mx-auto px-3 container-nmc pt-8 pb-[100px]">
+        <section className="mx-auto px-3 container-nmc pt-8 pb-[100px] mt-6">
           <div className="product-detail__item">
             <div className="row gap-y-8 justify-center">
               <div className="md:w-[100%] lg:w-[80%] w-[50%]">
