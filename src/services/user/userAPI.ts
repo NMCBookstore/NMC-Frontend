@@ -6,7 +6,7 @@ const user = book.injectEndpoints({
   endpoints: (builder) => ({
     getUser: builder.query<User, void>({
       query: () => ({
-        url: `users`,
+        url: `users/`,
       }),
     }),
     updateUser: builder.mutation<User, FormData>({

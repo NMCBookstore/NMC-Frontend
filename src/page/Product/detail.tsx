@@ -14,6 +14,7 @@ import {
   useAddToWishlistMutation,
   useGetWishlistQuery,
 } from "../../services/wishlist/wishlistAPI";
+import ImageList from "../../component/ImageLisst";
 
 const ProductDetail: React.FunctionComponent = () => {
   const { id } = useParams();
@@ -103,50 +104,7 @@ const ProductDetail: React.FunctionComponent = () => {
           <div className="product-detail__item">
             <div className="row gap-y-8 justify-center">
               <div className="md:w-[100%] lg:w-[80%] w-[50%]">
-                <Fancybox
-                  options={{
-                    Carousel: {
-                      infinite: false,
-                    },
-                  }}
-                  imageLength={Number(books?.image.length)}
-                >
-                  <Carousel
-                    options={{
-                      infinite: false,
-                      Dots: false,
-                      Navigation: false,
-                      Thumbs: {
-                        type: "classic",
-                        Carousel: {
-                          slidesPerPage: 1,
-                          Navigation: false,
-                          center: true,
-                          fill: true,
-                          dragFree: true,
-                          axis: "y",
-                          breakpoints: {
-                            "(max-width: 576px)": {
-                              axis: "x",
-                            },
-                          },
-                        },
-                      },
-                    }}
-                  >
-                    {books?.image.map((item, index) => (
-                      <div
-                        key={index}
-                        className="f-carousel__slide"
-                        data-thumb-src={item}
-                        data-fancybox="gallery"
-                        data-src={item}
-                      >
-                        <img alt="" data-lazy-src={item} />
-                      </div>
-                    ))}
-                  </Carousel>
-                </Fancybox>
+                <ImageList books={books}></ImageList>
               </div>
               <div className="lg:w-[100%] w-[50%]">
                 <div className="product-detail__item__heading">

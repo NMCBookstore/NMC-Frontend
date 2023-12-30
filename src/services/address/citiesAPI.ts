@@ -12,7 +12,7 @@ const cities = book.injectEndpoints({
       getListCities: builder.query<City[], void>({
         query: () => ({
           method: "GET",
-          url: `users/addresses/cities/`,
+          url: `users/addresses/cities`,
         }),
       }),
     }),
