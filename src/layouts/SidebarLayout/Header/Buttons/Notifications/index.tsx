@@ -54,7 +54,7 @@ function HeaderNotifications() {
 
   return (
     <>
-      <Tooltip arrow title="Notifications">
+      {/* <Tooltip arrow title="Notifications">
         <IconButton color="primary" ref={ref} onClick={handleOpen}>
           <NotificationsBadge
             badgeContent={1}
@@ -66,7 +66,7 @@ function HeaderNotifications() {
             <NotificationsActiveTwoToneIcon />
           </NotificationsBadge>
         </IconButton>
-      </Tooltip>
+      </Tooltip> */}
       <Popover
         anchorEl={ref.current}
         onClose={handleClose}
