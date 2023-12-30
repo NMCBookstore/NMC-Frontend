@@ -10,7 +10,10 @@ import {
   emptyData,
   productItem,
 } from "../../assets/img";
-import { productListToReviewSettings } from "../../common/CarouselSetting";
+import {
+  productListSettings,
+  productListToReviewSettings,
+} from "../../common/CarouselSetting";
 import Marquee from "../../component/Marquee";
 import AddressComponent from "../../component/Profile/AddAdress";
 import AddReviewComponent from "../../component/Profile/AddReview";
@@ -24,11 +27,15 @@ import {
 import { useGetAllOrderQuery } from "../../services/order/orderAPI";
 import { useGetUserRankQuery } from "../../services/user/userAPI";
 import { Link } from "react-router-dom";
+import { useGetRcmBookForUserQuery } from "../../services/product/productAPI";
+import ProductItem from "../../component/ProductItem";
+import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 
 const Profile: React.FunctionComponent = () => {
   const userInfo = useSelector(selectCurrentUser);
   const { data: userAddress, isLoading: addressLoading } =
     useGetListAddressQuery();
+  const { data: wishlist = [] } = useGetWishlistQuery();
   const [deleteAddress] = useDeleteAddressMutation();
   const { data: order, isLoading: orderLoading } = useGetAllOrderQuery();
   const { data: userRank } = useGetUserRankQuery({
@@ -39,6 +46,11 @@ const Profile: React.FunctionComponent = () => {
   const addressAmount = Number(userAddress?.length);
   const orderAmount = Number(order?.length) ? Number(order?.length) : 0;
   const userGender = userInfo?.sex;
+
+  const { data: rcmUser, isLoading: rcmUserLoading } =
+    useGetRcmBookForUserQuery({
+      username: String(userInfo?.username),
+    });
 
   const renderGenderText = (userGender: string) => {
     if (userGender === "1") {
@@ -89,7 +101,7 @@ const Profile: React.FunctionComponent = () => {
                       Gender:{" "}
                       <span>
                         {String(userInfo?.sex) !== "" &&
-                          renderGenderText(String(userInfo?.sex))
+                        renderGenderText(String(userInfo?.sex))
                           ? renderGenderText(String(userInfo?.sex))
                           : "You haven't set your gender"}
                       </span>
@@ -164,22 +176,23 @@ const Profile: React.FunctionComponent = () => {
               <div>
                 <div className="row">
                   <div className="profile__user w-full">
-                      <div className="page__verify-email__content success">
-                          <h2 className="product-detail__recommend__heading">
-                            You may also like
-                          </h2>
-                          <div className="product-detail__recommend__list">
-                            {/* <Slider {...productListSettings}>
-                              {productList.map((item, index) => (
-                                <ProductItem
-                                  key={item?.id}
-                                  itemDetail={item}
-                                  wishlistItem={wishlist}
-                                ></ProductItem>
-                              ))}
-                            </Slider> */}
-                          </div>
+                    <div className="page__verify-email__content success">
+                      <h2 className="product-detail__recommend__heading">
+                        You may also like
+                      </h2>
+                      <div className="product-detail__recommend__list">
+                        <Slider {...productListSettings}>
+                          {!rcmUserLoading &&
+                            rcmUser?.map((item, index) => (
+                              <ProductItem
+                                key={item?.id}
+                                itemDetail={item}
+                                wishlistItem={wishlist}
+                              ></ProductItem>
+                            ))}
+                        </Slider>
                       </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -209,9 +222,9 @@ const Profile: React.FunctionComponent = () => {
                           <span>
                             {item?.transactions?.[0]?.created_at
                               ? format(
-                                new Date(item.transactions[0].created_at),
-                                "dd/MM/yyyy"
-                              )
+                                  new Date(item.transactions[0].created_at),
+                                  "dd/MM/yyyy"
+                                )
                               : "Loading..."}
                           </span>
                         </p>

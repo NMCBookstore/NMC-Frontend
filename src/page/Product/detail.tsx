@@ -9,12 +9,18 @@ import NotiHome from "../../component/NotiHome";
 import ReviewList from "../../component/Review";
 import { Product } from "../../interface/Product";
 import { useAddToCartMutation } from "../../services/cart/cartAPI";
-import { useGetProductDetailsQuery } from "../../services/product/productAPI";
+import {
+  useGetProductDetailsQuery,
+  useGetRcmBookQuery,
+} from "../../services/product/productAPI";
 import {
   useAddToWishlistMutation,
   useGetWishlistQuery,
 } from "../../services/wishlist/wishlistAPI";
 import ImageList from "../../component/ImageLisst";
+import { productListSettings } from "../../common/CarouselSetting";
+import Slider from "react-slick";
+import ProductItem from "../../component/ProductItem";
 
 const ProductDetail: React.FunctionComponent = () => {
   const { id } = useParams();
@@ -58,6 +64,11 @@ const ProductDetail: React.FunctionComponent = () => {
 
   const [addToCart] = useAddToCartMutation();
 
+  const { data: rcm = [], isLoading: isRcmLoading } = useGetRcmBookQuery({
+    name: String(bookData?.name),
+    size: 6,
+  });
+
   const showFullContent = useRef(false);
 
   const elementRef = useRef<HTMLDivElement>(null);
@@ -89,7 +100,7 @@ const ProductDetail: React.FunctionComponent = () => {
       content.style.setProperty("max-height", `${height}px`);
       btnShow.style.setProperty("opacity", `0`);
       setTimeout(() => {
-        btnShow.style.setProperty("display", 'none');
+        btnShow.style.setProperty("display", "none");
       }, 300);
     }
   };
@@ -300,15 +311,16 @@ const ProductDetail: React.FunctionComponent = () => {
             You may also like
           </h2>
           <div className="product-detail__recommend__list">
-            {/* <Slider {...productListSettings}>
-              {productList.map((item, index) => (
-                <ProductItem
-                  key={item?.id}
-                  itemDetail={item}
-                  wishlistItem={wishlist}
-                ></ProductItem>
-              ))}
-            </Slider> */}
+            <Slider {...productListSettings}>
+              {!isRcmLoading &&
+                rcm.map((item, index) => (
+                  <ProductItem
+                    key={item?.id}
+                    itemDetail={item}
+                    wishlistItem={wishlist}
+                  ></ProductItem>
+                ))}
+            </Slider>
           </div>
         </div>
       </section>

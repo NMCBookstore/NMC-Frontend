@@ -54,7 +54,7 @@ const product = book.injectEndpoints({
     }),
     getRcmBook: builder.query<Product[], { name: string; size: number }>({
       query: ({ name, size }) => ({
-        url: `/books/recommend?name${name}=&size=${size}`,
+        url: `/books/recommend?name=${name}&size=${size}`,
       }),
     }),
     getRcmBookForUser: builder.query<Product[], { username: string }>({
