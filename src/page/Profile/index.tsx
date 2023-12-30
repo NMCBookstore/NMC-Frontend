@@ -171,33 +171,33 @@ const Profile: React.FunctionComponent = () => {
               </div>
             </div>
           </div>
-          <div>
-            <div className="mx-auto px-3 container-nmc page__verify-email">
-              <div>
-                <div className="row">
-                  <div className="profile__user w-full">
-                    <div className="page__verify-email__content success">
-                      <h2 className="product-detail__recommend__heading">
-                        You may also like
-                      </h2>
-                      <div className="product-detail__recommend__list">
-                        <Slider {...productListSettings}>
-                          {!rcmUserLoading &&
-                            rcmUser?.map((item, index) => (
-                              <ProductItem
-                                key={item?.id}
-                                itemDetail={item}
-                                wishlistItem={wishlist}
-                              ></ProductItem>
-                            ))}
-                        </Slider>
-                      </div>
+          {!rcmUserLoading && rcmUser && rcmUser?.length > 0 &&
+            <div>
+              <div className="mx-auto px-3 container-nmc page__verify-email">
+                <div>
+                  <div className="row">
+                    <div className="profile__user w-full">
+                        <h2 className="product-detail__recommend__heading">
+                          You may also like
+                        </h2>
+                        <div className="product-detail__recommend__list">
+                          <Slider {...productListToReviewSettings}>
+                            {!rcmUserLoading &&
+                              rcmUser?.map((item, index) => (
+                                <ProductItem
+                                  key={item?.id}
+                                  itemDetail={item}
+                                  wishlistItem={wishlist}
+                                ></ProductItem>
+                              ))}
+                          </Slider>
+                        </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          }
           <Tab.Group>
             <Tab.List className="tab-lable-list">
               <Tab>
