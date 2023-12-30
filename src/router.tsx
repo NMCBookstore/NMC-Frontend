@@ -13,6 +13,7 @@ const Genres = lazy(() => import('src/content/dashboards/Genres'));
 const RequireAuth = lazy(() => import('src/features/auth/RequireAuth'));
 const Order = lazy(() => import('src/content/dashboards/Order'));
 const Reviews = lazy(() => import('src/content/dashboards/Reviews'));
+const Profile = lazy(() => import('src/content/dashboards/Users'));
 
 // Status
 
@@ -47,6 +48,11 @@ const routes: RouteObject[] = [
             element: <Order />
           },
           { path: '/reviews', element: <Reviews /> },
+          {
+            path: '*',
+            element: <Status404 />
+          },
+          { path: '/profile', element: <Profile /> },
           {
             path: '*',
             element: <Status404 />
