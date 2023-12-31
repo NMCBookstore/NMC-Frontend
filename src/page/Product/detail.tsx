@@ -12,7 +12,6 @@ import { useAddToCartMutation } from "../../services/cart/cartAPI";
 import {
   useGetProductDetailsQuery,
   useGetRcmBookQuery,
-  useGetRcmBookTwoQuery,
 } from "../../services/product/productAPI";
 import {
   useAddToWishlistMutation,
@@ -64,11 +63,12 @@ const ProductDetail: React.FunctionComponent = () => {
 
   const [addToCart] = useAddToCartMutation();
 
-  const { data: rcm = [], isLoading: isRcmLoading } = useGetRcmBookTwoQuery({
-    name: String(bookData?.name),
+  const { data: rcm = [], isLoading: isRcmLoading } = useGetRcmBookQuery({
+    id: Number(id),
     size: 6,
   });
 
+  console.log(rcm);
   const showFullContent = useRef(false);
 
   const elementRef = useRef<HTMLDivElement>(null);
@@ -341,8 +341,7 @@ const ProductDetail: React.FunctionComponent = () => {
                       filter:
                         "brightness(37%) contrast(118%) grayscale(76%) hue-rotate(12deg)",
                     }}
-                  >
-                  </div>
+                  ></div>
                   {reviewLength ? (
                     <ReviewList
                       id={id}
