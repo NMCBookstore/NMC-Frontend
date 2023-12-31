@@ -126,7 +126,7 @@ const ProductItem: React.FunctionComponent<ProductItemProps> = (props) => {
                   ${props.itemDetail?.price.toFixed(2)}
                 </p>
                 <p className="product-item__control__price">
-                  {(
+                  ${(
                     props.itemDetail?.price *
                     (1 - props?.itemDetail.sale / 100)
                   ).toFixed(2)}
