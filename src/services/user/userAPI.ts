@@ -15,9 +15,22 @@ const user = book.injectEndpoints({
           url: `admin/users/`
         };
       }
+    }),
+    updateUser: builder.mutation<User, FormData>({
+      query: (formData) => {
+        return {
+          method: 'PUT',
+          url: `users/`,
+          body: formData
+        };
+      }
     })
   }),
   overrideExisting: false
 });
 
-export const { useListUserQuery, useListTotalUserNumberQuery } = user;
+export const {
+  useListUserQuery,
+  useListTotalUserNumberQuery,
+  useUpdateUserMutation
+} = user;
