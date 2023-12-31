@@ -52,9 +52,9 @@ const product = book.injectEndpoints({
         return productNotDeleted;
       },
     }),
-    getRcmBook: builder.query<Product[], { name: string; size: number }>({
-      query: ({ name, size }) => ({
-        url: `/books/recommend?name=${name}&size=${size}`,
+    getRcmBook: builder.query<Product[], { id: number; size: number }>({
+      query: ({ id, size }) => ({
+        url: `/books/recommend?book_id=${id}&size=${size}`,
       }),
       transformResponse: (response: Product[]) => {
         const productNotDeleted = response.filter((item) => !item.is_deleted);
