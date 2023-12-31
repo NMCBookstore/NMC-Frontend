@@ -202,6 +202,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
     const v = await updateBook(formData);
     if ('data' in v) {
       toast.success('Book updated !');
+      handleCloseAdd()
     } else if ('error' in v) {
       toast.error('Cannot update book');
     }

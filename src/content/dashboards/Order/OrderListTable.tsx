@@ -91,7 +91,7 @@ const OrderListTable = () => {
         customBodyRender: (value) =>
           value?.map((transaction, index) => (
             <Box mt={1} key={transaction?.id}>
-              <Label color="black">{transaction?.total}$</Label>
+              <Label color="black">{transaction?.total.toFixed(2)}$</Label>
             </Box>
           ))
       }

@@ -177,6 +177,7 @@ function PageHeader() {
     const v = await createBook(formData);
     if ('data' in v) {
       toast.success('New book created !');
+      handleCloseAdd()
     } else if ('error' in v) {
       toast.error('Cannot create new book');
     }
