@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from "react";
-import { avatarUser, logo } from "../../assets/img";
+import { avatarUser, cartEmpty2, logo } from "../../assets/img";
 import Pagination from "../Pagination/ReviewPagination/Pagination";
 import {
   useAddDislikeReviewMutation,
@@ -16,61 +16,58 @@ interface ReviewListProps {
   id: string | undefined;
   onReviewLengthChange: (length: number) => void;
 }
-const ReviewList: React.FunctionComponent<ReviewListProps> = memo(({
-  id,
-  onReviewLengthChange,
-}) => {
-  const [page, setPage] = useState({ id: 1, size: 5 });
+const ReviewList: React.FunctionComponent<ReviewListProps> = memo(
+  ({ id, onReviewLengthChange }) => {
+    const [page, setPage] = useState({ id: 1, size: 5 });
 
-  const userInfo = useSelector(selectCurrentUser);
+    const userInfo = useSelector(selectCurrentUser);
 
-  const { data: reviewData } = useGetReviewQuery({
-    book_id: Number(id),
-    username: String(userInfo?.username),
-    page_id: page.id,
-    page_size: page.size,
-  });
-
-  const userName = useSelector(selectCurrentUser);
-
-  const [addLikeReview] = useAddLikeReviewMutation();
-
-  const [addDislikeReview] = useAddDislikeReviewMutation();
-
-  const [addReportReview] = useAddReportReviewMutation();
-
-  // const {data: likeReview} = useListLikeReviewQuery({username: userName?.username, reviewID: })
-
-  const handleLikeReview = async (review_id: number) => {
-    const v = await addLikeReview({
-      reviewID: review_id,
+    const { data: reviewData } = useGetReviewQuery({
+      book_id: Number(id),
+      username: String(userInfo?.username),
+      page_id: page.id,
+      page_size: page.size,
     });
-  };
 
-  const handleDislikeReview = async (review_id: number) => {
-    const v = await addDislikeReview({
-      reviewID: review_id,
-    });
-  };
+    const userName = useSelector(selectCurrentUser);
 
-  const handleReportReview = async (review_id: number) => {
-    const v = await addReportReview(review_id);
-    if("data" in v){
-      toast.success("You've report this")
-    }
-  };
+    const [addLikeReview] = useAddLikeReviewMutation();
 
-  const reviewLength = Number(reviewData?.reviews?.length);
-  useEffect(() => {
-    if (reviewLength !== null) {
-      onReviewLengthChange(reviewLength);
-    }
-  }, [reviewLength, onReviewLengthChange]);
-  return (
-    <>
-      <div className="product-detail__content__review__list">
-        {reviewData?.reviews &&
-          reviewData?.reviews.map((item, index) => (
+    const [addDislikeReview] = useAddDislikeReviewMutation();
+
+    const [addReportReview] = useAddReportReviewMutation();
+
+    // const {data: likeReview} = useListLikeReviewQuery({username: userName?.username, reviewID: })
+
+    const handleLikeReview = async (review_id: number) => {
+      const v = await addLikeReview({
+        reviewID: review_id,
+      });
+    };
+
+    const handleDislikeReview = async (review_id: number) => {
+      const v = await addDislikeReview({
+        reviewID: review_id,
+      });
+    };
+
+    const handleReportReview = async (review_id: number) => {
+      const v = await addReportReview(review_id);
+      if ("data" in v) {
+        toast.success("You've report this");
+      }
+    };
+
+    const reviewLength = Number(reviewData?.reviews?.length);
+    useEffect(() => {
+      if (reviewLength !== null) {
+        onReviewLengthChange(reviewLength);
+      }
+    }, [reviewLength, onReviewLengthChange]);
+    return (
+      <>
+        <div className="product-detail__content__review__list">
+          {reviewData?.reviews.map((item, index) => (
             <div key={index} className="review__item">
               <div className="review__item__heading">
                 <div className="review__item__heading__left">
@@ -80,10 +77,8 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = memo(({
                       {item?.username}
                     </p>
                     <p className="review__item__heading__left__user__date">
-                      at{" "}
-                      {item?.created_at
-                        ? format(new Date(item?.created_at), "dd/MM/yyyy")
-                        : "a"}
+                      {/* at{" "}
+              {format(new Date(item?.created_at), "dd/MM/yyyy")} */}
                     </p>
                   </div>
                   <div className="review__item__heading__left__info">
@@ -138,15 +133,16 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = memo(({
               <div></div>
             </div>
           ))}
-      </div>
-      <Pagination
-        total={Number(reviewData?.total_page)}
-        setCurrentPage={setPage}
-        page={page.id}
-        target="review-block"
-      />
-    </>
-  );
-});
+        </div>
+        <Pagination
+          total={Number(reviewData?.total_page)}
+          setCurrentPage={setPage}
+          page={page.id}
+          target="review-block"
+        />
+      </>
+    );
+  }
+);
 
 export default ReviewList;

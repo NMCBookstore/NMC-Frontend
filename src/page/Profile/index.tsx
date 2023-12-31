@@ -27,7 +27,7 @@ import {
 import { useGetAllOrderQuery } from "../../services/order/orderAPI";
 import { useGetUserRankQuery } from "../../services/user/userAPI";
 import { Link } from "react-router-dom";
-import { useGetRcmBookForUserQuery } from "../../services/product/productAPI";
+import { useGetRcmBookForUserQuery, useGetRcmBookForUserTwoQuery } from "../../services/product/productAPI";
 import ProductItem from "../../component/ProductItem";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 
@@ -48,7 +48,7 @@ const Profile: React.FunctionComponent = () => {
   const userGender = userInfo?.sex;
 
   const { data: rcmUser, isLoading: rcmUserLoading } =
-    useGetRcmBookForUserQuery({
+    useGetRcmBookForUserTwoQuery({
       username: String(userInfo?.username),
     });
 
