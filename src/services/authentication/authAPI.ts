@@ -1,6 +1,7 @@
 import { setCredentials } from "../../features/auth/authSlice";
 import { Login } from "../../interface/Login";
 import { book } from "../Base/baseAPI";
+console.log("here");
 
 export const getGoogleUrl = (from: any) => {
   const rootUrl = `https://accounts.google.com/o/oauth2/v2/auth`;
@@ -58,7 +59,6 @@ const auth = book.injectEndpoints({
   }),
   overrideExisting: false,
 });
-
 export const {
   useLoginWithGoogleQuery,
   useLoginMutation,

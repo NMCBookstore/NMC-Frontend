@@ -23,11 +23,10 @@ const wishlist = book.injectEndpoints({
     }),
     deleteWishlist: builder.mutation<Wishlist, number[]>({
       query: (IDsArr) => {
-        let endPoint = `users/wishlists?`;
-        IDsArr.map((id: any) => (endPoint += `ids=${id}&`));
+        let endPoint = `users/wishlists/delete?ids=${IDsArr[0]}`;
         return {
           method: "DELETE",
-          url: endPoint,
+          url: `users/wishlists/delete?ids=${IDsArr[0]}`,
         };
       },
       invalidatesTags: ["WishlistItems"],

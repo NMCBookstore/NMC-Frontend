@@ -24,7 +24,8 @@ import {
   cate5,
   cate6,
   bannerImg,
-  midleBanner,
+  midleBanner1,
+  midleBanner2,
   articleImg,
   logospkt,
   logoclcspkt,
@@ -37,10 +38,31 @@ import {
 } from "../../services/product/productAPI";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 import NotiHome from "../../component/NotiHome";
-
+interface Banner{
+  title:string,
+  img:string
+}
 const HomePage: React.FunctionComponent = () => {
-  const banner = [bannerImg, logospkt, logoclcspkt, logo];
-  const midlebanner = [midleBanner, midleBanner, midleBanner];
+  const banner:Banner[] = [
+    {
+      title:"Your Gateway to a World of Knowledge and Imagination!",
+      img:bannerImg
+    }
+    , 
+    {
+      title:"Knowledge Treasury: Visit Our Bookshop",
+      img:logospkt
+    }
+    ,
+    {
+      title:"Gateway to Knowledge: Experience Our Store",
+      img:logoclcspkt
+    },
+    {
+      title:"Cultural Haven: Explore Our Bookstore",
+      img:logo
+    }];
+  const midlebanner = [midleBanner1, midleBanner2];
 
   const navigate = useNavigate()
 
@@ -121,7 +143,7 @@ const HomePage: React.FunctionComponent = () => {
                     Welcome to the NMC Bookstore
                   </p>
                   <h1 className="mb-6 capitalize text-[#262626] md:text-center">
-                    Your Gateway to a World of Knowledge and Imagination!
+                    {item.title}
                   </h1>
                   <Link
                     to="/product/all?page_id=1&page_size=24"
@@ -133,7 +155,7 @@ const HomePage: React.FunctionComponent = () => {
                   </Link>
                 </div>
                 <div className="w-[40%] lg:w-[30%] md:w-[100%] flex items-center banner-img">
-                  <img src={item} alt="banner" />
+                  <img src={item.img} alt="banner" />
                 </div>
               </div>
             </div>
@@ -337,19 +359,19 @@ const HomePage: React.FunctionComponent = () => {
               <div className="px-3 flex flex-col items-center">
                 <i className="text-[64px] text-primary bdx-sale"></i>
                 <p className="font-bold text-[20px] leading-[28px] mb-2 sm:mb-0 text-center sm:text-[16px] sm:font-semibold">
-                  Fast delivery
+                  Irresistible Discounts
                 </p>
                 <p className="text-[16px] leading-[24px] text-[#595959] text-center sm:text-[14px]">
-                  2 hours delivery is available
+                  Unmissable Deals!
                 </p>
               </div>
               <div className="px-3 flex flex-col items-center">
                 <i className="text-[64px] text-primary bdx-price-sale"></i>
                 <p className="font-bold text-[20px] leading-[28px] mb-2 sm:mb-0 text-center sm:text-[16px] sm:font-semibold">
-                  Fast delivery
+                  Proudly Presenting
                 </p>
                 <p className="text-[16px] leading-[24px] text-[#595959] text-center sm:text-[14px]">
-                  2 hours delivery is available
+                  The Year Organization Awards
                 </p>
               </div>
             </Slider>

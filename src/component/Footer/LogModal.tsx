@@ -94,7 +94,7 @@ const BdxLogModal: React.FunctionComponent = () => {
     }
     return false;
   };
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     const formData = new FormData();
     formData.append("username", signUpValue.username);
     formData.append("email", signUpValue.email);
@@ -103,7 +103,7 @@ const BdxLogModal: React.FunctionComponent = () => {
       console.log(key, value);
     });
 
-    const v = executeSignup(formData);
+    const v = await executeSignup(formData);
     if ("data" in v) {
       toast.success("Signup successful");
       dispatch(login());
