@@ -13,7 +13,7 @@ interface PaypalCheckout {
   totalPrice: number;
   userNote: string;
   userAddress: string;
-  shipping: number
+  shipping: number;
 }
 
 const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
@@ -22,7 +22,7 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
   totalPrice,
   userNote,
   userAddress,
-  shipping
+  shipping,
 }) => {
   const [createOrder] = useCreateOrderMutation();
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
           purchase_units: [
             {
               amount: {
-                value: String(totalPrice.toFixed(2)),
+                value: String((totalPrice + shipping).toFixed(2)),
               },
             },
           ],
@@ -61,7 +61,7 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
           payment_id: id,
           cart_ids: totalCartIdArr,
           to_address: userAddress,
-          total_shipping: shipping,
+          total_shipping: Number(shipping.toFixed(2)),
           email: userInfo?.email,
           note: userNote,
           status: "success",

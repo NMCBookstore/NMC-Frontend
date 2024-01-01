@@ -3,12 +3,14 @@ import { productItem } from "../../assets/img";
 import { useSelector } from "react-redux";
 import {
   selectCurrentCartProduct,
+  selectCurrentShipping,
   selectCurrentTotalCartValue,
 } from "../../features/cart/cartSlice";
 
 const OrderBill: React.FunctionComponent = () => {
   const cartInfo = useSelector(selectCurrentCartProduct);
   const totalPrice = useSelector(selectCurrentTotalCartValue);
+  const shipping = useSelector(selectCurrentShipping);
 
   return (
     <div className="order-bill order-payment">
@@ -59,7 +61,7 @@ const OrderBill: React.FunctionComponent = () => {
           <p className="order-bill__footer--note">*Shipping fee included</p>
           <div className="order-bill__footer--sum d-flex justify-content-between align-items-center">
             <div>Total order value:</div>
-            <p>{totalPrice.toFixed(2)}$</p>
+            <p>{(totalPrice + shipping).toFixed(2)}$</p>
           </div>
         </div>
       </div>

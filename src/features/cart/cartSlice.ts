@@ -13,9 +13,11 @@ const cartSlice = createSlice({
   reducers: {
     setCartInfo: (state, action) => {
       state.item = action.payload;
-      state.shipping = action.payload;
+      // state.shipping = action.payload;
       const totalPrice = state.item.reduce(
-        (total, item) => total + item.price,
+        (total, item) =>
+          total +
+          Number(item?.price) * (1 - Number(item?.sale) / 100) * item?.amount,
         0
       );
       state.shipping = totalPrice > 100 ? 0 : totalPrice * 0.07;
