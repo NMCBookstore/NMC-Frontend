@@ -10,6 +10,7 @@ export interface Review {
   dislike: number;
   is_like: boolean;
   is_dislike: boolean;
+  is_deleted: boolean;
 }
 
 export interface ReviewResponse {

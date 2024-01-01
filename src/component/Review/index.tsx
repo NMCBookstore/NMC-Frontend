@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useState } from "react";
-import { avatarUser, cartEmpty2, logo } from "../../assets/img";
+import { avatarUser, cartEmpty2, emptyData, logo } from "../../assets/img";
 import Pagination from "../Pagination/ReviewPagination/Pagination";
 import {
   useAddDislikeReviewMutation,
@@ -67,72 +67,82 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = memo(
     return (
       <>
         <div className="product-detail__content__review__list">
-          {reviewData?.reviews.map((item, index) => (
-            <div key={index} className="review__item">
-              <div className="review__item__heading">
-                <div className="review__item__heading__left">
-                  <div className="review__item__heading__left__user">
-                    <img src={item?.image} alt="avatarUser" />
-                    <p className="review__item__heading__left__user__name">
-                      {item?.username}
-                    </p>
-                    <p className="review__item__heading__left__user__date">
-                      {/* at{" "}
-              {format(new Date(item?.created_at), "dd/MM/yyyy")} */}
-                    </p>
-                  </div>
-                  <div className="review__item__heading__left__info">
-                    <div className="review__item__heading__left__info__sumary">
-                      <p>{item?.comments}</p>
+          {reviewData?.reviews ? (
+            reviewData?.reviews.map((item, index) => (
+              <div key={index} className="review__item">
+                <div className="review__item__heading">
+                  <div className="review__item__heading__left">
+                    <div className="review__item__heading__left__user">
+                      <img src={item?.image} alt="avatarUser" />
+                      <p className="review__item__heading__left__user__name">
+                        {item?.username}
+                      </p>
+                      <p className="review__item__heading__left__user__date">
+                        at {format(new Date(item?.created_at), "dd/MM/yyyy")}
+                      </p>
                     </div>
-                    <div className="review__item__heading__left__info__datail"></div>
+                    <div className="review__item__heading__left__info">
+                      <div className="review__item__heading__left__info__sumary">
+                        <p>{item?.comments}</p>
+                      </div>
+                      <div className="review__item__heading__left__info__datail"></div>
+                    </div>
                   </div>
-                </div>
-                <div className="review__item__heading__right">
-                  <div className="review__item__heading__right__help">
-                    {/* <p>Helpful?</p> */}
-                    <div className="review__item__heading__right__help__behavior">
-                      {item?.is_like ? (
-                        <button
-                          className="liked"
-                          onClick={() => handleLikeReview(item?.id)}
-                        >
-                          <i className="bdx-arrow-2"></i>yes
-                        </button>
-                      ) : (
-                        <button onClick={() => handleLikeReview(item?.id)}>
-                          <i className="bdx-arrow-2"></i>yes
-                        </button>
-                      )}
+                  <div className="review__item__heading__right">
+                    <div className="review__item__heading__right__help">
+                      {/* <p>Helpful?</p> */}
+                      <div className="review__item__heading__right__help__behavior">
+                        {item?.is_like ? (
+                          <button
+                            className="liked"
+                            onClick={() => handleLikeReview(item?.id)}
+                          >
+                            <i className="bdx-arrow-2"></i>yes
+                          </button>
+                        ) : (
+                          <button onClick={() => handleLikeReview(item?.id)}>
+                            <i className="bdx-arrow-2"></i>yes
+                          </button>
+                        )}
 
-                      {item?.is_dislike ? (
-                        <button
-                          className="dislike"
-                          onClick={() => handleDislikeReview(item?.id)}
-                        >
-                          <i className="bdx-arrow-2"></i>no
-                        </button>
-                      ) : (
-                        <button onClick={() => handleDislikeReview(item?.id)}>
-                          <i className="bdx-arrow-2"></i>no
-                        </button>
-                      )}
+                        {item?.is_dislike ? (
+                          <button
+                            className="dislike"
+                            onClick={() => handleDislikeReview(item?.id)}
+                          >
+                            <i className="bdx-arrow-2"></i>no
+                          </button>
+                        ) : (
+                          <button onClick={() => handleDislikeReview(item?.id)}>
+                            <i className="bdx-arrow-2"></i>no
+                          </button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="review__item__heading__right__spam">
-                    <p>Spam?</p>
-                    <button onClick={() => handleReportReview(item?.id)}>
-                      <span>
-                        <i className="bdx-close"></i>
-                        Report
-                      </span>
-                    </button>
+                    <div className="review__item__heading__right__spam">
+                      <p>Spam?</p>
+                      <button onClick={() => handleReportReview(item?.id)}>
+                        <span>
+                          <i className="bdx-close"></i>
+                          Report
+                        </span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div></div>
+            ))
+          ) : (
+            <div
+              className="emptyData"
+              style={{
+                filter:
+                  "brightness(37%) contrast(118%) grayscale(76%) hue-rotate(12deg)",
+              }}
+            >
+              <img src={emptyData} alt="emptyData" />
             </div>
-          ))}
+          )}
         </div>
         <Pagination
           total={Number(reviewData?.total_page)}

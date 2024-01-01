@@ -27,7 +27,7 @@ import {
 import { useGetAllOrderQuery } from "../../services/order/orderAPI";
 import { useGetUserRankQuery } from "../../services/user/userAPI";
 import { Link } from "react-router-dom";
-import { useGetRcmBookForUserQuery, useGetRcmBookForUserTwoQuery } from "../../services/product/productAPI";
+import { useGetRcmBookForUserQuery } from "../../services/product/productAPI";
 import ProductItem from "../../component/ProductItem";
 import { useGetWishlistQuery } from "../../services/wishlist/wishlistAPI";
 
@@ -48,7 +48,7 @@ const Profile: React.FunctionComponent = () => {
   const userGender = userInfo?.sex;
 
   const { data: rcmUser, isLoading: rcmUserLoading } =
-    useGetRcmBookForUserTwoQuery({
+    useGetRcmBookForUserQuery({
       username: String(userInfo?.username),
     });
 
@@ -171,33 +171,33 @@ const Profile: React.FunctionComponent = () => {
               </div>
             </div>
           </div>
-          {!rcmUserLoading && rcmUser && rcmUser?.length > 0 &&
+          {!rcmUserLoading && rcmUser && rcmUser?.length > 0 && (
             <div>
               <div className="mx-auto px-3 container-nmc page__verify-email">
                 <div>
                   <div className="row">
                     <div className="profile__user w-full">
-                        <h2 className="product-detail__recommend__heading">
-                          You may also like
-                        </h2>
-                        <div className="product-detail__recommend__list">
-                          <Slider {...productListToReviewSettings}>
-                            {!rcmUserLoading &&
-                              rcmUser?.map((item, index) => (
-                                <ProductItem
-                                  key={item?.id}
-                                  itemDetail={item}
-                                  wishlistItem={wishlist}
-                                ></ProductItem>
-                              ))}
-                          </Slider>
-                        </div>
+                      <h2 className="product-detail__recommend__heading">
+                        You may also like
+                      </h2>
+                      <div className="product-detail__recommend__list">
+                        <Slider {...productListToReviewSettings}>
+                          {!rcmUserLoading &&
+                            rcmUser?.map((item, index) => (
+                              <ProductItem
+                                key={item?.id}
+                                itemDetail={item}
+                                wishlistItem={wishlist}
+                              ></ProductItem>
+                            ))}
+                        </Slider>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          }
+          )}
           <Tab.Group>
             <Tab.List className="tab-lable-list">
               <Tab>

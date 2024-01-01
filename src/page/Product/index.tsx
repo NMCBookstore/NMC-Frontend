@@ -277,11 +277,11 @@ const ProductList: React.FunctionComponent = () => {
   ];
   const rateFilter: OrderFilter[] = [
     { key: "none", value: "None" },
-    { key: "Below 5 stars", value: "5" },
-    { key: "Below 4 stars", value: "4" },
-    { key: "Below 3 stars", value: "3" },
-    { key: "Below 2 stars", value: "2" },
-    { key: "Below 1 stars", value: "1" },
+    { key: "5 stars", value: "5" },
+    { key: "4 stars", value: "4" },
+    { key: "3 stars", value: "3" },
+    { key: "2 stars", value: "2" },
+    { key: "1 stars", value: "1" },
   ];
 
   const renderProducts = () => {
