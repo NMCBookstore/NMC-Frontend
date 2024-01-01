@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import Carousel from "../Fancybox/Carousel";
-import Fancybox from "../../component/Fancybox/Fancy";
+import Fancybox from "../Fancybox/Fancy";
 import { Product } from "../../interface/Product";
 interface ImageListProps {
     books?: Product;
@@ -23,41 +23,55 @@ interface ImageListProps {
         }}
         imageLength={Number(books.image.length)}
       >
-        <Carousel
-          options={{
-            infinite: false,
-            Dots: false,
-            Navigation: false,
-            Thumbs: {
-              type: "classic",
-              Carousel: {
-                slidesPerPage: 1,
-                Navigation: false,
-                center: true,
-                fill: true,
-                dragFree: true,
-                axis: "y",
-                breakpoints: {
-                  "(max-width: 576px)": {
-                    axis: "x",
+        {
+          Number(books.image.length) > 1 ?
+          <Carousel
+            options={{
+              infinite: false,
+              Dots: false,
+              Navigation: false,
+              Thumbs: {
+                type: "classic",
+                Carousel: {
+                  slidesPerPage: 1,
+                  Navigation: false,
+                  center: true,
+                  fill: true,
+                  dragFree: true,
+                  axis: "y",
+                  breakpoints: {
+                    "(max-width: 576px)": {
+                      axis: "x",
+                    },
                   },
                 },
               },
-            },
-          }}
-        >
-          {books.image.map((item, index) => (
-            <div
-              key={index}
-              className="f-carousel__slide"
-              data-thumb-src={item}
-              data-fancybox="gallery"
-              data-src={item}
-            >
-              <img alt="" data-lazy-src={item} />
-            </div>
-          ))}
-        </Carousel>
+            }}
+          >
+            {books.image.map((item, index) => (
+              <div
+                key={index}
+                className="f-carousel__slide"
+                data-thumb-src={item}
+                data-fancybox="gallery"
+                data-src={item}
+              >
+                <img alt="" data-lazy-src={item} />
+              </div>
+            ))}
+          </Carousel>
+          :
+          <div>
+            {books.image.map((item, index) => (
+              <div
+                key={index}
+                className="f-carousel__slide"
+              >
+                <img alt="" src={item} />
+              </div>
+            ))}
+          </div>
+        }
       </Fancybox>
     );
   });

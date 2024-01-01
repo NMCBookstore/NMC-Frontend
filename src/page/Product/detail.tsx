@@ -20,7 +20,7 @@ import {
   useAddToWishlistMutation,
   useGetWishlistQuery,
 } from "../../services/wishlist/wishlistAPI";
-import ImageList from "../../component/ImageLisst";
+import ImageList from "../../component/ImageList";
 
 
 const ProductDetail: React.FunctionComponent = () => {
