@@ -30,7 +30,7 @@ const auth = book.injectEndpoints({
   endpoints: (builder) => ({
     loginWithGoogle: builder.query({
       query: (codeResponse) => ({
-        url: `http://localhost:8080/login/oauth/google?code=${codeResponse.code}`,
+        url: `https://nmc-bookstore-api.onrender.com/login/oauth/google?code=${codeResponse.code}`,
       }),
     }),
     login: builder.mutation<Login, Pick<Login, "username" | "password">>({
