@@ -18,6 +18,7 @@ import {
 import { User } from "../../interface/User";
 import { useCreateOrderMutation } from "../../services/order/orderAPI";
 import PaypalCheckoutButton from "./PaypalCheckoutButton";
+import uuid from "react-uuid";
 
 const CARD_ELEMENT_OPTIONS: StripeCardElementOptions = {
   iconStyle: "solid",
@@ -48,8 +49,6 @@ const OrderPayment: React.FunctionComponent = () => {
   const totalPrice = useSelector(selectCurrentTotalCartValue);
 
   const [createOrder] = useCreateOrderMutation();
-
-  const [createOrderWithoutPayment] = useCreateOrderMutation();
 
   const handleCardElementChange = (event: any) => {
     setIsPaymentInfoComplete(event.complete);
@@ -110,8 +109,8 @@ const OrderPayment: React.FunctionComponent = () => {
   };
 
   const handleOrderWithoutPayment = async () => {
-    console.log("kaka");
     const response = await createOrder({
+      payment_id: String(uuid()),
       cart_ids: totalCartIdArr,
       to_address: userAddress,
       total_shipping: 30000,
@@ -120,9 +119,8 @@ const OrderPayment: React.FunctionComponent = () => {
       status: "success",
     });
     if ("data" in response) {
-      // handleClearInfo();
-      // navigate("/user/order/return", { state: { data: response.data } });
-      toast.success("payment ship")
+      handleClearInfo();
+      navigate("/user/order/return", { state: { data: response.data } });
     }
   };
 
