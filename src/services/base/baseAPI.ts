@@ -65,6 +65,6 @@ export const book = createApi({
   baseQuery: baseQueryWithReauth,
   refetchOnMountOrArgChange: true,
 
-  tagTypes: ['genres', 'Product'],
+  tagTypes: ['genres', 'Product','reviews'],
   endpoints: () => ({})
 });
