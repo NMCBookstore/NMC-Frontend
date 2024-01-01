@@ -1,5 +1,5 @@
 import { AllProduct, Product } from "../../interface/Product";
-import { book, rcm } from "../Base/baseAPI";
+import { book } from "../Base/baseAPI";
 
 const product = book.injectEndpoints({
   endpoints: (builder) => ({
@@ -74,29 +74,6 @@ const product = book.injectEndpoints({
   overrideExisting: false,
 });
 
-const productRcm = rcm.injectEndpoints({
-  endpoints: (builder) => ({
-    getRcmBookTwo: builder.query<Product[], { name: string; size: number }>({
-      query: ({ name, size }) => ({
-        url: `/books/recommend?name=${name}&size=${size}`,
-      }),
-      transformResponse: (response: Product[]) => {
-        const productNotDeleted = response.filter((item) => !item.is_deleted);
-        return productNotDeleted;
-      },
-    }),
-    getRcmBookForUserTwo: builder.query<Product[], { username: string }>({
-      query: ({ username }) => ({
-        url: `/just_for_you?username=${username}`,
-      }),
-      transformResponse: (response: Product[]) => {
-        const productNotDeleted = response.filter((item) => !item.is_deleted);
-        return productNotDeleted;
-      },
-    }),
-  }),
-  overrideExisting: false,
-});
 
 export const {
   useGetProductDetailsQuery,
@@ -107,6 +84,3 @@ export const {
   useGetRcmBookQuery,
   useGetRcmBookForUserQuery,
 } = product;
-
-export const { useGetRcmBookTwoQuery, useGetRcmBookForUserTwoQuery } =
-  productRcm;

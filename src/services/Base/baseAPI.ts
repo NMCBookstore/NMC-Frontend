@@ -67,11 +67,3 @@ export const book = createApi({
   tagTypes: ["WishlistItems", "CartItems", "AddressItems", "ReviewItems"],
   endpoints: () => ({}),
 });
-
-export const rcm = createApi({
-  reducerPath: "bookApi2",
-  baseQuery: fetchBaseQuery({
-    baseUrl: "https://nmc-bookstore-api.onrender.com/",
-  }),
-  endpoints: () => ({}),
-});

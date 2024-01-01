@@ -12,7 +12,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import authSlice from "../features/auth/authSlice";
 import cartSlice from "../features/cart/cartSlice";
-import { book, rcm } from "../services/Base/baseAPI";
+import { book } from "../services/Base/baseAPI";
 
 const persistConfig = {
   key: "root",
@@ -23,7 +23,6 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
   [book.reducerPath]: book.reducer,
-  [rcm.reducerPath]: rcm.reducer,
   auth: authSlice,
   cart: cartSlice,
 });
@@ -38,8 +37,7 @@ const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     })
-      .concat(book.middleware)
-      .concat(rcm.middleware),
+      .concat(book.middleware),
   devTools: true,
 });
 

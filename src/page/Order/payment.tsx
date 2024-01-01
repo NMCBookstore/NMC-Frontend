@@ -49,6 +49,8 @@ const OrderPayment: React.FunctionComponent = () => {
 
   const [createOrder] = useCreateOrderMutation();
 
+  const [createOrderWithoutPayment] = useCreateOrderMutation();
+
   const handleCardElementChange = (event: any) => {
     setIsPaymentInfoComplete(event.complete);
   };
@@ -107,6 +109,23 @@ const OrderPayment: React.FunctionComponent = () => {
     }
   };
 
+  const handleOrderWithoutPayment = async () => {
+    console.log("kaka");
+    const response = await createOrder({
+      cart_ids: totalCartIdArr,
+      to_address: userAddress,
+      total_shipping: 30000,
+      email: userInfo?.email,
+      note: userNote,
+      status: "success",
+    });
+    if ("data" in response) {
+      // handleClearInfo();
+      // navigate("/user/order/return", { state: { data: response.data } });
+      toast.success("payment ship")
+    }
+  };
+
   return (
     <div className="order-info order-payment mt-[76px]">
       <div className="container-nmc mx-auto">
@@ -124,7 +143,7 @@ const OrderPayment: React.FunctionComponent = () => {
                   <img className="w-[40px]" src={mastercard} alt="mastercard" />
                 </div>
                 {/* this is the checkout part */}
-                <h3>Fill In Your Card Info To Order: </h3>
+                <h3>Fill in your card info to purchase order: </h3>
                 <form
                   onSubmit={handlePayment}
                   className="order-payment__list__cart"
@@ -142,7 +161,7 @@ const OrderPayment: React.FunctionComponent = () => {
                     </div>
                   )}
                 </form>
-                <h3 className="mb-3">Or You Can Use</h3>
+                <h3 className="mb-3">Or use</h3>
                 <PaypalCheckoutButton
                   userInfo={userInfo}
                   totalCartIdArr={totalCartIdArr}
@@ -150,6 +169,13 @@ const OrderPayment: React.FunctionComponent = () => {
                   userNote={userNote}
                   userAddress={userAddress}
                 />
+                <h3 className="mb-3">Or use</h3>
+                <div className="order-info__form__btn flex items-center">
+                  <button onClick={handleOrderWithoutPayment}>
+                    <span>Cash on Delivery</span>
+                    <i className="bdx-cart"></i>
+                  </button>
+                </div>
               </div>
               <div className="order-info__form__btn flex justify-between items-center">
                 <a href="javascript:history.back()">Return</a>
@@ -196,7 +222,9 @@ const OrderPayment: React.FunctionComponent = () => {
                       <span className="input-group-text align-items-start">
                         <i className="bdx-note inline-flex items-center"></i>
                       </span>
-                      <p className="form-control">{userNote}</p>
+                      <p className="form-control">
+                        {userNote ? userNote : "'You have no note'"}
+                      </p>
                     </div>
                   </div>
                 </div>

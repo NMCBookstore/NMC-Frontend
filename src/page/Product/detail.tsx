@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
-import { emptyData, productBaner } from "../../assets/img";
+import Slider from "react-slick";
+import { productBaner } from "../../assets/img";
+import { productListSettings } from "../../common/CarouselSetting";
 import Carousel from "../../component/Fancybox/Carousel";
 import Fancybox from "../../component/Fancybox/Fancy";
 import Marquee from "../../component/Marquee";
 import NotiHome from "../../component/NotiHome";
+import ProductItem from "../../component/ProductItem";
 import ReviewList from "../../component/Review";
 import { Product } from "../../interface/Product";
 import { useAddToCartMutation } from "../../services/cart/cartAPI";
@@ -17,9 +20,8 @@ import {
   useAddToWishlistMutation,
   useGetWishlistQuery,
 } from "../../services/wishlist/wishlistAPI";
-import { productListSettings } from "../../common/CarouselSetting";
-import Slider from "react-slick";
-import ProductItem from "../../component/ProductItem";
+import ImageList from "../../component/ImageList";
+
 
 const ProductDetail: React.FunctionComponent = () => {
   const { id } = useParams();
@@ -68,7 +70,6 @@ const ProductDetail: React.FunctionComponent = () => {
     size: 6,
   });
 
-  console.log(rcm);
   const showFullContent = useRef(false);
 
   const elementRef = useRef<HTMLDivElement>(null);
@@ -115,50 +116,7 @@ const ProductDetail: React.FunctionComponent = () => {
           <div className="product-detail__item">
             <div className="row gap-y-8 justify-center">
               <div className="md:w-[100%] lg:w-[80%] w-[50%]">
-                <Fancybox
-                  options={{
-                    Carousel: {
-                      infinite: false,
-                    },
-                  }}
-                  imageLength={Number(books?.image.length)}
-                >
-                  <Carousel
-                    options={{
-                      infinite: false,
-                      Dots: false,
-                      Navigation: false,
-                      Thumbs: {
-                        type: "classic",
-                        Carousel: {
-                          slidesPerPage: 1,
-                          Navigation: false,
-                          center: true,
-                          fill: true,
-                          dragFree: true,
-                          axis: "y",
-                          breakpoints: {
-                            "(max-width: 576px)": {
-                              axis: "x",
-                            },
-                          },
-                        },
-                      },
-                    }}
-                  >
-                    {books?.image.map((item, index) => (
-                      <div
-                        key={index}
-                        className="f-carousel__slide"
-                        data-thumb-src={item}
-                        data-fancybox="gallery"
-                        data-src={item}
-                      >
-                        <img alt="" data-lazy-src={item} />
-                      </div>
-                    ))}
-                  </Carousel>
-                </Fancybox>
+                <ImageList books={books}></ImageList>
               </div>
               <div className="lg:w-[100%] w-[50%]">
                 <div className="product-detail__item__heading">
@@ -342,22 +300,10 @@ const ProductDetail: React.FunctionComponent = () => {
                         "brightness(37%) contrast(118%) grayscale(76%) hue-rotate(12deg)",
                     }}
                   ></div>
-                  {reviewLength ? (
                     <ReviewList
                       id={id}
                       onReviewLengthChange={handleReviewLengthChange}
                     ></ReviewList>
-                  ) : (
-                    <div
-                      className="emptyData"
-                      style={{
-                        filter:
-                          "brightness(37%) contrast(118%) grayscale(76%) hue-rotate(12deg)",
-                      }}
-                    >
-                      <img src={emptyData} alt="emptyData" />
-                    </div>
-                  )}
                 </div>
               </div>
               <div className="w-[25%]">
