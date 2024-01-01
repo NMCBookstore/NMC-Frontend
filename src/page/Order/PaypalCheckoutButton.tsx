@@ -13,6 +13,7 @@ interface PaypalCheckout {
   totalPrice: number;
   userNote: string;
   userAddress: string;
+  shipping: number
 }
 
 const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
@@ -21,6 +22,7 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
   totalPrice,
   userNote,
   userAddress,
+  shipping
 }) => {
   const [createOrder] = useCreateOrderMutation();
   const navigate = useNavigate();
@@ -59,7 +61,7 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
           payment_id: id,
           cart_ids: totalCartIdArr,
           to_address: userAddress,
-          total_shipping: 30000,
+          total_shipping: shipping,
           email: userInfo?.email,
           note: userNote,
           status: "success",
