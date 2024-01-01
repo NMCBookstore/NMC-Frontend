@@ -11,6 +11,7 @@ import { selectCurrentUser } from "../../features/auth/authSlice";
 import {
   clearNoteAndAddressInfo,
   selectCurrentCardID,
+  selectCurrentShipping,
   selectCurrentTotalCartValue,
   selectCurrentUserAddress,
   selectCurrentUserNote,
@@ -47,6 +48,7 @@ const OrderPayment: React.FunctionComponent = () => {
   const userNote = useSelector(selectCurrentUserNote);
   const userAddress = useSelector(selectCurrentUserAddress);
   const totalPrice = useSelector(selectCurrentTotalCartValue);
+  const shipping = useSelector(selectCurrentShipping);
 
   const [createOrder] = useCreateOrderMutation();
 
@@ -90,7 +92,7 @@ const OrderPayment: React.FunctionComponent = () => {
           payment_id: id,
           cart_ids: totalCartIdArr,
           to_address: userAddress,
-          total_shipping: 30000,
+          total_shipping: shipping,
           email: userInfo?.email,
           note: userNote,
           status: "success",
@@ -113,7 +115,7 @@ const OrderPayment: React.FunctionComponent = () => {
       payment_id: String(uuid()),
       cart_ids: totalCartIdArr,
       to_address: userAddress,
-      total_shipping: 30000,
+      total_shipping: shipping,
       email: userInfo?.email,
       note: userNote,
       status: "success",
@@ -166,6 +168,7 @@ const OrderPayment: React.FunctionComponent = () => {
                   totalPrice={totalPrice}
                   userNote={userNote}
                   userAddress={userAddress}
+                  shipping={shipping}
                 />
                 <h3 className="mb-3">Or use</h3>
                 <div className="order-info__form__btn flex items-center">

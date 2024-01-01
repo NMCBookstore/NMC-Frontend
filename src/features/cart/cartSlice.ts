@@ -8,10 +8,17 @@ const cartSlice = createSlice({
     item: [] as Cart[],
     note: "",
     address: "",
+    shipping: 0,
   },
   reducers: {
     setCartInfo: (state, action) => {
       state.item = action.payload;
+      state.shipping = action.payload;
+      const totalPrice = state.item.reduce(
+        (total, item) => total + item.price,
+        0
+      );
+      state.shipping = totalPrice > 100 ? 0 : totalPrice * 0.07;
     },
 
     setNoteInfo: (state, action) => {
@@ -43,7 +50,7 @@ export const selectCurrentCardID = (state: RootState) =>
 export const selectCurrentUserNote = (state: RootState) => state?.cart?.note;
 export const selectCurrentUserAddress = (state: RootState) =>
   state?.cart?.address;
-
+export const selectCurrentShipping = (state: RootState) => state?.cart.shipping;
 export const selectCurrentTotalCartValue = createSelector(
   [selectCurrentCartProduct],
   (items) => {
