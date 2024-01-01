@@ -2,7 +2,10 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Marquee from "../../component/Marquee";
-import { selectCurrentTotalCartValue } from "../../features/cart/cartSlice";
+import {
+  selectCurrentShipping,
+  selectCurrentTotalCartValue,
+} from "../../features/cart/cartSlice";
 import {
   useDeleteCartItemMutation,
   useGetCartQuery,
@@ -19,6 +22,7 @@ const CartIndex: React.FunctionComponent = () => {
 
   const [deleteCartItem] = useDeleteCartItemMutation();
   const [updateCartItem] = useUpdateCartMutation();
+  const shipping = useSelector(selectCurrentShipping);
 
   const handleDeleteCartItem = async (cart_id: number[]) => {
     await deleteCartItem(cart_id);
@@ -176,11 +180,15 @@ const CartIndex: React.FunctionComponent = () => {
           <div className="md:w-full w-[25%] ms-auto">
             <div className="cart-info__bottom">
               <p className="cart-info__bottom__noting">
-                *Shipping fee included
+                *Shipping fee included: {shipping.toFixed(2)}$
               </p>
               <p className="cart-info__bottom__sum">
                 <span className="text-uppercase">Total order value</span>
                 <span>{totalItemPrice.toFixed(2)}$</span>
+              </p>
+              <p className="cart-info__bottom__sum">
+                <span className="text-uppercase">Total order</span>
+                <span>{(totalItemPrice + shipping).toFixed(2)}$</span>
               </p>
               <div className="cart-info__bottom__btn d-flex justify-content-between align-items-center">
                 <a href="javascript:history.back()">Return</a>
