@@ -34,11 +34,9 @@ const cart = book.injectEndpoints({
     }),
     deleteCartItem: builder.mutation<Cart, number[]>({
       query: (IDsArr) => {
-        let endPoint = `users/carts?`;
-        IDsArr.map((id: any) => (endPoint += `ids=${id}`));
         return {
           method: "DELETE",
-          url: endPoint,
+          url: `users/carts/delete?ids=${IDsArr[0]}`,
         };
       },
       invalidatesTags: ["CartItems"],

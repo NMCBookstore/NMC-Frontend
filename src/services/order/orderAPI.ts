@@ -5,7 +5,7 @@ const order = book.injectEndpoints({
   endpoints: (builder) => ({
     createOrder: builder.mutation<Order, Partial<Order>>({
       query: (order) => ({
-        url: `users/orders`,
+        url: `users/orders/create`,
         method: "POST",
         body: order,
       }),

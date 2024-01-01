@@ -41,11 +41,9 @@ const address = book.injectEndpoints({
     }),
     deleteAddress: builder.mutation<Address, number[]>({
       query: (IDsArr) => {
-        let endPoint = `users/addresses?`;
-        IDsArr.map((id: any) => (endPoint += `ids=${id}`));
         return {
           method: "DELETE",
-          url: endPoint,
+          url: `users/addresses/delete?ids=${IDsArr[0]}`,
         };
       },
       invalidatesTags: ["AddressItems"],
