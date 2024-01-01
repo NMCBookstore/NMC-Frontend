@@ -243,6 +243,9 @@ const Profile: React.FunctionComponent = () => {
                             const transaction = item.transactions.find(
                               (t) => t.books_id === bookItem.id
                             );
+                            const bookId = transaction
+                              ? transaction.books_id
+                              : 0;
                             const amount = transaction ? transaction.amount : 0;
                             const total = transaction ? transaction.total : 0;
                             return (
@@ -250,7 +253,10 @@ const Profile: React.FunctionComponent = () => {
                                 {/* Product info */}
                                 <td data-th="Product">
                                   <div className="product-img shrink-0">
-                                    <a href="" target="_blank">
+                                    <a
+                                      href={`/product/${bookId}`}
+                                      target="_blank"
+                                    >
                                       <img
                                         src={String(bookItem?.image[0])}
                                         alt="img-banner"
@@ -259,7 +265,10 @@ const Profile: React.FunctionComponent = () => {
                                   </div>
                                   <div>
                                     <p>
-                                      <a href={`/product/`} target="_blank">
+                                      <a
+                                        href={`/product/${bookId}`}
+                                        target="_blank"
+                                      >
                                         {bookItem?.name}
                                       </a>
                                     </p>
@@ -349,13 +358,23 @@ const Profile: React.FunctionComponent = () => {
                               <div className="bg-white product-item">
                                 <div className="flex flex-col items-center">
                                   <div className="product-item__img">
-                                    <img
-                                      src={book?.image[0]}
-                                      alt="img-product"
-                                    />
+                                    <a
+                                      href={`/product/${book.id}`}
+                                      target="_blank"
+                                    >
+                                      <img
+                                        src={book?.image[0]}
+                                        alt="img-product"
+                                      />
+                                    </a>
                                   </div>
                                   <h3 className="product-item__title webkitbox-2">
-                                    {book?.name}
+                                    <a
+                                      href={`/product/${book.id}`}
+                                      target="_blank"
+                                    >
+                                      {book?.name}
+                                    </a>
                                   </h3>
                                   <p className="product-item__des webkitbox-2">
                                     by: {book?.author}
@@ -379,13 +398,23 @@ const Profile: React.FunctionComponent = () => {
                               <div className="bg-white product-item">
                                 <div className="flex flex-col items-center">
                                   <div className="product-item__img">
-                                    <img
-                                      src={book?.image[0]}
-                                      alt="img-product"
-                                    />
+                                    <a
+                                      href={`/product/${book.id}`}
+                                      target="_blank"
+                                    >
+                                      <img
+                                        src={book?.image[0]}
+                                        alt="img-product"
+                                      />
+                                    </a>
                                   </div>
                                   <h3 className="product-item__title webkitbox-2">
-                                    {book?.name}
+                                    <a
+                                      href={`/product/${book.id}`}
+                                      target="_blank"
+                                    >
+                                      {book?.name}
+                                    </a>
                                   </h3>
                                   <p className="product-item__des webkitbox-2">
                                     by: {book?.author}
