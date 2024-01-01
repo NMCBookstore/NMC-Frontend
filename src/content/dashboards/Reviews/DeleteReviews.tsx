@@ -15,6 +15,7 @@ import React, { FC, useState } from 'react';
 import toast from 'react-hot-toast';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import { useSoftDeleteGenresMutation } from 'src/services/genres/genresAPI';
+import { useDeleteReviewMutation } from 'src/services/reviews/reviews';
 
 const style = {
   overflow: 'auto',
@@ -32,7 +33,7 @@ const style = {
 };
 
 interface DeleteReview {
-    reviewId: number;
+  reviewId: number;
 }
 
 const DeleteReviews: FC<DeleteReview> = ({ reviewId }) => {
@@ -46,15 +47,15 @@ const DeleteReviews: FC<DeleteReview> = ({ reviewId }) => {
 
   const [name, setName] = useState('');
 
-  const [deleteGenre, { isLoading }] = useSoftDeleteGenresMutation();
+  const [deleteReview, { isLoading }] = useDeleteReviewMutation();
 
-  const handleDeleteGenres = async (e: any) => {
+  const handleDeleteReview = async (e: any) => {
     e.preventDefault();
-    // const v = await deleteGenre(genreId);
-    // if ('data' in v) {
-    //   toast.success('Genres deleted !');
-    //   handleCloseAdd();
-    // }
+    const v = await deleteReview({ id: reviewId });
+    if ('data' in v) {
+      toast.success('Genres deleted !');
+      handleCloseAdd();
+    }
   };
 
   return (
@@ -80,9 +81,9 @@ const DeleteReviews: FC<DeleteReview> = ({ reviewId }) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h3" component="h2">
-            Delete Genres
+            Delete reviews
           </Typography>
-          <form onSubmit={(e) => handleDeleteGenres(e)}>
+          <form onSubmit={(e) => handleDeleteReview(e)}>
             <FormControl fullWidth>
               <Box
                 mt={2}
@@ -115,7 +116,7 @@ const DeleteReviews: FC<DeleteReview> = ({ reviewId }) => {
                     disabled={isLoading}
                     type="submit"
                   >
-                    Delete Genres
+                    Delete reviews
                   </Button>
                 </Stack>
               </Box>

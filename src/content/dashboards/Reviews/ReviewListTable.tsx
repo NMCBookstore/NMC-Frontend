@@ -101,11 +101,48 @@ const ReviewListTable = () => {
       }
     },
     {
+      name: 'is_deleted',
+      label: 'Status',
+      options: {
+        filter: true,
+        sort: true,
+        filterOptions: {
+          names: ['Unactive', 'Active'],
+          logic(value, filters) {
+            if (filters.length) {
+              const activeFilter = filters.find(
+                (filter) => filter === 'Unactive'
+              );
+              const unactiveFilter = filters.find(
+                (filter) => filter === 'Active'
+              );
+              if (activeFilter && unactiveFilter) {
+                return value === false || value === true;
+              }
+              if (activeFilter) {
+                return value === false;
+              }
+              if (unactiveFilter) {
+                return value === true;
+              }
+            }
+            return true;
+          }
+        },
+        customBodyRender: (value) =>
+          value ? (
+            <Label color="error">Deleted</Label>
+          ) : (
+            <Label color="success">Active</Label>
+          )
+      }
+    },
+    {
       name: 'Action',
       label: 'Action',
       options: {
         customBodyRender: (value, tableGenres) => {
-          if (tableGenres.rowData[6]) {
+          if (tableGenres.rowData[7]) {
             // Kiểm tra nếu là trạng thái "Unactive"
             return null; // Trả về null để bỏ qua hiển thị hai thành phần
           }

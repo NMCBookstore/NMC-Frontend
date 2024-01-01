@@ -123,6 +123,9 @@ const BookListTable = () => {
       label: 'Action',
       options: {
         customBodyRender: (value, tableData) => {
+          if (tableData.rowData[6]) {
+            return null;
+          }
           return (
             <Stack direction="row" spacing={0}>
               <Tooltip title="Edit Book">
