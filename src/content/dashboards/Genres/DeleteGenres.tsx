@@ -38,7 +38,6 @@ interface DeleteGenre {
 const DeleteGenres: FC<DeleteGenre> = ({ genreId }) => {
   const [openAdd, setOpenAdd] = React.useState(false);
   const handleOpenAdd = () => {
-    console.log('genreId', genreId);
     setOpenAdd(true);
   };
   const theme = useTheme();

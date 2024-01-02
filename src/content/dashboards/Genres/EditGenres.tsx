@@ -41,7 +41,6 @@ interface EditGenre {
 const EditGenres: FC<EditGenre> = ({ genreId, genreName }) => {
   const [openAdd, setOpenAdd] = React.useState(false);
   const handleOpenAdd = () => {
-    console.log('genreId', genreId, genreName);
     setOpenAdd(true);
   };
   const handleCloseAdd = () => setOpenAdd(false);

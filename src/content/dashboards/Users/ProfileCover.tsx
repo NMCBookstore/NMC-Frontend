@@ -172,7 +172,6 @@ const ProfileCover = () => {
     } else {
       toast.error('Only  png, jpeg, jpg files accepted');
     }
-    console.log(file);
   };
 
   const renderGenderText = (userGender: string) => {
@@ -197,10 +196,6 @@ const ProfileCover = () => {
     if (avatar) {
       formData.append('image', avatar);
     }
-
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
 
     const v = await updateProfile(formData);
     if ('data' in v) {
@@ -558,7 +553,7 @@ const ProfileCover = () => {
                     label="Confirm New Password"
                     placeholder="*********"
                     fullWidth
-                    type='password'
+                    type="password"
                     onChange={(e) =>
                       setPassword({
                         ...pass,

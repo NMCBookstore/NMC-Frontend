@@ -51,10 +51,9 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
   const user = useSelector(selectCurrentUser);
   const [openAdd, setOpenAdd] = React.useState(false);
   const handleOpenAdd = () => {
-    console.log(bookId);
     setOpenAdd(true);
   };
-  const handleCloseAdd = () => setOpenAdd(false);
+
   const [selectedFile, setSelectedFiles] = useState([]);
   const { data: genresData = [], isLoading } = useGetGenresQuery();
   const [genres, setGenres] = useState<Genres[]>([]);
@@ -67,11 +66,16 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
   const { data, isLoading: bookLoading } = useGetProductDetailsQuery(bookId);
   const [bookInfo, setBookInfo] = useState(data);
 
+  const handleCloseAdd = () => {
+    setSelectedFiles([]);
+    setSelectedImage(data?.image);
+    setOpenAdd(false);
+  };
+
   useEffect(() => {
     if (!isLoading && !bookLoading) {
       setGenres(genresData);
     }
-
     setGenresID(data?.genres.map((item) => item.id));
     setBookInfo(data);
     setSelectedImage(data?.image);
@@ -170,40 +174,45 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
   };
 
   //Update book
-  const [updateBook] = useUpdateProductMutation();
+  const [updateBook, { isLoading: isLoadingUpdate }] =
+    useUpdateProductMutation();
 
   const handleUpdateBook = async () => {
     const formData = new FormData();
-    if(!(imageFile.length > 0)){
-      toast.error("Image is required!");
+    // if(!(imageFile.length > 0)){
+    //   toast.error("Image is required!");
+    //   return;
+    // }
+    if (bookInfo.image.length < 1) {
+      toast.error('Have at least 1 image');
       return;
     }
-    if(!bookInfo.name){
-      toast.error("Name is required!");
+    if (!bookInfo.name) {
+      toast.error('Name is required!');
       return;
     }
-    if(!bookInfo.author){
-      toast.error("Author is required!");
+    if (!bookInfo.author) {
+      toast.error('Author is required!');
       return;
     }
-    if(!bookInfo.publisher){
-      toast.error("Publisher is required!");
+    if (!bookInfo.publisher) {
+      toast.error('Publisher is required!');
       return;
     }
-    if(!bookInfo.quantity){
-      toast.error("Quantity is required!");
+    if (!bookInfo.quantity) {
+      toast.error('Quantity is required!');
       return;
     }
-    if(!bookInfo.price){
-      toast.error("Price is required!");
+    if (!bookInfo.price) {
+      toast.error('Price is required!');
       return;
     }
-    if(!(genresID.length > 0)){
-      toast.error("Genres is required!");
+    if (!(genresID.length > 0)) {
+      toast.error('Genres is required!');
       return;
     }
-    if(!editorState){
-      toast.error("Description is required!");
+    if (!editorState) {
+      toast.error('Description is required!');
       return;
     }
     formData.append('id', String(bookId));
@@ -225,15 +234,10 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
       formData.append('genres_id', String(item));
     });
 
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
-
-    console.log('genresID', genresID);
     const v = await updateBook(formData);
     if ('data' in v) {
       toast.success('Book updated !');
-      handleCloseAdd()
+      handleCloseAdd();
     } else if ('error' in v) {
       toast.error('Cannot update book');
     }
@@ -390,7 +394,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     label="Book Name"
                     placeholder="Name of the book"
                     fullWidth
-                    defaultValue={bookInfo?.name}
+                    defaultValue={data?.name}
                     onChange={(e) =>
                       setBookInfo({ ...bookInfo, name: e.target.value })
                     }
@@ -402,7 +406,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     label="Author"
                     placeholder="Author"
                     fullWidth
-                    value={bookInfo?.author}
+                    defaultValue={data?.author}
                     onChange={(e) =>
                       setBookInfo({ ...bookInfo, author: e.target.value })
                     }
@@ -414,7 +418,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     label="Publisher"
                     placeholder="Publisher"
                     fullWidth
-                    value={bookInfo?.publisher}
+                    defaultValue={data?.publisher}
                     onChange={(e) =>
                       setBookInfo({ ...bookInfo, publisher: e.target.value })
                     }
@@ -428,7 +432,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     placeholder="Amount of book"
                     fullWidth
                     inputProps={{ min: 1 }}
-                    defaultValue={bookInfo?.quantity}
+                    defaultValue={data?.quantity}
                     onChange={(e) =>
                       setBookInfo({
                         ...bookInfo,
@@ -474,7 +478,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     type="number"
                     placeholder="Price of book"
                     fullWidth
-                    defaultValue={bookInfo?.price}
+                    defaultValue={data?.price}
                     onChange={(e) =>
                       setBookInfo({
                         ...bookInfo,
@@ -491,7 +495,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     placeholder="Sale percent"
                     fullWidth
                     inputProps={{ min: 1, max: 100 }}
-                    defaultValue={bookInfo?.sale}
+                    defaultValue={data?.sale}
                     onChange={(e) =>
                       setBookInfo({
                         ...bookInfo,
@@ -534,9 +538,10 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                   size="large"
                   endIcon={<AddCircleOutlineIcon />}
                   //   type="submit"
+                  disabled={isLoadingUpdate}
                   onClick={handleUpdateBook}
                 >
-                  Update Book
+                  {isLoadingUpdate ? 'Updating...' : 'Update book'}
                 </Button>
               </Box>
             </FormControl>
