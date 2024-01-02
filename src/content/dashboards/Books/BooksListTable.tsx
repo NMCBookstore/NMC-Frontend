@@ -10,6 +10,7 @@ import { useGetAllProductsQuery } from 'src/services/product/productAPI';
 import EditBooks from './EditBooks';
 import DeleteBooks from './DeleteBooks';
 import Label from 'src/components/Label';
+import { format, parseISO } from 'date-fns';
 
 const imgStyle = {
   width: '140px',
@@ -116,6 +117,18 @@ const BookListTable = () => {
       options: {
         filter: true,
         sort: true
+      }
+    },
+    {
+      name: 'created_at',
+      label: 'Create at',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => {
+          const formattedDate = format(parseISO(value), 'dd/MM/yyyy HH:mm:ss');
+          return (formattedDate);
+        }
       }
     },
     {

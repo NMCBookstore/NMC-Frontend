@@ -43,11 +43,15 @@ function PageHeader() {
   const [createGenres, { isLoading }] = useCreateGenresMutation();
 
   const handleCreateGenres = async (e: any) => {
-    e.preventDefault();
-    const v = await createGenres(name);
-    if ('data' in v) {
-      toast.success('Create new genres success !');
-      handleCloseAdd();
+    if (name !== '' && name.length > 5) {
+      e.preventDefault();
+      const v = await createGenres(name);
+      if ('data' in v) {
+        toast.success('Create new genres success !');
+        handleCloseAdd();
+      }
+    } else {
+      toast.error("Genre name can't be that short");
     }
   };
 
