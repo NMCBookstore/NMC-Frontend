@@ -143,7 +143,6 @@ const UserTable: FC<UserTableProps> = ({ userInfo }) => {
     event: ChangeEvent<HTMLInputElement>,
     userName: string
   ): void => {
-    console.log('user id', userName);
     if (!selectUser.includes(userName)) {
       setSelectedUser((prevSelected) => [...prevSelected, userName]);
     } else {

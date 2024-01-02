@@ -1,25 +1,26 @@
-import {
-  Typography,
-  Button,
-  Grid,
-  TextField,
-  Autocomplete,
-  FormControl,
-  Box,
-  Modal
-} from '@mui/material';
-import { debounce } from 'lodash';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import React, { useEffect, useState } from 'react';
-import shortid from 'shortid';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  FormControl,
+  Grid,
+  Modal,
+  TextField,
+  Typography
+} from '@mui/material';
 import { Editor } from '@tinymce/tinymce-react';
-import { useGetGenresQuery } from 'src/services/genres/genresAPI';
-import { Genres } from 'src/models/Genres';
-import { useCreateProductMutation } from 'src/services/product/productAPI';
+import { debounce } from 'lodash';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useSelector } from 'react-redux';
+import shortid from 'shortid';
 import { selectCurrentUser } from 'src/features/auth/authSlice';
+import { Genres } from 'src/models/Genres';
+import { useGetGenresQuery } from 'src/services/genres/genresAPI';
+import { useCreateProductMutation } from 'src/services/product/productAPI';
+import { IsValidImage } from 'src/utils/helper';
 
 const style = {
   overflow: 'auto',
@@ -36,7 +37,7 @@ const style = {
   p: 4
 };
 function PageHeader() {
-  const user = useSelector(selectCurrentUser)
+  const user = useSelector(selectCurrentUser);
   const [openAdd, setOpenAdd] = React.useState(false);
   const handleOpenAdd = () => setOpenAdd(true);
   const handleCloseAdd = () => setOpenAdd(false);
@@ -63,7 +64,6 @@ function PageHeader() {
 
   const handleInputChange = (event: any) => {
     const newQuery = event.target.value;
-    console.log('newQuery: ', newQuery);
     debouncedSetQuery(newQuery);
   };
 
@@ -105,7 +105,6 @@ function PageHeader() {
     }
   };
 
-
   const DeleteSelectFile = (id) => {
     if (window.confirm('Are you sure you want to delete this Image?')) {
       const result = selectedFile.filter((data) => data.id !== id);
@@ -115,17 +114,17 @@ function PageHeader() {
     }
   };
 
-  const FileUploadSubmit = async (e) => {
-    e.preventDefault();
+  // const FileUploadSubmit = async (e) => {
+  //   e.preventDefault();
 
-    // form reset on submit
-    e.target.reset();
-    if (selectedFile.length > 0) {
-      setSelectedFiles([]);
-    } else {
-      alert('Please select file');
-    }
-  };
+  //   // form reset on submit
+  //   e.target.reset();
+  //   if (selectedFile.length > 0) {
+  //     setSelectedFiles([]);
+  //   } else {
+  //     alert('Please select file');
+  //   }
+  // };
 
   const [editorContent, setEditorContent] = useState('');
 
@@ -156,6 +155,43 @@ function PageHeader() {
 
   const handleCreateBook = async () => {
     const formData = new FormData();
+    if (!(imageFile.length > 0)) {
+      toast.error('Image is required!');
+      return;
+    }
+    if (!bookInfo.name) {
+      toast.error('Name is required!');
+      return;
+    }
+    if (!bookInfo.author) {
+      toast.error('Author is required!');
+      return;
+    }
+    if (!bookInfo.publisher) {
+      toast.error('Publisher is required!');
+      return;
+    }
+    if (!bookInfo.quantity) {
+      toast.error('Quantity is required!');
+      return;
+    }
+    if (!bookInfo.price) {
+      toast.error('Price is required!');
+      return;
+    }
+    if (!bookInfo.sale) {
+      toast.error('Sale is required!');
+      return;
+    }
+    if (!(genresID.length > 0)) {
+      toast.error('Genres is required!');
+      return;
+    }
+    if (!editorContent) {
+      toast.error('Description is required!');
+      return;
+    }
+
     formData.append('description', editorContent);
     formData.append('name', bookInfo.name);
     formData.append('author', bookInfo.author);
@@ -167,6 +203,10 @@ function PageHeader() {
       formData.append('genres_id', String(item));
     });
     imageFile.forEach((file) => {
+      if (!IsValidImage(file)) {
+        toast.error('Only Png and Jpg accepted!');
+        return;
+      }
       formData.append('image', file);
     });
 
@@ -177,7 +217,7 @@ function PageHeader() {
     const v = await createBook(formData);
     if ('data' in v) {
       toast.success('New book created !');
-      handleCloseAdd()
+      handleCloseAdd();
     } else if ('error' in v) {
       toast.error('Cannot create new book');
     }
@@ -213,7 +253,7 @@ function PageHeader() {
           <Typography id="modal-modal-title" variant="h3" component="h2">
             Add Book
           </Typography>
-          <form onSubmit={FileUploadSubmit}>
+          <div>
             <FormControl fullWidth>
               <div className="fileupload-view">
                 <div className="row justify-content-center m-0">
@@ -346,6 +386,7 @@ function PageHeader() {
                     type="number"
                     placeholder="Amount of book"
                     fullWidth
+                    inputProps={{ min: 1 }}
                     onChange={(e) =>
                       setBookInfo({
                         ...bookInfo,
@@ -380,6 +421,7 @@ function PageHeader() {
                     type="number"
                     placeholder="Price of book"
                     fullWidth
+                    inputProps={{ min: 1 }}
                     onChange={(e) =>
                       setBookInfo({
                         ...bookInfo,
@@ -392,6 +434,7 @@ function PageHeader() {
                   <TextField
                     label="Sale Percent"
                     type="number"
+                    inputProps={{ min: 1, max: 100 }}
                     placeholder="Sale percent"
                     fullWidth
                     onChange={(e) =>
@@ -439,7 +482,7 @@ function PageHeader() {
                 </Button>
               </Box>
             </FormControl>
-          </form>
+          </div>
         </Box>
       </Modal>
     </Grid>

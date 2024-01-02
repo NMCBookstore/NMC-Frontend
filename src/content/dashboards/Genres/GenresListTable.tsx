@@ -10,6 +10,7 @@ import { Edit } from '@mui/icons-material';
 import EditGenres from './EditGenres';
 import DeleteGenres from './DeleteGenres';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { format, parseISO } from 'date-fns';
 
 const imgStyle = {
   width: '140px',
@@ -88,6 +89,18 @@ const GenresListTable = () => {
           ) : (
             <Label color="success">Active</Label>
           )
+      }
+    },
+    {
+      name: 'created_at',
+      label: 'Create at',
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value) => {
+          const formattedDate = format(parseISO(value), 'dd/MM/yyyy HH:mm:ss');
+          return formattedDate;
+        }
       }
     },
     {

@@ -39,7 +39,6 @@ interface DeleteReview {
 const DeleteReviews: FC<DeleteReview> = ({ reviewId }) => {
   const [openAdd, setOpenAdd] = React.useState(false);
   const handleOpenAdd = () => {
-    console.log('genreId', reviewId);
     setOpenAdd(true);
   };
   const theme = useTheme();
