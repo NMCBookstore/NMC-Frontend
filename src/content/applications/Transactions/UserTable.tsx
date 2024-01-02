@@ -213,14 +213,6 @@ const UserTable: FC<UserTableProps> = ({ userInfo }) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell padding="checkbox">
-                <Checkbox
-                  color="primary"
-                  checked={selectAllUser}
-                  indeterminate={selectedSomeUser}
-                  onChange={handleSelectAllUser}
-                />
-              </TableCell>
               <TableCell>User Name</TableCell>
               <TableCell>Rank</TableCell>
               <TableCell>Email</TableCell>
@@ -234,16 +226,6 @@ const UserTable: FC<UserTableProps> = ({ userInfo }) => {
               const isUserSelected = selectUser.includes(item?.username);
               return (
                 <TableRow hover key={item?.id} selected={isUserSelected}>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      checked={isUserSelected}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneUser(event, item?.username)
-                      }
-                      value={isUserSelected}
-                    />
-                  </TableCell>
                   <TableCell>
                     <Typography
                       variant="body1"

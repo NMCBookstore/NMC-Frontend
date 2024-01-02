@@ -67,7 +67,6 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
   const [bookInfo, setBookInfo] = useState(data);
 
   const handleCloseAdd = () => {
-    setSelectedFiles([]);
     setSelectedImage(data?.image);
     setOpenAdd(false);
   };
@@ -79,6 +78,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
     setGenresID(data?.genres.map((item) => item.id));
     setBookInfo(data);
     setSelectedImage(data?.image);
+    // setSelectedFiles(data?.image);
     const des = data?.description.replace(/\\n/g, '<br/>').replace(/\\/g, '');
     setEditorState(des);
   }, [bookLoading, isLoading, data, genresData]);
@@ -141,6 +141,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
   const handleDeleteLocalImage = (e, index, image) => {
     if (window.confirm('Are you sure you want to delete this Image?')) {
       setSelectedImage(selectedImage.filter((e) => e !== image));
+
       const imageCloud = bookInfo?.image.filter((e) => e !== image);
       setBookInfo({
         ...bookInfo,
@@ -218,7 +219,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
     formData.append('id', String(bookId));
     formData.append('name', bookInfo?.name);
     formData.append('price', String(bookInfo?.price));
-    bookInfo?.image.forEach((element) => {
+    selectedImage?.forEach((element) => {
       formData.append('image', element);
     });
     imageFile.forEach((element) => {
@@ -238,6 +239,8 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
     if ('data' in v) {
       toast.success('Book updated !');
       handleCloseAdd();
+      setSelectedFiles([]);
+      setImageFile([]);
     } else if ('error' in v) {
       toast.error('Cannot update book');
     }
@@ -291,7 +294,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                             </div>
                           </div>
                           <div className="kb-attach-box mb-3">
-                            {selectedFile.map((item, index) => {
+                            {selectedFile?.map((item, index) => {
                               const {
                                 id,
                                 filename,
