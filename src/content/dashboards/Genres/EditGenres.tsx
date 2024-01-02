@@ -55,11 +55,15 @@ const EditGenres: FC<EditGenre> = ({ genreId, genreName }) => {
   }, []);
 
   const handleCreateGenres = async (e: any) => {
-    e.preventDefault();
-    const v = await updateGenres({ id: genreId, name: genreInfo });
-    if ('data' in v) {
-      toast.success('Create new genres success !');
-      handleCloseAdd();
+    if (genreInfo !== '' && genreInfo.length > 5) {
+      e.preventDefault();
+      const v = await updateGenres({ id: genreId, name: genreInfo });
+      if ('data' in v) {
+        toast.success('Create new genres success !');
+        handleCloseAdd();
+      }
+    } else {
+      toast.error("Genre name can't be that short");
     }
   };
 

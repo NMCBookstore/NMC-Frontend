@@ -174,7 +174,38 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
 
   const handleUpdateBook = async () => {
     const formData = new FormData();
-
+    if(!(imageFile.length > 0)){
+      toast.error("Image is required!");
+      return;
+    }
+    if(!bookInfo.name){
+      toast.error("Name is required!");
+      return;
+    }
+    if(!bookInfo.author){
+      toast.error("Author is required!");
+      return;
+    }
+    if(!bookInfo.publisher){
+      toast.error("Publisher is required!");
+      return;
+    }
+    if(!bookInfo.quantity){
+      toast.error("Quantity is required!");
+      return;
+    }
+    if(!bookInfo.price){
+      toast.error("Price is required!");
+      return;
+    }
+    if(!(genresID.length > 0)){
+      toast.error("Genres is required!");
+      return;
+    }
+    if(!editorState){
+      toast.error("Description is required!");
+      return;
+    }
     formData.append('id', String(bookId));
     formData.append('name', bookInfo?.name);
     formData.append('price', String(bookInfo?.price));
@@ -396,6 +427,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     type="number"
                     placeholder="Amount of book"
                     fullWidth
+                    inputProps={{ min: 1 }}
                     defaultValue={bookInfo?.quantity}
                     onChange={(e) =>
                       setBookInfo({
@@ -438,6 +470,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                   <TextField
                     InputLabelProps={{ shrink: true }}
                     label="Price"
+                    inputProps={{ min: 1 }}
                     type="number"
                     placeholder="Price of book"
                     fullWidth
@@ -457,6 +490,7 @@ const EditBooks: FC<EditBook> = ({ bookId }) => {
                     type="number"
                     placeholder="Sale percent"
                     fullWidth
+                    inputProps={{ min: 1, max: 100 }}
                     defaultValue={bookInfo?.sale}
                     onChange={(e) =>
                       setBookInfo({

@@ -14,7 +14,6 @@ export const currencyExchange = (num: number) => {
   
     if (fileSize <= 10) {
       if (
-        fileType === "image/jpeg" ||
         fileType === "image/jpg" ||
         fileType === "image/png"
       )
