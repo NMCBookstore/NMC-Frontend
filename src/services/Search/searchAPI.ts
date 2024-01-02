@@ -35,7 +35,7 @@ const search = book.injectEndpoints({
         }${rating ? "&rating=" + rating : ""}`,
       }),
       transformResponse: (response: AllProduct) => {
-        const productNotDeleted = response?.books.filter(
+        const productNotDeleted = response?.books?.filter(
           (item) => !item.is_deleted
         );
         return {

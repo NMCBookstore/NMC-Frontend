@@ -95,7 +95,24 @@ const BdxLogModal: React.FunctionComponent = () => {
     return false;
   };
   const handleSignUp = async () => {
+    const emailRegex = /\S+@\S+\.\S+/;
     const formData = new FormData();
+    if(!signUpValue.username){
+      toast.error("Username is required!");
+      return;
+    }
+    if(!signUpValue.email){
+      toast.error("Email is required!");
+      return;
+    }
+    if(!emailRegex.test(signUpValue.email)){
+      toast.error("Invalid email!");
+      return;
+    }
+    if(!signUpValue.password){
+      toast.error("Password is required!");
+      return;
+    }
     formData.append("username", signUpValue.username);
     formData.append("email", signUpValue.email);
     formData.append("password", signUpValue.password);

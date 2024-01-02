@@ -70,9 +70,30 @@ const EditProfileComponent: React.FunctionComponent = () => {
 
   const [updateProfile, { isLoading }] = useUpdateUserMutation();
 
-  const handleUpdateInfo = async (e: any) => {
-    e.preventDefault();
+  const handleUpdateInfo = async () => {
     const formData = new FormData();
+    const regex = /^0[0-9]{9}$/;
+    const regex2 = /^\+84[0-9]{9}$/;
+    if(!userInfo.full_name){
+      toast.error("Name is required!");
+      return;
+    }
+    if(!userInfo.phone_number){
+      toast.error("Phone is required!");
+      return;
+    }
+    if(regex.test(userInfo.phone_number)||regex2.test(userInfo.phone_number)){
+      toast.error("Phone invalid!");
+      return;
+    }
+    if(!userInfo.age.toString()){
+      toast.error("Age is required!");
+      return;
+    }
+    if(!userInfo.sex.toString()){
+      toast.error("Gender is required!");
+      return;
+    }
     formData.append("full_name", userInfo.full_name);
     formData.append("phone_number", userInfo.phone_number);
     formData.append("age", userInfo.age.toString());

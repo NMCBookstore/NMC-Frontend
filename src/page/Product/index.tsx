@@ -84,6 +84,8 @@ const ProductList: React.FunctionComponent = () => {
     // { refetchOnMountOrArgChange: true }
   );
 
+  console.log("allProduct: ", allProduct);
+
   const [isDataReady, setIsDataReady] = useState(false);
 
   const { data: rcmUser, isLoading: rcmUserLoading } =
@@ -178,7 +180,7 @@ const ProductList: React.FunctionComponent = () => {
     const newSearchInfo = { ...searchInfo };
     newSearchInfo.text = event.target.value;
     setSearchParams(newSearchInfo as any);
-  }, 300);
+  }, 500);
 
   const handleTextSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     debouncedHandleTextSearch(event);
@@ -296,7 +298,6 @@ const ProductList: React.FunctionComponent = () => {
         <>
           {allProduct.books.map((item) => {
             if (item?.is_deleted == true) {
-              console.log("first");
               return (
                 <div className="cart-empty w-full" key={item?.id}>
                   <img src={cartEmpty2} alt="emptyData" />
