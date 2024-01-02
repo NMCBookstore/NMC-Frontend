@@ -451,7 +451,6 @@ function WatchListColumn() {
                 ${Number(monthRevenueSum).toFixed(2)}
               </Typography>
               <Text color={percentageMonthDifference < 0 ? 'error' : 'success'}>
-                {percentageMonthDifference < 0 ? '-' : '+'}
                 <b>
                   {percentageMonthDifference.toFixed(2)
                     ? percentageMonthDifference.toFixed(2)
@@ -468,7 +467,6 @@ function WatchListColumn() {
               }}
             >
               <Label color={amountMonthDiffenrence < 0 ? 'error' : 'success'}>
-                {amountMonthDiffenrence < 0 ? '-' : '+'}
                 {amountMonthDiffenrence.toFixed(2)}$
               </Label>
               <Typography
@@ -531,7 +529,6 @@ function WatchListColumn() {
               <Text
                 color={percentageQuarterDifference < 0 ? 'error' : 'success'}
               >
-                {percentageQuarterDifference < 0 ? '-' : '+'}
                 <b>
                   {percentageQuarterDifference.toFixed(2)
                     ? percentageQuarterDifference.toFixed(2)
@@ -548,7 +545,6 @@ function WatchListColumn() {
               }}
             >
               <Label color={amountQuarterDiffenrence < 0 ? 'error' : 'success'}>
-                {amountQuarterDiffenrence < 0 ? '-' : '+'}
                 {amountQuarterDiffenrence.toFixed(2)}$
               </Label>
               <Typography
@@ -609,7 +605,6 @@ function WatchListColumn() {
                 ${Number(yearRevenueSum).toFixed(2)}
               </Typography>
               <Text color={percentageYearDifference < 0 ? 'error' : 'success'}>
-                {percentageYearDifference < 0 ? '-' : '+'}
                 <b>
                   {percentageYearDifference
                     ? percentageYearDifference.toFixed(2)
@@ -626,7 +621,6 @@ function WatchListColumn() {
               }}
             >
               <Label color={amountYearDiffenrence < 0 ? 'error' : 'success'}>
-                {amountYearDiffenrence < 0 ? '-' : '+'}
                 {amountYearDiffenrence
                   ? amountYearDiffenrence.toFixed(2)
                   : 'No data'}
