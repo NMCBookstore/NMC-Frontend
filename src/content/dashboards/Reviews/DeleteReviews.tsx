@@ -52,7 +52,7 @@ const DeleteReviews: FC<DeleteReview> = ({ reviewId }) => {
     e.preventDefault();
     const v = await deleteReview({ id: reviewId });
     if ('data' in v) {
-      toast.success('Genres deleted !');
+      toast.success('Review deleted !');
       handleCloseAdd();
     }
   };

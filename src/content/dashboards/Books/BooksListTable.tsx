@@ -159,7 +159,7 @@ const BookListTable = () => {
   const { data: allProduct, isLoading } = useGetAllProductsQuery();
 
   const options = {
-    selectableRows: 'multiple',
+    selectableRows: 'none',
     filterType: 'dropdown',
     responsive: 'vertical',
     search: true
