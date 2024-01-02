@@ -50,7 +50,6 @@ const baseQueryWithReauth: BaseQueryFn<
           user,
         })
       );
-      console.log(refreshResult.data);
       // retry the initial query
       result = await baseQuery(args, api, extraOptions);
     } else {

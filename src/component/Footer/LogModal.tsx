@@ -67,10 +67,8 @@ const BdxLogModal: React.FunctionComponent = () => {
         "https://nmc-bookstore-api.onrender.com/login/oauth/google_url"
       );
       const url = response?.data?.url;
-      console.log(url);
       if (url) {
         window.location.href = url; // Redirect to the specified URL
-        console.log(url);
       } else {
         console.log("Invalid URL");
       }
@@ -90,7 +88,6 @@ const BdxLogModal: React.FunctionComponent = () => {
       cartRefetch();
     } catch (err) {
       toast.error("Login failed!");
-      console.log(err, "the data is not set");
     }
     return false;
   };
@@ -116,9 +113,6 @@ const BdxLogModal: React.FunctionComponent = () => {
     formData.append("username", signUpValue.username);
     formData.append("email", signUpValue.email);
     formData.append("password", signUpValue.password);
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
 
     const v = await executeSignup(formData);
     if ("data" in v) {

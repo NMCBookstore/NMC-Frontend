@@ -7,7 +7,7 @@ interface ImageListProps {
   }
 
   const ImageList: React.FunctionComponent<ImageListProps> = memo(({ books }) => {
-    console.log(books);
+
   
     // Kiểm tra điều kiện books khác undefined
     if (books === undefined) {

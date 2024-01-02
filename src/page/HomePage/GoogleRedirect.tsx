@@ -6,7 +6,6 @@ import { close, setCredentials } from "../../features/auth/authSlice";
 const GoogleRedirect = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const paramValue = urlParams.get("code");
-  console.log(paramValue);
   const dispatch = useDispatch();
 
   const homeUrl = "/";

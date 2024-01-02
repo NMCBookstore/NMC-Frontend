@@ -84,7 +84,6 @@ const ProductList: React.FunctionComponent = () => {
     // { refetchOnMountOrArgChange: true }
   );
 
-  console.log("allProduct: ", allProduct);
 
   const [isDataReady, setIsDataReady] = useState(false);
 
@@ -417,7 +416,6 @@ const ProductList: React.FunctionComponent = () => {
                     onClick={() => {
                       if (Number(item.value) == 0) {
                         delete searchInfo.rating;
-                        console.log("Aaaa");
                         handleStateChange(3, index);
                       } else {
                         searchInfo["page_id"] = 1;

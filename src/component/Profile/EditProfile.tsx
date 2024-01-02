@@ -61,7 +61,6 @@ const EditProfileComponent: React.FunctionComponent = () => {
     } else {
       toast.error("Only  png, jpeg, jpg files accepted");
     }
-    console.log(file);
   };
 
   //Update user info
@@ -101,10 +100,6 @@ const EditProfileComponent: React.FunctionComponent = () => {
     if (avatar) {
       formData.append("image", avatar);
     }
-
-    formData.forEach((value, key) => {
-      console.log(key, value);
-    });
 
     const v = await updateProfile(formData);
     if ("data" in v) {
