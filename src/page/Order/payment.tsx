@@ -73,7 +73,6 @@ const OrderPayment: React.FunctionComponent = () => {
 
   const handlePayment = async (e: any) => {
     e.preventDefault();
-    console.log("Paymentttt");
     const cardElement = elements.getElement(CardElement);
 
     if (!cardElement) {
@@ -103,7 +102,6 @@ const OrderPayment: React.FunctionComponent = () => {
         }
       } catch (error) {
         toast.error("Failed to create ");
-        console.log("Error", error);
       }
     } else {
       toast.error("Payment not initialized");

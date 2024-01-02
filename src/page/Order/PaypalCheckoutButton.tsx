@@ -67,7 +67,6 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
           status: "success",
         });
         if ("data" in response) {
-          console.log("have data in paypal");
           handleClearInfo();
           navigate("/user/order/return", { state: { data: response.data } });
         }

@@ -6,7 +6,6 @@ const cart = book.injectEndpoints({
   endpoints: (builder) => ({
     addToCart: builder.mutation<Cart, { amount: number; book_id: number }>({
       query: ({ book_id, amount }) => {
-        console.log(amount);
         return {
           method: "POST",
           url: `users/carts/${book_id}`,

@@ -68,9 +68,6 @@ const Header: React.FunctionComponent = () => {
     }
   };
 
-  const handleTextSearch = () => {
-    console.log("clicked");
-  };
 
   const cancelButtonRef = useRef(null);
   const numberWishlist = Number(wishlistBadge?.length);

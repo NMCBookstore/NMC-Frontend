@@ -98,7 +98,6 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
   };
 
   const handleUpdateAddress = async () => {
-    console.log(addressId, inputNewAddress, idCity, idDistrict);
     const v = await updateAddress({
       id: Number(addressId),
       address: String(inputNewAddress),
@@ -357,7 +356,6 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
                       setIdCity(null);
                       setIdDistrict(null);
                       closeModal();
-                      console.log("close clicked");
                     }}
                     ref={cancelButtonRef}
                     disabled={isLoading}

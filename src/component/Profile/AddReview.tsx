@@ -33,7 +33,6 @@ const AddReviewComponent: React.FunctionComponent<AddReview> = ({ bookId }) => {
   const [addReview, { isLoading }] = useAddReviewMutation();
 
   const handleAddReview = async () => {
-    console.log(bookId, review, starNumber);
     const v = await addReview({
       book_id: bookId,
       comments: review,
