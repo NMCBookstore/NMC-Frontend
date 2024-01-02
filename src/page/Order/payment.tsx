@@ -174,7 +174,6 @@ const OrderPayment: React.FunctionComponent = () => {
                 <div className="order-info__form__btn flex items-center">
                   <button onClick={handleOrderWithoutPayment}>
                     <span>Cash on Delivery</span>
-                    <i className="bdx-cart"></i>
                   </button>
                 </div>
               </div>
