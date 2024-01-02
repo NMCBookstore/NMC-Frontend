@@ -72,6 +72,18 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
   )?.[0]?.name;
 
   const handleCreateAddress = async () => {
+    if(!inputNewAddress){
+      toast.error("Address is required!");
+      return;
+    }
+    if(!idCity){
+      toast.error("City is required!");
+      return;
+    }
+    if(!idDistrict){
+      toast.error("District is required!");
+      return;
+    }
     const v = await addAddress({
       address: inputNewAddress,
       city_id: idCity,
