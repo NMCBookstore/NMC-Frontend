@@ -70,7 +70,6 @@ const OrderBillCompleted: React.FunctionComponent<OrderCompleted> = ({
       </div>
       <div className="order-bill__footer flex justify-end">
         <div className="text-center">
-          <p className="order-bill__footer--note">*Shipping fee included</p>
           <div className="order-bill__footer--sum d-flex justify-content-between align-items-center">
             <div>Total order value:</div>
             <p>{matchedOrder?.sub_total.toFixed(2)}$</p>

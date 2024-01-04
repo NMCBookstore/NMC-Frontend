@@ -60,7 +60,7 @@ const PaypalCheckoutButton: React.FunctionComponent<PaypalCheckout> = ({
         const response = await createOrder({
           payment_id: id,
           cart_ids: totalCartIdArr,
-          to_address: userAddress,
+          to_address: userAddress.split(",").slice(2).join(",").trim(),
           total_shipping: Number(shipping.toFixed(2)),
           email: userInfo?.email,
           note: userNote,

@@ -9,8 +9,8 @@ import type { RootState } from "../../app/store";
 import { setCredentials } from "../../features/auth/authSlice";
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: "https://nmc-bookstore-api.onrender.com/",
-  // baseUrl: "http://localhost:8080",
+  // baseUrl: "https://nmc-bookstore-api.onrender.com/",
+  baseUrl: "http://localhost:8080",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState)?.auth?.access_token;
     if (token) {
@@ -59,10 +59,29 @@ const baseQueryWithReauth: BaseQueryFn<
   return result;
 };
 
+export const ship = fetchBaseQuery({
+  baseUrl: "https://dev-online-gateway.ghn.vn/shiip/public-api/",
+  prepareHeaders: (headers, { getState }) => {
+    const token = "a29e4d62-ab0a-11ee-a6e6-e60958111f48";
+    if (token) {
+      headers.set("Token", token);
+    }
+    return headers;
+  },
+});
+
 export const book = createApi({
   reducerPath: "bookApi",
   baseQuery: baseQueryWithReauth,
   refetchOnMountOrArgChange: true,
   tagTypes: ["WishlistItems", "CartItems", "AddressItems", "ReviewItems"],
+  endpoints: () => ({}),
+});
+
+export const shipping = createApi({
+  reducerPath: "shipApi",
+  baseQuery: ship,
+  refetchOnMountOrArgChange: true,
+  tagTypes: ["Shipping"],
   endpoints: () => ({}),
 });

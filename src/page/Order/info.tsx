@@ -1,18 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import OrderBill from "../../component/OrderBill";
 import { selectCurrentUser } from "../../features/auth/authSlice";
-import { setAddressInfo, setNoteInfo } from "../../features/cart/cartSlice";
-import { useGetListAddressQuery } from "../../services/address/addressAPI";
+import {
+  setAddressInfo,
+  setNoteInfo,
+  setShipping,
+} from "../../features/cart/cartSlice";
+import {
+  useAddShippingFeeQuery,
+  useGetListAddressQuery,
+} from "../../services/address/addressAPI";
 
 const OrderInfo: React.FunctionComponent = () => {
   const pathAfterDomain = window.location.pathname;
 
-  const { data: address = [] } = useGetListAddressQuery();
+  const { data: address = [], isFetching: addressFetching } =
+    useGetListAddressQuery();
 
   const [userAddress, setUserAddress] = useState("");
+  const [userWard, setUserWard] = useState("");
+  const [userDistrict, setUserDistrict] = useState(0);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,6 +48,30 @@ const OrderInfo: React.FunctionComponent = () => {
     } else {
       toast.error("You must provide an address");
     }
+  };
+
+  const { data: shippingFee, isFetching } = useAddShippingFeeQuery({
+    to_district_id: userDistrict,
+    to_ward_code: userWard,
+  });
+
+  const handleShippingState = () => {
+    dispatch(setShipping(shippingFee?.data.total));
+  };
+
+  useEffect(() => {
+    handleShippingState();
+  }, [isFetching]);
+
+  useEffect(() => {
+    setUserWard(address[0]?.address.split(",")[0]);
+    setUserDistrict(address[0]?.district_id);
+  }, [addressFetching]);
+
+  const handleFee = (item: string) => {
+    const v = item.split(",");
+    setUserDistrict(parseInt(v[1]));
+    setUserWard(v[0]);
   };
 
   return (
@@ -97,19 +131,25 @@ const OrderInfo: React.FunctionComponent = () => {
                     </span>
                     <select
                       className="form-control"
-                      onClick={(e) =>
-                        setUserAddress((e.target as HTMLSelectElement).value)
-                      }
+                      onClick={(e) => {
+                        setUserAddress((e.target as HTMLSelectElement).value);
+                      }}
+                      onChange={(e) => handleFee(e.target.value)}
                     >
-                      <option disabled selected value="">
-                        Choose an address
-                      </option>
                       {address?.map((item, index) => (
                         <React.Fragment key={index}>
                           <option
-                            value={`${item.address}, ${item.district}, ${item.city}`}
+                            value={[
+                              item?.address.split(",")[0],
+                              String(item?.district_id),
+                              `${item?.address.split(",")[1]}, ${
+                                item.district
+                              }, ${item.city}`,
+                            ]}
                           >
-                            {`${item.address}, ${item.district}, ${item.city}`}
+                            {`${item?.address.split(",")[1]}, ${
+                              item.district
+                            }, ${item.city}`}
                           </option>
                         </React.Fragment>
                       ))}

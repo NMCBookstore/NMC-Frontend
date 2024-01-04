@@ -1,10 +1,17 @@
 import { Combobox, Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
-import { Address, City, District } from "../../interface/Address";
+import {
+  Address,
+  City,
+  District,
+  Ward,
+  WardReponse,
+} from "../../interface/Address";
 import {
   useCreateAddressMutation,
   useGetAddressDetailQuery,
+  useGetListWardQuery,
   useUpdateAddressMutation,
 } from "../../services/address/addressAPI";
 import { useGetListCitiesQuery } from "../../services/address/citiesAPI";
@@ -14,6 +21,9 @@ interface AddressProps {
   mode: string;
   addressId?: number;
   amountAddress: number;
+}
+interface ResProps {
+  data: WardReponse;
 }
 
 const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
@@ -44,9 +54,15 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
 
   const [idCity, setIdCity] = useState<number | null>(0);
   const [idDistrict, setIdDistrict] = useState<number | null>(0);
+  const [idWard, setIdWard] = useState<number | null>(0);
+  const [wardName, setWardName] = useState<string | null>("");
   const { data: citiesData = [] } = useGetListCitiesQuery();
   const { data: districtData = [] } = useGetListDistrictQuery(idCity, {
     skip: !idCity,
+  });
+
+  const { data: wardData } = useGetListWardQuery(idDistrict!, {
+    skip: !idDistrict,
   });
 
   const [inputNewAddress, setInputNewAddress] = useState<string>("");
@@ -62,6 +78,7 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
   useEffect(() => {
     setAddress(addressDetail);
     setIdCity(Number(addressDetail?.city_id));
+    setIdDistrict(Number(addressDetail?.district_id));
   }, [isFetching]);
 
   const commonCity = citiesData?.filter(
@@ -70,22 +87,25 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
   const commonDistrict = districtData?.filter(
     (item) => item.id === addressDetail?.district_id
   )?.[0]?.name;
+  // const commonWard= wardData?.filter(
+  //   (item) => item.id === addressDetail?.address[]
+  // )?.[0]?.name;
 
   const handleCreateAddress = async () => {
-    if(!inputNewAddress){
-      toast.error("Address is required!");
-      return;
-    }
-    if(!idCity){
-      toast.error("City is required!");
-      return;
-    }
-    if(!idDistrict){
-      toast.error("District is required!");
-      return;
-    }
+    // if (!inputNewAddress) {
+    //   toast.error("Address is required!");
+    //   return;
+    // }
+    // if (!idCity) {
+    //   toast.error("City is required!");
+    //   return;
+    // }
+    // if (!idDistrict) {
+    //   toast.error("District is required!");
+    //   return;
+    // }
     const v = await addAddress({
-      address: inputNewAddress,
+      address: `${idWard},${wardName}`,
       city_id: idCity,
       district_id: idDistrict,
     });
@@ -107,7 +127,7 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
 
     if ("data" in v) {
       toast.success("Address updated !");
-      closeModal()
+      closeModal();
     } else if ("error" in v) {
       toast.error("Update address failed");
     }
@@ -129,6 +149,15 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
       : districtData.filter((item) =>
           item.name
             .toLowerCase()
+            .replace(/\s+/g, "")
+            .includes(query.toLowerCase().replace(/\s+/g, ""))
+        );
+
+  const filteredWard =
+    query === ""
+      ? wardData?.data
+      : wardData?.data.filter((item) =>
+          item.WardName.toLowerCase()
             .replace(/\s+/g, "")
             .includes(query.toLowerCase().replace(/\s+/g, ""))
         );
@@ -183,7 +212,7 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
                     </Dialog.Title>
                   )}
                   <div className="">
-                    <div className="text-left mb-4">
+                    {/* <div className="text-left mb-4">
                       <label
                         className="block text-[16px] leading-normal mb-2"
                         htmlFor="name"
@@ -198,7 +227,7 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
                         defaultValue={address ? String(address?.address) : ""}
                         onChange={(e) => setInputNewAddress(e.target.value)}
                       />
-                    </div>
+                    </div> */}
                     <div className="text-left mb-4">
                       <label
                         className="block text-[16px] leading-normal mb-2"
@@ -310,12 +339,75 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
                                     value={district}
                                     onClick={() => setIdDistrict(district?.id)}
                                   >
-                                    {/* {({ selected, active }) => ( */}
                                     <>
                                       <span
                                         className={`block leading-[24px] truncate`}
                                       >
                                         {district?.name}
+                                      </span>
+                                    </>
+                                    {/* )} */}
+                                  </Combobox.Option>
+                                ))
+                              )}
+                            </Combobox.Options>
+                          </Transition>
+                        </div>
+                      </Combobox>
+                    </div>
+                    <div className="text-left mb-4">
+                      <label
+                        className="block text-[16px] leading-normal mb-2"
+                        htmlFor="City"
+                      >
+                        Ward<span>*</span>
+                      </label>
+                      <Combobox>
+                        <div className="relative w-full md:grow">
+                          <div className="relative md:grow border border-[#BFBFBF] border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
+                            <Combobox.Input
+                              className="w-full md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize  bg-[transparent] focus:outline-none"
+                              displayValue={(ward: Ward) => ward?.WardName}
+                              placeholder="Select or search ward..."
+                              onChange={(event) => setQuery(event.target.value)}
+                            />
+                            <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pb-6 rotate-[-90deg]">
+                              <i className="bdx-caret "></i>
+                            </Combobox.Button>
+                          </div>
+                          <Transition
+                            as={Fragment}
+                            leave="transition ease-in duration-100"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                            afterLeave={() => setQuery("")}
+                          >
+                            <Combobox.Options className="absolute mt-1 max-h-[264px] w-fit overflow-auto rounded-md bg-white p-3 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-[100]">
+                              {filteredWard?.length === 0 && query !== "" ? (
+                                <div className="relative cursor-default select-none px-4 py-2 ">
+                                  Nothing found.
+                                </div>
+                              ) : (
+                                filteredWard?.map((ward) => (
+                                  <Combobox.Option
+                                    key={ward.WardCode}
+                                    className={({ active }) =>
+                                      `relative cursor-default select-none py-2 px-6 rounded-xl ${
+                                        active ? "bg-primary text-white" : ""
+                                      }`
+                                    }
+                                    value={ward}
+                                    onClick={() => {
+                                      setIdWard(ward?.WardCode);
+                                      setWardName(ward?.WardName);
+                                    }}
+                                  >
+                                    {/* {({ selected, active }) => ( */}
+                                    <>
+                                      <span
+                                        className={`block leading-[24px] truncate`}
+                                      >
+                                        {ward?.WardName}
                                       </span>
                                     </>
                                     {/* )} */}

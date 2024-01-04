@@ -13,14 +13,9 @@ const cartSlice = createSlice({
   reducers: {
     setCartInfo: (state, action) => {
       state.item = action.payload;
-      // state.shipping = action.payload;
-      const totalPrice = state.item.reduce(
-        (total, item) =>
-          total +
-          Number(item?.price) * (1 - Number(item?.sale) / 100) * item?.amount,
-        0
-      );
-      state.shipping = totalPrice > 100 ? 0 : totalPrice * 0.07;
+    },
+    setShipping: (state, action) => {
+      state.shipping = action.payload;
     },
 
     setNoteInfo: (state, action) => {
@@ -29,6 +24,7 @@ const cartSlice = createSlice({
     clearNoteAndAddressInfo: (state) => {
       state.note = "";
       state.address = "";
+      state.shipping = 0;
     },
 
     setAddressInfo: (state, action) => {
@@ -41,6 +37,7 @@ export const {
   setCartInfo,
   setNoteInfo,
   setAddressInfo,
+  setShipping,
   clearNoteAndAddressInfo,
 } = cartSlice.actions;
 
@@ -52,7 +49,8 @@ export const selectCurrentCardID = (state: RootState) =>
 export const selectCurrentUserNote = (state: RootState) => state?.cart?.note;
 export const selectCurrentUserAddress = (state: RootState) =>
   state?.cart?.address;
-export const selectCurrentShipping = (state: RootState) => state?.cart.shipping;
+export const selectCurrentShipping = (state: RootState) =>
+  state?.cart.shipping / 23000;
 export const selectCurrentTotalCartValue = createSelector(
   [selectCurrentCartProduct],
   (items) => {
