@@ -31,7 +31,7 @@ function RecentOrders() {
       amount: 8734587,
       cryptoCurrency: 'BTC',
       currency: '$'
-    },
+    }
   ];
 
   const { data: userInfo } = useListUserQuery();
