@@ -21,8 +21,8 @@ const VerifyForgotPassword = () => {
       return;
     }
     const v = await resetPassword({
-      id: searchParams.get("id"),
-      reset_code: searchParams.get("reset_code"),
+      id: Number(searchParams.get("id")),
+      reset_code: String(searchParams.get("reset_code")),
       password: pass.newpass,
     });
     if ("data" in v) {
@@ -41,9 +41,7 @@ const VerifyForgotPassword = () => {
                 <h1>Change your password here</h1>
               </div>
               <div className="w-full mb-6">
-                <label>
-                  Your new password
-                </label>
+                <label>Your new password</label>
                 <input
                   className="rounded-full border-[1px] border-[#BFBFBF] border-solid px-4 py-3 w-full shadow-md"
                   type="password"
@@ -54,9 +52,7 @@ const VerifyForgotPassword = () => {
                 />
               </div>
               <div className="w-full mb-6">
-                <label>
-                  Confirm your new password
-                </label>
+                <label>Confirm your new password</label>
                 <input
                   className="rounded-full border-[1px] border-[#BFBFBF] border-solid px-4 py-3 w-full shadow-md"
                   type="password"
