@@ -9,8 +9,8 @@ import type { RootState } from 'src/app/store';
 import { setCredentials } from 'src/features/auth/authSlice';
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: 'http://localhost:8080',
-  // baseUrl: 'https://nmc-bookstore-api.onrender.com/',
+  // baseUrl: 'http://localhost:8080',
+  baseUrl: 'https://nmc-bookstore-api.onrender.com/',
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState)?.auth?.access_token;
     if (token) {
