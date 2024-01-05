@@ -84,7 +84,6 @@ const ProductList: React.FunctionComponent = () => {
     // { refetchOnMountOrArgChange: true }
   );
 
-
   const [isDataReady, setIsDataReady] = useState(false);
 
   const { data: rcmUser, isLoading: rcmUserLoading } =
@@ -149,6 +148,7 @@ const ProductList: React.FunctionComponent = () => {
       delete newSearchInfo.min_price;
       delete newSearchInfo.max_price;
     } else {
+      newSearchInfo.page_id = 1;
       newSearchInfo.min_price = item?.minPrice;
       newSearchInfo.max_price = item?.maxPrice;
     }
