@@ -55,30 +55,27 @@ const AvatarWrapper = styled(Avatar)(
 function WatchListRow() {
   const theme = useTheme();
 
-  const [numberUser, setNumberUser] = useState<number>(0);
-  const [numberGenres, setNumberGenres] = useState<number>(0);
-  const [numberBooks, setNumberBooks] = useState<number>(0);
-  const [numberOrders, setNumberOrders] = useState<number>(0);
+  // const [numberUser, setNumberUser] = useState<number>(0);
+  // const [numberGenres, setNumberGenres] = useState<number>(0);
+  // const [numberBooks, setNumberBooks] = useState<number>(0);
+  // const [numberOrders, setNumberOrders] = useState<number>(0);
 
   const { data: totalUser } = useListTotalUserNumberQuery();
   const { data: totalGenres } = useGetGenresQuery();
   const { data: totalBooks } = useGetAllProductsQuery();
   const { data: totalOrders } = useGetAllOrderQuery();
 
-  useEffect(() => {
-    setNumberUser(totalUser?.length);
-    setNumberGenres(totalGenres?.length);
-    setNumberBooks(totalBooks?.length);
-    setNumberOrders(totalOrders?.length);
-  }, [totalUser, totalGenres, numberBooks, totalOrders]);
+  // useEffect(() => {
+  //   setNumberUser(totalUser?.length);
+  //   setNumberGenres(totalGenres?.length);
+  //   setNumberBooks(totalBooks?.length);
+  //   setNumberOrders(totalOrders?.length);
+  // }, []);
+  const numberUser = totalUser?.length;
+  const numberGenres = totalGenres?.length;
+  const numberBooks = totalBooks?.length;
+  const numberOrders = totalOrders?.length;
 
-  console.log(
-    'totalUser: ',
-    numberUser,
-    numberGenres,
-    numberBooks,
-    numberOrders
-  );
   return (
     <Card>
       <Stack

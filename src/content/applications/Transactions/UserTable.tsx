@@ -218,7 +218,6 @@ const UserTable: FC<UserTableProps> = ({ userInfo }) => {
               <TableCell>Email</TableCell>
               <TableCell align="right">Email Verified</TableCell>
               <TableCell align="right">Created At</TableCell>
-              <TableCell align="right">ACTIONS</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -274,20 +273,6 @@ const UserTable: FC<UserTableProps> = ({ userInfo }) => {
                   <TableCell align="right">
                     {/* {getStatusLabel(cryptoOrder.status)} */}
                     {format(new Date(item?.created_at), 'dd/MM/yyyy')}
-                  </TableCell>
-                  <TableCell align="right">
-                    <Tooltip title="Delete Order" arrow>
-                      <IconButton
-                        sx={{
-                          '&:hover': { background: theme.colors.error.lighter },
-                          color: theme.palette.error.main
-                        }}
-                        color="inherit"
-                        size="small"
-                      >
-                        <DeleteTwoToneIcon fontSize="small" />
-                      </IconButton>
-                    </Tooltip>
                   </TableCell>
                 </TableRow>
               );

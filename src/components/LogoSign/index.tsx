@@ -102,7 +102,7 @@ function Logo() {
       title="NMC Bookstore"
       arrow
     >
-      <LogoWrapper to="/overview">
+      <LogoWrapper to="/">
         <Badge
           sx={{
             '.MuiBadge-badge': {
