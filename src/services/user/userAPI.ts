@@ -46,7 +46,7 @@ const user = book.injectEndpoints({
     }),
     resetPassword: builder.mutation<
       User,
-      { id: any; reset_code: any; password: any }
+      { id: number; reset_code: string; password: string }
     >({
       query: ({ id, reset_code, password }) => {
         return {
