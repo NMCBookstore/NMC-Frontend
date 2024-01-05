@@ -64,8 +64,8 @@ const BdxLogModal: React.FunctionComponent = () => {
   const googleLogin = async () => {
     try {
       const response = await axios.get(
-        // "https://nmc-bookstore-api.onrender.com/login/oauth/google_url"
-       " http://localhost:8080/login/oauth/google_url"
+        "https://nmc-bookstore-api.onrender.com/login/oauth/google_url"
+      //  " http://localhost:8080/login/oauth/google_url"
       );
       const url = response?.data?.url;
       if (url) {

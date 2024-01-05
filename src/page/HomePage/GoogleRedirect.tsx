@@ -13,8 +13,8 @@ const GoogleRedirect = () => {
   const sendToken = async () => {
     try {
       const v = await axios.get(
-        // `https://nmc-bookstore-api.onrender.com/login/oauth/google?code=${paramValue}`
-        `http://localhost:8080/login/oauth/google?code=${paramValue}`
+        `https://nmc-bookstore-api.onrender.com/login/oauth/google?code=${paramValue}`
+        // `http://localhost:8080/login/oauth/google?code=${paramValue}`
       );
       dispatch(setCredentials(v.data));
       dispatch(close())
