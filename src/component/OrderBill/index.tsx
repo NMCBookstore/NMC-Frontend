@@ -59,17 +59,17 @@ const OrderBill: React.FunctionComponent = () => {
       <div className="order-bill__footer flex justify-end">
         <div className="text-center">
           <p className="order-bill__footer--note">
-            *Shipping fee included: {shipping ? Number(shipping).toFixed(2) : 0}
-            $
+            *Shipping fee: {shipping ? Number(shipping).toFixed(2) : 0}$
           </p>
           <div className="order-bill__footer--sum d-flex justify-content-between align-items-center">
             <div>
-              <p>Total order: {totalPrice.toFixed(2)}$</p>
+              <p>Subtotal: {totalPrice.toFixed(2)}$ </p>
             </div>
 
             <div className="order-bill__footer--sum d-flex justify-content-between align-items-center">
               <p>
-                Total order value:{" "}
+                {" "}
+                Total order:
                 {shipping
                   ? (totalPrice + Number(shipping)).toFixed(2)
                   : totalPrice}

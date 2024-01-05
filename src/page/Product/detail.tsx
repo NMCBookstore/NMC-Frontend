@@ -22,7 +22,6 @@ import {
 } from "../../services/wishlist/wishlistAPI";
 import ImageList from "../../component/ImageList";
 
-
 const ProductDetail: React.FunctionComponent = () => {
   const { id } = useParams();
 
@@ -78,6 +77,8 @@ const ProductDetail: React.FunctionComponent = () => {
     const v = await addWishList(Number(id));
     if ("data" in v) {
       toast.success("Added to your wishlist");
+    } else if ("error" in v) {
+      toast.error("Can't add to cart");
     }
   };
 
@@ -88,6 +89,8 @@ const ProductDetail: React.FunctionComponent = () => {
     });
     if ("data" in v) {
       toast.success("Added to your cart");
+    } else if ("error" in v) {
+      toast.error("Can't add to wishlist");
     }
   };
 
@@ -300,10 +303,10 @@ const ProductDetail: React.FunctionComponent = () => {
                         "brightness(37%) contrast(118%) grayscale(76%) hue-rotate(12deg)",
                     }}
                   ></div>
-                    <ReviewList
-                      id={id}
-                      onReviewLengthChange={handleReviewLengthChange}
-                    ></ReviewList>
+                  <ReviewList
+                    id={id}
+                    onReviewLengthChange={handleReviewLengthChange}
+                  ></ReviewList>
                 </div>
               </div>
               <div className="w-[25%]">

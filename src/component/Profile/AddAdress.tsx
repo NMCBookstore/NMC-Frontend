@@ -34,22 +34,6 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
   let [isOpen, setIsOpen] = useState(false);
   const cancelButtonRef = useRef(null);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
-  const openModal = () => {
-    const isCreateMode = mode === "create";
-
-    const canCreateMoreAddresses = amountAddress > 4;
-
-    isCreateMode
-      ? canCreateMoreAddresses
-        ? toast.error("You can't create more than 5 addresses")
-        : setIsOpen(true)
-      : setIsOpen(true);
-  };
-
   const [query, setQuery] = useState<string>("");
 
   const [idCity, setIdCity] = useState<number | null>(0);
@@ -61,8 +45,8 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
     skip: !idCity,
   });
 
-  const { data: wardData } = useGetListWardQuery(idDistrict!, {
-    skip: !idDistrict,
+  const { data: wardData } = useGetListWardQuery(Number(idDistrict), {
+    skip: !idCity || !idDistrict,
   });
 
   const [inputNewAddress, setInputNewAddress] = useState<string>("");
@@ -79,7 +63,27 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
     setAddress(addressDetail);
     setIdCity(Number(addressDetail?.city_id));
     setIdDistrict(Number(addressDetail?.district_id));
-  }, [isFetching]);
+    // setIdWard(Number(addressDetail?.address.split(",")[0]));
+  }, [isFetching, isOpen]);
+
+  function closeModal() {
+    setIsOpen(false);
+    setIdCity(null);
+    setIdDistrict(null);
+    setIdWard(null);
+  }
+
+  const openModal = () => {
+    const isCreateMode = mode === "create";
+
+    const canCreateMoreAddresses = amountAddress > 4;
+
+    isCreateMode
+      ? canCreateMoreAddresses
+        ? toast.error("You can't create more than 5 addresses")
+        : setIsOpen(true)
+      : setIsOpen(true);
+  };
 
   const commonCity = citiesData?.filter(
     (item) => item.id === addressDetail?.city_id
@@ -87,23 +91,23 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
   const commonDistrict = districtData?.filter(
     (item) => item.id === addressDetail?.district_id
   )?.[0]?.name;
-  // const commonWard= wardData?.filter(
-  //   (item) => item.id === addressDetail?.address[]
-  // )?.[0]?.name;
+  const commonWard = wardData?.data?.filter(
+    (item) => item.WardName === addressDetail?.address.split(",")[1]
+  )?.[0]?.WardName;
 
   const handleCreateAddress = async () => {
-    // if (!inputNewAddress) {
-    //   toast.error("Address is required!");
-    //   return;
-    // }
-    // if (!idCity) {
-    //   toast.error("City is required!");
-    //   return;
-    // }
-    // if (!idDistrict) {
-    //   toast.error("District is required!");
-    //   return;
-    // }
+    if (!idCity) {
+      toast.error("City is required!");
+      return;
+    }
+    if (!idDistrict) {
+      toast.error("District is required!");
+      return;
+    }
+    if (!idWard) {
+      toast.error("Ward is required!");
+      return;
+    }
     const v = await addAddress({
       address: `${idWard},${wardName}`,
       city_id: idCity,
@@ -120,7 +124,7 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
   const handleUpdateAddress = async () => {
     const v = await updateAddress({
       id: Number(addressId),
-      address: String(inputNewAddress),
+      address: String(`${idWard},${wardName}`),
       city_id: Number(idCity),
       district_id: Number(idDistrict),
     });
@@ -362,12 +366,14 @@ const AddAdressComponent: React.FunctionComponent<AddressProps> = ({
                       >
                         Ward<span>*</span>
                       </label>
-                      <Combobox>
+                      <Combobox defaultValue={commonWard}>
                         <div className="relative w-full md:grow">
                           <div className="relative md:grow border border-[#BFBFBF] border-solid w-full cursor-default overflow-hidden rounded-full text-left shadow-md focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300">
                             <Combobox.Input
                               className="w-full md:grow border-none py-3 px-6 text-[16px] leading-[150%] focus:ring-0 capitalize  bg-[transparent] focus:outline-none"
-                              displayValue={(ward: Ward) => ward?.WardName}
+                              displayValue={(ward: Ward) =>
+                                ward?.WardName || String(commonWard)
+                              }
                               placeholder="Select or search ward..."
                               onChange={(event) => setQuery(event.target.value)}
                             />
