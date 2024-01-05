@@ -50,7 +50,7 @@ const OrderPayment: React.FunctionComponent = () => {
   const totalPrice = useSelector(selectCurrentTotalCartValue);
   const shipping = useSelector(selectCurrentShipping);
 
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   const handleCardElementChange = (event: any) => {
     setIsPaymentInfoComplete(event.complete);
@@ -90,7 +90,7 @@ const OrderPayment: React.FunctionComponent = () => {
         const response = await createOrder({
           payment_id: id,
           cart_ids: totalCartIdArr,
-          to_address: userAddress,
+          to_address: userAddress.split(",").slice(2).join(",").trim(),
           total_shipping: Number(shipping.toFixed(2)),
           email: userInfo?.email,
           note: userNote,
@@ -112,7 +112,7 @@ const OrderPayment: React.FunctionComponent = () => {
     const response = await createOrder({
       payment_id: String(uuid()),
       cart_ids: totalCartIdArr,
-      to_address: userAddress,
+      to_address: userAddress.split(",").slice(2).join(",").trim(),
       total_shipping: Number(shipping.toFixed(2)),
       email: userInfo?.email,
       note: userNote,
@@ -152,8 +152,8 @@ const OrderPayment: React.FunctionComponent = () => {
                   />
                   {isPaymentInfoComplete && (
                     <div className="order-payment__list__handle">
-                      <button>
-                        <span>Accept</span>
+                      <button disabled={isLoading}>
+                        <span>{isLoading ? "Processing..." : "Accept"}</span>
                         <i className="bdx-cart-fill"></i>
                       </button>
                     </div>
@@ -212,7 +212,9 @@ const OrderPayment: React.FunctionComponent = () => {
                       <span className="input-group-text align-items-start">
                         <i className="bdx-location inline-flex items-center"></i>
                       </span>
-                      <p className="form-control">{userAddress}</p>
+                      <p className="form-control">
+                        {userAddress.split(",").slice(2).join(",").trim()}
+                      </p>
                     </div>
                   </div>
                   <div className="w-full">

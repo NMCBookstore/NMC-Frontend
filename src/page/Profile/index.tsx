@@ -139,7 +139,7 @@ const Profile: React.FunctionComponent = () => {
                           className="profile__user__right__adress__item"
                         >
                           <div>
-                            <p>{item?.address}</p>
+                            <p>{item?.address.split(",")[1]}</p>
                             <p>
                               {item?.district}, {item?.city}
                             </p>

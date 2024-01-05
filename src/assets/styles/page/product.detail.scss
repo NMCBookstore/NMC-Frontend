@@ -165,9 +165,10 @@
                 &__start {
                     display: flex;
                     position: relative;
-                    justify-content: center;
+                    justify-content: start;
                     color: #FFCA41;
                     cursor: pointer;
+                    margin-bottom: 16px;
 
                     i {
                         display: inline-flex;

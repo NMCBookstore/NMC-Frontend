@@ -17,3 +17,14 @@ export interface Address {
   city_id: City["id"];
   district_id: District["id"];
 }
+
+export interface Ward {
+  WardCode: number;
+  DistrictID: District["id"];
+  WardName: string;
+}
+export interface WardReponse {
+  code: number;
+  message: string;
+  data: Ward[];
+}

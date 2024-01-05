@@ -1,5 +1,6 @@
-import { Address } from "../../interface/Address";
-import { book } from "../Base/baseAPI";
+import { url } from "inspector";
+import { Address, Ward, WardReponse } from "../../interface/Address";
+import { book, shipping } from "../Base/baseAPI";
 
 const address = book.injectEndpoints({
   endpoints: (builder) => ({
@@ -29,7 +30,10 @@ const address = book.injectEndpoints({
       }),
       providesTags: ["AddressItems"],
     }),
-    updateAddress: builder.mutation<Address, {id: number, address: string, district_id: number, city_id: number}>({
+    updateAddress: builder.mutation<
+      Address,
+      { id: number; address: string; district_id: number; city_id: number }
+    >({
       query: ({ id, address, district_id, city_id }) => {
         return {
           method: "PUT",
@@ -52,6 +56,25 @@ const address = book.injectEndpoints({
   overrideExisting: false,
 });
 
+const addressGHN = shipping.injectEndpoints({
+  endpoints: (builder) => ({
+    getListWard: builder.query<WardReponse, number>({
+      query: (district_id) => ({
+        url: `master-data/ward?district_id=${district_id}`,
+      }),
+      providesTags: ["Shipping"],
+    }),
+
+    addShippingFee: builder.query({
+      query: ({ to_district_id, to_ward_code }) => ({
+        url: `v2/shipping-order/fee?service_id=53320&to_district_id=${to_district_id}&to_ward_code=${to_ward_code}&height=5&length=22&weight=700&width=15`,
+      }),
+      providesTags: ["Shipping"],
+    }),
+  }),
+  overrideExisting: false,
+});
+
 export const {
   useCreateAddressMutation,
   useGetAddressDetailQuery,
@@ -59,3 +82,5 @@ export const {
   useDeleteAddressMutation,
   useUpdateAddressMutation,
 } = address;
+
+export const { useGetListWardQuery, useAddShippingFeeQuery } = addressGHN;

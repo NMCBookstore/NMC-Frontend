@@ -64,8 +64,9 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = memo(
         onReviewLengthChange(reviewLength);
       }
     }, [reviewLength, onReviewLengthChange]);
-    return (
-      <>
+
+    const renderReviews = () => {
+      return (
         <div className="product-detail__content__review__list">
           {reviewData?.reviews ? (
             reviewData?.reviews.map((item, index) => (
@@ -80,6 +81,18 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = memo(
                       <p className="review__item__heading__left__user__date">
                         at {format(new Date(item?.created_at), "dd/MM/yyyy")}
                       </p>
+                    </div>
+                    <div className="product-detail__item__heading__rate__start">
+                      {[...Array(5)].map((_, index) => (
+                        <i
+                          key={index}
+                          className={
+                            index < Number(item?.rating)
+                              ? "bdx-start-fill"
+                              : "bdx-star"
+                          }
+                        ></i>
+                      ))}
                     </div>
                     <div className="review__item__heading__left__info">
                       <div className="review__item__heading__left__info__sumary">
@@ -144,6 +157,12 @@ const ReviewList: React.FunctionComponent<ReviewListProps> = memo(
             </div>
           )}
         </div>
+      );
+    };
+
+    return (
+      <>
+        {renderReviews()}
         <Pagination
           total={Number(reviewData?.total_page)}
           setCurrentPage={setPage}

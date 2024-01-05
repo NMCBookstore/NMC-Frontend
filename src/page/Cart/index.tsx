@@ -13,12 +13,14 @@ import {
 } from "../../services/cart/cartAPI";
 import { cartEmpty, cartEmpty2 } from "../../assets/img";
 import { selectCurrentUser } from "../../features/auth/authSlice";
+import { useGetListAddressQuery } from "../../services/address/addressAPI";
 
 const CartIndex: React.FunctionComponent = () => {
   const totalItemPrice = useSelector(selectCurrentTotalCartValue);
   const user = useSelector(selectCurrentUser);
 
   const { data } = useGetCartQuery();
+  const { data: userAddress = [] } = useGetListAddressQuery();
 
   const [deleteCartItem] = useDeleteCartItemMutation();
   const [updateCartItem] = useUpdateCartMutation();
@@ -179,21 +181,15 @@ const CartIndex: React.FunctionComponent = () => {
           </div>
           <div className="md:w-full w-[25%] ms-auto">
             <div className="cart-info__bottom">
-              <p className="cart-info__bottom__noting">
-                *Shipping fee included: {shipping.toFixed(2)}$
-              </p>
               <p className="cart-info__bottom__sum">
                 <span className="text-uppercase">Total order value</span>
                 <span>{totalItemPrice.toFixed(2)}$</span>
-              </p>
-              <p className="cart-info__bottom__sum">
-                <span className="text-uppercase">Total order</span>
-                <span>{(totalItemPrice + shipping).toFixed(2)}$</span>
               </p>
               <div className="cart-info__bottom__btn d-flex justify-content-between align-items-center">
                 <a href="javascript:history.back()">Return</a>
                 {data?.length &&
                 data?.length > 0 &&
+                userAddress?.length > 0 &&
                 user?.phone_number !== "" ? (
                   <Link to="/user/order/info">
                     Accept
@@ -207,8 +203,10 @@ const CartIndex: React.FunctionComponent = () => {
                         toast.error(
                           "You have to fill your profile information !"
                         );
-                      else {
-                        toast.error("You have to purchase book first !");
+                      else if (userAddress?.length === 0) {
+                        toast.error("You have to add an address !");
+                      } else {
+                        toast.error("You have to purchase book first !")
                       }
                     }}
                   >
