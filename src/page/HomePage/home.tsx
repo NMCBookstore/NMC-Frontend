@@ -230,7 +230,7 @@ const HomePage: React.FunctionComponent = () => {
         <div className="mx-auto px-3 container-nmc">
           <div className="flex justify-between">
             <h2 className="mb-8 sm:mb-0 text-primary">
-              Bestsellers{" "}
+              Most like{" "}
               <i className="bdx-like ml-2 text-accent inline-flex items-center"></i>{" "}
             </h2>
             <div className="lg:hidden">
