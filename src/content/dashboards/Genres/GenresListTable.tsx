@@ -95,7 +95,7 @@ const GenresListTable = () => {
       name: 'created_at',
       label: 'Create at',
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         customBodyRender: (value) => {
           const formattedDate = format(parseISO(value), 'dd/MM/yyyy HH:mm:ss');
