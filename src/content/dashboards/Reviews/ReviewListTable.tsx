@@ -62,7 +62,7 @@ const ReviewListTable = () => {
       name: 'liked',
       label: 'Like',
       options: {
-        filter: true,
+        filter: false,
         sort: true,
         customBodyRender: (value) => <Label color="black">{value}</Label>
       }
