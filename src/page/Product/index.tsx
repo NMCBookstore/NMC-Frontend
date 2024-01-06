@@ -265,7 +265,7 @@ const ProductList: React.FunctionComponent = () => {
     { key: "none", value: "None" },
     { key: "over5000", value: "> 50$", minPrice: 50, maxPrice: Infinity },
     { key: "nomal", value: "10 - 50$", minPrice: 10, maxPrice: 50 },
-    { key: "under100", value: "<10", minPrice: 0, maxPrice: 10 },
+    { key: "under100", value: "<10$", minPrice: 0, maxPrice: 10 },
   ];
   const nameFilter: OrderFilter[] = [
     { key: "Name A-Z", value: "true" },
